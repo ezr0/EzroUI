@@ -10,16 +10,16 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --gold:      #c8a84b;
-      --gold-lt:   #f0d080;
-      --gold-dk:   #8a6a1a;
-      --bg:        #0d0e10;
-      --bg2:       #14161a;
-      --bg3:       #1c1f26;
-      --border:    #2e3240;
-      --text:      #c9cdd4;
-      --text-dim:  #7a8090;
-      --accent:    #4a90d9;
+      --gold:      #a882e0;
+      --gold-lt:   #d0b4ff;
+      --gold-dk:   #5a30a0;
+      --bg:        #07050e;
+      --bg2:       #0e0a1c;
+      --bg3:       #161030;
+      --border:    #2e2050;
+      --text:      #ccc8e0;
+      --text-dim:  #7870a0;
+      --accent:    #60a0e0;
       --red:       #c0392b;
       --green:     #27ae60;
     }
@@ -76,7 +76,7 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      background: rgba(13, 14, 16, 0.93);
+      background: rgba(7, 5, 14, 0.95);
       backdrop-filter: blur(8px);
       border-bottom: 1px solid var(--border);
     }
@@ -126,14 +126,14 @@
       position: absolute;
       inset: 0;
       background:
-        radial-gradient(ellipse 80% 60% at 50% 0%, rgba(200, 168, 75, 0.12) 0%, transparent 70%),
-        radial-gradient(ellipse 60% 40% at 50% 100%, rgba(74, 144, 217, 0.06) 0%, transparent 70%);
+        radial-gradient(ellipse 80% 60% at 50% 0%, rgba(168, 130, 224, 0.22) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 40% at 50% 100%, rgba(90, 48, 160, 0.12) 0%, transparent 70%);
       pointer-events: none;
     }
 
     .hero-badge {
       display: inline-block;
-      background: rgba(200, 168, 75, 0.12);
+      background: rgba(168, 130, 224, 0.15);
       border: 1px solid var(--gold-dk);
       color: var(--gold);
       font-size: 0.78rem;
@@ -191,7 +191,7 @@
 
     .btn-primary {
       background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dk) 100%);
-      color: #0d0e10;
+      color: #07050e;
     }
 
     .btn-secondary {
@@ -337,10 +337,9 @@
       width: 2.2rem;
       height: 2.2rem;
       background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dk) 100%);
-      color: #0d0e10;
+      color: #07050e;
       font-weight: 900;
       font-size: 0.95rem;
-      border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -441,7 +440,7 @@
   <!-- ── Hero ──────────────────────────────────────────────── -->
   <header class="hero">
     <div class="container">
-      <div class="hero-badge">World of Warcraft Addon &bull; The War Within</div>
+      <div class="hero-badge">World of Warcraft Addon &bull; Midnight</div>
       <h1>EzUI</h1>
       <p class="hero-tagline">
         A lightweight, all-in-one UI overhaul for World of Warcraft.
@@ -470,8 +469,8 @@
         <span class="stat-label">Version</span>
       </div>
       <div class="stat-item">
-        <span class="stat-number">TWW</span>
-        <span class="stat-label">The War Within</span>
+        <span class="stat-number">MN</span>
+        <span class="stat-label">Midnight</span>
       </div>
       <div class="stat-item">
         <span class="stat-number">0</span>
