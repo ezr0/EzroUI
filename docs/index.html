@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EzUI — Lightweight WoW UI Overhaul</title>
+  <meta name="description" content="EzUI is a lightweight, all-in-one World of Warcraft UI overhaul addon by Ezr0. Clean unit frames, cooldown viewers, cast bars, action bars, and dozens of quality-of-life improvements." />
+  <style>
+    /* ── Reset & base ─────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold:      #c8a84b;
+      --gold-lt:   #f0d080;
+      --gold-dk:   #8a6a1a;
+      --bg:        #0d0e10;
+      --bg2:       #14161a;
+      --bg3:       #1c1f26;
+      --border:    #2e3240;
+      --text:      #c9cdd4;
+      --text-dim:  #7a8090;
+      --accent:    #4a90d9;
+      --red:       #c0392b;
+      --green:     #27ae60;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      font-size: 16px;
+    }
+
+    a { color: var(--gold); text-decoration: none; }
+    a:hover { color: var(--gold-lt); text-decoration: underline; }
+
+    /* ── Utility ──────────────────────────────────────────── */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    .section { padding: 5rem 0; }
+    .section-alt { background: var(--bg2); }
+
+    .section-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--gold);
+      text-align: center;
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.02em;
+    }
+
+    .section-sub {
+      text-align: center;
+      color: var(--text-dim);
+      margin-bottom: 3rem;
+      font-size: 1.05rem;
+    }
+
+    .divider {
+      width: 60px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--gold-dk), var(--gold), var(--gold-dk));
+      margin: 0.75rem auto 2.5rem;
+      border-radius: 2px;
+    }
+
+    /* ── Nav ──────────────────────────────────────────────── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(13, 14, 16, 0.93);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 60px;
+    }
+
+    .nav-brand {
+      font-size: 1.35rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      color: var(--gold);
+      text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-dim);
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--gold); text-decoration: none; }
+
+    /* ── Hero ─────────────────────────────────────────────── */
+    .hero {
+      position: relative;
+      text-align: center;
+      padding: 7rem 1.5rem 6rem;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 0%, rgba(200, 168, 75, 0.12) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 40% at 50% 100%, rgba(74, 144, 217, 0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: rgba(200, 168, 75, 0.12);
+      border: 1px solid var(--gold-dk);
+      color: var(--gold);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.3em 1em;
+      border-radius: 2em;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero h1 {
+      font-size: clamp(3rem, 8vw, 5.5rem);
+      font-weight: 900;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      line-height: 1;
+      background: linear-gradient(135deg, var(--gold-lt) 0%, var(--gold) 50%, var(--gold-dk) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 1rem;
+    }
+
+    .hero-tagline {
+      font-size: 1.25rem;
+      color: var(--text-dim);
+      max-width: 520px;
+      margin: 0 auto 2.5rem;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75em 2em;
+      border-radius: 4px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      transition: filter 0.2s, transform 0.15s;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .btn:hover { transform: translateY(-2px); text-decoration: none; filter: brightness(1.15); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dk) 100%);
+      color: #0d0e10;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      border: 2px solid var(--border);
+      color: var(--text);
+    }
+
+    .btn-secondary:hover { border-color: var(--gold); color: var(--gold); }
+
+    /* ── Stats bar ────────────────────────────────────────── */
+    .stats-bar {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .stats-inner {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0;
+    }
+
+    .stat-item {
+      padding: 1.5rem 2.5rem;
+      text-align: center;
+      border-right: 1px solid var(--border);
+      flex: 1;
+      min-width: 140px;
+    }
+
+    .stat-item:last-child { border-right: none; }
+
+    .stat-number {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--gold);
+      display: block;
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-dim);
+      margin-top: 0.3rem;
+    }
+
+    /* ── Feature Grid ─────────────────────────────────────── */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .feature-card {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.5rem;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .feature-card:hover {
+      border-color: var(--gold-dk);
+      transform: translateY(-3px);
+    }
+
+    .feature-icon {
+      font-size: 1.6rem;
+      margin-bottom: 0.75rem;
+      display: block;
+    }
+
+    .feature-card h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--gold);
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.02em;
+    }
+
+    .feature-card p {
+      font-size: 0.9rem;
+      color: var(--text-dim);
+      line-height: 1.6;
+    }
+
+    /* ── QoL List ─────────────────────────────────────────── */
+    .qol-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 0.75rem;
+    }
+
+    .qol-item {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.9rem 1.1rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+
+    .qol-check {
+      color: var(--green);
+      font-size: 1rem;
+      flex-shrink: 0;
+      margin-top: 0.1rem;
+    }
+
+    .qol-item strong {
+      color: var(--text);
+      font-size: 0.92rem;
+      display: block;
+    }
+
+    .qol-item span {
+      font-size: 0.82rem;
+      color: var(--text-dim);
+    }
+
+    /* ── Install ──────────────────────────────────────────── */
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .step {
+      display: flex;
+      gap: 1.25rem;
+      align-items: flex-start;
+    }
+
+    .step-num {
+      flex-shrink: 0;
+      width: 2.2rem;
+      height: 2.2rem;
+      background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dk) 100%);
+      color: #0d0e10;
+      font-weight: 900;
+      font-size: 0.95rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .step-body strong {
+      display: block;
+      color: var(--text);
+      font-size: 1rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .step-body span {
+      color: var(--text-dim);
+      font-size: 0.9rem;
+    }
+
+    code {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      padding: 0.15em 0.45em;
+      border-radius: 4px;
+      font-size: 0.88em;
+      color: var(--gold-lt);
+      font-family: 'Consolas', 'Fira Code', monospace;
+    }
+
+    /* ── Commands ─────────────────────────────────────────── */
+    .commands-table {
+      width: 100%;
+      border-collapse: collapse;
+      max-width: 620px;
+      margin: 0 auto;
+    }
+
+    .commands-table th,
+    .commands-table td {
+      padding: 0.75rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.9rem;
+    }
+
+    .commands-table th {
+      color: var(--gold);
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .commands-table td:first-child { width: 40%; }
+
+    .commands-table tr:last-child td { border-bottom: none; }
+
+    /* ── Footer ───────────────────────────────────────────── */
+    footer {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+      color: var(--text-dim);
+      font-size: 0.88rem;
+    }
+
+    footer .footer-brand {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--gold);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+    }
+
+    /* ── Responsive ───────────────────────────────────────── */
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      .stat-item { min-width: 120px; padding: 1.25rem 1.5rem; }
+      .step { flex-direction: column; gap: 0.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Navigation ────────────────────────────────────────── -->
+  <nav>
+    <div class="container nav-inner">
+      <span class="nav-brand">EzUI</span>
+      <ul class="nav-links">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#qol">QoL</a></li>
+        <li><a href="#install">Install</a></li>
+        <li><a href="#commands">Commands</a></li>
+        <li><a href="https://github.com/ezr0/EzUI" target="_blank" rel="noopener">GitHub</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ── Hero ──────────────────────────────────────────────── -->
+  <header class="hero">
+    <div class="container">
+      <div class="hero-badge">World of Warcraft Addon &bull; The War Within</div>
+      <h1>EzUI</h1>
+      <p class="hero-tagline">
+        A lightweight, all-in-one UI overhaul for World of Warcraft.
+        Clean. Configurable. Performance-focused.
+      </p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="https://github.com/ezr0/EzUI/releases" target="_blank" rel="noopener">
+          ⬇ Download Latest
+        </a>
+        <a class="btn btn-secondary" href="https://github.com/ezr0/EzUI" target="_blank" rel="noopener">
+          View on GitHub
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── Stats bar ─────────────────────────────────────────── -->
+  <div class="stats-bar">
+    <div class="container stats-inner">
+      <div class="stat-item">
+        <span class="stat-number">15+</span>
+        <span class="stat-label">Modules</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">1.00</span>
+        <span class="stat-label">Version</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">TWW</span>
+        <span class="stat-label">The War Within</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">0</span>
+        <span class="stat-label">Required deps</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Features ──────────────────────────────────────────── -->
+  <section class="section" id="features">
+    <div class="container">
+      <h2 class="section-title">Modules</h2>
+      <div class="divider"></div>
+      <p class="section-sub">Every piece of your UI — redesigned, consolidated, and configurable from a single settings panel.</p>
+
+      <div class="feature-grid">
+
+        <div class="feature-card">
+          <span class="feature-icon">🎯</span>
+          <h3>Unit Frames</h3>
+          <p>Custom frames for Player, Target, Focus, Party, Raid, and Boss units. Includes power bars, auras, absorb indicators, and <a href="https://www.curseforge.com/wow/addons/clique" target="_blank" rel="noopener">Clique</a> click-cast integration.</p>
+        </div>
+
+        <div class="feature-card">
+          <span class="feature-icon">⏱️</span>
+          <h3>Cast Bars</h3>
+          <p>Individually styled cast bars for Player, Target, Focus, and Boss frames. Full support for Empowered casts and custom positioning.</p>
+        </div>
+
+        <div class="feature-card">
+          <span class="feature-icon">🔷</span>
+          <h3>Resource Bars</h3>
+          <p>Automatic detection and styling of Primary and Secondary power resources — mana, energy, rage, runes, and more — for every spec.</p>
+        </div>
+
+        <div class="feature-card">
+          <span class="feature-icon">👁️</span>
+          <h3>Icon Viewers</h3>
+          <p>Dedicated icon rows for <strong>Essential Cooldowns</strong>, <strong>Utility Cooldowns</strong>, and <strong>Buff Icons</strong> with full layout, sizing, and glow control.</p>
+        </div>
+
+        <div class="feature-card">
+          <span class="feature-icon">⚡</span>
+          <h3>Action Bars</h3>
+          <p>Custom styling for all action bars: configurable border thickness, border color, backdrop color, and pixel-perfect button skinning.</p>
+        </div>
+
+        <div class="feature-card">
+          <span class="feature-icon">🛡️</span>
+          <h3>Absorb Bars</h3>
+          <p>Visual tracking of shield and absorb effects directly on unit frames, keeping you aware of incoming mitigation at a glance.</p>
+        </div>
+
+        <div class="feature-card">
+          <span class="feature-icon">✨</span>
+          <h3>Custom Icons &amp; Buffs</h3>
+          <p>Pin any spell or item icon to a movable frame for personal tracking. Custom Buff tracking lets you monitor specific auras your way.</p>
+        </div>
+
+        <div class="feature-card">
+          <span class="feature-icon">🎨</span>
+          <h3>Icon Customization</h3>
+          <p>Fine-grained icon appearance tweaks — border, glow style, proc highlighting, keybind text, and charge display — applied globally or per-icon.</p>
+        </div>
+
+        <div class="feature-card">
+          <span class="feature-icon">🔔</span>
+          <h3>Buff &amp; Debuff Frames</h3>
+          <p>Restyled consolidated buff and debuff frames. Filter, reorder, and resize aura icons to fit your layout preferences.</p>
+        </div>
+
+        <div class="feature-card">
+          <span class="feature-icon">🗺️</span>
+          <h3>Minimap</h3>
+          <p>Clean minimap restyling with square or round shape options, hidden default buttons, and a data-broker icon panel via LibDBIcon.</p>
+        </div>
+
+        <div class="feature-card">
+          <span class="feature-icon">💬</span>
+          <h3>Chat</h3>
+          <p>Custom chat frame skinning — transparent backgrounds, styled edit box, hidden scrollbar — for a minimal, immersive chat experience.</p>
+        </div>
+
+        <div class="feature-card">
+          <span class="feature-icon">📋</span>
+          <h3>Character Panel</h3>
+          <p>Enhanced character and inspect frames showing per-slot <strong>item level</strong>, missing <strong>enchants</strong>, <strong>gems/sockets</strong>, and <strong>durability</strong> — all at a glance.</p>
+        </div>
+
+        <div class="feature-card">
+          <span class="feature-icon">🔧</span>
+          <h3>Auto UI Scale</h3>
+          <p>Automatically sets the optimal UI scale for your screen resolution on first load, or whenever you change display settings.</p>
+        </div>
+
+        <div class="feature-card">
+          <span class="feature-icon">📊</span>
+          <h3>Profile System</h3>
+          <p>Full AceDB profile management with import/export (LibDeflate + LibSerialize), dual-spec support, and per-character or shared profiles.</p>
+        </div>
+
+        <div class="feature-card">
+          <span class="feature-icon">🌐</span>
+          <h3>Localization</h3>
+          <p>Built-in locale framework. Currently ships with full enUS strings and a ready-to-expand template for additional languages.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── QoL ───────────────────────────────────────────────── -->
+  <section class="section section-alt" id="qol">
+    <div class="container">
+      <h2 class="section-title">Quality of Life</h2>
+      <div class="divider"></div>
+      <p class="section-sub">Small things that add up. Toggle each improvement individually in the settings panel.</p>
+
+      <div class="qol-grid">
+
+        <div class="qol-item">
+          <span class="qol-check">✔</span>
+          <div>
+            <strong>Character Panel Enhancements</strong>
+            <span>Item level, enchants, missing enchants, sockets, and durability on character &amp; inspect frames.</span>
+          </div>
+        </div>
+
+        <div class="qol-item">
+          <span class="qol-check">✔</span>
+          <div>
+            <strong>Tooltip IDs</strong>
+            <span>Show spell, item, unit, quest, and other IDs inside tooltips for quick reference.</span>
+          </div>
+        </div>
+
+        <div class="qol-item">
+          <span class="qol-check">✔</span>
+          <div>
+            <strong>Micro Menu Skinning</strong>
+            <span>Skin the Micro Menu buttons to match the EzUI aesthetic. Disable to restore Blizzard styling.</span>
+          </div>
+        </div>
+
+        <div class="qol-item">
+          <span class="qol-check">✔</span>
+          <div>
+            <strong>Hide Bags Bar</strong>
+            <span>Remove the default Bags Bar frame from the screen.</span>
+          </div>
+        </div>
+
+        <div class="qol-item">
+          <span class="qol-check">✔</span>
+          <div>
+            <strong>Auto Repair</strong>
+            <span>Automatically repair gear at merchants — using personal gold or Guild Bank funds first.</span>
+          </div>
+        </div>
+
+        <div class="qol-item">
+          <span class="qol-check">✔</span>
+          <div>
+            <strong>Sell Grey Items</strong>
+            <span>Automatically sell all poor-quality (grey) items when visiting a merchant.</span>
+          </div>
+        </div>
+
+        <div class="qol-item">
+          <span class="qol-check">✔</span>
+          <div>
+            <strong>Auto Insert M+ Keys</strong>
+            <span>Automatically insert your keystone when the Mythic+ dungeon chooser opens.</span>
+          </div>
+        </div>
+
+        <div class="qol-item">
+          <span class="qol-check">✔</span>
+          <div>
+            <strong>Auto Accept Invites</strong>
+            <span>Automatically accept party invites from guild members or BattleTag friends.</span>
+          </div>
+        </div>
+
+        <div class="qol-item">
+          <span class="qol-check">✔</span>
+          <div>
+            <strong>Faster Auto Loot</strong>
+            <span>Instantly loot all items and automatically fix stuck loot windows.</span>
+          </div>
+        </div>
+
+        <div class="qol-item">
+          <span class="qol-check">✔</span>
+          <div>
+            <strong>Raid Buffs Tracker</strong>
+            <span>At-a-glance display of key raid buff coverage so you can call out missing buffs instantly.</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Install ────────────────────────────────────────────── -->
+  <section class="section" id="install">
+    <div class="container">
+      <h2 class="section-title">Installation</h2>
+      <div class="divider"></div>
+      <p class="section-sub">EzUI has no required dependencies — all libraries are bundled.</p>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <strong>Download the latest release</strong>
+            <span>Head to the <a href="https://github.com/ezr0/EzUI/releases" target="_blank" rel="noopener">GitHub Releases page</a> and download the latest <code>.zip</code> archive.</span>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <strong>Extract the archive</strong>
+            <span>Unzip the downloaded file. You should see a single <code>EzUI</code> folder.</span>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <strong>Copy to your AddOns directory</strong>
+            <span>Move the <code>EzUI</code> folder into your WoW AddOns directory:
+              <br><code>World of Warcraft\_retail_\Interface\AddOns\</code>
+            </span>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <strong>Enable the addon in-game</strong>
+            <span>Launch WoW, click <strong>AddOns</strong> on the character selection screen, and make sure <em>EzUI</em> is checked.</span>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">5</div>
+          <div class="step-body">
+            <strong>Open the settings panel</strong>
+            <span>In-game, type <code>/ezui</code> to open the configuration panel and customise every module to your liking.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Commands ───────────────────────────────────────────── -->
+  <section class="section section-alt" id="commands">
+    <div class="container">
+      <h2 class="section-title">Slash Commands</h2>
+      <div class="divider"></div>
+      <p class="section-sub">All commands are typed into the in-game chat box.</p>
+
+      <table class="commands-table">
+        <thead>
+          <tr>
+            <th>Command</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>/ezui</code></td>
+            <td>Open the EzUI settings panel</td>
+          </tr>
+          <tr>
+            <td><code>/ezui nudge</code></td>
+            <td>Toggle frame nudge mode for pixel-perfect repositioning</td>
+          </tr>
+          <tr>
+            <td><code>/reload</code></td>
+            <td>Reload the UI after making changes that require it</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ── Footer ─────────────────────────────────────────────── -->
+  <footer>
+    <div class="container">
+      <div class="footer-brand">EzUI</div>
+      <p>
+        Crafted by <a href="https://github.com/ezr0" target="_blank" rel="noopener">Ezr0</a> &bull;
+        <a href="https://github.com/ezr0/EzUI" target="_blank" rel="noopener">GitHub Repository</a> &bull;
+        <a href="https://github.com/ezr0/EzUI/issues" target="_blank" rel="noopener">Report a Bug</a>
+      </p>
+      <p style="margin-top: 0.5rem; font-size: 0.78rem; opacity: 0.55;">
+        World of Warcraft and related trademarks are property of Blizzard Entertainment. EzUI is an independent project and is not affiliated with Blizzard.
+      </p>
+    </div>
+  </footer>
+
+</body>
+</html>
