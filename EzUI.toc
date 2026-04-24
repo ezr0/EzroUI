@@ -2,7 +2,7 @@
 ## Title: EzUI
 ## Notes: Lightweight UI Overhaul AddOn
 ## Author: Ezr0
-## Version: 2.03
+## Version: 1.00
 ## SavedVariables: EzUIDB
 ## OptionalDeps: Ace3, LibSharedMedia-3.0
 ## X-TaintLess-DisableMitigations: CUF_PROFILE_ACTIVATE_PATCH_VERSION=1
