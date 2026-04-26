@@ -1,5 +1,5 @@
 ﻿local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
+local EzroUI = ns.Addon
 local THEME = {
 
     primary = {0.120, 0.620, 0.780},
@@ -29,8 +29,8 @@ end
 local function StyleFontString(fontString)
     if not fontString then return end
     
-    -- Always use EzUI's global font for GUI elements
-    local globalFontPath = EzUI:GetGlobalFont()
+    -- Always use EzroUI's global font for GUI elements
+    local globalFontPath = EzroUI:GetGlobalFont()
     local currentFont, size, flags = fontString:GetFont()
     
     -- Preserve size, default to 12 if not found
@@ -56,8 +56,8 @@ end
 local function StyleEditBox(editBox, fontObjectName)
     if not editBox then return end
     
-    -- Always use EzUI's global font for GUI elements
-    local globalFontPath = EzUI:GetGlobalFont()
+    -- Always use EzroUI's global font for GUI elements
+    local globalFontPath = EzroUI:GetGlobalFont()
     
     -- Get size from font object if provided, otherwise from edit box
     local size = 12
@@ -201,12 +201,12 @@ local Widgets = {}
 if not Widgets._dropdownScaleHooked then
     Widgets._dropdownScaleHooked = true
     hooksecurefunc("ToggleDropDownMenu", function(level, value, dropDownFrame, anchorName, xOffset, yOffset, menuList, button, autoHideDelay)
-        if dropDownFrame and dropDownFrame._EzUIDropdownScale then
+        if dropDownFrame and dropDownFrame._EzroUIDropdownScale then
             C_Timer.After(0.01, function()
                 for i = 1, (UIDROPDOWNMENU_MAXLEVELS or 2) do
                     local listFrame = _G["DropDownList" .. i]
                     if listFrame and listFrame:IsShown() and listFrame.dropdown == dropDownFrame then
-                        listFrame:SetScale(dropDownFrame._EzUIDropdownScale)
+                        listFrame:SetScale(dropDownFrame._EzroUIDropdownScale)
                         break
                     end
                 end
@@ -1024,7 +1024,7 @@ function Widgets.CreateHeader(parent, option, yOffset)
     local label = frame:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
     StyleFontString(label)
     -- Ensure we use global font with custom size for headers
-    local globalFontPath = EzUI:GetGlobalFont()
+    local globalFontPath = EzroUI:GetGlobalFont()
     local currentFont, _, flags = label:GetFont()
     flags = flags or "OUTLINE"
     if globalFontPath then
@@ -1419,29 +1419,29 @@ local function RenderOptions(contentFrame, options, path, parentFrame)
                 widget = Widgets.CreateExecute(contentFrame, option, yOffset)
                 widgetHeight = 32
             elseif option.type == "dynamicIcons" then
-                if EzUI and EzUI.CustomIcons and EzUI.CustomIcons.BuildDynamicIconsUI then
+                if EzroUI and EzroUI.CustomIcons and EzroUI.CustomIcons.BuildDynamicIconsUI then
                     local dynFrame = CreateFrame("Frame", nil, contentFrame, "BackdropTemplate")
                     dynFrame:SetPoint("TOPLEFT", contentFrame, "TOPLEFT", 0, -yOffset)
                     dynFrame:SetPoint("BOTTOMRIGHT", contentFrame, "BOTTOMRIGHT", 0, 0)
-                    EzUI.CustomIcons:BuildDynamicIconsUI(dynFrame)
+                    EzroUI.CustomIcons:BuildDynamicIconsUI(dynFrame)
                     widget = dynFrame
                     widgetHeight = dynFrame:GetHeight() or 400
                 end
             elseif option.type == "customBuffs" then
-                if EzUI and EzUI.CustomBuffs and EzUI.CustomBuffs.BuildCustomBuffsUI then
+                if EzroUI and EzroUI.CustomBuffs and EzroUI.CustomBuffs.BuildCustomBuffsUI then
                     local bufFrame = CreateFrame("Frame", nil, contentFrame, "BackdropTemplate")
                     bufFrame:SetPoint("TOPLEFT", contentFrame, "TOPLEFT", 0, -yOffset)
                     bufFrame:SetPoint("BOTTOMRIGHT", contentFrame, "BOTTOMRIGHT", 0, 0)
-                    EzUI.CustomBuffs:BuildCustomBuffsUI(bufFrame)
+                    EzroUI.CustomBuffs:BuildCustomBuffsUI(bufFrame)
                     widget = bufFrame
                     widgetHeight = bufFrame:GetHeight() or 400
                 end
             elseif option.type == "iconCustomization" then
-                if EzUI and EzUI.IconCustomization and EzUI.IconCustomization.BuildIconCustomizationUI then
+                if EzroUI and EzroUI.IconCustomization and EzroUI.IconCustomization.BuildIconCustomizationUI then
                     local iconFrame = CreateFrame("Frame", nil, contentFrame, "BackdropTemplate")
                     iconFrame:SetPoint("TOPLEFT", contentFrame, "TOPLEFT", 0, -yOffset)
                     iconFrame:SetPoint("BOTTOMRIGHT", contentFrame, "BOTTOMRIGHT", 0, 0)
-                    EzUI.IconCustomization:BuildIconCustomizationUI(iconFrame)
+                    EzroUI.IconCustomization:BuildIconCustomizationUI(iconFrame)
                     widget = iconFrame
                     widgetHeight = iconFrame:GetHeight() or 400
                 end
@@ -1453,8 +1453,8 @@ local function RenderOptions(contentFrame, options, path, parentFrame)
                 embed:SetHeight(contentFrame:GetHeight() or 600)
 
                 local mode = option.mode or "party"
-                if EzUI and EzUI.PartyFrames and EzUI.PartyFrames.RenderOptionsPage then
-                    EzUI.PartyFrames:RenderOptionsPage(embed, mode, option.builder)
+                if EzroUI and EzroUI.PartyFrames and EzroUI.PartyFrames.RenderOptionsPage then
+                    EzroUI.PartyFrames:RenderOptionsPage(embed, mode, option.builder)
                 end
 
                 widget = embed
@@ -1466,9 +1466,9 @@ local function RenderOptions(contentFrame, options, path, parentFrame)
                 embed:SetWidth(contentFrame:GetWidth() or 600)
                 embed:SetHeight(600)
 
-                if EzUI and EzUI.PartyFrames and EzUI.PartyFrames.ClickCast and EzUI.PartyFrames.ClickCast.CreateClickCastUI then
+                if EzroUI and EzroUI.PartyFrames and EzroUI.PartyFrames.ClickCast and EzroUI.PartyFrames.ClickCast.CreateClickCastUI then
                     local defaultTab = option.defaultTab or "spells"
-                    EzUI.PartyFrames.ClickCast:CreateClickCastUI(embed, defaultTab)
+                    EzroUI.PartyFrames.ClickCast:CreateClickCastUI(embed, defaultTab)
                 end
 
                 widget = embed
@@ -1656,7 +1656,7 @@ local function RenderOptions(contentFrame, options, path, parentFrame)
 end
 
 -- Create main config frame
-function EzUI:CreateConfigFrame()
+function EzroUI:CreateConfigFrame()
     -- Always destroy and recreate the frame to ensure we have latest version
     -- This prevents issues with cached frames from previous reloads
     if ConfigFrame then
@@ -1673,7 +1673,7 @@ function EzUI:CreateConfigFrame()
     end
     
     -- Also clear global reference
-    local globalFrame = _G["EzUI_ConfigFrame"]
+    local globalFrame = _G["EzroUI_ConfigFrame"]
     if globalFrame and globalFrame ~= ConfigFrame then
         globalFrame:Hide()
         globalFrame:ClearAllPoints()
@@ -1683,11 +1683,11 @@ function EzUI:CreateConfigFrame()
             child:Hide()
         end
         globalFrame:SetParent(nil)
-        _G["EzUI_ConfigFrame"] = nil
+        _G["EzroUI_ConfigFrame"] = nil
     end
     
     -- Main frame
-    local frame = CreateFrame("Frame", "EzUI_ConfigFrame", UIParent, "BackdropTemplate")
+    local frame = CreateFrame("Frame", "EzroUI_ConfigFrame", UIParent, "BackdropTemplate")
     frame:SetSize(950, 750)  -- Slightly wider to accommodate sidebar
     frame:SetPoint("CENTER")
     frame:SetFrameStrata("HIGH")
@@ -1714,7 +1714,7 @@ function EzUI:CreateConfigFrame()
     local title = titleBar:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
     StyleFontString(title)
     title:SetPoint("LEFT", titleBar, "LEFT", 10, 0)
-    title:SetText("EzUI - v" .. version)
+    title:SetText("EzroUI - v" .. version)
     title:SetTextColor(THEME.text[1], THEME.text[2], THEME.text[3], 1)
     
     -- Store title reference on frame for debugging
@@ -1768,7 +1768,7 @@ function EzUI:CreateConfigFrame()
     end
     
     -- Create vertical center line for anchor mode
-    local centerLine = CreateFrame("Frame", "EzUI_CenterLine", UIParent, "BackdropTemplate")
+    local centerLine = CreateFrame("Frame", "EzroUI_CenterLine", UIParent, "BackdropTemplate")
     centerLine:SetWidth(2)
     centerLine:SetPoint("TOP", UIParent, "TOP", 0, 0)
     centerLine:SetPoint("BOTTOM", UIParent, "BOTTOM", 0, 0)
@@ -1786,13 +1786,13 @@ function EzUI:CreateConfigFrame()
     
     -- Function to update center line visibility and position
     -- Made globally accessible so other modules can call it
-    function EzUI.UpdateCenterLine()
-        local centerLine = _G["EzUI_CenterLine"]
+    function EzroUI.UpdateCenterLine()
+        local centerLine = _G["EzroUI_CenterLine"]
         if not centerLine then return end
         
-        local unitFramesAnchorsEnabled = EzUI.db.profile.unitFrames and 
-                                         EzUI.db.profile.unitFrames.General and 
-                                         EzUI.db.profile.unitFrames.General.ShowEditModeAnchors
+        local unitFramesAnchorsEnabled = EzroUI.db.profile.unitFrames and 
+                                         EzroUI.db.profile.unitFrames.General and 
+                                         EzroUI.db.profile.unitFrames.General.ShowEditModeAnchors
         
         if unitFramesAnchorsEnabled then
             centerLine:Show()
@@ -1809,40 +1809,40 @@ function EzUI:CreateConfigFrame()
     -- Disable Anchors button (rightmost, positioned before close button)
     -- Controls unit frame, party/raid, and dynamic icon anchors
     local disableAnchorsBtn = CreateTitleButton("Disable Anchors", function()
-        local db = EzUI.db.profile.unitFrames
+        local db = EzroUI.db.profile.unitFrames
         if not db then
             db = {}
-            EzUI.db.profile.unitFrames = db
+            EzroUI.db.profile.unitFrames = db
         end
         if not db.General then db.General = {} end
         db.General.ShowEditModeAnchors = false
 
-        if EzUI.UnitFrames then
-            EzUI.UnitFrames:UpdateEditModeAnchors()
-            EzUI.UnitFrames:HideBossFramesPreview()
+        if EzroUI.UnitFrames then
+            EzroUI.UnitFrames:UpdateEditModeAnchors()
+            EzroUI.UnitFrames:HideBossFramesPreview()
         end
 
-        local NUF = EzUI.PartyFrames
+        local NUF = EzroUI.PartyFrames
         if NUF then
             if NUF.LockFrames then NUF:LockFrames() end
             if NUF.LockRaidFrames then NUF:LockRaidFrames() end
         end
 
         -- Refresh dynamic icon / icon group anchors (works without UnitFrames, e.g. Cooldown Manager)
-        if EzUI.CustomIcons and EzUI.CustomIcons.RefreshAnchorVisibility then
-            EzUI.CustomIcons:RefreshAnchorVisibility()
+        if EzroUI.CustomIcons and EzroUI.CustomIcons.RefreshAnchorVisibility then
+            EzroUI.CustomIcons:RefreshAnchorVisibility()
         end
-        if EzUI.CustomBuffs and EzUI.CustomBuffs.RefreshAnchorVisibility then
-            EzUI.CustomBuffs:RefreshAnchorVisibility()
-        end
-
-        if EzUI.RaidBuffs and EzUI.RaidBuffs.DisableAnchor then
-            EzUI.RaidBuffs:DisableAnchor()
+        if EzroUI.CustomBuffs and EzroUI.CustomBuffs.RefreshAnchorVisibility then
+            EzroUI.CustomBuffs:RefreshAnchorVisibility()
         end
 
-        if EzUI.UpdateCenterLine then EzUI.UpdateCenterLine() end
+        if EzroUI.RaidBuffs and EzroUI.RaidBuffs.DisableAnchor then
+            EzroUI.RaidBuffs:DisableAnchor()
+        end
 
-        print("|cff00ff00[EzUI] Anchors disabled.|r")
+        if EzroUI.UpdateCenterLine then EzroUI.UpdateCenterLine() end
+
+        print("|cff00ff00[EzroUI] Anchors disabled.|r")
     end, "Hide draggable anchors for unit, party, raid, dynamic icons, and custom buffs")
     disableAnchorsBtn:SetPoint("RIGHT", closeBtn, "LEFT", -5, 0)
     disableAnchorsBtn:SetWidth(110)
@@ -1850,40 +1850,40 @@ function EzUI:CreateConfigFrame()
     -- Enable Anchors button
     -- Controls unit frame, party/raid, and dynamic icon anchors
     local enableAnchorsBtn = CreateTitleButton("Enable Anchors", function()
-        local db = EzUI.db.profile.unitFrames
+        local db = EzroUI.db.profile.unitFrames
         if not db then
             db = {}
-            EzUI.db.profile.unitFrames = db
+            EzroUI.db.profile.unitFrames = db
         end
         if not db.General then db.General = {} end
         db.General.ShowEditModeAnchors = true
 
-        if EzUI.UnitFrames then
-            EzUI.UnitFrames:UpdateEditModeAnchors()
-            EzUI.UnitFrames:ShowBossFramesPreview()
+        if EzroUI.UnitFrames then
+            EzroUI.UnitFrames:UpdateEditModeAnchors()
+            EzroUI.UnitFrames:ShowBossFramesPreview()
         end
 
-        local NUF = EzUI.PartyFrames
+        local NUF = EzroUI.PartyFrames
         if NUF then
             if NUF.UnlockFrames then NUF:UnlockFrames() end
             if NUF.UnlockRaidFrames then NUF:UnlockRaidFrames() end
         end
 
         -- Refresh dynamic icon / icon group anchors (works without UnitFrames, e.g. Cooldown Manager)
-        if EzUI.CustomIcons and EzUI.CustomIcons.RefreshAnchorVisibility then
-            EzUI.CustomIcons:RefreshAnchorVisibility()
+        if EzroUI.CustomIcons and EzroUI.CustomIcons.RefreshAnchorVisibility then
+            EzroUI.CustomIcons:RefreshAnchorVisibility()
         end
-        if EzUI.CustomBuffs and EzUI.CustomBuffs.RefreshAnchorVisibility then
-            EzUI.CustomBuffs:RefreshAnchorVisibility()
-        end
-
-        if EzUI.RaidBuffs and EzUI.RaidBuffs.EnableAnchor then
-            EzUI.RaidBuffs:EnableAnchor()
+        if EzroUI.CustomBuffs and EzroUI.CustomBuffs.RefreshAnchorVisibility then
+            EzroUI.CustomBuffs:RefreshAnchorVisibility()
         end
 
-        if EzUI.UpdateCenterLine then EzUI.UpdateCenterLine() end
+        if EzroUI.RaidBuffs and EzroUI.RaidBuffs.EnableAnchor then
+            EzroUI.RaidBuffs:EnableAnchor()
+        end
 
-        print("|cff00ff00[EzUI] Anchors enabled. You can move dynamic icons and icon groups.|r")
+        if EzroUI.UpdateCenterLine then EzroUI.UpdateCenterLine() end
+
+        print("|cff00ff00[EzroUI] Anchors enabled. You can move dynamic icons and icon groups.|r")
     end, "Show draggable anchors for dynamic icons, custom buffs, icon groups, and optionally unit/party/raid frames")
     enableAnchorsBtn:SetPoint("RIGHT", disableAnchorsBtn, "LEFT", -5, 0)
     enableAnchorsBtn:SetWidth(110)
@@ -1897,8 +1897,8 @@ function EzUI:CreateConfigFrame()
             frame:Raise()
         else
             -- Fallback: Open the custom GUI and navigate to the Cooldown Manager tab
-            if EzUI and EzUI.OpenConfigGUI then
-                EzUI:OpenConfigGUI(nil, "viewers")
+            if EzroUI and EzroUI.OpenConfigGUI then
+                EzroUI:OpenConfigGUI(nil, "viewers")
             end
         end
     end, "Open Advanced Cooldown Manager Panel")
@@ -2142,14 +2142,14 @@ function EzUI:CreateConfigFrame()
 end
 
 -- Open config with options
-function EzUI:OpenConfigGUI(options, tabKey)
+function EzroUI:OpenConfigGUI(options, tabKey)
     local frame = self:CreateConfigFrame()
     
     -- Always ensure title is up to date
     if frame then
         local version = C_AddOns.GetAddOnMetadata(ADDON_NAME, "Version") or "Unknown"
         if frame.titleText then
-            frame.titleText:SetText("EzUI - v" .. version)
+            frame.titleText:SetText("EzroUI - v" .. version)
         else
             -- If titleText doesn't exist, find and update it
             local titleBar = frame.titleBar
@@ -2158,8 +2158,8 @@ function EzUI:OpenConfigGUI(options, tabKey)
                 for _, region in ipairs(regions) do
                     if region:IsObjectType("FontString") and region:GetText() then
                         local text = region:GetText()
-                        if text == "EzUI" or text == "EzUI Configuration" or text:match("^EzUI") then
-                            region:SetText("EzUI - v" .. version)
+                        if text == "EzroUI" or text == "EzroUI Configuration" or text:match("^EzroUI") then
+                            region:SetText("EzroUI - v" .. version)
                             frame.titleText = region
                             break
                         end
@@ -2256,7 +2256,7 @@ function EzUI:OpenConfigGUI(options, tabKey)
     -- One final check: ensure title is correct before showing
     if frame and frame.titleText then
         local version = C_AddOns.GetAddOnMetadata(ADDON_NAME, "Version") or "Unknown"
-        frame.titleText:SetText("EzUI - v" .. version)
+        frame.titleText:SetText("EzroUI - v" .. version)
     end
     
     frame:Show()
@@ -2264,9 +2264,9 @@ function EzUI:OpenConfigGUI(options, tabKey)
 end
 
 -- Export
-EzUI.GUI = {
-    CreateConfigFrame = EzUI.CreateConfigFrame,
-    OpenConfigGUI = EzUI.OpenConfigGUI,
+EzroUI.GUI = {
+    CreateConfigFrame = EzroUI.CreateConfigFrame,
+    OpenConfigGUI = EzroUI.OpenConfigGUI,
     Widgets = Widgets,
     THEME = THEME,
 }

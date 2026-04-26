@@ -1,12 +1,12 @@
 ﻿--[[
-    EzUI Unit Frames - Pet Frame Support
+    EzroUI Unit Frames - Pet Frame Support
     Handles pet frames for party and raid units
 ]]
 
 local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
-EzUI.PartyFrames = EzUI.PartyFrames or {}
-local UnitFrames = EzUI.PartyFrames
+local EzroUI = ns.Addon
+EzroUI.PartyFrames = EzroUI.PartyFrames or {}
+local UnitFrames = EzroUI.PartyFrames
 
 -- Cache commonly used API
 local UnitExists = UnitExists
@@ -50,7 +50,7 @@ function UnitFrames:CreatePetFrame(ownerUnit, isRaid)
     
     local db = isRaid and self:GetRaidDB() or self:GetDB()
     
-    local frame = CreateFrame("Button", "EzUIPetFrame_" .. petUnit, UIParent, "SecureUnitButtonTemplate")
+    local frame = CreateFrame("Button", "EzroUIPetFrame_" .. petUnit, UIParent, "SecureUnitButtonTemplate")
     frame:SetAttribute("unit", petUnit)
     frame:SetAttribute("type1", "target")
     frame:SetAttribute("type2", "togglemenu")

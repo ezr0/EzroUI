@@ -1,5 +1,5 @@
 ﻿local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
+local EzroUI = ns.Addon
 local L = ns.L or LibStub("AceLocale-3.0"):GetLocale(ADDON_NAME, true) or {}
 local LSM = LibStub("LibSharedMedia-3.0")
 local buildVersion = select(4, GetBuildInfo())
@@ -167,7 +167,7 @@ local function GetViewerOptions()
 end
 
 local function CreateResourceAssignmentOptions()
-    local classSpecResources = (EzUI.ResourceBars and EzUI.ResourceBars.classSpecResources) or CLASS_SPEC_RESOURCES
+    local classSpecResources = (EzroUI.ResourceBars and EzroUI.ResourceBars.classSpecResources) or CLASS_SPEC_RESOURCES
     if not classSpecResources then
         return {
             type = "group",
@@ -184,7 +184,7 @@ local function CreateResourceAssignmentOptions()
     end
 
     local function GetAssignment(classFile, specID, resource)
-        local assignments = EzUI.db.profile.resourceBarAssignments
+        local assignments = EzroUI.db.profile.resourceBarAssignments
         local classAssignments = assignments and assignments[classFile]
         local specAssignments = classAssignments and classAssignments[specID]
         local resourceKey = GetResourceKey(resource)
@@ -196,23 +196,23 @@ local function CreateResourceAssignmentOptions()
         if assigned == "primary" or assigned == "secondary" or assigned == "hide" then
             return assigned
         end
-        if EzUI.ResourceBars and EzUI.ResourceBars.GetDefaultBarAssignment then
-            return EzUI.ResourceBars.GetDefaultBarAssignment(classFile, specID, resource)
+        if EzroUI.ResourceBars and EzroUI.ResourceBars.GetDefaultBarAssignment then
+            return EzroUI.ResourceBars.GetDefaultBarAssignment(classFile, specID, resource)
         end
         return "primary"
     end
 
     local function SetAssignment(classFile, specID, resource, value)
-        local assignments = EzUI.db.profile.resourceBarAssignments
+        local assignments = EzroUI.db.profile.resourceBarAssignments
         if not assignments then
-            EzUI.db.profile.resourceBarAssignments = {}
-            assignments = EzUI.db.profile.resourceBarAssignments
+            EzroUI.db.profile.resourceBarAssignments = {}
+            assignments = EzroUI.db.profile.resourceBarAssignments
         end
         assignments[classFile] = assignments[classFile] or {}
         assignments[classFile][specID] = assignments[classFile][specID] or {}
         assignments[classFile][specID][GetResourceKey(resource)] = value
-        EzUI:UpdatePowerBar()
-        EzUI:UpdateSecondaryPowerBar()
+        EzroUI:UpdatePowerBar()
+        EzroUI:UpdateSecondaryPowerBar()
     end
 
     local args = {
@@ -324,10 +324,10 @@ local function CreateResourceBarOptions()
                         desc = L["Show your main resource (mana, energy, rage, etc.)"] or "Show your main resource (mana, energy, rage, etc.)",
                         width = "full",
                         order = 2,
-                        get = function() return EzUI.db.profile.powerBar.enabled end,
+                        get = function() return EzroUI.db.profile.powerBar.enabled end,
                         set = function(_, val)
-                            EzUI.db.profile.powerBar.enabled = val
-                            EzUI:UpdatePowerBar()
+                            EzroUI.db.profile.powerBar.enabled = val
+                            EzroUI:UpdatePowerBar()
                         end,
                     },
                     smoothProgress = {
@@ -337,10 +337,10 @@ local function CreateResourceBarOptions()
                         width = "full",
                         order = 3,
                         hidden = function() return buildVersion < 120000 end,
-                        get = function() return EzUI.db.profile.powerBar.smoothProgress end,
+                        get = function() return EzroUI.db.profile.powerBar.smoothProgress end,
                         set = function(_, val)
-                            EzUI.db.profile.powerBar.smoothProgress = val
-                            EzUI:UpdatePowerBar()
+                            EzroUI.db.profile.powerBar.smoothProgress = val
+                            EzroUI:UpdatePowerBar()
                         end,
                     },
                     updateFrequency = {
@@ -352,10 +352,10 @@ local function CreateResourceBarOptions()
                         min = 0.01,
                         max = 0.5,
                         step = 0.01,
-                        get = function() return EzUI.db.profile.powerBar.updateFrequency end,
+                        get = function() return EzroUI.db.profile.powerBar.updateFrequency end,
                         set = function(_, val)
-                            EzUI.db.profile.powerBar.updateFrequency = val
-                            EzUI:UpdatePowerBar()
+                            EzroUI.db.profile.powerBar.updateFrequency = val
+                            EzroUI:UpdatePowerBar()
                         end,
                     },
                     positionHeader = {
@@ -372,8 +372,8 @@ local function CreateResourceBarOptions()
                         values = function()
                             local opts = {}
                             opts["UIParent"] = "Screen (UIParent)"
-                            if EzUI.db.profile.unitFrames and EzUI.db.profile.unitFrames.enabled then
-                                opts["EzUI_Player"] = "Player Frame (Custom)"
+                            if EzroUI.db.profile.unitFrames and EzroUI.db.profile.unitFrames.enabled then
+                                opts["EzroUI_Player"] = "Player Frame (Custom)"
                             end
                             opts["PlayerFrame"] = "Default Player Frame"
                             local viewerOpts = GetViewerOptions()
@@ -382,10 +382,10 @@ local function CreateResourceBarOptions()
                             end
                             return opts
                         end,
-                        get = function() return EzUI.db.profile.powerBar.attachTo end,
+                        get = function() return EzroUI.db.profile.powerBar.attachTo end,
                         set = function(_, val)
-                            EzUI.db.profile.powerBar.attachTo = val
-                            EzUI:UpdatePowerBar()
+                            EzroUI.db.profile.powerBar.attachTo = val
+                            EzroUI:UpdatePowerBar()
                         end,
                     },
                     anchorPoint = {
@@ -399,10 +399,10 @@ local function CreateResourceBarOptions()
                             CENTER = "Center",
                             BOTTOM = "Bottom",
                         },
-                        get = function() return EzUI.db.profile.powerBar.anchorPoint or "CENTER" end,
+                        get = function() return EzroUI.db.profile.powerBar.anchorPoint or "CENTER" end,
                         set = function(_, val)
-                            EzUI.db.profile.powerBar.anchorPoint = val
-                            EzUI:UpdatePowerBar()
+                            EzroUI.db.profile.powerBar.anchorPoint = val
+                            EzroUI:UpdatePowerBar()
                         end,
                     },
                     height = {
@@ -411,10 +411,10 @@ local function CreateResourceBarOptions()
                         order = 12,
                         width = "normal",
                         min = 2, max = 100, step = 1,
-                        get = function() return EzUI.db.profile.powerBar.height end,
+                        get = function() return EzroUI.db.profile.powerBar.height end,
                         set = function(_, val)
-                            EzUI.db.profile.powerBar.height = val
-                            EzUI:UpdatePowerBar()
+                            EzroUI.db.profile.powerBar.height = val
+                            EzroUI:UpdatePowerBar()
                         end,
                     },
                     width = {
@@ -424,10 +424,10 @@ local function CreateResourceBarOptions()
                         order = 13,
                         width = "normal",
                         min = 0, max = 1000, step = 1,
-                        get = function() return EzUI.db.profile.powerBar.width end,
+                        get = function() return EzroUI.db.profile.powerBar.width end,
                         set = function(_, val)
-                            EzUI.db.profile.powerBar.width = val
-                            EzUI:UpdatePowerBar()
+                            EzroUI.db.profile.powerBar.width = val
+                            EzroUI:UpdatePowerBar()
                         end,
                     },
                     offsetY = {
@@ -437,10 +437,10 @@ local function CreateResourceBarOptions()
                         order = 14,
                         width = "full",
                         min = -500, max = 500, step = 1,
-                        get = function() return EzUI.db.profile.powerBar.offsetY end,
+                        get = function() return EzroUI.db.profile.powerBar.offsetY end,
                         set = function(_, val)
-                            EzUI.db.profile.powerBar.offsetY = val
-                            EzUI:UpdatePowerBar()
+                            EzroUI.db.profile.powerBar.offsetY = val
+                            EzroUI:UpdatePowerBar()
                         end,
                     },
                     offsetX = {
@@ -450,10 +450,10 @@ local function CreateResourceBarOptions()
                         order = 15,
                         width = "full",
                         min = -500, max = 500, step = 1,
-                        get = function() return EzUI.db.profile.powerBar.offsetX or 0 end,
+                        get = function() return EzroUI.db.profile.powerBar.offsetX or 0 end,
                         set = function(_, val)
-                            EzUI.db.profile.powerBar.offsetX = val
-                            EzUI:UpdatePowerBar()
+                            EzroUI.db.profile.powerBar.offsetX = val
+                            EzroUI:UpdatePowerBar()
                         end,
                     },
                     
@@ -476,16 +476,16 @@ local function CreateResourceBarOptions()
                             return names
                         end,
                         get = function() 
-                            local override = EzUI.db.profile.powerBar.texture
+                            local override = EzroUI.db.profile.powerBar.texture
                             if override and override ~= "" then
                                 return override
                             end
                             -- Return global texture name when override is nil
-                            return EzUI.db.profile.general.globalTexture or "Ez"
+                            return EzroUI.db.profile.general.globalTexture or "Ez"
                         end,
                         set = function(_, val)
-                            EzUI.db.profile.powerBar.texture = val
-                            EzUI:UpdatePowerBar()
+                            EzroUI.db.profile.powerBar.texture = val
+                            EzroUI:UpdatePowerBar()
                         end,
                     },
                     borderSize = {
@@ -495,10 +495,10 @@ local function CreateResourceBarOptions()
                         order = 22,
                         width = "normal",
                         min = 0, max = 5, step = 1,
-                        get = function() return EzUI.db.profile.powerBar.borderSize end,
+                        get = function() return EzroUI.db.profile.powerBar.borderSize end,
                         set = function(_, val)
-                            EzUI.db.profile.powerBar.borderSize = val
-                            EzUI:UpdatePowerBar()
+                            EzroUI.db.profile.powerBar.borderSize = val
+                            EzroUI:UpdatePowerBar()
                         end,
                     },
                     borderColor = {
@@ -509,15 +509,15 @@ local function CreateResourceBarOptions()
                         width = "normal",
                         hasAlpha = true,
                         get = function()
-                            local c = EzUI.db.profile.powerBar.borderColor
+                            local c = EzroUI.db.profile.powerBar.borderColor
                             if c then
                                 return c[1], c[2], c[3], c[4] or 1
                             end
                             return 0, 0, 0, 1
                         end,
                         set = function(_, r, g, b, a)
-                            EzUI.db.profile.powerBar.borderColor = { r, g, b, a }
-                            EzUI:UpdatePowerBar()
+                            EzroUI.db.profile.powerBar.borderColor = { r, g, b, a }
+                            EzroUI:UpdatePowerBar()
                         end,
                     },
                     
@@ -532,10 +532,10 @@ local function CreateResourceBarOptions()
                         desc = L["Display current resource amount as text"] or "Display current resource amount as text",
                         order = 31,
                         width = "normal",
-                        get = function() return EzUI.db.profile.powerBar.showText end,
+                        get = function() return EzroUI.db.profile.powerBar.showText end,
                         set = function(_, val)
-                            EzUI.db.profile.powerBar.showText = val
-                            EzUI:UpdatePowerBar()
+                            EzroUI.db.profile.powerBar.showText = val
+                            EzroUI:UpdatePowerBar()
                         end,
                     },
                     showManaAsPercent = {
@@ -544,10 +544,10 @@ local function CreateResourceBarOptions()
                         desc = L["Display mana as percentage instead of raw value"] or "Display mana as percentage instead of raw value",
                         order = 32,
                         width = "normal",
-                        get = function() return EzUI.db.profile.powerBar.showManaAsPercent end,
+                        get = function() return EzroUI.db.profile.powerBar.showManaAsPercent end,
                         set = function(_, val)
-                            EzUI.db.profile.powerBar.showManaAsPercent = val
-                            EzUI:UpdatePowerBar()
+                            EzroUI.db.profile.powerBar.showManaAsPercent = val
+                            EzroUI:UpdatePowerBar()
                         end,
                     },
                     showManaPercentDecimal = {
@@ -556,10 +556,10 @@ local function CreateResourceBarOptions()
                         desc = "Show one decimal place in mana percentage (94.3% vs 94%)",
                         order = 32.5,
                         width = "normal",
-                        get = function() return EzUI.db.profile.powerBar.showManaPercentDecimal end,
+                        get = function() return EzroUI.db.profile.powerBar.showManaPercentDecimal end,
                         set = function(_, val)
-                            EzUI.db.profile.powerBar.showManaPercentDecimal = val
-                            EzUI:UpdatePowerBar()
+                            EzroUI.db.profile.powerBar.showManaPercentDecimal = val
+                            EzroUI:UpdatePowerBar()
                         end,
                     },
                     textFormat = {
@@ -575,11 +575,11 @@ local function CreateResourceBarOptions()
                             ["Percent%"] = "Percent%",
                         },
                         get = function()
-                            return EzUI.db.profile.powerBar.textFormat or "Current"
+                            return EzroUI.db.profile.powerBar.textFormat or "Current"
                         end,
                         set = function(_, val)
-                            EzUI.db.profile.powerBar.textFormat = val
-                            EzUI:UpdatePowerBar()
+                            EzroUI.db.profile.powerBar.textFormat = val
+                            EzroUI:UpdatePowerBar()
                         end,
                     },
                     textPrecision = {
@@ -594,11 +594,11 @@ local function CreateResourceBarOptions()
                             ["0.00"] = "0.00",
                         },
                         get = function()
-                            return EzUI.db.profile.powerBar.textPrecision or "0"
+                            return EzroUI.db.profile.powerBar.textPrecision or "0"
                         end,
                         set = function(_, val)
-                            EzUI.db.profile.powerBar.textPrecision = val
-                            EzUI:UpdatePowerBar()
+                            EzroUI.db.profile.powerBar.textPrecision = val
+                            EzroUI:UpdatePowerBar()
                         end,
                     },
                     fragmentedPowerBarTextPrecision = {
@@ -613,11 +613,11 @@ local function CreateResourceBarOptions()
                             ["0.00"] = "0.00",
                         },
                         get = function()
-                            return EzUI.db.profile.powerBar.fragmentedPowerBarTextPrecision or "0.0"
+                            return EzroUI.db.profile.powerBar.fragmentedPowerBarTextPrecision or "0.0"
                         end,
                         set = function(_, val)
-                            EzUI.db.profile.powerBar.fragmentedPowerBarTextPrecision = val
-                            EzUI:UpdatePowerBar()
+                            EzroUI.db.profile.powerBar.fragmentedPowerBarTextPrecision = val
+                            EzroUI:UpdatePowerBar()
                         end,
                     },
                     chargedColor = {
@@ -628,15 +628,15 @@ local function CreateResourceBarOptions()
                         width = "normal",
                         hasAlpha = true,
                         get = function()
-                            local c = EzUI.db.profile.powerBar.chargedColor
+                            local c = EzroUI.db.profile.powerBar.chargedColor
                             if c then
                                 return c[1], c[2], c[3], c[4] or 1
                             end
                             return 0.22, 0.62, 1.0, 0.8
                         end,
                         set = function(_, r, g, b, a)
-                            EzUI.db.profile.powerBar.chargedColor = { r, g, b, a }
-                            EzUI:UpdatePowerBar()
+                            EzroUI.db.profile.powerBar.chargedColor = { r, g, b, a }
+                            EzroUI:UpdatePowerBar()
                         end,
                     },
                     showTicks = {
@@ -645,10 +645,10 @@ local function CreateResourceBarOptions()
                         desc = L["Show segment markers for combo points, chi, etc."] or "Show segment markers for combo points, chi, etc.",
                         order = 33,
                         width = "normal",
-                        get = function() return EzUI.db.profile.powerBar.showTicks end,
+                        get = function() return EzroUI.db.profile.powerBar.showTicks end,
                         set = function(_, val)
-                            EzUI.db.profile.powerBar.showTicks = val
-                            EzUI:UpdatePowerBar()
+                            EzroUI.db.profile.powerBar.showTicks = val
+                            EzroUI:UpdatePowerBar()
                         end,
                     },
                     fragmentTimerHeader = {
@@ -662,10 +662,10 @@ local function CreateResourceBarOptions()
                         desc = "Show cooldown timers on fragmented resources like runes or essence",
                         order = 40,
                         width = "normal",
-                        get = function() return EzUI.db.profile.powerBar.showFragmentedPowerBarText end,
+                        get = function() return EzroUI.db.profile.powerBar.showFragmentedPowerBarText end,
                         set = function(_, val)
-                            EzUI.db.profile.powerBar.showFragmentedPowerBarText = val
-                            EzUI:UpdatePowerBar()
+                            EzroUI.db.profile.powerBar.showFragmentedPowerBarText = val
+                            EzroUI:UpdatePowerBar()
                         end,
                     },
                     runeTimerTextSize = {
@@ -675,10 +675,10 @@ local function CreateResourceBarOptions()
                         order = 41,
                         width = "normal",
                         min = 6, max = 24, step = 1,
-                        get = function() return EzUI.db.profile.powerBar.runeTimerTextSize end,
+                        get = function() return EzroUI.db.profile.powerBar.runeTimerTextSize end,
                         set = function(_, val)
-                            EzUI.db.profile.powerBar.runeTimerTextSize = val
-                            EzUI:UpdatePowerBar()
+                            EzroUI.db.profile.powerBar.runeTimerTextSize = val
+                            EzroUI:UpdatePowerBar()
                         end,
                     },
                     runeTimerTextX = {
@@ -688,10 +688,10 @@ local function CreateResourceBarOptions()
                         order = 42,
                         width = "normal",
                         min = -50, max = 50, step = 1,
-                        get = function() return EzUI.db.profile.powerBar.runeTimerTextX end,
+                        get = function() return EzroUI.db.profile.powerBar.runeTimerTextX end,
                         set = function(_, val)
-                            EzUI.db.profile.powerBar.runeTimerTextX = val
-                            EzUI:UpdatePowerBar()
+                            EzroUI.db.profile.powerBar.runeTimerTextX = val
+                            EzroUI:UpdatePowerBar()
                         end,
                     },
                     runeTimerTextY = {
@@ -701,10 +701,10 @@ local function CreateResourceBarOptions()
                         order = 43,
                         width = "normal",
                         min = -50, max = 50, step = 1,
-                        get = function() return EzUI.db.profile.powerBar.runeTimerTextY end,
+                        get = function() return EzroUI.db.profile.powerBar.runeTimerTextY end,
                         set = function(_, val)
-                            EzUI.db.profile.powerBar.runeTimerTextY = val
-                            EzUI:UpdatePowerBar()
+                            EzroUI.db.profile.powerBar.runeTimerTextY = val
+                            EzroUI:UpdatePowerBar()
                         end,
                     },
                     hideWhenMana = {
@@ -713,13 +713,13 @@ local function CreateResourceBarOptions()
                         desc = "Hide the resource bar completely when current power is mana (prevents errors during druid shapeshifting)",
                         order = 33.5,
                         width = "normal",
-                        get = function() return EzUI.db.profile.powerBar.hideWhenMana end,
+                        get = function() return EzroUI.db.profile.powerBar.hideWhenMana end,
                         set = function(_, val)
                             if InCombatLockdown() then
                                 return
                             end
-                            EzUI.db.profile.powerBar.hideWhenMana = val
-                            EzUI:UpdatePowerBar()
+                            EzroUI.db.profile.powerBar.hideWhenMana = val
+                            EzroUI:UpdatePowerBar()
                         end,
                     },
                     hideBarShowText = {
@@ -728,10 +728,10 @@ local function CreateResourceBarOptions()
                         desc = "Hide the resource bar visual but keep the text visible",
                         order = 33.6,
                         width = "normal",
-                        get = function() return EzUI.db.profile.powerBar.hideBarShowText end,
+                        get = function() return EzroUI.db.profile.powerBar.hideBarShowText end,
                         set = function(_, val)
-                            EzUI.db.profile.powerBar.hideBarShowText = val
-                            EzUI:UpdatePowerBar()
+                            EzroUI.db.profile.powerBar.hideBarShowText = val
+                            EzroUI:UpdatePowerBar()
                         end,
                     },
                     textSize = {
@@ -740,10 +740,10 @@ local function CreateResourceBarOptions()
                         order = 34,
                         width = "normal",
                         min = 6, max = 24, step = 1,
-                        get = function() return EzUI.db.profile.powerBar.textSize end,
+                        get = function() return EzroUI.db.profile.powerBar.textSize end,
                         set = function(_, val)
-                            EzUI.db.profile.powerBar.textSize = val
-                            EzUI:UpdatePowerBar()
+                            EzroUI.db.profile.powerBar.textSize = val
+                            EzroUI:UpdatePowerBar()
                         end,
                     },
                     textX = {
@@ -752,10 +752,10 @@ local function CreateResourceBarOptions()
                         order = 35,
                         width = "normal",
                         min = -50, max = 50, step = 1,
-                        get = function() return EzUI.db.profile.powerBar.textX end,
+                        get = function() return EzroUI.db.profile.powerBar.textX end,
                         set = function(_, val)
-                            EzUI.db.profile.powerBar.textX = val
-                            EzUI:UpdatePowerBar()
+                            EzroUI.db.profile.powerBar.textX = val
+                            EzroUI:UpdatePowerBar()
                         end,
                     },
                     textY = {
@@ -764,10 +764,10 @@ local function CreateResourceBarOptions()
                         order = 36,
                         width = "normal",
                         min = -50, max = 50, step = 1,
-                        get = function() return EzUI.db.profile.powerBar.textY end,
+                        get = function() return EzroUI.db.profile.powerBar.textY end,
                         set = function(_, val)
-                            EzUI.db.profile.powerBar.textY = val
-                            EzUI:UpdatePowerBar()
+                            EzroUI.db.profile.powerBar.textY = val
+                            EzroUI:UpdatePowerBar()
                         end,
                     },
                 },
@@ -789,10 +789,10 @@ local function CreateResourceBarOptions()
                         desc = "Show your secondary resource (combo points, chi, runes, etc.)",
                         width = "full",
                         order = 2,
-                        get = function() return EzUI.db.profile.secondaryPowerBar.enabled end,
+                        get = function() return EzroUI.db.profile.secondaryPowerBar.enabled end,
                         set = function(_, val)
-                            EzUI.db.profile.secondaryPowerBar.enabled = val
-                            EzUI:UpdateSecondaryPowerBar()
+                            EzroUI.db.profile.secondaryPowerBar.enabled = val
+                            EzroUI:UpdateSecondaryPowerBar()
                         end,
                     },
                     smoothProgress = {
@@ -802,10 +802,10 @@ local function CreateResourceBarOptions()
                         width = "full",
                         order = 3,
                         hidden = function() return buildVersion < 120000 end,
-                        get = function() return EzUI.db.profile.secondaryPowerBar.smoothProgress end,
+                        get = function() return EzroUI.db.profile.secondaryPowerBar.smoothProgress end,
                         set = function(_, val)
-                            EzUI.db.profile.secondaryPowerBar.smoothProgress = val
-                            EzUI:UpdateSecondaryPowerBar()
+                            EzroUI.db.profile.secondaryPowerBar.smoothProgress = val
+                            EzroUI:UpdateSecondaryPowerBar()
                         end,
                     },
                     updateFrequency = {
@@ -817,10 +817,10 @@ local function CreateResourceBarOptions()
                         min = 0.01,
                         max = 0.5,
                         step = 0.01,
-                        get = function() return EzUI.db.profile.secondaryPowerBar.updateFrequency end,
+                        get = function() return EzroUI.db.profile.secondaryPowerBar.updateFrequency end,
                         set = function(_, val)
-                            EzUI.db.profile.secondaryPowerBar.updateFrequency = val
-                            EzUI:UpdateSecondaryPowerBar()
+                            EzroUI.db.profile.secondaryPowerBar.updateFrequency = val
+                            EzroUI:UpdateSecondaryPowerBar()
                         end,
                     },
                     positionHeader = {
@@ -837,8 +837,8 @@ local function CreateResourceBarOptions()
                         values = function()
                             local opts = {}
                             opts["UIParent"] = "Screen (UIParent)"
-                            if EzUI.db.profile.unitFrames and EzUI.db.profile.unitFrames.enabled then
-                                opts["EzUI_Player"] = "Player Frame (Custom)"
+                            if EzroUI.db.profile.unitFrames and EzroUI.db.profile.unitFrames.enabled then
+                                opts["EzroUI_Player"] = "Player Frame (Custom)"
                             end
                             opts["PlayerFrame"] = "Default Player Frame"
                             local viewerOpts = GetViewerOptions()
@@ -847,10 +847,10 @@ local function CreateResourceBarOptions()
                             end
                             return opts
                         end,
-                        get = function() return EzUI.db.profile.secondaryPowerBar.attachTo end,
+                        get = function() return EzroUI.db.profile.secondaryPowerBar.attachTo end,
                         set = function(_, val)
-                            EzUI.db.profile.secondaryPowerBar.attachTo = val
-                            EzUI:UpdateSecondaryPowerBar()
+                            EzroUI.db.profile.secondaryPowerBar.attachTo = val
+                            EzroUI:UpdateSecondaryPowerBar()
                         end,
                     },
                     anchorPoint = {
@@ -864,10 +864,10 @@ local function CreateResourceBarOptions()
                             CENTER = "Center",
                             BOTTOM = "Bottom",
                         },
-                        get = function() return EzUI.db.profile.secondaryPowerBar.anchorPoint or "CENTER" end,
+                        get = function() return EzroUI.db.profile.secondaryPowerBar.anchorPoint or "CENTER" end,
                         set = function(_, val)
-                            EzUI.db.profile.secondaryPowerBar.anchorPoint = val
-                            EzUI:UpdateSecondaryPowerBar()
+                            EzroUI.db.profile.secondaryPowerBar.anchorPoint = val
+                            EzroUI:UpdateSecondaryPowerBar()
                         end,
                     },
                     height = {
@@ -876,10 +876,10 @@ local function CreateResourceBarOptions()
                         order = 12,
                         width = "normal",
                         min = 2, max = 30, step = 1,
-                        get = function() return EzUI.db.profile.secondaryPowerBar.height end,
+                        get = function() return EzroUI.db.profile.secondaryPowerBar.height end,
                         set = function(_, val)
-                            EzUI.db.profile.secondaryPowerBar.height = val
-                            EzUI:UpdateSecondaryPowerBar()
+                            EzroUI.db.profile.secondaryPowerBar.height = val
+                            EzroUI:UpdateSecondaryPowerBar()
                         end,
                     },
                     width = {
@@ -889,10 +889,10 @@ local function CreateResourceBarOptions()
                         order = 13,
                         width = "normal",
                         min = 0, max = 500, step = 1,
-                        get = function() return EzUI.db.profile.secondaryPowerBar.width end,
+                        get = function() return EzroUI.db.profile.secondaryPowerBar.width end,
                         set = function(_, val)
-                            EzUI.db.profile.secondaryPowerBar.width = val
-                            EzUI:UpdateSecondaryPowerBar()
+                            EzroUI.db.profile.secondaryPowerBar.width = val
+                            EzroUI:UpdateSecondaryPowerBar()
                         end,
                     },
                     offsetY = {
@@ -902,10 +902,10 @@ local function CreateResourceBarOptions()
                         order = 14,
                         width = "full",
                         min = -500, max = 500, step = 1,
-                        get = function() return EzUI.db.profile.secondaryPowerBar.offsetY end,
+                        get = function() return EzroUI.db.profile.secondaryPowerBar.offsetY end,
                         set = function(_, val)
-                            EzUI.db.profile.secondaryPowerBar.offsetY = val
-                            EzUI:UpdateSecondaryPowerBar()
+                            EzroUI.db.profile.secondaryPowerBar.offsetY = val
+                            EzroUI:UpdateSecondaryPowerBar()
                         end,
                     },
                     offsetX = {
@@ -915,10 +915,10 @@ local function CreateResourceBarOptions()
                         order = 15,
                         width = "full",
                         min = -500, max = 500, step = 1,
-                        get = function() return EzUI.db.profile.secondaryPowerBar.offsetX or 0 end,
+                        get = function() return EzroUI.db.profile.secondaryPowerBar.offsetX or 0 end,
                         set = function(_, val)
-                            EzUI.db.profile.secondaryPowerBar.offsetX = val
-                            EzUI:UpdateSecondaryPowerBar()
+                            EzroUI.db.profile.secondaryPowerBar.offsetX = val
+                            EzroUI:UpdateSecondaryPowerBar()
                         end,
                     },
                     
@@ -941,16 +941,16 @@ local function CreateResourceBarOptions()
                             return names
                         end,
                         get = function() 
-                            local override = EzUI.db.profile.secondaryPowerBar.texture
+                            local override = EzroUI.db.profile.secondaryPowerBar.texture
                             if override and override ~= "" then
                                 return override
                             end
                             -- Return global texture name when override is nil
-                            return EzUI.db.profile.general.globalTexture or "Ez"
+                            return EzroUI.db.profile.general.globalTexture or "Ez"
                         end,
                         set = function(_, val)
-                            EzUI.db.profile.secondaryPowerBar.texture = val
-                            EzUI:UpdateSecondaryPowerBar()
+                            EzroUI.db.profile.secondaryPowerBar.texture = val
+                            EzroUI:UpdateSecondaryPowerBar()
                         end,
                     },
                     borderSize = {
@@ -960,10 +960,10 @@ local function CreateResourceBarOptions()
                         order = 22,
                         width = "normal",
                         min = 0, max = 5, step = 1,
-                        get = function() return EzUI.db.profile.secondaryPowerBar.borderSize end,
+                        get = function() return EzroUI.db.profile.secondaryPowerBar.borderSize end,
                         set = function(_, val)
-                            EzUI.db.profile.secondaryPowerBar.borderSize = val
-                            EzUI:UpdateSecondaryPowerBar()
+                            EzroUI.db.profile.secondaryPowerBar.borderSize = val
+                            EzroUI:UpdateSecondaryPowerBar()
                         end,
                     },
                     borderColor = {
@@ -974,15 +974,15 @@ local function CreateResourceBarOptions()
                         width = "normal",
                         hasAlpha = true,
                         get = function()
-                            local c = EzUI.db.profile.secondaryPowerBar.borderColor
+                            local c = EzroUI.db.profile.secondaryPowerBar.borderColor
                             if c then
                                 return c[1], c[2], c[3], c[4] or 1
                             end
                             return 0, 0, 0, 1
                         end,
                         set = function(_, r, g, b, a)
-                            EzUI.db.profile.secondaryPowerBar.borderColor = { r, g, b, a }
-                            EzUI:UpdateSecondaryPowerBar()
+                            EzroUI.db.profile.secondaryPowerBar.borderColor = { r, g, b, a }
+                            EzroUI:UpdateSecondaryPowerBar()
                         end,
                     },
                     
@@ -997,10 +997,10 @@ local function CreateResourceBarOptions()
                         desc = "Display current resource amount as text",
                         order = 31,
                         width = "normal",
-                        get = function() return EzUI.db.profile.secondaryPowerBar.showText end,
+                        get = function() return EzroUI.db.profile.secondaryPowerBar.showText end,
                         set = function(_, val)
-                            EzUI.db.profile.secondaryPowerBar.showText = val
-                            EzUI:UpdateSecondaryPowerBar()
+                            EzroUI.db.profile.secondaryPowerBar.showText = val
+                            EzroUI:UpdateSecondaryPowerBar()
                         end,
                     },
                     showManaAsPercent = {
@@ -1009,10 +1009,10 @@ local function CreateResourceBarOptions()
                         desc = "Display mana as percentage instead of raw value for mana-based secondary resources",
                         order = 31.5,
                         width = "normal",
-                        get = function() return EzUI.db.profile.secondaryPowerBar.showManaAsPercent end,
+                        get = function() return EzroUI.db.profile.secondaryPowerBar.showManaAsPercent end,
                         set = function(_, val)
-                            EzUI.db.profile.secondaryPowerBar.showManaAsPercent = val
-                            EzUI:UpdateSecondaryPowerBar()
+                            EzroUI.db.profile.secondaryPowerBar.showManaAsPercent = val
+                            EzroUI:UpdateSecondaryPowerBar()
                         end,
                     },
                     showManaPercentDecimal = {
@@ -1021,10 +1021,10 @@ local function CreateResourceBarOptions()
                         desc = "Show one decimal place in mana percentage (94.3% vs 94%)",
                         order = 31.6,
                         width = "normal",
-                        get = function() return EzUI.db.profile.secondaryPowerBar.showManaPercentDecimal end,
+                        get = function() return EzroUI.db.profile.secondaryPowerBar.showManaPercentDecimal end,
                         set = function(_, val)
-                            EzUI.db.profile.secondaryPowerBar.showManaPercentDecimal = val
-                            EzUI:UpdateSecondaryPowerBar()
+                            EzroUI.db.profile.secondaryPowerBar.showManaPercentDecimal = val
+                            EzroUI:UpdateSecondaryPowerBar()
                         end,
                     },
                     textFormat = {
@@ -1040,11 +1040,11 @@ local function CreateResourceBarOptions()
                             ["Percent%"] = "Percent%",
                         },
                         get = function()
-                            return EzUI.db.profile.secondaryPowerBar.textFormat or "Current"
+                            return EzroUI.db.profile.secondaryPowerBar.textFormat or "Current"
                         end,
                         set = function(_, val)
-                            EzUI.db.profile.secondaryPowerBar.textFormat = val
-                            EzUI:UpdateSecondaryPowerBar()
+                            EzroUI.db.profile.secondaryPowerBar.textFormat = val
+                            EzroUI:UpdateSecondaryPowerBar()
                         end,
                     },
                     textPrecision = {
@@ -1059,11 +1059,11 @@ local function CreateResourceBarOptions()
                             ["0.00"] = "0.00",
                         },
                         get = function()
-                            return EzUI.db.profile.secondaryPowerBar.textPrecision or "0"
+                            return EzroUI.db.profile.secondaryPowerBar.textPrecision or "0"
                         end,
                         set = function(_, val)
-                            EzUI.db.profile.secondaryPowerBar.textPrecision = val
-                            EzUI:UpdateSecondaryPowerBar()
+                            EzroUI.db.profile.secondaryPowerBar.textPrecision = val
+                            EzroUI:UpdateSecondaryPowerBar()
                         end,
                     },
                     fragmentedPowerBarTextPrecision = {
@@ -1078,11 +1078,11 @@ local function CreateResourceBarOptions()
                             ["0.00"] = "0.00",
                         },
                         get = function()
-                            return EzUI.db.profile.secondaryPowerBar.fragmentedPowerBarTextPrecision or "0.0"
+                            return EzroUI.db.profile.secondaryPowerBar.fragmentedPowerBarTextPrecision or "0.0"
                         end,
                         set = function(_, val)
-                            EzUI.db.profile.secondaryPowerBar.fragmentedPowerBarTextPrecision = val
-                            EzUI:UpdateSecondaryPowerBar()
+                            EzroUI.db.profile.secondaryPowerBar.fragmentedPowerBarTextPrecision = val
+                            EzroUI:UpdateSecondaryPowerBar()
                         end,
                     },
                     chargedColor = {
@@ -1093,15 +1093,15 @@ local function CreateResourceBarOptions()
                         width = "normal",
                         hasAlpha = true,
                         get = function()
-                            local c = EzUI.db.profile.secondaryPowerBar.chargedColor
+                            local c = EzroUI.db.profile.secondaryPowerBar.chargedColor
                             if c then
                                 return c[1], c[2], c[3], c[4] or 1
                             end
                             return 0.22, 0.62, 1.0, 0.8
                         end,
                         set = function(_, r, g, b, a)
-                            EzUI.db.profile.secondaryPowerBar.chargedColor = { r, g, b, a }
-                            EzUI:UpdateSecondaryPowerBar()
+                            EzroUI.db.profile.secondaryPowerBar.chargedColor = { r, g, b, a }
+                            EzroUI:UpdateSecondaryPowerBar()
                         end,
                     },
                     showTicks = {
@@ -1110,10 +1110,10 @@ local function CreateResourceBarOptions()
                         desc = "Show segment markers between resources",
                         order = 32,
                         width = "normal",
-                        get = function() return EzUI.db.profile.secondaryPowerBar.showTicks end,
+                        get = function() return EzroUI.db.profile.secondaryPowerBar.showTicks end,
                         set = function(_, val)
-                            EzUI.db.profile.secondaryPowerBar.showTicks = val
-                            EzUI:UpdateSecondaryPowerBar()
+                            EzroUI.db.profile.secondaryPowerBar.showTicks = val
+                            EzroUI:UpdateSecondaryPowerBar()
                         end,
                     },
                     hideWhenMana = {
@@ -1122,13 +1122,13 @@ local function CreateResourceBarOptions()
                         desc = "Hide the secondary bar entirely when the current power is mana",
                         order = 32.3,
                         width = "normal",
-                        get = function() return EzUI.db.profile.secondaryPowerBar.hideWhenMana end,
+                        get = function() return EzroUI.db.profile.secondaryPowerBar.hideWhenMana end,
                         set = function(_, val)
                             if InCombatLockdown() then
                                 return
                             end
-                            EzUI.db.profile.secondaryPowerBar.hideWhenMana = val
-                            EzUI:UpdateSecondaryPowerBar()
+                            EzroUI.db.profile.secondaryPowerBar.hideWhenMana = val
+                            EzroUI:UpdateSecondaryPowerBar()
                         end,
                     },
                     hideBarShowText = {
@@ -1137,10 +1137,10 @@ local function CreateResourceBarOptions()
                         desc = "Hide the resource bar visual but keep the text visible",
                         order = 32.5,
                         width = "normal",
-                        get = function() return EzUI.db.profile.secondaryPowerBar.hideBarShowText end,
+                        get = function() return EzroUI.db.profile.secondaryPowerBar.hideBarShowText end,
                         set = function(_, val)
-                            EzUI.db.profile.secondaryPowerBar.hideBarShowText = val
-                            EzUI:UpdateSecondaryPowerBar()
+                            EzroUI.db.profile.secondaryPowerBar.hideBarShowText = val
+                            EzroUI:UpdateSecondaryPowerBar()
                         end,
                     },
                     textSize = {
@@ -1149,10 +1149,10 @@ local function CreateResourceBarOptions()
                         order = 33,
                         width = "normal",
                         min = 6, max = 24, step = 1,
-                        get = function() return EzUI.db.profile.secondaryPowerBar.textSize end,
+                        get = function() return EzroUI.db.profile.secondaryPowerBar.textSize end,
                         set = function(_, val)
-                            EzUI.db.profile.secondaryPowerBar.textSize = val
-                            EzUI:UpdateSecondaryPowerBar()
+                            EzroUI.db.profile.secondaryPowerBar.textSize = val
+                            EzroUI:UpdateSecondaryPowerBar()
                         end,
                     },
                     textX = {
@@ -1161,10 +1161,10 @@ local function CreateResourceBarOptions()
                         order = 34,
                         width = "normal",
                         min = -50, max = 50, step = 1,
-                        get = function() return EzUI.db.profile.secondaryPowerBar.textX end,
+                        get = function() return EzroUI.db.profile.secondaryPowerBar.textX end,
                         set = function(_, val)
-                            EzUI.db.profile.secondaryPowerBar.textX = val
-                            EzUI:UpdateSecondaryPowerBar()
+                            EzroUI.db.profile.secondaryPowerBar.textX = val
+                            EzroUI:UpdateSecondaryPowerBar()
                         end,
                     },
                     textY = {
@@ -1173,10 +1173,10 @@ local function CreateResourceBarOptions()
                         order = 35,
                         width = "normal",
                         min = -50, max = 50, step = 1,
-                        get = function() return EzUI.db.profile.secondaryPowerBar.textY end,
+                        get = function() return EzroUI.db.profile.secondaryPowerBar.textY end,
                         set = function(_, val)
-                            EzUI.db.profile.secondaryPowerBar.textY = val
-                            EzUI:UpdateSecondaryPowerBar()
+                            EzroUI.db.profile.secondaryPowerBar.textY = val
+                            EzroUI:UpdateSecondaryPowerBar()
                         end,
                     },
                     
@@ -1191,10 +1191,10 @@ local function CreateResourceBarOptions()
                         desc = "Show cooldown timers on fragmented resources like runes or essence",
                         order = 40,
                         width = "normal",
-                        get = function() return EzUI.db.profile.secondaryPowerBar.showFragmentedPowerBarText end,
+                        get = function() return EzroUI.db.profile.secondaryPowerBar.showFragmentedPowerBarText end,
                         set = function(_, val)
-                            EzUI.db.profile.secondaryPowerBar.showFragmentedPowerBarText = val
-                            EzUI:UpdateSecondaryPowerBar()
+                            EzroUI.db.profile.secondaryPowerBar.showFragmentedPowerBarText = val
+                            EzroUI:UpdateSecondaryPowerBar()
                         end,
                     },
                     runeTimerTextSize = {
@@ -1204,10 +1204,10 @@ local function CreateResourceBarOptions()
                         order = 41,
                         width = "normal",
                         min = 6, max = 24, step = 1,
-                        get = function() return EzUI.db.profile.secondaryPowerBar.runeTimerTextSize end,
+                        get = function() return EzroUI.db.profile.secondaryPowerBar.runeTimerTextSize end,
                         set = function(_, val)
-                            EzUI.db.profile.secondaryPowerBar.runeTimerTextSize = val
-                            EzUI:UpdateSecondaryPowerBar()
+                            EzroUI.db.profile.secondaryPowerBar.runeTimerTextSize = val
+                            EzroUI:UpdateSecondaryPowerBar()
                         end,
                     },
                     runeTimerTextX = {
@@ -1217,10 +1217,10 @@ local function CreateResourceBarOptions()
                         order = 42,
                         width = "normal",
                         min = -50, max = 50, step = 1,
-                        get = function() return EzUI.db.profile.secondaryPowerBar.runeTimerTextX end,
+                        get = function() return EzroUI.db.profile.secondaryPowerBar.runeTimerTextX end,
                         set = function(_, val)
-                            EzUI.db.profile.secondaryPowerBar.runeTimerTextX = val
-                            EzUI:UpdateSecondaryPowerBar()
+                            EzroUI.db.profile.secondaryPowerBar.runeTimerTextX = val
+                            EzroUI:UpdateSecondaryPowerBar()
                         end,
                     },
                     runeTimerTextY = {
@@ -1230,10 +1230,10 @@ local function CreateResourceBarOptions()
                         order = 43,
                         width = "normal",
                         min = -50, max = 50, step = 1,
-                        get = function() return EzUI.db.profile.secondaryPowerBar.runeTimerTextY end,
+                        get = function() return EzroUI.db.profile.secondaryPowerBar.runeTimerTextY end,
                         set = function(_, val)
-                            EzUI.db.profile.secondaryPowerBar.runeTimerTextY = val
-                            EzUI:UpdateSecondaryPowerBar()
+                            EzroUI.db.profile.secondaryPowerBar.runeTimerTextY = val
+                            EzroUI:UpdateSecondaryPowerBar()
                         end,
                     },
                 },
@@ -1249,11 +1249,11 @@ local function CreateResourceBarOptions()
                         desc = "Use your class color for resource bars instead of power type colors",
                         width = "full",
                         order = 1,
-                        get = function() return EzUI.db.profile.powerTypeColors.useClassColor end,
+                        get = function() return EzroUI.db.profile.powerTypeColors.useClassColor end,
                         set = function(_, val)
-                            EzUI.db.profile.powerTypeColors.useClassColor = val
-                            EzUI:UpdatePowerBar()
-                            EzUI:UpdateSecondaryPowerBar()
+                            EzroUI.db.profile.powerTypeColors.useClassColor = val
+                            EzroUI:UpdatePowerBar()
+                            EzroUI:UpdateSecondaryPowerBar()
                         end,
                     },
                     backgroundHeader = {
@@ -1269,15 +1269,15 @@ local function CreateResourceBarOptions()
                         width = "normal",
                         hasAlpha = true,
                         get = function()
-                            local c = EzUI.db.profile.powerBar.bgColor
+                            local c = EzroUI.db.profile.powerBar.bgColor
                             if c then
                                 return c[1], c[2], c[3], c[4] or 1
                             end
                             return 0.15, 0.15, 0.15, 1
                         end,
                         set = function(_, r, g, b, a)
-                            EzUI.db.profile.powerBar.bgColor = { r, g, b, a }
-                            EzUI:UpdatePowerBar()
+                            EzroUI.db.profile.powerBar.bgColor = { r, g, b, a }
+                            EzroUI:UpdatePowerBar()
                         end,
                     },
                     secondaryBgColor = {
@@ -1288,15 +1288,15 @@ local function CreateResourceBarOptions()
                         width = "normal",
                         hasAlpha = true,
                         get = function()
-                            local c = EzUI.db.profile.secondaryPowerBar.bgColor
+                            local c = EzroUI.db.profile.secondaryPowerBar.bgColor
                             if c then
                                 return c[1], c[2], c[3], c[4] or 1
                             end
                             return 0.15, 0.15, 0.15, 1
                         end,
                         set = function(_, r, g, b, a)
-                            EzUI.db.profile.secondaryPowerBar.bgColor = { r, g, b, a }
-                            EzUI:UpdateSecondaryPowerBar()
+                            EzroUI.db.profile.secondaryPowerBar.bgColor = { r, g, b, a }
+                            EzroUI:UpdateSecondaryPowerBar()
                         end,
                     },
                     primaryHeader = {
@@ -1312,15 +1312,15 @@ local function CreateResourceBarOptions()
                         width = "normal",
                         hasAlpha = true,
                         get = function()
-                            local c = EzUI.db.profile.powerTypeColors.colors[Enum.PowerType.Mana]
+                            local c = EzroUI.db.profile.powerTypeColors.colors[Enum.PowerType.Mana]
                             if c then
                                 return c[1], c[2], c[3], c[4] or 1
                             end
                             return 0.00, 0.00, 1.00, 1.0
                         end,
                         set = function(_, r, g, b, a)
-                            EzUI.db.profile.powerTypeColors.colors[Enum.PowerType.Mana] = { r, g, b, a }
-                            EzUI:UpdatePowerBar()
+                            EzroUI.db.profile.powerTypeColors.colors[Enum.PowerType.Mana] = { r, g, b, a }
+                            EzroUI:UpdatePowerBar()
                         end,
                     },
                     rageColor = {
@@ -1331,15 +1331,15 @@ local function CreateResourceBarOptions()
                         width = "normal",
                         hasAlpha = true,
                         get = function()
-                            local c = EzUI.db.profile.powerTypeColors.colors[Enum.PowerType.Rage]
+                            local c = EzroUI.db.profile.powerTypeColors.colors[Enum.PowerType.Rage]
                             if c then
                                 return c[1], c[2], c[3], c[4] or 1
                             end
                             return 1.00, 0.00, 0.00, 1.0
                         end,
                         set = function(_, r, g, b, a)
-                            EzUI.db.profile.powerTypeColors.colors[Enum.PowerType.Rage] = { r, g, b, a }
-                            EzUI:UpdatePowerBar()
+                            EzroUI.db.profile.powerTypeColors.colors[Enum.PowerType.Rage] = { r, g, b, a }
+                            EzroUI:UpdatePowerBar()
                         end,
                     },
                     focusColor = {
@@ -1350,15 +1350,15 @@ local function CreateResourceBarOptions()
                         width = "normal",
                         hasAlpha = true,
                         get = function()
-                            local c = EzUI.db.profile.powerTypeColors.colors[Enum.PowerType.Focus]
+                            local c = EzroUI.db.profile.powerTypeColors.colors[Enum.PowerType.Focus]
                             if c then
                                 return c[1], c[2], c[3], c[4] or 1
                             end
                             return 1.00, 0.50, 0.25, 1.0
                         end,
                         set = function(_, r, g, b, a)
-                            EzUI.db.profile.powerTypeColors.colors[Enum.PowerType.Focus] = { r, g, b, a }
-                            EzUI:UpdatePowerBar()
+                            EzroUI.db.profile.powerTypeColors.colors[Enum.PowerType.Focus] = { r, g, b, a }
+                            EzroUI:UpdatePowerBar()
                         end,
                     },
                     energyColor = {
@@ -1369,15 +1369,15 @@ local function CreateResourceBarOptions()
                         width = "normal",
                         hasAlpha = true,
                         get = function()
-                            local c = EzUI.db.profile.powerTypeColors.colors[Enum.PowerType.Energy]
+                            local c = EzroUI.db.profile.powerTypeColors.colors[Enum.PowerType.Energy]
                             if c then
                                 return c[1], c[2], c[3], c[4] or 1
                             end
                             return 1.00, 1.00, 0.00, 1.0
                         end,
                         set = function(_, r, g, b, a)
-                            EzUI.db.profile.powerTypeColors.colors[Enum.PowerType.Energy] = { r, g, b, a }
-                            EzUI:UpdatePowerBar()
+                            EzroUI.db.profile.powerTypeColors.colors[Enum.PowerType.Energy] = { r, g, b, a }
+                            EzroUI:UpdatePowerBar()
                         end,
                     },
                     runicPowerColor = {
@@ -1388,15 +1388,15 @@ local function CreateResourceBarOptions()
                         width = "normal",
                         hasAlpha = true,
                         get = function()
-                            local c = EzUI.db.profile.powerTypeColors.colors[Enum.PowerType.RunicPower]
+                            local c = EzroUI.db.profile.powerTypeColors.colors[Enum.PowerType.RunicPower]
                             if c then
                                 return c[1], c[2], c[3], c[4] or 1
                             end
                             return 0.00, 0.82, 1.00, 1.0
                         end,
                         set = function(_, r, g, b, a)
-                            EzUI.db.profile.powerTypeColors.colors[Enum.PowerType.RunicPower] = { r, g, b, a }
-                            EzUI:UpdatePowerBar()
+                            EzroUI.db.profile.powerTypeColors.colors[Enum.PowerType.RunicPower] = { r, g, b, a }
+                            EzroUI:UpdatePowerBar()
                         end,
                     },
                     lunarPowerColor = {
@@ -1407,15 +1407,15 @@ local function CreateResourceBarOptions()
                         width = "normal",
                         hasAlpha = true,
                         get = function()
-                            local c = EzUI.db.profile.powerTypeColors.colors[Enum.PowerType.LunarPower]
+                            local c = EzroUI.db.profile.powerTypeColors.colors[Enum.PowerType.LunarPower]
                             if c then
                                 return c[1], c[2], c[3], c[4] or 1
                             end
                             return 0.30, 0.52, 0.90, 1.0
                         end,
                         set = function(_, r, g, b, a)
-                            EzUI.db.profile.powerTypeColors.colors[Enum.PowerType.LunarPower] = { r, g, b, a }
-                            EzUI:UpdatePowerBar()
+                            EzroUI.db.profile.powerTypeColors.colors[Enum.PowerType.LunarPower] = { r, g, b, a }
+                            EzroUI:UpdatePowerBar()
                         end,
                     },
                     furyColor = {
@@ -1426,15 +1426,15 @@ local function CreateResourceBarOptions()
                         width = "normal",
                         hasAlpha = true,
                         get = function()
-                            local c = EzUI.db.profile.powerTypeColors.colors[Enum.PowerType.Fury]
+                            local c = EzroUI.db.profile.powerTypeColors.colors[Enum.PowerType.Fury]
                             if c then
                                 return c[1], c[2], c[3], c[4] or 1
                             end
                             return 0.79, 0.26, 0.99, 1.0
                         end,
                         set = function(_, r, g, b, a)
-                            EzUI.db.profile.powerTypeColors.colors[Enum.PowerType.Fury] = { r, g, b, a }
-                            EzUI:UpdatePowerBar()
+                            EzroUI.db.profile.powerTypeColors.colors[Enum.PowerType.Fury] = { r, g, b, a }
+                            EzroUI:UpdatePowerBar()
                         end,
                     },
                     maelstromColor = {
@@ -1445,15 +1445,15 @@ local function CreateResourceBarOptions()
                         width = "normal",
                         hasAlpha = true,
                         get = function()
-                            local c = EzUI.db.profile.powerTypeColors.colors[Enum.PowerType.Maelstrom]
+                            local c = EzroUI.db.profile.powerTypeColors.colors[Enum.PowerType.Maelstrom]
                             if c then
                                 return c[1], c[2], c[3], c[4] or 1
                             end
                             return 0.00, 0.50, 1.00, 1.0
                         end,
                         set = function(_, r, g, b, a)
-                            EzUI.db.profile.powerTypeColors.colors[Enum.PowerType.Maelstrom] = { r, g, b, a }
-                            EzUI:UpdatePowerBar()
+                            EzroUI.db.profile.powerTypeColors.colors[Enum.PowerType.Maelstrom] = { r, g, b, a }
+                            EzroUI:UpdatePowerBar()
                         end,
                     },
                     secondaryHeader = {
@@ -1469,15 +1469,15 @@ local function CreateResourceBarOptions()
                         width = "normal",
                         hasAlpha = true,
                         get = function()
-                            local c = EzUI.db.profile.powerTypeColors.colors[Enum.PowerType.Runes]
+                            local c = EzroUI.db.profile.powerTypeColors.colors[Enum.PowerType.Runes]
                             if c then
                                 return c[1], c[2], c[3], c[4] or 1
                             end
                             return 0.77, 0.12, 0.23, 1.0
                         end,
                         set = function(_, r, g, b, a)
-                            EzUI.db.profile.powerTypeColors.colors[Enum.PowerType.Runes] = { r, g, b, a }
-                            EzUI:UpdateSecondaryPowerBar()
+                            EzroUI.db.profile.powerTypeColors.colors[Enum.PowerType.Runes] = { r, g, b, a }
+                            EzroUI:UpdateSecondaryPowerBar()
                         end,
                     },
                     soulFragmentsColor = {
@@ -1488,15 +1488,15 @@ local function CreateResourceBarOptions()
                         width = "normal",
                         hasAlpha = true,
                         get = function()
-                            local c = EzUI.db.profile.powerTypeColors.colors["SOUL"]
+                            local c = EzroUI.db.profile.powerTypeColors.colors["SOUL"]
                             if c then
                                 return c[1], c[2], c[3], c[4] or 1
                             end
                             return 0.64, 0.19, 0.79, 1.0
                         end,
                         set = function(_, r, g, b, a)
-                            EzUI.db.profile.powerTypeColors.colors["SOUL"] = { r, g, b, a }
-                            EzUI:UpdateSecondaryPowerBar()
+                            EzroUI.db.profile.powerTypeColors.colors["SOUL"] = { r, g, b, a }
+                            EzroUI:UpdateSecondaryPowerBar()
                         end,
                     },
                     comboPointsColor = {
@@ -1507,15 +1507,15 @@ local function CreateResourceBarOptions()
                         width = "normal",
                         hasAlpha = true,
                         get = function()
-                            local c = EzUI.db.profile.powerTypeColors.colors[Enum.PowerType.ComboPoints]
+                            local c = EzroUI.db.profile.powerTypeColors.colors[Enum.PowerType.ComboPoints]
                             if c then
                                 return c[1], c[2], c[3], c[4] or 1
                             end
                             return 1.00, 0.96, 0.41, 1.0
                         end,
                         set = function(_, r, g, b, a)
-                            EzUI.db.profile.powerTypeColors.colors[Enum.PowerType.ComboPoints] = { r, g, b, a }
-                            EzUI:UpdateSecondaryPowerBar()
+                            EzroUI.db.profile.powerTypeColors.colors[Enum.PowerType.ComboPoints] = { r, g, b, a }
+                            EzroUI:UpdateSecondaryPowerBar()
                         end,
                     },
                     essenceColor = {
@@ -1526,15 +1526,15 @@ local function CreateResourceBarOptions()
                         width = "normal",
                         hasAlpha = true,
                         get = function()
-                            local c = EzUI.db.profile.powerTypeColors.colors[Enum.PowerType.Essence]
+                            local c = EzroUI.db.profile.powerTypeColors.colors[Enum.PowerType.Essence]
                             if c then
                                 return c[1], c[2], c[3], c[4] or 1
                             end
                             return 0.20, 0.58, 0.50, 1.0
                         end,
                         set = function(_, r, g, b, a)
-                            EzUI.db.profile.powerTypeColors.colors[Enum.PowerType.Essence] = { r, g, b, a }
-                            EzUI:UpdateSecondaryPowerBar()
+                            EzroUI.db.profile.powerTypeColors.colors[Enum.PowerType.Essence] = { r, g, b, a }
+                            EzroUI:UpdateSecondaryPowerBar()
                         end,
                     },
                     arcaneChargesColor = {
@@ -1545,15 +1545,15 @@ local function CreateResourceBarOptions()
                         width = "normal",
                         hasAlpha = true,
                         get = function()
-                            local c = EzUI.db.profile.powerTypeColors.colors[Enum.PowerType.ArcaneCharges]
+                            local c = EzroUI.db.profile.powerTypeColors.colors[Enum.PowerType.ArcaneCharges]
                             if c then
                                 return c[1], c[2], c[3], c[4] or 1
                             end
                             return 0.20, 0.60, 1.00, 1.0
                         end,
                         set = function(_, r, g, b, a)
-                            EzUI.db.profile.powerTypeColors.colors[Enum.PowerType.ArcaneCharges] = { r, g, b, a }
-                            EzUI:UpdateSecondaryPowerBar()
+                            EzroUI.db.profile.powerTypeColors.colors[Enum.PowerType.ArcaneCharges] = { r, g, b, a }
+                            EzroUI:UpdateSecondaryPowerBar()
                         end,
                     },
                     staggerLightColor = {
@@ -1564,15 +1564,15 @@ local function CreateResourceBarOptions()
                         width = "normal",
                         hasAlpha = true,
                         get = function()
-                            local c = EzUI.db.profile.powerTypeColors.colors["STAGGER_LIGHT"]
+                            local c = EzroUI.db.profile.powerTypeColors.colors["STAGGER_LIGHT"]
                             if c then
                                 return c[1], c[2], c[3], c[4] or 1
                             end
                             return 0.52, 1.00, 0.52, 1.0
                         end,
                         set = function(_, r, g, b, a)
-                            EzUI.db.profile.powerTypeColors.colors["STAGGER_LIGHT"] = { r, g, b, a }
-                            EzUI:UpdateSecondaryPowerBar()
+                            EzroUI.db.profile.powerTypeColors.colors["STAGGER_LIGHT"] = { r, g, b, a }
+                            EzroUI:UpdateSecondaryPowerBar()
                         end,
                     },
                     staggerMediumColor = {
@@ -1583,15 +1583,15 @@ local function CreateResourceBarOptions()
                         width = "normal",
                         hasAlpha = true,
                         get = function()
-                            local c = EzUI.db.profile.powerTypeColors.colors["STAGGER_MEDIUM"]
+                            local c = EzroUI.db.profile.powerTypeColors.colors["STAGGER_MEDIUM"]
                             if c then
                                 return c[1], c[2], c[3], c[4] or 1
                             end
                             return 1.00, 0.98, 0.72, 1.0
                         end,
                         set = function(_, r, g, b, a)
-                            EzUI.db.profile.powerTypeColors.colors["STAGGER_MEDIUM"] = { r, g, b, a }
-                            EzUI:UpdateSecondaryPowerBar()
+                            EzroUI.db.profile.powerTypeColors.colors["STAGGER_MEDIUM"] = { r, g, b, a }
+                            EzroUI:UpdateSecondaryPowerBar()
                         end,
                     },
                     staggerHeavyColor = {
@@ -1602,15 +1602,15 @@ local function CreateResourceBarOptions()
                         width = "normal",
                         hasAlpha = true,
                         get = function()
-                            local c = EzUI.db.profile.powerTypeColors.colors["STAGGER_HEAVY"]
+                            local c = EzroUI.db.profile.powerTypeColors.colors["STAGGER_HEAVY"]
                             if c then
                                 return c[1], c[2], c[3], c[4] or 1
                             end
                             return 1.00, 0.42, 0.42, 1.0
                         end,
                         set = function(_, r, g, b, a)
-                            EzUI.db.profile.powerTypeColors.colors["STAGGER_HEAVY"] = { r, g, b, a }
-                            EzUI:UpdateSecondaryPowerBar()
+                            EzroUI.db.profile.powerTypeColors.colors["STAGGER_HEAVY"] = { r, g, b, a }
+                            EzroUI:UpdateSecondaryPowerBar()
                         end,
                     },
                     chiColor = {
@@ -1621,15 +1621,15 @@ local function CreateResourceBarOptions()
                         width = "normal",
                         hasAlpha = true,
                         get = function()
-                            local c = EzUI.db.profile.powerTypeColors.colors[Enum.PowerType.Chi]
+                            local c = EzroUI.db.profile.powerTypeColors.colors[Enum.PowerType.Chi]
                             if c then
                                 return c[1], c[2], c[3], c[4] or 1
                             end
                             return 0.00, 1.00, 0.59, 1.0
                         end,
                         set = function(_, r, g, b, a)
-                            EzUI.db.profile.powerTypeColors.colors[Enum.PowerType.Chi] = { r, g, b, a }
-                            EzUI:UpdateSecondaryPowerBar()
+                            EzroUI.db.profile.powerTypeColors.colors[Enum.PowerType.Chi] = { r, g, b, a }
+                            EzroUI:UpdateSecondaryPowerBar()
                         end,
                     },
                     holyPowerColor = {
@@ -1640,15 +1640,15 @@ local function CreateResourceBarOptions()
                         width = "normal",
                         hasAlpha = true,
                         get = function()
-                            local c = EzUI.db.profile.powerTypeColors.colors[Enum.PowerType.HolyPower]
+                            local c = EzroUI.db.profile.powerTypeColors.colors[Enum.PowerType.HolyPower]
                             if c then
                                 return c[1], c[2], c[3], c[4] or 1
                             end
                             return 0.95, 0.90, 0.60, 1.0
                         end,
                         set = function(_, r, g, b, a)
-                            EzUI.db.profile.powerTypeColors.colors[Enum.PowerType.HolyPower] = { r, g, b, a }
-                            EzUI:UpdateSecondaryPowerBar()
+                            EzroUI.db.profile.powerTypeColors.colors[Enum.PowerType.HolyPower] = { r, g, b, a }
+                            EzroUI:UpdateSecondaryPowerBar()
                         end,
                     },
                     soulShardsColor = {
@@ -1659,15 +1659,15 @@ local function CreateResourceBarOptions()
                         width = "normal",
                         hasAlpha = true,
                         get = function()
-                            local c = EzUI.db.profile.powerTypeColors.colors[Enum.PowerType.SoulShards]
+                            local c = EzroUI.db.profile.powerTypeColors.colors[Enum.PowerType.SoulShards]
                             if c then
                                 return c[1], c[2], c[3], c[4] or 1
                             end
                             return 0.58, 0.51, 0.79, 1.0
                         end,
                         set = function(_, r, g, b, a)
-                            EzUI.db.profile.powerTypeColors.colors[Enum.PowerType.SoulShards] = { r, g, b, a }
-                            EzUI:UpdateSecondaryPowerBar()
+                            EzroUI.db.profile.powerTypeColors.colors[Enum.PowerType.SoulShards] = { r, g, b, a }
+                            EzroUI:UpdateSecondaryPowerBar()
                         end,
                     },
                     maelstromWeaponColor = {
@@ -1678,15 +1678,15 @@ local function CreateResourceBarOptions()
                         width = "normal",
                         hasAlpha = true,
                         get = function()
-                            local c = EzUI.db.profile.powerTypeColors.colors["MAELSTROM_WEAPON"]
+                            local c = EzroUI.db.profile.powerTypeColors.colors["MAELSTROM_WEAPON"]
                             if c then
                                 return c[1], c[2], c[3], c[4] or 1
                             end
                             return 0.00, 0.50, 1.00, 1.0
                         end,
                         set = function(_, r, g, b, a)
-                            EzUI.db.profile.powerTypeColors.colors["MAELSTROM_WEAPON"] = { r, g, b, a }
-                            EzUI:UpdateSecondaryPowerBar()
+                            EzroUI.db.profile.powerTypeColors.colors["MAELSTROM_WEAPON"] = { r, g, b, a }
+                            EzroUI:UpdateSecondaryPowerBar()
                         end,
                     },
                 },

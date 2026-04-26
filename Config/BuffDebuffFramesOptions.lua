@@ -1,5 +1,5 @@
 ﻿local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
+local EzroUI = ns.Addon
 
 -- Helper function to get anchor point options (all 8 points)
 local function GetAnchorPointOptions()
@@ -19,7 +19,7 @@ end
 
 -- Create options for a specific type (buffs or debuffs)
 local function CreateTypeOptions(typeKey, displayName, order)
-    local db = EzUI.db.profile.buffDebuffFrames
+    local db = EzroUI.db.profile.buffDebuffFrames
     if not db then return {} end
     
     return {
@@ -35,27 +35,27 @@ local function CreateTypeOptions(typeKey, displayName, order)
             enabled = {
                 type = "toggle",
                 name = "Enable " .. displayName .. " Frame Styling",
-                desc = "Apply custom EzUI styling to " .. displayName:lower() .. " frames",
+                desc = "Apply custom EzroUI styling to " .. displayName:lower() .. " frames",
                 width = "full",
                 order = 2,
                 get = function()
-                    local db = EzUI.db.profile.buffDebuffFrames
+                    local db = EzroUI.db.profile.buffDebuffFrames
                     if not db then return false end
                     if not db.enabled then return false end
                     if not db[typeKey] then return true end
                     return db[typeKey].enabled ~= false
                 end,
                 set = function(_, val)
-                    local db = EzUI.db.profile.buffDebuffFrames
+                    local db = EzroUI.db.profile.buffDebuffFrames
                     if not db then
-                        EzUI.db.profile.buffDebuffFrames = {}
-                        db = EzUI.db.profile.buffDebuffFrames
+                        EzroUI.db.profile.buffDebuffFrames = {}
+                        db = EzroUI.db.profile.buffDebuffFrames
                     end
                     if not db.enabled then db.enabled = true end
                     if not db[typeKey] then db[typeKey] = {} end
                     db[typeKey].enabled = val
-                    if EzUI.BuffDebuffFrames and EzUI.BuffDebuffFrames.RefreshAll then
-                        EzUI.BuffDebuffFrames:RefreshAll()
+                    if EzroUI.BuffDebuffFrames and EzroUI.BuffDebuffFrames.RefreshAll then
+                        EzroUI.BuffDebuffFrames:RefreshAll()
                     end
                 end,
             },
@@ -79,17 +79,17 @@ local function CreateTypeOptions(typeKey, displayName, order)
                 max = 96,
                 step = 1,
                 get = function()
-                    local db = EzUI.db.profile.buffDebuffFrames
+                    local db = EzroUI.db.profile.buffDebuffFrames
                     if not db or not db[typeKey] then return 36 end
                     return db[typeKey].iconSize or 36
                 end,
                 set = function(_, val)
-                    local db = EzUI.db.profile.buffDebuffFrames
+                    local db = EzroUI.db.profile.buffDebuffFrames
                     if not db then return end
                     if not db[typeKey] then db[typeKey] = {} end
                     db[typeKey].iconSize = val
-                    if EzUI.BuffDebuffFrames and EzUI.BuffDebuffFrames.RefreshAll then
-                        EzUI.BuffDebuffFrames:RefreshAll()
+                    if EzroUI.BuffDebuffFrames and EzroUI.BuffDebuffFrames.RefreshAll then
+                        EzroUI.BuffDebuffFrames:RefreshAll()
                     end
                 end,
             },
@@ -110,19 +110,19 @@ local function CreateTypeOptions(typeKey, displayName, order)
                 width = "full",
                 order = 21,
                 get = function()
-                    local db = EzUI.db.profile.buffDebuffFrames
+                    local db = EzroUI.db.profile.buffDebuffFrames
                     if not db or not db[typeKey] then return true end
                     local textConfig = db[typeKey].count or {}
                     return textConfig.enabled ~= false
                 end,
                 set = function(_, val)
-                    local db = EzUI.db.profile.buffDebuffFrames
+                    local db = EzroUI.db.profile.buffDebuffFrames
                     if not db then return end
                     if not db[typeKey] then db[typeKey] = {} end
                     if not db[typeKey].count then db[typeKey].count = {} end
                     db[typeKey].count.enabled = val
-                    if EzUI.BuffDebuffFrames and EzUI.BuffDebuffFrames.RefreshAll then
-                        EzUI.BuffDebuffFrames:RefreshAll()
+                    if EzroUI.BuffDebuffFrames and EzroUI.BuffDebuffFrames.RefreshAll then
+                        EzroUI.BuffDebuffFrames:RefreshAll()
                     end
                 end,
             },
@@ -136,19 +136,19 @@ local function CreateTypeOptions(typeKey, displayName, order)
                 max = 32,
                 step = 1,
                 get = function()
-                    local db = EzUI.db.profile.buffDebuffFrames
+                    local db = EzroUI.db.profile.buffDebuffFrames
                     if not db or not db[typeKey] then return 12 end
                     local textConfig = db[typeKey].count or {}
                     return textConfig.fontSize or 12
                 end,
                 set = function(_, val)
-                    local db = EzUI.db.profile.buffDebuffFrames
+                    local db = EzroUI.db.profile.buffDebuffFrames
                     if not db then return end
                     if not db[typeKey] then db[typeKey] = {} end
                     if not db[typeKey].count then db[typeKey].count = {} end
                     db[typeKey].count.fontSize = val
-                    if EzUI.BuffDebuffFrames and EzUI.BuffDebuffFrames.RefreshAll then
-                        EzUI.BuffDebuffFrames:RefreshAll()
+                    if EzroUI.BuffDebuffFrames and EzroUI.BuffDebuffFrames.RefreshAll then
+                        EzroUI.BuffDebuffFrames:RefreshAll()
                     end
                 end,
             },
@@ -160,19 +160,19 @@ local function CreateTypeOptions(typeKey, displayName, order)
                 width = "full",
                 values = GetAnchorPointOptions(),
                 get = function()
-                    local db = EzUI.db.profile.buffDebuffFrames
+                    local db = EzroUI.db.profile.buffDebuffFrames
                     if not db or not db[typeKey] then return "TOPRIGHT" end
                     local textConfig = db[typeKey].count or {}
                     return textConfig.anchorPoint or "TOPRIGHT"
                 end,
                 set = function(_, val)
-                    local db = EzUI.db.profile.buffDebuffFrames
+                    local db = EzroUI.db.profile.buffDebuffFrames
                     if not db then return end
                     if not db[typeKey] then db[typeKey] = {} end
                     if not db[typeKey].count then db[typeKey].count = {} end
                     db[typeKey].count.anchorPoint = val
-                    if EzUI.BuffDebuffFrames and EzUI.BuffDebuffFrames.RefreshAll then
-                        EzUI.BuffDebuffFrames:RefreshAll()
+                    if EzroUI.BuffDebuffFrames and EzroUI.BuffDebuffFrames.RefreshAll then
+                        EzroUI.BuffDebuffFrames:RefreshAll()
                     end
                 end,
             },
@@ -186,19 +186,19 @@ local function CreateTypeOptions(typeKey, displayName, order)
                 max = 50,
                 step = 1,
                 get = function()
-                    local db = EzUI.db.profile.buffDebuffFrames
+                    local db = EzroUI.db.profile.buffDebuffFrames
                     if not db or not db[typeKey] then return 0 end
                     local textConfig = db[typeKey].count or {}
                     return textConfig.offsetX or 0
                 end,
                 set = function(_, val)
-                    local db = EzUI.db.profile.buffDebuffFrames
+                    local db = EzroUI.db.profile.buffDebuffFrames
                     if not db then return end
                     if not db[typeKey] then db[typeKey] = {} end
                     if not db[typeKey].count then db[typeKey].count = {} end
                     db[typeKey].count.offsetX = val
-                    if EzUI.BuffDebuffFrames and EzUI.BuffDebuffFrames.RefreshAll then
-                        EzUI.BuffDebuffFrames:RefreshAll()
+                    if EzroUI.BuffDebuffFrames and EzroUI.BuffDebuffFrames.RefreshAll then
+                        EzroUI.BuffDebuffFrames:RefreshAll()
                     end
                 end,
             },
@@ -212,19 +212,19 @@ local function CreateTypeOptions(typeKey, displayName, order)
                 max = 50,
                 step = 1,
                 get = function()
-                    local db = EzUI.db.profile.buffDebuffFrames
+                    local db = EzroUI.db.profile.buffDebuffFrames
                     if not db or not db[typeKey] then return 0 end
                     local textConfig = db[typeKey].count or {}
                     return textConfig.offsetY or 0
                 end,
                 set = function(_, val)
-                    local db = EzUI.db.profile.buffDebuffFrames
+                    local db = EzroUI.db.profile.buffDebuffFrames
                     if not db then return end
                     if not db[typeKey] then db[typeKey] = {} end
                     if not db[typeKey].count then db[typeKey].count = {} end
                     db[typeKey].count.offsetY = val
-                    if EzUI.BuffDebuffFrames and EzUI.BuffDebuffFrames.RefreshAll then
-                        EzUI.BuffDebuffFrames:RefreshAll()
+                    if EzroUI.BuffDebuffFrames and EzroUI.BuffDebuffFrames.RefreshAll then
+                        EzroUI.BuffDebuffFrames:RefreshAll()
                     end
                 end,
             },
@@ -236,20 +236,20 @@ local function CreateTypeOptions(typeKey, displayName, order)
                 width = "full",
                 hasAlpha = true,
                 get = function()
-                    local db = EzUI.db.profile.buffDebuffFrames
+                    local db = EzroUI.db.profile.buffDebuffFrames
                     if not db or not db[typeKey] then return 1, 1, 1, 1 end
                     local textConfig = db[typeKey].count or {}
                     local color = textConfig.textColor or {1, 1, 1, 1}
                     return color[1] or 1, color[2] or 1, color[3] or 1, color[4] or 1
                 end,
                 set = function(_, r, g, b, a)
-                    local db = EzUI.db.profile.buffDebuffFrames
+                    local db = EzroUI.db.profile.buffDebuffFrames
                     if not db then return end
                     if not db[typeKey] then db[typeKey] = {} end
                     if not db[typeKey].count then db[typeKey].count = {} end
                     db[typeKey].count.textColor = {r, g, b, a or 1}
-                    if EzUI.BuffDebuffFrames and EzUI.BuffDebuffFrames.RefreshAll then
-                        EzUI.BuffDebuffFrames:RefreshAll()
+                    if EzroUI.BuffDebuffFrames and EzroUI.BuffDebuffFrames.RefreshAll then
+                        EzroUI.BuffDebuffFrames:RefreshAll()
                     end
                 end,
             },
@@ -270,19 +270,19 @@ local function CreateTypeOptions(typeKey, displayName, order)
                 width = "full",
                 order = 31,
                 get = function()
-                    local db = EzUI.db.profile.buffDebuffFrames
+                    local db = EzroUI.db.profile.buffDebuffFrames
                     if not db or not db[typeKey] then return true end
                     local textConfig = db[typeKey].duration or {}
                     return textConfig.enabled ~= false
                 end,
                 set = function(_, val)
-                    local db = EzUI.db.profile.buffDebuffFrames
+                    local db = EzroUI.db.profile.buffDebuffFrames
                     if not db then return end
                     if not db[typeKey] then db[typeKey] = {} end
                     if not db[typeKey].duration then db[typeKey].duration = {} end
                     db[typeKey].duration.enabled = val
-                    if EzUI.BuffDebuffFrames and EzUI.BuffDebuffFrames.RefreshAll then
-                        EzUI.BuffDebuffFrames:RefreshAll()
+                    if EzroUI.BuffDebuffFrames and EzroUI.BuffDebuffFrames.RefreshAll then
+                        EzroUI.BuffDebuffFrames:RefreshAll()
                     end
                 end,
             },
@@ -296,19 +296,19 @@ local function CreateTypeOptions(typeKey, displayName, order)
                 max = 32,
                 step = 1,
                 get = function()
-                    local db = EzUI.db.profile.buffDebuffFrames
+                    local db = EzroUI.db.profile.buffDebuffFrames
                     if not db or not db[typeKey] then return 12 end
                     local textConfig = db[typeKey].duration or {}
                     return textConfig.fontSize or 12
                 end,
                 set = function(_, val)
-                    local db = EzUI.db.profile.buffDebuffFrames
+                    local db = EzroUI.db.profile.buffDebuffFrames
                     if not db then return end
                     if not db[typeKey] then db[typeKey] = {} end
                     if not db[typeKey].duration then db[typeKey].duration = {} end
                     db[typeKey].duration.fontSize = val
-                    if EzUI.BuffDebuffFrames and EzUI.BuffDebuffFrames.RefreshAll then
-                        EzUI.BuffDebuffFrames:RefreshAll()
+                    if EzroUI.BuffDebuffFrames and EzroUI.BuffDebuffFrames.RefreshAll then
+                        EzroUI.BuffDebuffFrames:RefreshAll()
                     end
                 end,
             },
@@ -320,19 +320,19 @@ local function CreateTypeOptions(typeKey, displayName, order)
                 width = "full",
                 values = GetAnchorPointOptions(),
                 get = function()
-                    local db = EzUI.db.profile.buffDebuffFrames
+                    local db = EzroUI.db.profile.buffDebuffFrames
                     if not db or not db[typeKey] then return "CENTER" end
                     local textConfig = db[typeKey].duration or {}
                     return textConfig.anchorPoint or "CENTER"
                 end,
                 set = function(_, val)
-                    local db = EzUI.db.profile.buffDebuffFrames
+                    local db = EzroUI.db.profile.buffDebuffFrames
                     if not db then return end
                     if not db[typeKey] then db[typeKey] = {} end
                     if not db[typeKey].duration then db[typeKey].duration = {} end
                     db[typeKey].duration.anchorPoint = val
-                    if EzUI.BuffDebuffFrames and EzUI.BuffDebuffFrames.RefreshAll then
-                        EzUI.BuffDebuffFrames:RefreshAll()
+                    if EzroUI.BuffDebuffFrames and EzroUI.BuffDebuffFrames.RefreshAll then
+                        EzroUI.BuffDebuffFrames:RefreshAll()
                     end
                 end,
             },
@@ -346,19 +346,19 @@ local function CreateTypeOptions(typeKey, displayName, order)
                 max = 50,
                 step = 1,
                 get = function()
-                    local db = EzUI.db.profile.buffDebuffFrames
+                    local db = EzroUI.db.profile.buffDebuffFrames
                     if not db or not db[typeKey] then return 0 end
                     local textConfig = db[typeKey].duration or {}
                     return textConfig.offsetX or 0
                 end,
                 set = function(_, val)
-                    local db = EzUI.db.profile.buffDebuffFrames
+                    local db = EzroUI.db.profile.buffDebuffFrames
                     if not db then return end
                     if not db[typeKey] then db[typeKey] = {} end
                     if not db[typeKey].duration then db[typeKey].duration = {} end
                     db[typeKey].duration.offsetX = val
-                    if EzUI.BuffDebuffFrames and EzUI.BuffDebuffFrames.RefreshAll then
-                        EzUI.BuffDebuffFrames:RefreshAll()
+                    if EzroUI.BuffDebuffFrames and EzroUI.BuffDebuffFrames.RefreshAll then
+                        EzroUI.BuffDebuffFrames:RefreshAll()
                     end
                 end,
             },
@@ -372,19 +372,19 @@ local function CreateTypeOptions(typeKey, displayName, order)
                 max = 50,
                 step = 1,
                 get = function()
-                    local db = EzUI.db.profile.buffDebuffFrames
+                    local db = EzroUI.db.profile.buffDebuffFrames
                     if not db or not db[typeKey] then return 0 end
                     local textConfig = db[typeKey].duration or {}
                     return textConfig.offsetY or 0
                 end,
                 set = function(_, val)
-                    local db = EzUI.db.profile.buffDebuffFrames
+                    local db = EzroUI.db.profile.buffDebuffFrames
                     if not db then return end
                     if not db[typeKey] then db[typeKey] = {} end
                     if not db[typeKey].duration then db[typeKey].duration = {} end
                     db[typeKey].duration.offsetY = val
-                    if EzUI.BuffDebuffFrames and EzUI.BuffDebuffFrames.RefreshAll then
-                        EzUI.BuffDebuffFrames:RefreshAll()
+                    if EzroUI.BuffDebuffFrames and EzroUI.BuffDebuffFrames.RefreshAll then
+                        EzroUI.BuffDebuffFrames:RefreshAll()
                     end
                 end,
             },
@@ -396,20 +396,20 @@ local function CreateTypeOptions(typeKey, displayName, order)
                 width = "full",
                 hasAlpha = true,
                 get = function()
-                    local db = EzUI.db.profile.buffDebuffFrames
+                    local db = EzroUI.db.profile.buffDebuffFrames
                     if not db or not db[typeKey] then return 1, 1, 1, 1 end
                     local textConfig = db[typeKey].duration or {}
                     local color = textConfig.textColor or {1, 1, 1, 1}
                     return color[1] or 1, color[2] or 1, color[3] or 1, color[4] or 1
                 end,
                 set = function(_, r, g, b, a)
-                    local db = EzUI.db.profile.buffDebuffFrames
+                    local db = EzroUI.db.profile.buffDebuffFrames
                     if not db then return end
                     if not db[typeKey] then db[typeKey] = {} end
                     if not db[typeKey].duration then db[typeKey].duration = {} end
                     db[typeKey].duration.textColor = {r, g, b, a or 1}
-                    if EzUI.BuffDebuffFrames and EzUI.BuffDebuffFrames.RefreshAll then
-                        EzUI.BuffDebuffFrames:RefreshAll()
+                    if EzroUI.BuffDebuffFrames and EzroUI.BuffDebuffFrames.RefreshAll then
+                        EzroUI.BuffDebuffFrames:RefreshAll()
                     end
                 end,
             },

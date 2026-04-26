@@ -1,9 +1,9 @@
 ﻿local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
+local EzroUI = ns.Addon
 
-local IconViewers = EzUI.IconViewers
+local IconViewers = EzroUI.IconViewers
 if not IconViewers then
-    error("EzUI: IconViewers module not initialized! Load IconViewers.lua first.")
+    error("EzroUI: IconViewers module not initialized! Load IconViewers.lua first.")
 end
 
 local ceil = math.ceil
@@ -521,7 +521,7 @@ function IconViewers:ApplyViewerLayout(viewer)
     if not viewer or not viewer.GetName then return end
 
     local name = viewer:GetName()
-    local settings = EzUI.db.profile.viewers[name]
+    local settings = EzroUI.db.profile.viewers[name]
     if not settings or not settings.enabled then return end
 
     TrackViewer(viewer)
@@ -618,7 +618,7 @@ function IconViewers:RescanViewer(viewer)
     if not viewer or not viewer.GetName then return end
 
     local name = viewer:GetName()
-    local settings = EzUI.db.profile.viewers[name]
+    local settings = EzroUI.db.profile.viewers[name]
     if not settings or not settings.enabled then return end
 
     TrackViewer(viewer)
@@ -647,10 +647,10 @@ function IconViewers:RescanViewer(viewer)
             child.__cdmSkinPending = true
 
             if inCombat then
-                EzUI.__cdmPendingIcons = EzUI.__cdmPendingIcons or {}
-                EzUI.__cdmPendingIcons[child] = { icon = child, settings = settings, viewer = viewer }
+                EzroUI.__cdmPendingIcons = EzroUI.__cdmPendingIcons or {}
+                EzroUI.__cdmPendingIcons[child] = { icon = child, settings = settings, viewer = viewer }
 
-                if not EzUI.__cdmIconSkinEventFrame then
+                if not EzroUI.__cdmIconSkinEventFrame then
                     local eventFrame = CreateFrame("Frame")
                     eventFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
                     eventFrame:SetScript("OnEvent", function(self)
@@ -659,9 +659,9 @@ function IconViewers:RescanViewer(viewer)
                             IconViewers:ProcessPendingIcons()
                         end
                     end)
-                    EzUI.__cdmIconSkinEventFrame = eventFrame
+                    EzroUI.__cdmIconSkinEventFrame = eventFrame
                 end
-                EzUI.__cdmIconSkinEventFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
+                EzroUI.__cdmIconSkinEventFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
             else
                 local success = pcall(self.SkinIcon, self, child, settings)
                 if success then
@@ -765,14 +765,14 @@ function IconViewers:RescanViewer(viewer)
     if changed then
         self:ApplyViewerLayout(viewer)
 
-        if EzUI.ResourceBars and EzUI.ResourceBars.UpdatePowerBar then
-            EzUI.ResourceBars:UpdatePowerBar()
+        if EzroUI.ResourceBars and EzroUI.ResourceBars.UpdatePowerBar then
+            EzroUI.ResourceBars:UpdatePowerBar()
         end
-        if EzUI.ResourceBars and EzUI.ResourceBars.UpdateSecondaryPowerBar then
-            EzUI.ResourceBars:UpdateSecondaryPowerBar()
+        if EzroUI.ResourceBars and EzroUI.ResourceBars.UpdateSecondaryPowerBar then
+            EzroUI.ResourceBars:UpdateSecondaryPowerBar()
         end
     end
 end
 
-EzUI.ApplyViewerLayout = function(self, viewer) return IconViewers:ApplyViewerLayout(viewer) end
-EzUI.RescanViewer = function(self, viewer) return IconViewers:RescanViewer(viewer) end
+EzroUI.ApplyViewerLayout = function(self, viewer) return IconViewers:ApplyViewerLayout(viewer) end
+EzroUI.RescanViewer = function(self, viewer) return IconViewers:RescanViewer(viewer) end

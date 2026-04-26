@@ -1,19 +1,19 @@
 ﻿--[[
-    EzUI Unit Frames - Click Cast Options
+    EzroUI Unit Frames - Click Cast Options
     Configuration interface for click casting
 ]]
 
 local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
-EzUI.PartyFrames = EzUI.PartyFrames or {}
-local UnitFrames = EzUI.PartyFrames
+local EzroUI = ns.Addon
+EzroUI.PartyFrames = EzroUI.PartyFrames or {}
+local UnitFrames = EzroUI.PartyFrames
 
 -- ============================================================================
 -- CLICK CAST OPTIONS TABLE
 -- ============================================================================
 
 --[[
-    Build click cast options for EzUI config
+    Build click cast options for EzroUI config
     @return table - AceConfig options table
 ]]
 function UnitFrames:BuildClickCastOptions()
@@ -188,7 +188,7 @@ function UnitFrames:BuildClickCastOptions()
 end
 
 --[[
-    Create click cast options for EzUI config system
+    Create click cast options for EzroUI config system
     @return table - AceConfig options table
 ]]
 function ns.CreateClickCastOptions()

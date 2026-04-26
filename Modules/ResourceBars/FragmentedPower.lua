@@ -1,10 +1,10 @@
 ﻿local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
+local EzroUI = ns.Addon
 
 -- Get ResourceBars module
-local ResourceBars = EzUI.ResourceBars
+local ResourceBars = EzroUI.ResourceBars
 if not ResourceBars then
-    error("EzUI: ResourceBars module not initialized! Load ResourceDetection.lua first.")
+    error("EzroUI: ResourceBars module not initialized! Load ResourceDetection.lua first.")
 end
 
 -- Get tables from ResourceDetection
@@ -22,7 +22,7 @@ local function StartRuneUpdateTicker()
     runeUpdateTicker = C_Timer.NewTicker(0.1, function()
         local resource = GetSecondaryResource()
         if resource == Enum.PowerType.Runes then
-            local bar = EzUI.secondaryPowerBar
+            local bar = EzroUI.secondaryPowerBar
             if bar and bar:IsShown() and fragmentedPowerTypes[resource] then
                 ResourceBars:UpdateFragmentedPowerDisplay(bar, resource)
             end
@@ -53,7 +53,7 @@ local function StartSoulUpdateTicker()
     soulUpdateTicker = C_Timer.NewTicker(0.1, function()
         local resource = GetSecondaryResource()
         if resource == "SOUL" then
-            local bar = EzUI.secondaryPowerBar
+            local bar = EzroUI.secondaryPowerBar
             if bar and bar:IsShown() then
                 ResourceBars:UpdateSecondaryPowerBar()
             end

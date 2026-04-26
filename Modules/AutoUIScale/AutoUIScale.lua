@@ -1,34 +1,34 @@
 ﻿local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
+local EzroUI = ns.Addon
 
 -- Create namespace
-EzUI.AutoUIScale = EzUI.AutoUIScale or {}
-local AutoUIScale = EzUI.AutoUIScale
+EzroUI.AutoUIScale = EzroUI.AutoUIScale or {}
+local AutoUIScale = EzroUI.AutoUIScale
 
 function AutoUIScale:SetUIScale(scale)
-    if not EzUI or not EzUI.ApplyGlobalUIScale then return end
+    if not EzroUI or not EzroUI.ApplyGlobalUIScale then return end
     -- Apply scale to UIParent so the whole UI (and other addons) use it. Handles combat defer internally.
-    EzUI:ApplyGlobalUIScale(scale)
-    if EzUI.PixelScaleChanged then
-        EzUI:PixelScaleChanged()
+    EzroUI:ApplyGlobalUIScale(scale)
+    if EzroUI.PixelScaleChanged then
+        EzroUI:PixelScaleChanged()
     end
 end
 
 function AutoUIScale:ApplySavedScale()
     -- Apply global UIParent scale so the entire UI (including other addons) is pixel-perfect.
     -- If the user has a saved scale, use it; otherwise apply the recommended scale for this resolution.
-    if not EzUI then return end
+    if not EzroUI then return end
     local savedScale
-    if EzUI.db and EzUI.db.profile and EzUI.db.profile.general then
-        savedScale = EzUI.db.profile.general.uiScale
+    if EzroUI.db and EzroUI.db.profile and EzroUI.db.profile.general then
+        savedScale = EzroUI.db.profile.general.uiScale
     end
     if savedScale and type(savedScale) == "number" then
         AutoUIScale:SetUIScale(savedScale)
     else
         -- First load or no saved value: apply recommended pixel-perfect scale globally
-        EzUI:ApplyGlobalUIScale(nil)
-        if EzUI.PixelScaleChanged then
-            EzUI:PixelScaleChanged()
+        EzroUI:ApplyGlobalUIScale(nil)
+        if EzroUI.PixelScaleChanged then
+            EzroUI:PixelScaleChanged()
         end
     end
 end

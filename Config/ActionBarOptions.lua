@@ -1,5 +1,5 @@
 ﻿local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
+local EzroUI = ns.Addon
 local LSM = LibStub("LibSharedMedia-3.0")
 
 local function CreateActionBarOptions()
@@ -22,14 +22,14 @@ local function CreateActionBarOptions()
             enabled = {
                 type = "toggle",
                 name = "Enable Action Bar Styling",
-                desc = "Apply custom EzUI styling to action bars",
+                desc = "Apply custom EzroUI styling to action bars",
                 width = "full",
                 order = 2,
-                get = function() return EzUI.db.profile.actionBars.enabled end,
+                get = function() return EzroUI.db.profile.actionBars.enabled end,
                 set = function(_, val)
-                    EzUI.db.profile.actionBars.enabled = val
-                    if EzUI.ActionBars and EzUI.ActionBars.RefreshAll then
-                        EzUI.ActionBars:RefreshAll()
+                    EzroUI.db.profile.actionBars.enabled = val
+                    if EzroUI.ActionBars and EzroUI.ActionBars.RefreshAll then
+                        EzroUI.ActionBars:RefreshAll()
                     end
                 end,
             },
@@ -43,12 +43,12 @@ local function CreateActionBarOptions()
                 width = "full",
                 order = 3,
                 get = function()
-                    return EzUI.db.profile.actionBars.borderSize or 1
+                    return EzroUI.db.profile.actionBars.borderSize or 1
                 end,
                 set = function(_, val)
-                    EzUI.db.profile.actionBars.borderSize = val
-                    if EzUI.ActionBars and EzUI.ActionBars.RefreshAll then
-                        EzUI.ActionBars:RefreshAll()
+                    EzroUI.db.profile.actionBars.borderSize = val
+                    if EzroUI.ActionBars and EzroUI.ActionBars.RefreshAll then
+                        EzroUI.ActionBars:RefreshAll()
                     end
                 end,
             },
@@ -60,13 +60,13 @@ local function CreateActionBarOptions()
                 width = "full",
                 hasAlpha = true,
                 get = function()
-                    local c = EzUI.db.profile.actionBars.borderColor or {0, 0, 0, 1}
+                    local c = EzroUI.db.profile.actionBars.borderColor or {0, 0, 0, 1}
                     return c[1], c[2], c[3], c[4] or 1
                 end,
                 set = function(_, r, g, b, a)
-                    EzUI.db.profile.actionBars.borderColor = { r, g, b, a or 1 }
-                    if EzUI.ActionBars and EzUI.ActionBars.RefreshAll then
-                        EzUI.ActionBars:RefreshAll()
+                    EzroUI.db.profile.actionBars.borderColor = { r, g, b, a or 1 }
+                    if EzroUI.ActionBars and EzroUI.ActionBars.RefreshAll then
+                        EzroUI.ActionBars:RefreshAll()
                     end
                 end,
             },
@@ -83,13 +83,13 @@ local function CreateActionBarOptions()
                 width = "full",
                 hasAlpha = true,
                 get = function()
-                    local c = EzUI.db.profile.actionBars.backdropColor
+                    local c = EzroUI.db.profile.actionBars.backdropColor
                     return c[1], c[2], c[3], c[4] or 1
                 end,
                 set = function(_, r, g, b, a)
-                    EzUI.db.profile.actionBars.backdropColor = { r, g, b, a or 1 }
-                    if EzUI.ActionBars and EzUI.ActionBars.RefreshAll then
-                        EzUI.ActionBars:RefreshAll()
+                    EzroUI.db.profile.actionBars.backdropColor = { r, g, b, a or 1 }
+                    if EzroUI.ActionBars and EzroUI.ActionBars.RefreshAll then
+                        EzroUI.ActionBars:RefreshAll()
                     end
                 end,
             },
@@ -116,17 +116,17 @@ local function CreateActionBarOptions()
                     return names
                 end,
                 get = function()
-                    local font = EzUI.db.profile.actionBars.font
+                    local font = EzroUI.db.profile.actionBars.font
                     return font or ""
                 end,
                 set = function(_, val)
                     if val == "" then
-                        EzUI.db.profile.actionBars.font = nil
+                        EzroUI.db.profile.actionBars.font = nil
                     else
-                        EzUI.db.profile.actionBars.font = val
+                        EzroUI.db.profile.actionBars.font = val
                     end
-                    if EzUI.ActionBars and EzUI.ActionBars.RefreshAll then
-                        EzUI.ActionBars:RefreshAll()
+                    if EzroUI.ActionBars and EzroUI.ActionBars.RefreshAll then
+                        EzroUI.ActionBars:RefreshAll()
                     end
                 end,
             },
@@ -150,16 +150,16 @@ local function CreateActionBarOptions()
                 width = "full",
                 order = 31,
                 get = function() 
-                    local cfg = EzUI.db.profile.actionBars.mouseover
+                    local cfg = EzroUI.db.profile.actionBars.mouseover
                     return cfg and cfg.enabled or false
                 end,
                 set = function(_, val)
-                    if not EzUI.db.profile.actionBars.mouseover then
-                        EzUI.db.profile.actionBars.mouseover = {}
+                    if not EzroUI.db.profile.actionBars.mouseover then
+                        EzroUI.db.profile.actionBars.mouseover = {}
                     end
-                    EzUI.db.profile.actionBars.mouseover.enabled = val
-                    if EzUI.ActionBars and EzUI.ActionBars.RefreshAll then
-                        EzUI.ActionBars:RefreshAll()
+                    EzroUI.db.profile.actionBars.mouseover.enabled = val
+                    if EzroUI.ActionBars and EzroUI.ActionBars.RefreshAll then
+                        EzroUI.ActionBars:RefreshAll()
                     end
                 end,
             },
@@ -173,16 +173,16 @@ local function CreateActionBarOptions()
                 order = 32,
                 width = "full",
                 get = function()
-                    local cfg = EzUI.db.profile.actionBars.mouseover
+                    local cfg = EzroUI.db.profile.actionBars.mouseover
                     return cfg and cfg.alpha or 0.3
                 end,
                 set = function(_, val)
-                    if not EzUI.db.profile.actionBars.mouseover then
-                        EzUI.db.profile.actionBars.mouseover = {}
+                    if not EzroUI.db.profile.actionBars.mouseover then
+                        EzroUI.db.profile.actionBars.mouseover = {}
                     end
-                    EzUI.db.profile.actionBars.mouseover.alpha = val
-                    if EzUI.ActionBars and EzUI.ActionBars.RefreshAll then
-                        EzUI.ActionBars:RefreshAll()
+                    EzroUI.db.profile.actionBars.mouseover.alpha = val
+                    if EzroUI.ActionBars and EzroUI.ActionBars.RefreshAll then
+                        EzroUI.ActionBars:RefreshAll()
                     end
                 end,
             },
@@ -197,20 +197,20 @@ local function CreateActionBarOptions()
                 desc = "Enable mouseover for Bar 1",
                 order = 34,
                 get = function()
-                    local cfg = EzUI.db.profile.actionBars.mouseover
+                    local cfg = EzroUI.db.profile.actionBars.mouseover
                     local bars = cfg and cfg.bars
                     return bars and bars.bar1 or false
                 end,
                 set = function(_, val)
-                    if not EzUI.db.profile.actionBars.mouseover then
-                        EzUI.db.profile.actionBars.mouseover = {}
+                    if not EzroUI.db.profile.actionBars.mouseover then
+                        EzroUI.db.profile.actionBars.mouseover = {}
                     end
-                    if not EzUI.db.profile.actionBars.mouseover.bars then
-                        EzUI.db.profile.actionBars.mouseover.bars = {}
+                    if not EzroUI.db.profile.actionBars.mouseover.bars then
+                        EzroUI.db.profile.actionBars.mouseover.bars = {}
                     end
-                    EzUI.db.profile.actionBars.mouseover.bars.bar1 = val
-                    if EzUI.ActionBars and EzUI.ActionBars.RefreshAll then
-                        EzUI.ActionBars:RefreshAll()
+                    EzroUI.db.profile.actionBars.mouseover.bars.bar1 = val
+                    if EzroUI.ActionBars and EzroUI.ActionBars.RefreshAll then
+                        EzroUI.ActionBars:RefreshAll()
                     end
                 end,
             },
@@ -220,20 +220,20 @@ local function CreateActionBarOptions()
                 desc = "Enable mouseover for Bar 2",
                 order = 35,
                 get = function()
-                    local cfg = EzUI.db.profile.actionBars.mouseover
+                    local cfg = EzroUI.db.profile.actionBars.mouseover
                     local bars = cfg and cfg.bars
                     return bars and bars.bar2 or false
                 end,
                 set = function(_, val)
-                    if not EzUI.db.profile.actionBars.mouseover then
-                        EzUI.db.profile.actionBars.mouseover = {}
+                    if not EzroUI.db.profile.actionBars.mouseover then
+                        EzroUI.db.profile.actionBars.mouseover = {}
                     end
-                    if not EzUI.db.profile.actionBars.mouseover.bars then
-                        EzUI.db.profile.actionBars.mouseover.bars = {}
+                    if not EzroUI.db.profile.actionBars.mouseover.bars then
+                        EzroUI.db.profile.actionBars.mouseover.bars = {}
                     end
-                    EzUI.db.profile.actionBars.mouseover.bars.bar2 = val
-                    if EzUI.ActionBars and EzUI.ActionBars.RefreshAll then
-                        EzUI.ActionBars:RefreshAll()
+                    EzroUI.db.profile.actionBars.mouseover.bars.bar2 = val
+                    if EzroUI.ActionBars and EzroUI.ActionBars.RefreshAll then
+                        EzroUI.ActionBars:RefreshAll()
                     end
                 end,
             },
@@ -243,20 +243,20 @@ local function CreateActionBarOptions()
                 desc = "Enable mouseover for Bar 3",
                 order = 36,
                 get = function()
-                    local cfg = EzUI.db.profile.actionBars.mouseover
+                    local cfg = EzroUI.db.profile.actionBars.mouseover
                     local bars = cfg and cfg.bars
                     return bars and bars.bar3 or false
                 end,
                 set = function(_, val)
-                    if not EzUI.db.profile.actionBars.mouseover then
-                        EzUI.db.profile.actionBars.mouseover = {}
+                    if not EzroUI.db.profile.actionBars.mouseover then
+                        EzroUI.db.profile.actionBars.mouseover = {}
                     end
-                    if not EzUI.db.profile.actionBars.mouseover.bars then
-                        EzUI.db.profile.actionBars.mouseover.bars = {}
+                    if not EzroUI.db.profile.actionBars.mouseover.bars then
+                        EzroUI.db.profile.actionBars.mouseover.bars = {}
                     end
-                    EzUI.db.profile.actionBars.mouseover.bars.bar3 = val
-                    if EzUI.ActionBars and EzUI.ActionBars.RefreshAll then
-                        EzUI.ActionBars:RefreshAll()
+                    EzroUI.db.profile.actionBars.mouseover.bars.bar3 = val
+                    if EzroUI.ActionBars and EzroUI.ActionBars.RefreshAll then
+                        EzroUI.ActionBars:RefreshAll()
                     end
                 end,
             },
@@ -266,20 +266,20 @@ local function CreateActionBarOptions()
                 desc = "Enable mouseover for Bar 4",
                 order = 37,
                 get = function()
-                    local cfg = EzUI.db.profile.actionBars.mouseover
+                    local cfg = EzroUI.db.profile.actionBars.mouseover
                     local bars = cfg and cfg.bars
                     return bars and bars.bar4 or false
                 end,
                 set = function(_, val)
-                    if not EzUI.db.profile.actionBars.mouseover then
-                        EzUI.db.profile.actionBars.mouseover = {}
+                    if not EzroUI.db.profile.actionBars.mouseover then
+                        EzroUI.db.profile.actionBars.mouseover = {}
                     end
-                    if not EzUI.db.profile.actionBars.mouseover.bars then
-                        EzUI.db.profile.actionBars.mouseover.bars = {}
+                    if not EzroUI.db.profile.actionBars.mouseover.bars then
+                        EzroUI.db.profile.actionBars.mouseover.bars = {}
                     end
-                    EzUI.db.profile.actionBars.mouseover.bars.bar4 = val
-                    if EzUI.ActionBars and EzUI.ActionBars.RefreshAll then
-                        EzUI.ActionBars:RefreshAll()
+                    EzroUI.db.profile.actionBars.mouseover.bars.bar4 = val
+                    if EzroUI.ActionBars and EzroUI.ActionBars.RefreshAll then
+                        EzroUI.ActionBars:RefreshAll()
                     end
                 end,
             },
@@ -289,20 +289,20 @@ local function CreateActionBarOptions()
                 desc = "Enable mouseover for Bar 5",
                 order = 38,
                 get = function()
-                    local cfg = EzUI.db.profile.actionBars.mouseover
+                    local cfg = EzroUI.db.profile.actionBars.mouseover
                     local bars = cfg and cfg.bars
                     return bars and bars.bar5 or false
                 end,
                 set = function(_, val)
-                    if not EzUI.db.profile.actionBars.mouseover then
-                        EzUI.db.profile.actionBars.mouseover = {}
+                    if not EzroUI.db.profile.actionBars.mouseover then
+                        EzroUI.db.profile.actionBars.mouseover = {}
                     end
-                    if not EzUI.db.profile.actionBars.mouseover.bars then
-                        EzUI.db.profile.actionBars.mouseover.bars = {}
+                    if not EzroUI.db.profile.actionBars.mouseover.bars then
+                        EzroUI.db.profile.actionBars.mouseover.bars = {}
                     end
-                    EzUI.db.profile.actionBars.mouseover.bars.bar5 = val
-                    if EzUI.ActionBars and EzUI.ActionBars.RefreshAll then
-                        EzUI.ActionBars:RefreshAll()
+                    EzroUI.db.profile.actionBars.mouseover.bars.bar5 = val
+                    if EzroUI.ActionBars and EzroUI.ActionBars.RefreshAll then
+                        EzroUI.ActionBars:RefreshAll()
                     end
                 end,
             },
@@ -312,20 +312,20 @@ local function CreateActionBarOptions()
                 desc = "Enable mouseover for Bar 6",
                 order = 39,
                 get = function()
-                    local cfg = EzUI.db.profile.actionBars.mouseover
+                    local cfg = EzroUI.db.profile.actionBars.mouseover
                     local bars = cfg and cfg.bars
                     return bars and bars.bar6 or false
                 end,
                 set = function(_, val)
-                    if not EzUI.db.profile.actionBars.mouseover then
-                        EzUI.db.profile.actionBars.mouseover = {}
+                    if not EzroUI.db.profile.actionBars.mouseover then
+                        EzroUI.db.profile.actionBars.mouseover = {}
                     end
-                    if not EzUI.db.profile.actionBars.mouseover.bars then
-                        EzUI.db.profile.actionBars.mouseover.bars = {}
+                    if not EzroUI.db.profile.actionBars.mouseover.bars then
+                        EzroUI.db.profile.actionBars.mouseover.bars = {}
                     end
-                    EzUI.db.profile.actionBars.mouseover.bars.bar6 = val
-                    if EzUI.ActionBars and EzUI.ActionBars.RefreshAll then
-                        EzUI.ActionBars:RefreshAll()
+                    EzroUI.db.profile.actionBars.mouseover.bars.bar6 = val
+                    if EzroUI.ActionBars and EzroUI.ActionBars.RefreshAll then
+                        EzroUI.ActionBars:RefreshAll()
                     end
                 end,
             },
@@ -335,20 +335,20 @@ local function CreateActionBarOptions()
                 desc = "Enable mouseover for Bar 7",
                 order = 40,
                 get = function()
-                    local cfg = EzUI.db.profile.actionBars.mouseover
+                    local cfg = EzroUI.db.profile.actionBars.mouseover
                     local bars = cfg and cfg.bars
                     return bars and bars.bar7 or false
                 end,
                 set = function(_, val)
-                    if not EzUI.db.profile.actionBars.mouseover then
-                        EzUI.db.profile.actionBars.mouseover = {}
+                    if not EzroUI.db.profile.actionBars.mouseover then
+                        EzroUI.db.profile.actionBars.mouseover = {}
                     end
-                    if not EzUI.db.profile.actionBars.mouseover.bars then
-                        EzUI.db.profile.actionBars.mouseover.bars = {}
+                    if not EzroUI.db.profile.actionBars.mouseover.bars then
+                        EzroUI.db.profile.actionBars.mouseover.bars = {}
                     end
-                    EzUI.db.profile.actionBars.mouseover.bars.bar7 = val
-                    if EzUI.ActionBars and EzUI.ActionBars.RefreshAll then
-                        EzUI.ActionBars:RefreshAll()
+                    EzroUI.db.profile.actionBars.mouseover.bars.bar7 = val
+                    if EzroUI.ActionBars and EzroUI.ActionBars.RefreshAll then
+                        EzroUI.ActionBars:RefreshAll()
                     end
                 end,
             },
@@ -358,20 +358,20 @@ local function CreateActionBarOptions()
                 desc = "Enable mouseover for Bar 8",
                 order = 41,
                 get = function()
-                    local cfg = EzUI.db.profile.actionBars.mouseover
+                    local cfg = EzroUI.db.profile.actionBars.mouseover
                     local bars = cfg and cfg.bars
                     return bars and bars.bar8 or false
                 end,
                 set = function(_, val)
-                    if not EzUI.db.profile.actionBars.mouseover then
-                        EzUI.db.profile.actionBars.mouseover = {}
+                    if not EzroUI.db.profile.actionBars.mouseover then
+                        EzroUI.db.profile.actionBars.mouseover = {}
                     end
-                    if not EzUI.db.profile.actionBars.mouseover.bars then
-                        EzUI.db.profile.actionBars.mouseover.bars = {}
+                    if not EzroUI.db.profile.actionBars.mouseover.bars then
+                        EzroUI.db.profile.actionBars.mouseover.bars = {}
                     end
-                    EzUI.db.profile.actionBars.mouseover.bars.bar8 = val
-                    if EzUI.ActionBars and EzUI.ActionBars.RefreshAll then
-                        EzUI.ActionBars:RefreshAll()
+                    EzroUI.db.profile.actionBars.mouseover.bars.bar8 = val
+                    if EzroUI.ActionBars and EzroUI.ActionBars.RefreshAll then
+                        EzroUI.ActionBars:RefreshAll()
                     end
                 end,
             },
@@ -381,20 +381,20 @@ local function CreateActionBarOptions()
                 desc = "Enable mouseover for Pet Action Bar",
                 order = 42,
                 get = function()
-                    local cfg = EzUI.db.profile.actionBars.mouseover
+                    local cfg = EzroUI.db.profile.actionBars.mouseover
                     local bars = cfg and cfg.bars
                     return bars and bars.petBar or false
                 end,
                 set = function(_, val)
-                    if not EzUI.db.profile.actionBars.mouseover then
-                        EzUI.db.profile.actionBars.mouseover = {}
+                    if not EzroUI.db.profile.actionBars.mouseover then
+                        EzroUI.db.profile.actionBars.mouseover = {}
                     end
-                    if not EzUI.db.profile.actionBars.mouseover.bars then
-                        EzUI.db.profile.actionBars.mouseover.bars = {}
+                    if not EzroUI.db.profile.actionBars.mouseover.bars then
+                        EzroUI.db.profile.actionBars.mouseover.bars = {}
                     end
-                    EzUI.db.profile.actionBars.mouseover.bars.petBar = val
-                    if EzUI.ActionBars and EzUI.ActionBars.RefreshAll then
-                        EzUI.ActionBars:RefreshAll()
+                    EzroUI.db.profile.actionBars.mouseover.bars.petBar = val
+                    if EzroUI.ActionBars and EzroUI.ActionBars.RefreshAll then
+                        EzroUI.ActionBars:RefreshAll()
                     end
                 end,
             },
@@ -404,20 +404,20 @@ local function CreateActionBarOptions()
                 desc = "Enable mouseover for Stance Bar",
                 order = 43,
                 get = function()
-                    local cfg = EzUI.db.profile.actionBars.mouseover
+                    local cfg = EzroUI.db.profile.actionBars.mouseover
                     local bars = cfg and cfg.bars
                     return bars and bars.stanceBar or false
                 end,
                 set = function(_, val)
-                    if not EzUI.db.profile.actionBars.mouseover then
-                        EzUI.db.profile.actionBars.mouseover = {}
+                    if not EzroUI.db.profile.actionBars.mouseover then
+                        EzroUI.db.profile.actionBars.mouseover = {}
                     end
-                    if not EzUI.db.profile.actionBars.mouseover.bars then
-                        EzUI.db.profile.actionBars.mouseover.bars = {}
+                    if not EzroUI.db.profile.actionBars.mouseover.bars then
+                        EzroUI.db.profile.actionBars.mouseover.bars = {}
                     end
-                    EzUI.db.profile.actionBars.mouseover.bars.stanceBar = val
-                    if EzUI.ActionBars and EzUI.ActionBars.RefreshAll then
-                        EzUI.ActionBars:RefreshAll()
+                    EzroUI.db.profile.actionBars.mouseover.bars.stanceBar = val
+                    if EzroUI.ActionBars and EzroUI.ActionBars.RefreshAll then
+                        EzroUI.ActionBars:RefreshAll()
                     end
                 end,
             },
@@ -427,20 +427,20 @@ local function CreateActionBarOptions()
                 desc = "Enable mouseover for the Micro Menu",
                 order = 44,
                 get = function()
-                    local cfg = EzUI.db.profile.actionBars.mouseover
+                    local cfg = EzroUI.db.profile.actionBars.mouseover
                     local bars = cfg and cfg.bars
                     return bars and bars.microMenu or false
                 end,
                 set = function(_, val)
-                    if not EzUI.db.profile.actionBars.mouseover then
-                        EzUI.db.profile.actionBars.mouseover = {}
+                    if not EzroUI.db.profile.actionBars.mouseover then
+                        EzroUI.db.profile.actionBars.mouseover = {}
                     end
-                    if not EzUI.db.profile.actionBars.mouseover.bars then
-                        EzUI.db.profile.actionBars.mouseover.bars = {}
+                    if not EzroUI.db.profile.actionBars.mouseover.bars then
+                        EzroUI.db.profile.actionBars.mouseover.bars = {}
                     end
-                    EzUI.db.profile.actionBars.mouseover.bars.microMenu = val
-                    if EzUI.ActionBars and EzUI.ActionBars.RefreshAll then
-                        EzUI.ActionBars:RefreshAll()
+                    EzroUI.db.profile.actionBars.mouseover.bars.microMenu = val
+                    if EzroUI.ActionBars and EzroUI.ActionBars.RefreshAll then
+                        EzroUI.ActionBars:RefreshAll()
                     end
                 end,
             },
@@ -464,16 +464,16 @@ local function CreateActionBarOptions()
                 width = "full",
                 order = 51,
                 get = function()
-                    local cfg = EzUI.db.profile.actionBars.keybindText
+                    local cfg = EzroUI.db.profile.actionBars.keybindText
                     return cfg and cfg.hide or false
                 end,
                 set = function(_, val)
-                    if not EzUI.db.profile.actionBars.keybindText then
-                        EzUI.db.profile.actionBars.keybindText = {}
+                    if not EzroUI.db.profile.actionBars.keybindText then
+                        EzroUI.db.profile.actionBars.keybindText = {}
                     end
-                    EzUI.db.profile.actionBars.keybindText.hide = val
-                    if EzUI.ActionBars and EzUI.ActionBars.RefreshAll then
-                        EzUI.ActionBars:RefreshAll()
+                    EzroUI.db.profile.actionBars.keybindText.hide = val
+                    if EzroUI.ActionBars and EzroUI.ActionBars.RefreshAll then
+                        EzroUI.ActionBars:RefreshAll()
                     end
                 end,
             },
@@ -485,17 +485,17 @@ local function CreateActionBarOptions()
                 width = "full",
                 hasAlpha = true,
                 get = function()
-                    local cfg = EzUI.db.profile.actionBars.keybindText
+                    local cfg = EzroUI.db.profile.actionBars.keybindText
                     local c = cfg and cfg.fontColor or {0.75, 0.75, 0.75, 1}
                     return c[1], c[2], c[3], c[4] or 1
                 end,
                 set = function(_, r, g, b, a)
-                    if not EzUI.db.profile.actionBars.keybindText then
-                        EzUI.db.profile.actionBars.keybindText = {}
+                    if not EzroUI.db.profile.actionBars.keybindText then
+                        EzroUI.db.profile.actionBars.keybindText = {}
                     end
-                    EzUI.db.profile.actionBars.keybindText.fontColor = { r, g, b, a or 1 }
-                    if EzUI.ActionBars and EzUI.ActionBars.RefreshAll then
-                        EzUI.ActionBars:RefreshAll()
+                    EzroUI.db.profile.actionBars.keybindText.fontColor = { r, g, b, a or 1 }
+                    if EzroUI.ActionBars and EzroUI.ActionBars.RefreshAll then
+                        EzroUI.ActionBars:RefreshAll()
                     end
                 end,
             },
@@ -509,16 +509,16 @@ local function CreateActionBarOptions()
                 order = 53,
                 width = "full",
                 get = function()
-                    local cfg = EzUI.db.profile.actionBars.keybindText
+                    local cfg = EzroUI.db.profile.actionBars.keybindText
                     return cfg and cfg.fontSize or 14
                 end,
                 set = function(_, val)
-                    if not EzUI.db.profile.actionBars.keybindText then
-                        EzUI.db.profile.actionBars.keybindText = {}
+                    if not EzroUI.db.profile.actionBars.keybindText then
+                        EzroUI.db.profile.actionBars.keybindText = {}
                     end
-                    EzUI.db.profile.actionBars.keybindText.fontSize = val
-                    if EzUI.ActionBars and EzUI.ActionBars.RefreshAll then
-                        EzUI.ActionBars:RefreshAll()
+                    EzroUI.db.profile.actionBars.keybindText.fontSize = val
+                    if EzroUI.ActionBars and EzroUI.ActionBars.RefreshAll then
+                        EzroUI.ActionBars:RefreshAll()
                     end
                 end,
             },
@@ -532,16 +532,16 @@ local function CreateActionBarOptions()
                 order = 54,
                 width = "full",
                 get = function()
-                    local cfg = EzUI.db.profile.actionBars.keybindText
+                    local cfg = EzroUI.db.profile.actionBars.keybindText
                     return cfg and cfg.offsetX or -2
                 end,
                 set = function(_, val)
-                    if not EzUI.db.profile.actionBars.keybindText then
-                        EzUI.db.profile.actionBars.keybindText = {}
+                    if not EzroUI.db.profile.actionBars.keybindText then
+                        EzroUI.db.profile.actionBars.keybindText = {}
                     end
-                    EzUI.db.profile.actionBars.keybindText.offsetX = val
-                    if EzUI.ActionBars and EzUI.ActionBars.RefreshAll then
-                        EzUI.ActionBars:RefreshAll()
+                    EzroUI.db.profile.actionBars.keybindText.offsetX = val
+                    if EzroUI.ActionBars and EzroUI.ActionBars.RefreshAll then
+                        EzroUI.ActionBars:RefreshAll()
                     end
                 end,
             },
@@ -555,16 +555,16 @@ local function CreateActionBarOptions()
                 order = 55,
                 width = "full",
                 get = function()
-                    local cfg = EzUI.db.profile.actionBars.keybindText
+                    local cfg = EzroUI.db.profile.actionBars.keybindText
                     return cfg and cfg.offsetY or -4
                 end,
                 set = function(_, val)
-                    if not EzUI.db.profile.actionBars.keybindText then
-                        EzUI.db.profile.actionBars.keybindText = {}
+                    if not EzroUI.db.profile.actionBars.keybindText then
+                        EzroUI.db.profile.actionBars.keybindText = {}
                     end
-                    EzUI.db.profile.actionBars.keybindText.offsetY = val
-                    if EzUI.ActionBars and EzUI.ActionBars.RefreshAll then
-                        EzUI.ActionBars:RefreshAll()
+                    EzroUI.db.profile.actionBars.keybindText.offsetY = val
+                    if EzroUI.ActionBars and EzroUI.ActionBars.RefreshAll then
+                        EzroUI.ActionBars:RefreshAll()
                     end
                 end,
             },
@@ -588,16 +588,16 @@ local function CreateActionBarOptions()
                 width = "full",
                 order = 61,
                 get = function()
-                    local cfg = EzUI.db.profile.actionBars.macroText
+                    local cfg = EzroUI.db.profile.actionBars.macroText
                     return cfg and cfg.hide or false
                 end,
                 set = function(_, val)
-                    if not EzUI.db.profile.actionBars.macroText then
-                        EzUI.db.profile.actionBars.macroText = {}
+                    if not EzroUI.db.profile.actionBars.macroText then
+                        EzroUI.db.profile.actionBars.macroText = {}
                     end
-                    EzUI.db.profile.actionBars.macroText.hide = val
-                    if EzUI.ActionBars and EzUI.ActionBars.RefreshAll then
-                        EzUI.ActionBars:RefreshAll()
+                    EzroUI.db.profile.actionBars.macroText.hide = val
+                    if EzroUI.ActionBars and EzroUI.ActionBars.RefreshAll then
+                        EzroUI.ActionBars:RefreshAll()
                     end
                 end,
             },
@@ -609,17 +609,17 @@ local function CreateActionBarOptions()
                 width = "full",
                 hasAlpha = true,
                 get = function()
-                    local cfg = EzUI.db.profile.actionBars.macroText
+                    local cfg = EzroUI.db.profile.actionBars.macroText
                     local c = cfg and cfg.fontColor or {1, 1, 1, 1}
                     return c[1], c[2], c[3], c[4] or 1
                 end,
                 set = function(_, r, g, b, a)
-                    if not EzUI.db.profile.actionBars.macroText then
-                        EzUI.db.profile.actionBars.macroText = {}
+                    if not EzroUI.db.profile.actionBars.macroText then
+                        EzroUI.db.profile.actionBars.macroText = {}
                     end
-                    EzUI.db.profile.actionBars.macroText.fontColor = { r, g, b, a or 1 }
-                    if EzUI.ActionBars and EzUI.ActionBars.RefreshAll then
-                        EzUI.ActionBars:RefreshAll()
+                    EzroUI.db.profile.actionBars.macroText.fontColor = { r, g, b, a or 1 }
+                    if EzroUI.ActionBars and EzroUI.ActionBars.RefreshAll then
+                        EzroUI.ActionBars:RefreshAll()
                     end
                 end,
             },
@@ -633,16 +633,16 @@ local function CreateActionBarOptions()
                 order = 63,
                 width = "full",
                 get = function()
-                    local cfg = EzUI.db.profile.actionBars.macroText
+                    local cfg = EzroUI.db.profile.actionBars.macroText
                     return cfg and cfg.fontSize or 10
                 end,
                 set = function(_, val)
-                    if not EzUI.db.profile.actionBars.macroText then
-                        EzUI.db.profile.actionBars.macroText = {}
+                    if not EzroUI.db.profile.actionBars.macroText then
+                        EzroUI.db.profile.actionBars.macroText = {}
                     end
-                    EzUI.db.profile.actionBars.macroText.fontSize = val
-                    if EzUI.ActionBars and EzUI.ActionBars.RefreshAll then
-                        EzUI.ActionBars:RefreshAll()
+                    EzroUI.db.profile.actionBars.macroText.fontSize = val
+                    if EzroUI.ActionBars and EzroUI.ActionBars.RefreshAll then
+                        EzroUI.ActionBars:RefreshAll()
                     end
                 end,
             },
@@ -656,16 +656,16 @@ local function CreateActionBarOptions()
                 order = 64,
                 width = "full",
                 get = function()
-                    local cfg = EzUI.db.profile.actionBars.macroText
+                    local cfg = EzroUI.db.profile.actionBars.macroText
                     return cfg and cfg.offsetX or 0
                 end,
                 set = function(_, val)
-                    if not EzUI.db.profile.actionBars.macroText then
-                        EzUI.db.profile.actionBars.macroText = {}
+                    if not EzroUI.db.profile.actionBars.macroText then
+                        EzroUI.db.profile.actionBars.macroText = {}
                     end
-                    EzUI.db.profile.actionBars.macroText.offsetX = val
-                    if EzUI.ActionBars and EzUI.ActionBars.RefreshAll then
-                        EzUI.ActionBars:RefreshAll()
+                    EzroUI.db.profile.actionBars.macroText.offsetX = val
+                    if EzroUI.ActionBars and EzroUI.ActionBars.RefreshAll then
+                        EzroUI.ActionBars:RefreshAll()
                     end
                 end,
             },
@@ -679,16 +679,16 @@ local function CreateActionBarOptions()
                 order = 65,
                 width = "full",
                 get = function()
-                    local cfg = EzUI.db.profile.actionBars.macroText
+                    local cfg = EzroUI.db.profile.actionBars.macroText
                     return cfg and cfg.offsetY or 2
                 end,
                 set = function(_, val)
-                    if not EzUI.db.profile.actionBars.macroText then
-                        EzUI.db.profile.actionBars.macroText = {}
+                    if not EzroUI.db.profile.actionBars.macroText then
+                        EzroUI.db.profile.actionBars.macroText = {}
                     end
-                    EzUI.db.profile.actionBars.macroText.offsetY = val
-                    if EzUI.ActionBars and EzUI.ActionBars.RefreshAll then
-                        EzUI.ActionBars:RefreshAll()
+                    EzroUI.db.profile.actionBars.macroText.offsetY = val
+                    if EzroUI.ActionBars and EzroUI.ActionBars.RefreshAll then
+                        EzroUI.ActionBars:RefreshAll()
                     end
                 end,
             },
@@ -712,16 +712,16 @@ local function CreateActionBarOptions()
                 width = "full",
                 order = 71,
                 get = function()
-                    local cfg = EzUI.db.profile.actionBars.countText
+                    local cfg = EzroUI.db.profile.actionBars.countText
                     return cfg and cfg.hide or false
                 end,
                 set = function(_, val)
-                    if not EzUI.db.profile.actionBars.countText then
-                        EzUI.db.profile.actionBars.countText = {}
+                    if not EzroUI.db.profile.actionBars.countText then
+                        EzroUI.db.profile.actionBars.countText = {}
                     end
-                    EzUI.db.profile.actionBars.countText.hide = val
-                    if EzUI.ActionBars and EzUI.ActionBars.RefreshAll then
-                        EzUI.ActionBars:RefreshAll()
+                    EzroUI.db.profile.actionBars.countText.hide = val
+                    if EzroUI.ActionBars and EzroUI.ActionBars.RefreshAll then
+                        EzroUI.ActionBars:RefreshAll()
                     end
                 end,
             },
@@ -733,17 +733,17 @@ local function CreateActionBarOptions()
                 width = "full",
                 hasAlpha = true,
                 get = function()
-                    local cfg = EzUI.db.profile.actionBars.countText
+                    local cfg = EzroUI.db.profile.actionBars.countText
                     local c = cfg and cfg.fontColor or {1, 1, 1, 1}
                     return c[1], c[2], c[3], c[4] or 1
                 end,
                 set = function(_, r, g, b, a)
-                    if not EzUI.db.profile.actionBars.countText then
-                        EzUI.db.profile.actionBars.countText = {}
+                    if not EzroUI.db.profile.actionBars.countText then
+                        EzroUI.db.profile.actionBars.countText = {}
                     end
-                    EzUI.db.profile.actionBars.countText.fontColor = { r, g, b, a or 1 }
-                    if EzUI.ActionBars and EzUI.ActionBars.RefreshAll then
-                        EzUI.ActionBars:RefreshAll()
+                    EzroUI.db.profile.actionBars.countText.fontColor = { r, g, b, a or 1 }
+                    if EzroUI.ActionBars and EzroUI.ActionBars.RefreshAll then
+                        EzroUI.ActionBars:RefreshAll()
                     end
                 end,
             },
@@ -757,16 +757,16 @@ local function CreateActionBarOptions()
                 order = 73,
                 width = "full",
                 get = function()
-                    local cfg = EzUI.db.profile.actionBars.countText
+                    local cfg = EzroUI.db.profile.actionBars.countText
                     return cfg and cfg.fontSize or 16
                 end,
                 set = function(_, val)
-                    if not EzUI.db.profile.actionBars.countText then
-                        EzUI.db.profile.actionBars.countText = {}
+                    if not EzroUI.db.profile.actionBars.countText then
+                        EzroUI.db.profile.actionBars.countText = {}
                     end
-                    EzUI.db.profile.actionBars.countText.fontSize = val
-                    if EzUI.ActionBars and EzUI.ActionBars.RefreshAll then
-                        EzUI.ActionBars:RefreshAll()
+                    EzroUI.db.profile.actionBars.countText.fontSize = val
+                    if EzroUI.ActionBars and EzroUI.ActionBars.RefreshAll then
+                        EzroUI.ActionBars:RefreshAll()
                     end
                 end,
             },
@@ -780,16 +780,16 @@ local function CreateActionBarOptions()
                 order = 74,
                 width = "full",
                 get = function()
-                    local cfg = EzUI.db.profile.actionBars.countText
+                    local cfg = EzroUI.db.profile.actionBars.countText
                     return cfg and cfg.offsetX or -2
                 end,
                 set = function(_, val)
-                    if not EzUI.db.profile.actionBars.countText then
-                        EzUI.db.profile.actionBars.countText = {}
+                    if not EzroUI.db.profile.actionBars.countText then
+                        EzroUI.db.profile.actionBars.countText = {}
                     end
-                    EzUI.db.profile.actionBars.countText.offsetX = val
-                    if EzUI.ActionBars and EzUI.ActionBars.RefreshAll then
-                        EzUI.ActionBars:RefreshAll()
+                    EzroUI.db.profile.actionBars.countText.offsetX = val
+                    if EzroUI.ActionBars and EzroUI.ActionBars.RefreshAll then
+                        EzroUI.ActionBars:RefreshAll()
                     end
                 end,
             },
@@ -803,16 +803,16 @@ local function CreateActionBarOptions()
                 order = 75,
                 width = "full",
                 get = function()
-                    local cfg = EzUI.db.profile.actionBars.countText
+                    local cfg = EzroUI.db.profile.actionBars.countText
                     return cfg and cfg.offsetY or 4
                 end,
                 set = function(_, val)
-                    if not EzUI.db.profile.actionBars.countText then
-                        EzUI.db.profile.actionBars.countText = {}
+                    if not EzroUI.db.profile.actionBars.countText then
+                        EzroUI.db.profile.actionBars.countText = {}
                     end
-                    EzUI.db.profile.actionBars.countText.offsetY = val
-                    if EzUI.ActionBars and EzUI.ActionBars.RefreshAll then
-                        EzUI.ActionBars:RefreshAll()
+                    EzroUI.db.profile.actionBars.countText.offsetY = val
+                    if EzroUI.ActionBars and EzroUI.ActionBars.RefreshAll then
+                        EzroUI.ActionBars:RefreshAll()
                     end
                 end,
             },
@@ -836,16 +836,16 @@ local function CreateActionBarOptions()
                         width = "full",
                         order = 11,
                         get = function()
-                            local procGlow = EzUI.db.profile.actionBars.procGlow
+                            local procGlow = EzroUI.db.profile.actionBars.procGlow
                             return procGlow and procGlow.enabled or false
                         end,
                         set = function(_, val)
-                            if not EzUI.db.profile.actionBars.procGlow then
-                                EzUI.db.profile.actionBars.procGlow = {}
+                            if not EzroUI.db.profile.actionBars.procGlow then
+                                EzroUI.db.profile.actionBars.procGlow = {}
                             end
-                            EzUI.db.profile.actionBars.procGlow.enabled = val
-                                    if EzUI.ActionBarGlow and EzUI.ActionBarGlow.RefreshAll then
-                                        EzUI.ActionBarGlow:RefreshAll()
+                            EzroUI.db.profile.actionBars.procGlow.enabled = val
+                                    if EzroUI.ActionBarGlow and EzroUI.ActionBarGlow.RefreshAll then
+                                        EzroUI.ActionBarGlow:RefreshAll()
                                     end
                         end,
                     },
@@ -863,24 +863,24 @@ local function CreateActionBarOptions()
                         width = "full",
                         values = function()
                             local result = {}
-                            if EzUI.ProcGlow and EzUI.ProcGlow.LibCustomGlowTypes then
-                                for _, glowType in ipairs(EzUI.ProcGlow.LibCustomGlowTypes) do
+                            if EzroUI.ProcGlow and EzroUI.ProcGlow.LibCustomGlowTypes then
+                                for _, glowType in ipairs(EzroUI.ProcGlow.LibCustomGlowTypes) do
                                     result[glowType] = glowType
                                 end
                             end
                             return result
                         end,
                         get = function()
-                            local procGlow = EzUI.db.profile.actionBars.procGlow
+                            local procGlow = EzroUI.db.profile.actionBars.procGlow
                             return (procGlow and procGlow.glowType) or "Pixel Glow"
                         end,
                         set = function(_, val)
-                            if not EzUI.db.profile.actionBars.procGlow then
-                                EzUI.db.profile.actionBars.procGlow = {}
+                            if not EzroUI.db.profile.actionBars.procGlow then
+                                EzroUI.db.profile.actionBars.procGlow = {}
                             end
-                            EzUI.db.profile.actionBars.procGlow.glowType = val
-                                    if EzUI.ActionBarGlow and EzUI.ActionBarGlow.RefreshAll then
-                                        EzUI.ActionBarGlow:RefreshAll()
+                            EzroUI.db.profile.actionBars.procGlow.glowType = val
+                                    if EzroUI.ActionBarGlow and EzroUI.ActionBarGlow.RefreshAll then
+                                        EzroUI.ActionBarGlow:RefreshAll()
                                     end
                         end,
                     },
@@ -892,17 +892,17 @@ local function CreateActionBarOptions()
                         width = "normal",
                         hasAlpha = true,
                         get = function()
-                            local procGlow = EzUI.db.profile.actionBars.procGlow
+                            local procGlow = EzroUI.db.profile.actionBars.procGlow
                             local color = (procGlow and procGlow.loopColor) or {0.95, 0.95, 0.32, 1}
                             return color[1], color[2], color[3], color[4] or 1
                         end,
                         set = function(_, r, g, b, a)
-                            if not EzUI.db.profile.actionBars.procGlow then
-                                EzUI.db.profile.actionBars.procGlow = {}
+                            if not EzroUI.db.profile.actionBars.procGlow then
+                                EzroUI.db.profile.actionBars.procGlow = {}
                             end
-                            EzUI.db.profile.actionBars.procGlow.loopColor = {r, g, b, a or 1}
-                                    if EzUI.ActionBarGlow and EzUI.ActionBarGlow.RefreshAll then
-                                        EzUI.ActionBarGlow:RefreshAll()
+                            EzroUI.db.profile.actionBars.procGlow.loopColor = {r, g, b, a or 1}
+                                    if EzroUI.ActionBarGlow and EzroUI.ActionBarGlow.RefreshAll then
+                                        EzroUI.ActionBarGlow:RefreshAll()
                                     end
                         end,
                     },
@@ -927,20 +927,20 @@ local function CreateActionBarOptions()
                         max = 30,
                         step = 1,
                         disabled = function()
-                            local procGlow = EzUI.db.profile.actionBars.procGlow
+                            local procGlow = EzroUI.db.profile.actionBars.procGlow
                             return not (procGlow and procGlow.glowType and procGlow.glowType ~= "Action Button Glow" and procGlow.glowType ~= "Proc Glow")
                         end,
                         get = function()
-                            local procGlow = EzUI.db.profile.actionBars.procGlow
+                            local procGlow = EzroUI.db.profile.actionBars.procGlow
                             return procGlow and procGlow.lcgLines or 14
                         end,
                         set = function(_, val)
-                            if not EzUI.db.profile.actionBars.procGlow then
-                                EzUI.db.profile.actionBars.procGlow = {}
+                            if not EzroUI.db.profile.actionBars.procGlow then
+                                EzroUI.db.profile.actionBars.procGlow = {}
                             end
-                            EzUI.db.profile.actionBars.procGlow.lcgLines = val
-                                    if EzUI.ActionBarGlow and EzUI.ActionBarGlow.RefreshAll then
-                                        EzUI.ActionBarGlow:RefreshAll()
+                            EzroUI.db.profile.actionBars.procGlow.lcgLines = val
+                                    if EzroUI.ActionBarGlow and EzroUI.ActionBarGlow.RefreshAll then
+                                        EzroUI.ActionBarGlow:RefreshAll()
                                     end
                         end,
                     },
@@ -954,16 +954,16 @@ local function CreateActionBarOptions()
                         max = 2.0,
                         step = 0.05,
                         get = function()
-                            local procGlow = EzUI.db.profile.actionBars.procGlow
+                            local procGlow = EzroUI.db.profile.actionBars.procGlow
                             return procGlow and procGlow.lcgFrequency or 0.25
                         end,
                         set = function(_, val)
-                            if not EzUI.db.profile.actionBars.procGlow then
-                                EzUI.db.profile.actionBars.procGlow = {}
+                            if not EzroUI.db.profile.actionBars.procGlow then
+                                EzroUI.db.profile.actionBars.procGlow = {}
                             end
-                            EzUI.db.profile.actionBars.procGlow.lcgFrequency = val
-                                    if EzUI.ActionBarGlow and EzUI.ActionBarGlow.RefreshAll then
-                                        EzUI.ActionBarGlow:RefreshAll()
+                            EzroUI.db.profile.actionBars.procGlow.lcgFrequency = val
+                                    if EzroUI.ActionBarGlow and EzroUI.ActionBarGlow.RefreshAll then
+                                        EzroUI.ActionBarGlow:RefreshAll()
                                     end
                         end,
                     },
@@ -977,20 +977,20 @@ local function CreateActionBarOptions()
                         max = 10,
                         step = 1,
                         disabled = function()
-                            local procGlow = EzUI.db.profile.actionBars.procGlow
+                            local procGlow = EzroUI.db.profile.actionBars.procGlow
                             return not (procGlow and procGlow.glowType == "Pixel Glow")
                         end,
                         get = function()
-                            local procGlow = EzUI.db.profile.actionBars.procGlow
+                            local procGlow = EzroUI.db.profile.actionBars.procGlow
                             return procGlow and procGlow.lcgThickness or 2
                         end,
                         set = function(_, val)
-                            if not EzUI.db.profile.actionBars.procGlow then
-                                EzUI.db.profile.actionBars.procGlow = {}
+                            if not EzroUI.db.profile.actionBars.procGlow then
+                                EzroUI.db.profile.actionBars.procGlow = {}
                             end
-                            EzUI.db.profile.actionBars.procGlow.lcgThickness = val
-                                    if EzUI.ActionBarGlow and EzUI.ActionBarGlow.RefreshAll then
-                                        EzUI.ActionBarGlow:RefreshAll()
+                            EzroUI.db.profile.actionBars.procGlow.lcgThickness = val
+                                    if EzroUI.ActionBarGlow and EzroUI.ActionBarGlow.RefreshAll then
+                                        EzroUI.ActionBarGlow:RefreshAll()
                                     end
                         end,
                     },

@@ -1,9 +1,9 @@
 ﻿local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
+local EzroUI = ns.Addon
 
-local UF = EzUI.UnitFrames
+local UF = EzroUI.UnitFrames
 if not UF then
-    error("EzUI: UnitFrames module not initialized! Load UnitFrames.lua first.")
+    error("EzroUI: UnitFrames module not initialized! Load UnitFrames.lua first.")
 end
 
 local ResolveFrameName = UF.ResolveFrameName
@@ -13,26 +13,26 @@ local SafeDisableMouse = UF.SafeDisableMouse
 local MakePlayerFrameClickthrough = UF.MakePlayerFrameClickthrough
 
 local function BeginRepositionGuard()
-    if UF.__EzUIRepositioning then
+    if UF.__EzroUIRepositioning then
         return false
     end
 
-    UF.__EzUIRepositioning = true
+    UF.__EzroUIRepositioning = true
     return true
 end
 
 local function EndRepositionGuard()
-    UF.__EzUIRepositioning = nil
+    UF.__EzroUIRepositioning = nil
 end
 
 local function HideEditModeSelectionFrame(selectionFrame)
-    if not selectionFrame or selectionFrame.__EzUISelectionHidden then return end
+    if not selectionFrame or selectionFrame.__EzroUISelectionHidden then return end
     
-    selectionFrame.__EzUISelectionHidden = true
+    selectionFrame.__EzroUISelectionHidden = true
     selectionFrame:Hide()
     
     selectionFrame:HookScript("OnShow", function(self)
-        local db = EzUI.db.profile.unitFrames
+        local db = EzroUI.db.profile.unitFrames
         if db and db.enabled then
             self:Hide()
         end
@@ -40,7 +40,7 @@ local function HideEditModeSelectionFrame(selectionFrame)
 end
 
 function UF:HideDefaultUnitFrames()
-    -- Make PlayerFrame clickthrough for all classes; mask it (always hide Blizzard PlayerFrame when EzUI Player is enabled)
+    -- Make PlayerFrame clickthrough for all classes; mask it (always hide Blizzard PlayerFrame when EzroUI Player is enabled)
     MakePlayerFrameClickthrough()
     MaskFrame(PlayerFrame)
     
@@ -159,7 +159,7 @@ function UF:RepositionAllUnitFrames()
         return
     end
     
-    local db = EzUI.db.profile.unitFrames
+    local db = EzroUI.db.profile.unitFrames
     if not db then return end
     
     local units = {"player", "target", "targettarget", "pet", "focus"}
@@ -177,7 +177,7 @@ end
 
 -- Hook EssentialCooldownViewer for player and target frames
 function UF:HookCooldownViewer()
-    local db = EzUI.db.profile.unitFrames
+    local db = EzroUI.db.profile.unitFrames
     if not db then return end
     
     -- Check if player or target has anchorToCooldown enabled
@@ -200,10 +200,10 @@ function UF:HookCooldownViewer()
     end
     
     -- If already hooked, return
-    if ecv.__EzUICooldownHooked then
+    if ecv.__EzroUICooldownHooked then
         return
     end
-    ecv.__EzUICooldownHooked = true
+    ecv.__EzroUICooldownHooked = true
     
     local function realign()
         if not BeginRepositionGuard() then
@@ -289,7 +289,7 @@ function UF:HookAnchorFrames()
                 break
             end
 
-            local db = EzUI.db.profile.unitFrames
+            local db = EzroUI.db.profile.unitFrames
             if not db then
                 break
             end
@@ -314,8 +314,8 @@ function UF:HookAnchorFrames()
     
     -- Hook common anchor frames
     local anchorFrames = {
-        "EzUI_Player",
-        "EzUI_Target",
+        "EzroUI_Player",
+        "EzroUI_Target",
         "EssentialCooldownViewer",
         "UtilityCooldownViewer",
         "BuffIconCooldownViewer",
@@ -323,8 +323,8 @@ function UF:HookAnchorFrames()
     
     for _, anchorName in ipairs(anchorFrames) do
         local anchor = _G[anchorName]
-        if anchor and not anchor.__EzUIAnchorHooked then
-            anchor.__EzUIAnchorHooked = true
+        if anchor and not anchor.__EzroUIAnchorHooked then
+            anchor.__EzroUIAnchorHooked = true
             anchor:HookScript("OnSizeChanged", RepositionAllFrames)
             anchor:HookScript("OnShow", RepositionAllFrames)
             anchor:HookScript("OnHide", RepositionAllFrames)

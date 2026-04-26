@@ -1,14 +1,14 @@
 ﻿--[[
-    EzUI Unit Frames - Profile Management
+    EzroUI Unit Frames - Profile Management
     Handles profile operations including save, load, import, and export
 ]]
 
 local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
+local EzroUI = ns.Addon
 
 -- Ensure PartyFrames module exists
-EzUI.PartyFrames = EzUI.PartyFrames or {}
-local UnitFrames = EzUI.PartyFrames
+EzroUI.PartyFrames = EzroUI.PartyFrames or {}
+local UnitFrames = EzroUI.PartyFrames
 
 -- ============================================================================
 -- BASE64 ENCODING/DECODING
@@ -120,7 +120,7 @@ function UnitFrames:ResetProfile(frameType)
         self:UpdateAllFrames()
     end
     
-    print("|cff00ff00EzUI:|r " .. (frameType == "raid" and "Raid" or "Party") .. " frame settings reset to defaults.")
+    print("|cff00ff00EzroUI:|r " .. (frameType == "raid" and "Raid" or "Party") .. " frame settings reset to defaults.")
 end
 
 --[[
@@ -164,7 +164,7 @@ function UnitFrames:CopyProfile(sourceType, targetType)
         self:UpdateAllFrames()
     end
     
-    print("|cff00ff00EzUI:|r Settings copied from " .. sourceType .. " to " .. targetType .. " frames.")
+    print("|cff00ff00EzroUI:|r Settings copied from " .. sourceType .. " to " .. targetType .. " frames.")
 end
 
 -- ============================================================================
@@ -206,7 +206,7 @@ function UnitFrames:SaveProfile(profileName, frameType)
     local profileKey = profileName .. "_" .. frameType
     self.db.profiles[profileKey] = self:DeepCopy(source)
     
-    print("|cff00ff00EzUI:|r Profile '" .. profileName .. "' saved for " .. frameType .. " frames.")
+    print("|cff00ff00EzroUI:|r Profile '" .. profileName .. "' saved for " .. frameType .. " frames.")
 end
 
 --[[
@@ -221,7 +221,7 @@ function UnitFrames:LoadProfile(profileName, frameType)
     local savedProfile = self.db.profiles[profileKey]
     
     if not savedProfile then
-        print("|cffff0000EzUI:|r Profile '" .. profileName .. "' not found.")
+        print("|cffff0000EzroUI:|r Profile '" .. profileName .. "' not found.")
         return
     end
     
@@ -259,7 +259,7 @@ function UnitFrames:LoadProfile(profileName, frameType)
         self:UpdateAllFrames()
     end
     
-    print("|cff00ff00EzUI:|r Profile '" .. profileName .. "' loaded for " .. frameType .. " frames.")
+    print("|cff00ff00EzroUI:|r Profile '" .. profileName .. "' loaded for " .. frameType .. " frames.")
 end
 
 --[[
@@ -274,7 +274,7 @@ function UnitFrames:DeleteProfile(profileName, frameType)
     
     if self.db.profiles[profileKey] then
         self.db.profiles[profileKey] = nil
-        print("|cff00ff00EzUI:|r Profile '" .. profileName .. "' deleted.")
+        print("|cff00ff00EzroUI:|r Profile '" .. profileName .. "' deleted.")
     end
 end
 
@@ -291,14 +291,14 @@ function UnitFrames:DuplicateProfile(sourceName, newName, frameType)
     local sourceProfile = self.db.profiles[sourceKey]
     
     if not sourceProfile then
-        print("|cffff0000EzUI:|r Source profile '" .. sourceName .. "' not found.")
+        print("|cffff0000EzroUI:|r Source profile '" .. sourceName .. "' not found.")
         return
     end
     
     local newKey = newName .. "_" .. frameType
     self.db.profiles[newKey] = self:DeepCopy(sourceProfile)
     
-    print("|cff00ff00EzUI:|r Profile '" .. sourceName .. "' duplicated as '" .. newName .. "'.")
+    print("|cff00ff00EzroUI:|r Profile '" .. sourceName .. "' duplicated as '" .. newName .. "'.")
 end
 
 -- ============================================================================
@@ -317,7 +317,7 @@ function UnitFrames:ExportProfile(categories, frameTypes, profileName)
     local LibDeflate = LibStub and LibStub("LibDeflate", true)
     
     if not LibSerialize or not LibDeflate then
-        print("|cffff0000EzUI:|r Export requires LibSerialize and LibDeflate.")
+        print("|cffff0000EzroUI:|r Export requires LibSerialize and LibDeflate.")
         return nil
     end
     
@@ -411,7 +411,7 @@ function UnitFrames:ImportProfile(importString, targetType)
     local success, importData = self:ValidateImportString(importString)
     
     if not success then
-        print("|cffff0000EzUI:|r " .. (importData or "Import failed."))
+        print("|cffff0000EzroUI:|r " .. (importData or "Import failed."))
         return false
     end
     
@@ -461,7 +461,7 @@ function UnitFrames:ImportProfile(importString, targetType)
         self:UpdateAllFrames()
     end
     
-    print("|cff00ff00EzUI:|r Profile imported successfully.")
+    print("|cff00ff00EzroUI:|r Profile imported successfully.")
     return true
 end
 

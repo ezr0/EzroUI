@@ -1,5 +1,5 @@
 ﻿local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
+local EzroUI = ns.Addon
 
 local function CreateCustomBuffOptions()
     return {

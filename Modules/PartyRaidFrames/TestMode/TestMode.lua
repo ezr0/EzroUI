@@ -1,12 +1,12 @@
 ﻿--[[
-    EzUI Unit Frames - Test Mode
+    EzroUI Unit Frames - Test Mode
     Provides preview/test mode for configuring frames outside of groups
 ]]
 
 local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
-EzUI.PartyFrames = EzUI.PartyFrames or {}
-local UnitFrames = EzUI.PartyFrames
+local EzroUI = ns.Addon
+EzroUI.PartyFrames = EzroUI.PartyFrames or {}
+local UnitFrames = EzroUI.PartyFrames
 
 -- Cache commonly used API
 local CreateFrame = CreateFrame
@@ -186,7 +186,7 @@ function UnitFrames:EnableTestMode(mode)
     end
     
     local modeText = wantsRaid and "raid" or "party"
-    self:Print("Test mode (" .. modeText .. ") enabled. Use /EzUI testmode to disable.")
+    self:Print("Test mode (" .. modeText .. ") enabled. Use /EzroUI testmode to disable.")
 end
 
 --[[
@@ -831,8 +831,8 @@ end
 -- ============================================================================
 
 -- Register slash command for test mode
-SLASH_EzUITEST1 = "/EzUItest"
-SlashCmdList["EzUITEST"] = function(msg)
+SLASH_EzroUITEST1 = "/EzroUItest"
+SlashCmdList["EzroUITEST"] = function(msg)
     msg = msg:lower():trim()
     
     if msg == "party" then
@@ -854,13 +854,13 @@ SlashCmdList["EzUITEST"] = function(msg)
         -- Disable all test modes
         UnitFrames:DisableTestMode()
     else
-        print("EzUI Test Mode Commands:")
-        print("  /EzUItest - Toggle party test mode")
-        print("  /EzUItest party - Toggle party test frames")
-        print("  /EzUItest raid - Toggle raid test frames")
-        print("  /EzUItest both - Enable both party and raid test modes")
-        print("  /EzUItest animate - Start animated test")
-        print("  /EzUItest stop - Stop animated test")
-        print("  /EzUItest off - Disable all test modes")
+        print("EzroUI Test Mode Commands:")
+        print("  /EzroUItest - Toggle party test mode")
+        print("  /EzroUItest party - Toggle party test frames")
+        print("  /EzroUItest raid - Toggle raid test frames")
+        print("  /EzroUItest both - Enable both party and raid test modes")
+        print("  /EzroUItest animate - Start animated test")
+        print("  /EzroUItest stop - Stop animated test")
+        print("  /EzroUItest off - Disable all test modes")
     end
 end

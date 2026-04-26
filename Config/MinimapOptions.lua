@@ -1,5 +1,5 @@
 ﻿local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
+local EzroUI = ns.Addon
 
 local function CreateMinimapOptions()
     return {
@@ -27,19 +27,19 @@ local function CreateMinimapOptions()
                 width = "full",
                 order = 2,
                 get = function()
-                    if not EzUI.db or not EzUI.db.profile or not EzUI.db.profile.minimap then
+                    if not EzroUI.db or not EzroUI.db.profile or not EzroUI.db.profile.minimap then
                         return true
                     end
-                    return EzUI.db.profile.minimap.enabled
+                    return EzroUI.db.profile.minimap.enabled
                 end,
                 set = function(_, val)
-                    if not EzUI.db or not EzUI.db.profile then return end
-                    if not EzUI.db.profile.minimap then
-                        EzUI.db.profile.minimap = {}
+                    if not EzroUI.db or not EzroUI.db.profile then return end
+                    if not EzroUI.db.profile.minimap then
+                        EzroUI.db.profile.minimap = {}
                     end
-                    EzUI.db.profile.minimap.enabled = val
-                    if EzUI.Minimap and EzUI.Minimap.Refresh then
-                        EzUI.Minimap:Refresh()
+                    EzroUI.db.profile.minimap.enabled = val
+                    if EzroUI.Minimap and EzroUI.Minimap.Refresh then
+                        EzroUI.Minimap:Refresh()
                     end
                 end,
             },
@@ -60,19 +60,19 @@ local function CreateMinimapOptions()
                 max = 400,
                 step = 1,
                 get = function()
-                    if not EzUI.db or not EzUI.db.profile or not EzUI.db.profile.minimap then
+                    if not EzroUI.db or not EzroUI.db.profile or not EzroUI.db.profile.minimap then
                         return 200
                     end
-                    return EzUI.db.profile.minimap.size or 200
+                    return EzroUI.db.profile.minimap.size or 200
                 end,
                 set = function(_, val)
-                    if not EzUI.db or not EzUI.db.profile then return end
-                    if not EzUI.db.profile.minimap then
-                        EzUI.db.profile.minimap = {}
+                    if not EzroUI.db or not EzroUI.db.profile then return end
+                    if not EzroUI.db.profile.minimap then
+                        EzroUI.db.profile.minimap = {}
                     end
-                    EzUI.db.profile.minimap.size = val
-                    if EzUI.Minimap and EzUI.Minimap.Refresh then
-                        EzUI.Minimap:Refresh()
+                    EzroUI.db.profile.minimap.size = val
+                    if EzroUI.Minimap and EzroUI.Minimap.Refresh then
+                        EzroUI.Minimap:Refresh()
                     end
                 end,
             },
@@ -87,19 +87,19 @@ local function CreateMinimapOptions()
                 max = 10,
                 step = 1,
                 get = function()
-                    if not EzUI.db or not EzUI.db.profile or not EzUI.db.profile.minimap then
+                    if not EzroUI.db or not EzroUI.db.profile or not EzroUI.db.profile.minimap then
                         return 1
                     end
-                    return EzUI.db.profile.minimap.borderSize or 1
+                    return EzroUI.db.profile.minimap.borderSize or 1
                 end,
                 set = function(_, val)
-                    if not EzUI.db or not EzUI.db.profile then return end
-                    if not EzUI.db.profile.minimap then
-                        EzUI.db.profile.minimap = {}
+                    if not EzroUI.db or not EzroUI.db.profile then return end
+                    if not EzroUI.db.profile.minimap then
+                        EzroUI.db.profile.minimap = {}
                     end
-                    EzUI.db.profile.minimap.borderSize = val
-                    if EzUI.Minimap and EzUI.Minimap.Refresh then
-                        EzUI.Minimap:Refresh()
+                    EzroUI.db.profile.minimap.borderSize = val
+                    if EzroUI.Minimap and EzroUI.Minimap.Refresh then
+                        EzroUI.Minimap:Refresh()
                     end
                 end,
             },
@@ -111,19 +111,19 @@ local function CreateMinimapOptions()
                 width = "full",
                 order = 13,
                 get = function()
-                    if not EzUI.db or not EzUI.db.profile or not EzUI.db.profile.minimap then
+                    if not EzroUI.db or not EzroUI.db.profile or not EzroUI.db.profile.minimap then
                         return false
                     end
-                    return EzUI.db.profile.minimap.lock or false
+                    return EzroUI.db.profile.minimap.lock or false
                 end,
                 set = function(_, val)
-                    if not EzUI.db or not EzUI.db.profile then return end
-                    if not EzUI.db.profile.minimap then
-                        EzUI.db.profile.minimap = {}
+                    if not EzroUI.db or not EzroUI.db.profile then return end
+                    if not EzroUI.db.profile.minimap then
+                        EzroUI.db.profile.minimap = {}
                     end
-                    EzUI.db.profile.minimap.lock = val
-                    if EzUI.Minimap and EzUI.Minimap.Refresh then
-                        EzUI.Minimap:Refresh()
+                    EzroUI.db.profile.minimap.lock = val
+                    if EzroUI.Minimap and EzroUI.Minimap.Refresh then
+                        EzroUI.Minimap:Refresh()
                     end
                 end,
             },
@@ -138,19 +138,19 @@ local function CreateMinimapOptions()
                 max = 2.0,
                 step = 0.1,
                 get = function()
-                    if not EzUI.db or not EzUI.db.profile or not EzUI.db.profile.minimap then
+                    if not EzroUI.db or not EzroUI.db.profile or not EzroUI.db.profile.minimap then
                         return 1
                     end
-                    return EzUI.db.profile.minimap.scale or 1
+                    return EzroUI.db.profile.minimap.scale or 1
                 end,
                 set = function(_, val)
-                    if not EzUI.db or not EzUI.db.profile then return end
-                    if not EzUI.db.profile.minimap then
-                        EzUI.db.profile.minimap = {}
+                    if not EzroUI.db or not EzroUI.db.profile then return end
+                    if not EzroUI.db.profile.minimap then
+                        EzroUI.db.profile.minimap = {}
                     end
-                    EzUI.db.profile.minimap.scale = val
-                    if EzUI.Minimap and EzUI.Minimap.Refresh then
-                        EzUI.Minimap:Refresh()
+                    EzroUI.db.profile.minimap.scale = val
+                    if EzroUI.Minimap and EzroUI.Minimap.Refresh then
+                        EzroUI.Minimap:Refresh()
                     end
                 end,
             },
@@ -162,19 +162,19 @@ local function CreateMinimapOptions()
                 width = "full",
                 order = 15,
                 get = function()
-                    if not EzUI.db or not EzUI.db.profile or not EzUI.db.profile.minimap then
+                    if not EzroUI.db or not EzroUI.db.profile or not EzroUI.db.profile.minimap then
                         return true
                     end
-                    return EzUI.db.profile.minimap.autoZoom ~= false
+                    return EzroUI.db.profile.minimap.autoZoom ~= false
                 end,
                 set = function(_, val)
-                    if not EzUI.db or not EzUI.db.profile then return end
-                    if not EzUI.db.profile.minimap then
-                        EzUI.db.profile.minimap = {}
+                    if not EzroUI.db or not EzroUI.db.profile then return end
+                    if not EzroUI.db.profile.minimap then
+                        EzroUI.db.profile.minimap = {}
                     end
-                    EzUI.db.profile.minimap.autoZoom = val
-                    if EzUI.Minimap and EzUI.Minimap.Refresh then
-                        EzUI.Minimap:Refresh()
+                    EzroUI.db.profile.minimap.autoZoom = val
+                    if EzroUI.Minimap and EzroUI.Minimap.Refresh then
+                        EzroUI.Minimap:Refresh()
                     end
                 end,
             },
@@ -186,19 +186,19 @@ local function CreateMinimapOptions()
                 width = "full",
                 order = 16,
                 get = function()
-                    if not EzUI.db or not EzUI.db.profile or not EzUI.db.profile.minimap then
+                    if not EzroUI.db or not EzroUI.db.profile or not EzroUI.db.profile.minimap then
                         return true
                     end
-                    return EzUI.db.profile.minimap.mouseWheelZoom ~= false
+                    return EzroUI.db.profile.minimap.mouseWheelZoom ~= false
                 end,
                 set = function(_, val)
-                    if not EzUI.db or not EzUI.db.profile then return end
-                    if not EzUI.db.profile.minimap then
-                        EzUI.db.profile.minimap = {}
+                    if not EzroUI.db or not EzroUI.db.profile then return end
+                    if not EzroUI.db.profile.minimap then
+                        EzroUI.db.profile.minimap = {}
                     end
-                    EzUI.db.profile.minimap.mouseWheelZoom = val
-                    if EzUI.Minimap and EzUI.Minimap.Refresh then
-                        EzUI.Minimap:Refresh()
+                    EzroUI.db.profile.minimap.mouseWheelZoom = val
+                    if EzroUI.Minimap and EzroUI.Minimap.Refresh then
+                        EzroUI.Minimap:Refresh()
                     end
                 end,
             },
@@ -210,19 +210,19 @@ local function CreateMinimapOptions()
                 width = "full",
                 order = 17,
                 get = function()
-                    if not EzUI.db or not EzUI.db.profile or not EzUI.db.profile.minimap then
+                    if not EzroUI.db or not EzroUI.db.profile or not EzroUI.db.profile.minimap then
                         return false
                     end
-                    return EzUI.db.profile.minimap.hideZoomButtons or false
+                    return EzroUI.db.profile.minimap.hideZoomButtons or false
                 end,
                 set = function(_, val)
-                    if not EzUI.db or not EzUI.db.profile then return end
-                    if not EzUI.db.profile.minimap then
-                        EzUI.db.profile.minimap = {}
+                    if not EzroUI.db or not EzroUI.db.profile then return end
+                    if not EzroUI.db.profile.minimap then
+                        EzroUI.db.profile.minimap = {}
                     end
-                    EzUI.db.profile.minimap.hideZoomButtons = val
-                    if EzUI.Minimap and EzUI.Minimap.Refresh then
-                        EzUI.Minimap:Refresh()
+                    EzroUI.db.profile.minimap.hideZoomButtons = val
+                    if EzroUI.Minimap and EzroUI.Minimap.Refresh then
+                        EzroUI.Minimap:Refresh()
                     end
                 end,
             },
@@ -246,22 +246,22 @@ local function CreateMinimapOptions()
                 width = "full",
                 order = 21,
                 get = function()
-                    if not EzUI.db or not EzUI.db.profile or not EzUI.db.profile.minimap or not EzUI.db.profile.minimap.zoneText then
+                    if not EzroUI.db or not EzroUI.db.profile or not EzroUI.db.profile.minimap or not EzroUI.db.profile.minimap.zoneText then
                         return true
                     end
-                    return EzUI.db.profile.minimap.zoneText.enabled
+                    return EzroUI.db.profile.minimap.zoneText.enabled
                 end,
                 set = function(_, val)
-                    if not EzUI.db or not EzUI.db.profile then return end
-                    if not EzUI.db.profile.minimap then
-                        EzUI.db.profile.minimap = {}
+                    if not EzroUI.db or not EzroUI.db.profile then return end
+                    if not EzroUI.db.profile.minimap then
+                        EzroUI.db.profile.minimap = {}
                     end
-                    if not EzUI.db.profile.minimap.zoneText then
-                        EzUI.db.profile.minimap.zoneText = {}
+                    if not EzroUI.db.profile.minimap.zoneText then
+                        EzroUI.db.profile.minimap.zoneText = {}
                     end
-                    EzUI.db.profile.minimap.zoneText.enabled = val
-                    if EzUI.Minimap and EzUI.Minimap.Refresh then
-                        EzUI.Minimap:Refresh()
+                    EzroUI.db.profile.minimap.zoneText.enabled = val
+                    if EzroUI.Minimap and EzroUI.Minimap.Refresh then
+                        EzroUI.Minimap:Refresh()
                     end
                 end,
             },
@@ -276,22 +276,22 @@ local function CreateMinimapOptions()
                 max = 24,
                 step = 1,
                 get = function()
-                    if not EzUI.db or not EzUI.db.profile or not EzUI.db.profile.minimap or not EzUI.db.profile.minimap.zoneText then
+                    if not EzroUI.db or not EzroUI.db.profile or not EzroUI.db.profile.minimap or not EzroUI.db.profile.minimap.zoneText then
                         return 14
                     end
-                    return EzUI.db.profile.minimap.zoneText.fontSize or 14
+                    return EzroUI.db.profile.minimap.zoneText.fontSize or 14
                 end,
                 set = function(_, val)
-                    if not EzUI.db or not EzUI.db.profile then return end
-                    if not EzUI.db.profile.minimap then
-                        EzUI.db.profile.minimap = {}
+                    if not EzroUI.db or not EzroUI.db.profile then return end
+                    if not EzroUI.db.profile.minimap then
+                        EzroUI.db.profile.minimap = {}
                     end
-                    if not EzUI.db.profile.minimap.zoneText then
-                        EzUI.db.profile.minimap.zoneText = {}
+                    if not EzroUI.db.profile.minimap.zoneText then
+                        EzroUI.db.profile.minimap.zoneText = {}
                     end
-                    EzUI.db.profile.minimap.zoneText.fontSize = val
-                    if EzUI.Minimap and EzUI.Minimap.Refresh then
-                        EzUI.Minimap:Refresh()
+                    EzroUI.db.profile.minimap.zoneText.fontSize = val
+                    if EzroUI.Minimap and EzroUI.Minimap.Refresh then
+                        EzroUI.Minimap:Refresh()
                     end
                 end,
             },
@@ -314,22 +314,22 @@ local function CreateMinimapOptions()
                     ["Bottom Left"] = "Bottom Left",
                 },
                 get = function()
-                    if not EzUI.db or not EzUI.db.profile or not EzUI.db.profile.minimap or not EzUI.db.profile.minimap.zoneText then
+                    if not EzroUI.db or not EzroUI.db.profile or not EzroUI.db.profile.minimap or not EzroUI.db.profile.minimap.zoneText then
                         return "Top"
                     end
-                    return EzUI.db.profile.minimap.zoneText.anchor or "Top"
+                    return EzroUI.db.profile.minimap.zoneText.anchor or "Top"
                 end,
                 set = function(_, val)
-                    if not EzUI.db or not EzUI.db.profile then return end
-                    if not EzUI.db.profile.minimap then
-                        EzUI.db.profile.minimap = {}
+                    if not EzroUI.db or not EzroUI.db.profile then return end
+                    if not EzroUI.db.profile.minimap then
+                        EzroUI.db.profile.minimap = {}
                     end
-                    if not EzUI.db.profile.minimap.zoneText then
-                        EzUI.db.profile.minimap.zoneText = {}
+                    if not EzroUI.db.profile.minimap.zoneText then
+                        EzroUI.db.profile.minimap.zoneText = {}
                     end
-                    EzUI.db.profile.minimap.zoneText.anchor = val
-                    if EzUI.Minimap and EzUI.Minimap.Refresh then
-                        EzUI.Minimap:Refresh()
+                    EzroUI.db.profile.minimap.zoneText.anchor = val
+                    if EzroUI.Minimap and EzroUI.Minimap.Refresh then
+                        EzroUI.Minimap:Refresh()
                     end
                 end,
             },
@@ -344,22 +344,22 @@ local function CreateMinimapOptions()
                 max = 200,
                 step = 1,
                 get = function()
-                    if not EzUI.db or not EzUI.db.profile or not EzUI.db.profile.minimap or not EzUI.db.profile.minimap.zoneText then
+                    if not EzroUI.db or not EzroUI.db.profile or not EzroUI.db.profile.minimap or not EzroUI.db.profile.minimap.zoneText then
                         return 0
                     end
-                    return EzUI.db.profile.minimap.zoneText.offsetX or 0
+                    return EzroUI.db.profile.minimap.zoneText.offsetX or 0
                 end,
                 set = function(_, val)
-                    if not EzUI.db or not EzUI.db.profile then return end
-                    if not EzUI.db.profile.minimap then
-                        EzUI.db.profile.minimap = {}
+                    if not EzroUI.db or not EzroUI.db.profile then return end
+                    if not EzroUI.db.profile.minimap then
+                        EzroUI.db.profile.minimap = {}
                     end
-                    if not EzUI.db.profile.minimap.zoneText then
-                        EzUI.db.profile.minimap.zoneText = {}
+                    if not EzroUI.db.profile.minimap.zoneText then
+                        EzroUI.db.profile.minimap.zoneText = {}
                     end
-                    EzUI.db.profile.minimap.zoneText.offsetX = val
-                    if EzUI.Minimap and EzUI.Minimap.Refresh then
-                        EzUI.Minimap:Refresh()
+                    EzroUI.db.profile.minimap.zoneText.offsetX = val
+                    if EzroUI.Minimap and EzroUI.Minimap.Refresh then
+                        EzroUI.Minimap:Refresh()
                     end
                 end,
             },
@@ -374,22 +374,22 @@ local function CreateMinimapOptions()
                 max = 200,
                 step = 1,
                 get = function()
-                    if not EzUI.db or not EzUI.db.profile or not EzUI.db.profile.minimap or not EzUI.db.profile.minimap.zoneText then
+                    if not EzroUI.db or not EzroUI.db.profile or not EzroUI.db.profile.minimap or not EzroUI.db.profile.minimap.zoneText then
                         return -5
                     end
-                    return EzUI.db.profile.minimap.zoneText.offsetY or -5
+                    return EzroUI.db.profile.minimap.zoneText.offsetY or -5
                 end,
                 set = function(_, val)
-                    if not EzUI.db or not EzUI.db.profile then return end
-                    if not EzUI.db.profile.minimap then
-                        EzUI.db.profile.minimap = {}
+                    if not EzroUI.db or not EzroUI.db.profile then return end
+                    if not EzroUI.db.profile.minimap then
+                        EzroUI.db.profile.minimap = {}
                     end
-                    if not EzUI.db.profile.minimap.zoneText then
-                        EzUI.db.profile.minimap.zoneText = {}
+                    if not EzroUI.db.profile.minimap.zoneText then
+                        EzroUI.db.profile.minimap.zoneText = {}
                     end
-                    EzUI.db.profile.minimap.zoneText.offsetY = val
-                    if EzUI.Minimap and EzUI.Minimap.Refresh then
-                        EzUI.Minimap:Refresh()
+                    EzroUI.db.profile.minimap.zoneText.offsetY = val
+                    if EzroUI.Minimap and EzroUI.Minimap.Refresh then
+                        EzroUI.Minimap:Refresh()
                     end
                 end,
             },
@@ -401,22 +401,22 @@ local function CreateMinimapOptions()
                 width = "full",
                 order = 26,
                 get = function()
-                    if not EzUI.db or not EzUI.db.profile or not EzUI.db.profile.minimap or not EzUI.db.profile.minimap.zoneText then
+                    if not EzroUI.db or not EzroUI.db.profile or not EzroUI.db.profile.minimap or not EzroUI.db.profile.minimap.zoneText then
                         return false
                     end
-                    return EzUI.db.profile.minimap.zoneText.useCustomColor or false
+                    return EzroUI.db.profile.minimap.zoneText.useCustomColor or false
                 end,
                 set = function(_, val)
-                    if not EzUI.db or not EzUI.db.profile then return end
-                    if not EzUI.db.profile.minimap then
-                        EzUI.db.profile.minimap = {}
+                    if not EzroUI.db or not EzroUI.db.profile then return end
+                    if not EzroUI.db.profile.minimap then
+                        EzroUI.db.profile.minimap = {}
                     end
-                    if not EzUI.db.profile.minimap.zoneText then
-                        EzUI.db.profile.minimap.zoneText = {}
+                    if not EzroUI.db.profile.minimap.zoneText then
+                        EzroUI.db.profile.minimap.zoneText = {}
                     end
-                    EzUI.db.profile.minimap.zoneText.useCustomColor = val
-                    if EzUI.Minimap and EzUI.Minimap.Refresh then
-                        EzUI.Minimap:Refresh()
+                    EzroUI.db.profile.minimap.zoneText.useCustomColor = val
+                    if EzroUI.Minimap and EzroUI.Minimap.Refresh then
+                        EzroUI.Minimap:Refresh()
                     end
                 end,
             },
@@ -429,23 +429,23 @@ local function CreateMinimapOptions()
                 width = "full",
                 hasAlpha = true,
                 get = function()
-                    if not EzUI.db or not EzUI.db.profile or not EzUI.db.profile.minimap or not EzUI.db.profile.minimap.zoneText then
+                    if not EzroUI.db or not EzroUI.db.profile or not EzroUI.db.profile.minimap or not EzroUI.db.profile.minimap.zoneText then
                         return 1, 0.82, 0, 1
                     end
-                    local c = EzUI.db.profile.minimap.zoneText.color or {1, 0.82, 0, 1}
+                    local c = EzroUI.db.profile.minimap.zoneText.color or {1, 0.82, 0, 1}
                     return c[1], c[2], c[3], c[4] or 1
                 end,
                 set = function(_, r, g, b, a)
-                    if not EzUI.db or not EzUI.db.profile then return end
-                    if not EzUI.db.profile.minimap then
-                        EzUI.db.profile.minimap = {}
+                    if not EzroUI.db or not EzroUI.db.profile then return end
+                    if not EzroUI.db.profile.minimap then
+                        EzroUI.db.profile.minimap = {}
                     end
-                    if not EzUI.db.profile.minimap.zoneText then
-                        EzUI.db.profile.minimap.zoneText = {}
+                    if not EzroUI.db.profile.minimap.zoneText then
+                        EzroUI.db.profile.minimap.zoneText = {}
                     end
-                    EzUI.db.profile.minimap.zoneText.color = {r, g, b, a or 1}
-                    if EzUI.Minimap and EzUI.Minimap.Refresh then
-                        EzUI.Minimap:Refresh()
+                    EzroUI.db.profile.minimap.zoneText.color = {r, g, b, a or 1}
+                    if EzroUI.Minimap and EzroUI.Minimap.Refresh then
+                        EzroUI.Minimap:Refresh()
                     end
                 end,
             },
@@ -475,22 +475,22 @@ local function CreateMinimapOptions()
                 width = "full",
                 order = 51,
                 get = function()
-                    if not EzUI.db or not EzUI.db.profile or not EzUI.db.profile.minimap or not EzUI.db.profile.minimap.clock then
+                    if not EzroUI.db or not EzroUI.db.profile or not EzroUI.db.profile.minimap or not EzroUI.db.profile.minimap.clock then
                         return false
                     end
-                    return EzUI.db.profile.minimap.clock.enabled or false
+                    return EzroUI.db.profile.minimap.clock.enabled or false
                 end,
                 set = function(_, val)
-                    if not EzUI.db or not EzUI.db.profile then return end
-                    if not EzUI.db.profile.minimap then
-                        EzUI.db.profile.minimap = {}
+                    if not EzroUI.db or not EzroUI.db.profile then return end
+                    if not EzroUI.db.profile.minimap then
+                        EzroUI.db.profile.minimap = {}
                     end
-                    if not EzUI.db.profile.minimap.clock then
-                        EzUI.db.profile.minimap.clock = {}
+                    if not EzroUI.db.profile.minimap.clock then
+                        EzroUI.db.profile.minimap.clock = {}
                     end
-                    EzUI.db.profile.minimap.clock.enabled = val
-                    if EzUI.Minimap and EzUI.Minimap.Refresh then
-                        EzUI.Minimap:Refresh()
+                    EzroUI.db.profile.minimap.clock.enabled = val
+                    if EzroUI.Minimap and EzroUI.Minimap.Refresh then
+                        EzroUI.Minimap:Refresh()
                     end
                 end,
             },
@@ -506,22 +506,22 @@ local function CreateMinimapOptions()
                     ["local"] = "Local Time",
                 },
                 get = function()
-                    if not EzUI.db or not EzUI.db.profile or not EzUI.db.profile.minimap or not EzUI.db.profile.minimap.clock then
+                    if not EzroUI.db or not EzroUI.db.profile or not EzroUI.db.profile.minimap or not EzroUI.db.profile.minimap.clock then
                         return "server"
                     end
-                    return EzUI.db.profile.minimap.clock.timeSource or "server"
+                    return EzroUI.db.profile.minimap.clock.timeSource or "server"
                 end,
                 set = function(_, val)
-                    if not EzUI.db or not EzUI.db.profile then return end
-                    if not EzUI.db.profile.minimap then
-                        EzUI.db.profile.minimap = {}
+                    if not EzroUI.db or not EzroUI.db.profile then return end
+                    if not EzroUI.db.profile.minimap then
+                        EzroUI.db.profile.minimap = {}
                     end
-                    if not EzUI.db.profile.minimap.clock then
-                        EzUI.db.profile.minimap.clock = {}
+                    if not EzroUI.db.profile.minimap.clock then
+                        EzroUI.db.profile.minimap.clock = {}
                     end
-                    EzUI.db.profile.minimap.clock.timeSource = val
-                    if EzUI.Minimap and EzUI.Minimap.Refresh then
-                        EzUI.Minimap:Refresh()
+                    EzroUI.db.profile.minimap.clock.timeSource = val
+                    if EzroUI.Minimap and EzroUI.Minimap.Refresh then
+                        EzroUI.Minimap:Refresh()
                     end
                 end,
             },
@@ -533,22 +533,22 @@ local function CreateMinimapOptions()
                 width = "full",
                 order = 51.3,
                 get = function()
-                    if not EzUI.db or not EzUI.db.profile or not EzUI.db.profile.minimap or not EzUI.db.profile.minimap.clock then
+                    if not EzroUI.db or not EzroUI.db.profile or not EzroUI.db.profile.minimap or not EzroUI.db.profile.minimap.clock then
                         return false
                     end
-                    return EzUI.db.profile.minimap.clock.useMilitaryTime or false
+                    return EzroUI.db.profile.minimap.clock.useMilitaryTime or false
                 end,
                 set = function(_, val)
-                    if not EzUI.db or not EzUI.db.profile then return end
-                    if not EzUI.db.profile.minimap then
-                        EzUI.db.profile.minimap = {}
+                    if not EzroUI.db or not EzroUI.db.profile then return end
+                    if not EzroUI.db.profile.minimap then
+                        EzroUI.db.profile.minimap = {}
                     end
-                    if not EzUI.db.profile.minimap.clock then
-                        EzUI.db.profile.minimap.clock = {}
+                    if not EzroUI.db.profile.minimap.clock then
+                        EzroUI.db.profile.minimap.clock = {}
                     end
-                    EzUI.db.profile.minimap.clock.useMilitaryTime = val
-                    if EzUI.Minimap and EzUI.Minimap.Refresh then
-                        EzUI.Minimap:Refresh()
+                    EzroUI.db.profile.minimap.clock.useMilitaryTime = val
+                    if EzroUI.Minimap and EzroUI.Minimap.Refresh then
+                        EzroUI.Minimap:Refresh()
                     end
                 end,
             },
@@ -563,22 +563,22 @@ local function CreateMinimapOptions()
                 max = 24,
                 step = 1,
                 get = function()
-                    if not EzUI.db or not EzUI.db.profile or not EzUI.db.profile.minimap or not EzUI.db.profile.minimap.clock then
+                    if not EzroUI.db or not EzroUI.db.profile or not EzroUI.db.profile.minimap or not EzroUI.db.profile.minimap.clock then
                         return 12
                     end
-                    return EzUI.db.profile.minimap.clock.fontSize or 12
+                    return EzroUI.db.profile.minimap.clock.fontSize or 12
                 end,
                 set = function(_, val)
-                    if not EzUI.db or not EzUI.db.profile then return end
-                    if not EzUI.db.profile.minimap then
-                        EzUI.db.profile.minimap = {}
+                    if not EzroUI.db or not EzroUI.db.profile then return end
+                    if not EzroUI.db.profile.minimap then
+                        EzroUI.db.profile.minimap = {}
                     end
-                    if not EzUI.db.profile.minimap.clock then
-                        EzUI.db.profile.minimap.clock = {}
+                    if not EzroUI.db.profile.minimap.clock then
+                        EzroUI.db.profile.minimap.clock = {}
                     end
-                    EzUI.db.profile.minimap.clock.fontSize = val
-                    if EzUI.Minimap and EzUI.Minimap.Refresh then
-                        EzUI.Minimap:Refresh()
+                    EzroUI.db.profile.minimap.clock.fontSize = val
+                    if EzroUI.Minimap and EzroUI.Minimap.Refresh then
+                        EzroUI.Minimap:Refresh()
                     end
                 end,
             },
@@ -601,22 +601,22 @@ local function CreateMinimapOptions()
                     ["Bottom Left"] = "Bottom Left",
                 },
                 get = function()
-                    if not EzUI.db or not EzUI.db.profile or not EzUI.db.profile.minimap or not EzUI.db.profile.minimap.clock then
+                    if not EzroUI.db or not EzroUI.db.profile or not EzroUI.db.profile.minimap or not EzroUI.db.profile.minimap.clock then
                         return "Bottom"
                     end
-                    return EzUI.db.profile.minimap.clock.anchor or "Bottom"
+                    return EzroUI.db.profile.minimap.clock.anchor or "Bottom"
                 end,
                 set = function(_, val)
-                    if not EzUI.db or not EzUI.db.profile then return end
-                    if not EzUI.db.profile.minimap then
-                        EzUI.db.profile.minimap = {}
+                    if not EzroUI.db or not EzroUI.db.profile then return end
+                    if not EzroUI.db.profile.minimap then
+                        EzroUI.db.profile.minimap = {}
                     end
-                    if not EzUI.db.profile.minimap.clock then
-                        EzUI.db.profile.minimap.clock = {}
+                    if not EzroUI.db.profile.minimap.clock then
+                        EzroUI.db.profile.minimap.clock = {}
                     end
-                    EzUI.db.profile.minimap.clock.anchor = val
-                    if EzUI.Minimap and EzUI.Minimap.Refresh then
-                        EzUI.Minimap:Refresh()
+                    EzroUI.db.profile.minimap.clock.anchor = val
+                    if EzroUI.Minimap and EzroUI.Minimap.Refresh then
+                        EzroUI.Minimap:Refresh()
                     end
                 end,
             },
@@ -628,22 +628,22 @@ local function CreateMinimapOptions()
                 width = "full",
                 order = 52.55,
                 get = function()
-                    if not EzUI.db or not EzUI.db.profile or not EzUI.db.profile.minimap or not EzUI.db.profile.minimap.clock then
+                    if not EzroUI.db or not EzroUI.db.profile or not EzroUI.db.profile.minimap or not EzroUI.db.profile.minimap.clock then
                         return false
                     end
-                    return EzUI.db.profile.minimap.clock.useClassColor or false
+                    return EzroUI.db.profile.minimap.clock.useClassColor or false
                 end,
                 set = function(_, val)
-                    if not EzUI.db or not EzUI.db.profile then return end
-                    if not EzUI.db.profile.minimap then
-                        EzUI.db.profile.minimap = {}
+                    if not EzroUI.db or not EzroUI.db.profile then return end
+                    if not EzroUI.db.profile.minimap then
+                        EzroUI.db.profile.minimap = {}
                     end
-                    if not EzUI.db.profile.minimap.clock then
-                        EzUI.db.profile.minimap.clock = {}
+                    if not EzroUI.db.profile.minimap.clock then
+                        EzroUI.db.profile.minimap.clock = {}
                     end
-                    EzUI.db.profile.minimap.clock.useClassColor = val
-                    if EzUI.Minimap and EzUI.Minimap.Refresh then
-                        EzUI.Minimap:Refresh()
+                    EzroUI.db.profile.minimap.clock.useClassColor = val
+                    if EzroUI.Minimap and EzroUI.Minimap.Refresh then
+                        EzroUI.Minimap:Refresh()
                     end
                 end,
             },
@@ -656,23 +656,23 @@ local function CreateMinimapOptions()
                 width = "full",
                 hasAlpha = true,
                 get = function()
-                    if not EzUI.db or not EzUI.db.profile or not EzUI.db.profile.minimap or not EzUI.db.profile.minimap.clock then
+                    if not EzroUI.db or not EzroUI.db.profile or not EzroUI.db.profile.minimap or not EzroUI.db.profile.minimap.clock then
                         return 1, 1, 1, 1
                     end
-                    local c = EzUI.db.profile.minimap.clock.color or {1, 1, 1, 1}
+                    local c = EzroUI.db.profile.minimap.clock.color or {1, 1, 1, 1}
                     return c[1], c[2], c[3], c[4] or 1
                 end,
                 set = function(_, r, g, b, a)
-                    if not EzUI.db or not EzUI.db.profile then return end
-                    if not EzUI.db.profile.minimap then
-                        EzUI.db.profile.minimap = {}
+                    if not EzroUI.db or not EzroUI.db.profile then return end
+                    if not EzroUI.db.profile.minimap then
+                        EzroUI.db.profile.minimap = {}
                     end
-                    if not EzUI.db.profile.minimap.clock then
-                        EzUI.db.profile.minimap.clock = {}
+                    if not EzroUI.db.profile.minimap.clock then
+                        EzroUI.db.profile.minimap.clock = {}
                     end
-                    EzUI.db.profile.minimap.clock.color = {r, g, b, a or 1}
-                    if EzUI.Minimap and EzUI.Minimap.Refresh then
-                        EzUI.Minimap:Refresh()
+                    EzroUI.db.profile.minimap.clock.color = {r, g, b, a or 1}
+                    if EzroUI.Minimap and EzroUI.Minimap.Refresh then
+                        EzroUI.Minimap:Refresh()
                     end
                 end,
             },
@@ -687,22 +687,22 @@ local function CreateMinimapOptions()
                 max = 200,
                 step = 1,
                 get = function()
-                    if not EzUI.db or not EzUI.db.profile or not EzUI.db.profile.minimap or not EzUI.db.profile.minimap.clock then
+                    if not EzroUI.db or not EzroUI.db.profile or not EzroUI.db.profile.minimap or not EzroUI.db.profile.minimap.clock then
                         return 0
                     end
-                    return EzUI.db.profile.minimap.clock.offsetX or 0
+                    return EzroUI.db.profile.minimap.clock.offsetX or 0
                 end,
                 set = function(_, val)
-                    if not EzUI.db or not EzUI.db.profile then return end
-                    if not EzUI.db.profile.minimap then
-                        EzUI.db.profile.minimap = {}
+                    if not EzroUI.db or not EzroUI.db.profile then return end
+                    if not EzroUI.db.profile.minimap then
+                        EzroUI.db.profile.minimap = {}
                     end
-                    if not EzUI.db.profile.minimap.clock then
-                        EzUI.db.profile.minimap.clock = {}
+                    if not EzroUI.db.profile.minimap.clock then
+                        EzroUI.db.profile.minimap.clock = {}
                     end
-                    EzUI.db.profile.minimap.clock.offsetX = val
-                    if EzUI.Minimap and EzUI.Minimap.Refresh then
-                        EzUI.Minimap:Refresh()
+                    EzroUI.db.profile.minimap.clock.offsetX = val
+                    if EzroUI.Minimap and EzroUI.Minimap.Refresh then
+                        EzroUI.Minimap:Refresh()
                     end
                 end,
             },
@@ -717,22 +717,22 @@ local function CreateMinimapOptions()
                 max = 200,
                 step = 1,
                 get = function()
-                    if not EzUI.db or not EzUI.db.profile or not EzUI.db.profile.minimap or not EzUI.db.profile.minimap.clock then
+                    if not EzroUI.db or not EzroUI.db.profile or not EzroUI.db.profile.minimap or not EzroUI.db.profile.minimap.clock then
                         return -4
                     end
-                    return EzUI.db.profile.minimap.clock.offsetY or -4
+                    return EzroUI.db.profile.minimap.clock.offsetY or -4
                 end,
                 set = function(_, val)
-                    if not EzUI.db or not EzUI.db.profile then return end
-                    if not EzUI.db.profile.minimap then
-                        EzUI.db.profile.minimap = {}
+                    if not EzroUI.db or not EzroUI.db.profile then return end
+                    if not EzroUI.db.profile.minimap then
+                        EzroUI.db.profile.minimap = {}
                     end
-                    if not EzUI.db.profile.minimap.clock then
-                        EzUI.db.profile.minimap.clock = {}
+                    if not EzroUI.db.profile.minimap.clock then
+                        EzroUI.db.profile.minimap.clock = {}
                     end
-                    EzUI.db.profile.minimap.clock.offsetY = val
-                    if EzUI.Minimap and EzUI.Minimap.Refresh then
-                        EzUI.Minimap:Refresh()
+                    EzroUI.db.profile.minimap.clock.offsetY = val
+                    if EzroUI.Minimap and EzroUI.Minimap.Refresh then
+                        EzroUI.Minimap:Refresh()
                     end
                 end,
             },
@@ -756,22 +756,22 @@ local function CreateMinimapOptions()
                 width = "full",
                 order = 57,
                 get = function()
-                    if not EzUI.db or not EzUI.db.profile or not EzUI.db.profile.minimap or not EzUI.db.profile.minimap.fps then
+                    if not EzroUI.db or not EzroUI.db.profile or not EzroUI.db.profile.minimap or not EzroUI.db.profile.minimap.fps then
                         return false
                     end
-                    return EzUI.db.profile.minimap.fps.enabled or false
+                    return EzroUI.db.profile.minimap.fps.enabled or false
                 end,
                 set = function(_, val)
-                    if not EzUI.db or not EzUI.db.profile then return end
-                    if not EzUI.db.profile.minimap then
-                        EzUI.db.profile.minimap = {}
+                    if not EzroUI.db or not EzroUI.db.profile then return end
+                    if not EzroUI.db.profile.minimap then
+                        EzroUI.db.profile.minimap = {}
                     end
-                    if not EzUI.db.profile.minimap.fps then
-                        EzUI.db.profile.minimap.fps = {}
+                    if not EzroUI.db.profile.minimap.fps then
+                        EzroUI.db.profile.minimap.fps = {}
                     end
-                    EzUI.db.profile.minimap.fps.enabled = val
-                    if EzUI.Minimap and EzUI.Minimap.Refresh then
-                        EzUI.Minimap:Refresh()
+                    EzroUI.db.profile.minimap.fps.enabled = val
+                    if EzroUI.Minimap and EzroUI.Minimap.Refresh then
+                        EzroUI.Minimap:Refresh()
                     end
                 end,
             },
@@ -786,22 +786,22 @@ local function CreateMinimapOptions()
                 max = 24,
                 step = 1,
                 get = function()
-                    if not EzUI.db or not EzUI.db.profile or not EzUI.db.profile.minimap or not EzUI.db.profile.minimap.fps then
+                    if not EzroUI.db or not EzroUI.db.profile or not EzroUI.db.profile.minimap or not EzroUI.db.profile.minimap.fps then
                         return 12
                     end
-                    return EzUI.db.profile.minimap.fps.fontSize or 12
+                    return EzroUI.db.profile.minimap.fps.fontSize or 12
                 end,
                 set = function(_, val)
-                    if not EzUI.db or not EzUI.db.profile then return end
-                    if not EzUI.db.profile.minimap then
-                        EzUI.db.profile.minimap = {}
+                    if not EzroUI.db or not EzroUI.db.profile then return end
+                    if not EzroUI.db.profile.minimap then
+                        EzroUI.db.profile.minimap = {}
                     end
-                    if not EzUI.db.profile.minimap.fps then
-                        EzUI.db.profile.minimap.fps = {}
+                    if not EzroUI.db.profile.minimap.fps then
+                        EzroUI.db.profile.minimap.fps = {}
                     end
-                    EzUI.db.profile.minimap.fps.fontSize = val
-                    if EzUI.Minimap and EzUI.Minimap.Refresh then
-                        EzUI.Minimap:Refresh()
+                    EzroUI.db.profile.minimap.fps.fontSize = val
+                    if EzroUI.Minimap and EzroUI.Minimap.Refresh then
+                        EzroUI.Minimap:Refresh()
                     end
                 end,
             },
@@ -816,22 +816,22 @@ local function CreateMinimapOptions()
                 max = 5.0,
                 step = 0.1,
                 get = function()
-                    if not EzUI.db or not EzUI.db.profile or not EzUI.db.profile.minimap or not EzUI.db.profile.minimap.fps then
+                    if not EzroUI.db or not EzroUI.db.profile or not EzroUI.db.profile.minimap or not EzroUI.db.profile.minimap.fps then
                         return 0.5
                     end
-                    return EzUI.db.profile.minimap.fps.updateFrequency or 0.5
+                    return EzroUI.db.profile.minimap.fps.updateFrequency or 0.5
                 end,
                 set = function(_, val)
-                    if not EzUI.db or not EzUI.db.profile then return end
-                    if not EzUI.db.profile.minimap then
-                        EzUI.db.profile.minimap = {}
+                    if not EzroUI.db or not EzroUI.db.profile then return end
+                    if not EzroUI.db.profile.minimap then
+                        EzroUI.db.profile.minimap = {}
                     end
-                    if not EzUI.db.profile.minimap.fps then
-                        EzUI.db.profile.minimap.fps = {}
+                    if not EzroUI.db.profile.minimap.fps then
+                        EzroUI.db.profile.minimap.fps = {}
                     end
-                    EzUI.db.profile.minimap.fps.updateFrequency = val
-                    if EzUI.Minimap and EzUI.Minimap.Refresh then
-                        EzUI.Minimap:Refresh()
+                    EzroUI.db.profile.minimap.fps.updateFrequency = val
+                    if EzroUI.Minimap and EzroUI.Minimap.Refresh then
+                        EzroUI.Minimap:Refresh()
                     end
                 end,
             },
@@ -854,22 +854,22 @@ local function CreateMinimapOptions()
                     ["Bottom Left"] = "Bottom Left",
                 },
                 get = function()
-                    if not EzUI.db or not EzUI.db.profile or not EzUI.db.profile.minimap or not EzUI.db.profile.minimap.fps then
+                    if not EzroUI.db or not EzroUI.db.profile or not EzroUI.db.profile.minimap or not EzroUI.db.profile.minimap.fps then
                         return "Bottom"
                     end
-                    return EzUI.db.profile.minimap.fps.anchor or "Bottom"
+                    return EzroUI.db.profile.minimap.fps.anchor or "Bottom"
                 end,
                 set = function(_, val)
-                    if not EzUI.db or not EzUI.db.profile then return end
-                    if not EzUI.db.profile.minimap then
-                        EzUI.db.profile.minimap = {}
+                    if not EzroUI.db or not EzroUI.db.profile then return end
+                    if not EzroUI.db.profile.minimap then
+                        EzroUI.db.profile.minimap = {}
                     end
-                    if not EzUI.db.profile.minimap.fps then
-                        EzUI.db.profile.minimap.fps = {}
+                    if not EzroUI.db.profile.minimap.fps then
+                        EzroUI.db.profile.minimap.fps = {}
                     end
-                    EzUI.db.profile.minimap.fps.anchor = val
-                    if EzUI.Minimap and EzUI.Minimap.Refresh then
-                        EzUI.Minimap:Refresh()
+                    EzroUI.db.profile.minimap.fps.anchor = val
+                    if EzroUI.Minimap and EzroUI.Minimap.Refresh then
+                        EzroUI.Minimap:Refresh()
                     end
                 end,
             },
@@ -881,22 +881,22 @@ local function CreateMinimapOptions()
                 width = "full",
                 order = 58.55,
                 get = function()
-                    if not EzUI.db or not EzUI.db.profile or not EzUI.db.profile.minimap or not EzUI.db.profile.minimap.fps then
+                    if not EzroUI.db or not EzroUI.db.profile or not EzroUI.db.profile.minimap or not EzroUI.db.profile.minimap.fps then
                         return false
                     end
-                    return EzUI.db.profile.minimap.fps.useClassColor or false
+                    return EzroUI.db.profile.minimap.fps.useClassColor or false
                 end,
                 set = function(_, val)
-                    if not EzUI.db or not EzUI.db.profile then return end
-                    if not EzUI.db.profile.minimap then
-                        EzUI.db.profile.minimap = {}
+                    if not EzroUI.db or not EzroUI.db.profile then return end
+                    if not EzroUI.db.profile.minimap then
+                        EzroUI.db.profile.minimap = {}
                     end
-                    if not EzUI.db.profile.minimap.fps then
-                        EzUI.db.profile.minimap.fps = {}
+                    if not EzroUI.db.profile.minimap.fps then
+                        EzroUI.db.profile.minimap.fps = {}
                     end
-                    EzUI.db.profile.minimap.fps.useClassColor = val
-                    if EzUI.Minimap and EzUI.Minimap.Refresh then
-                        EzUI.Minimap:Refresh()
+                    EzroUI.db.profile.minimap.fps.useClassColor = val
+                    if EzroUI.Minimap and EzroUI.Minimap.Refresh then
+                        EzroUI.Minimap:Refresh()
                     end
                 end,
             },
@@ -908,22 +908,22 @@ local function CreateMinimapOptions()
                 width = "full",
                 order = 58.56,
                 get = function()
-                    if not EzUI.db or not EzUI.db.profile or not EzUI.db.profile.minimap or not EzUI.db.profile.minimap.fps then
+                    if not EzroUI.db or not EzroUI.db.profile or not EzroUI.db.profile.minimap or not EzroUI.db.profile.minimap.fps then
                         return false
                     end
-                    return EzUI.db.profile.minimap.fps.showPing or false
+                    return EzroUI.db.profile.minimap.fps.showPing or false
                 end,
                 set = function(_, val)
-                    if not EzUI.db or not EzUI.db.profile then return end
-                    if not EzUI.db.profile.minimap then
-                        EzUI.db.profile.minimap = {}
+                    if not EzroUI.db or not EzroUI.db.profile then return end
+                    if not EzroUI.db.profile.minimap then
+                        EzroUI.db.profile.minimap = {}
                     end
-                    if not EzUI.db.profile.minimap.fps then
-                        EzUI.db.profile.minimap.fps = {}
+                    if not EzroUI.db.profile.minimap.fps then
+                        EzroUI.db.profile.minimap.fps = {}
                     end
-                    EzUI.db.profile.minimap.fps.showPing = val
-                    if EzUI.Minimap and EzUI.Minimap.Refresh then
-                        EzUI.Minimap:Refresh()
+                    EzroUI.db.profile.minimap.fps.showPing = val
+                    if EzroUI.Minimap and EzroUI.Minimap.Refresh then
+                        EzroUI.Minimap:Refresh()
                     end
                 end,
             },
@@ -939,22 +939,22 @@ local function CreateMinimapOptions()
                     world = "World Ping",
                 },
                 get = function()
-                    if not EzUI.db or not EzUI.db.profile or not EzUI.db.profile.minimap or not EzUI.db.profile.minimap.fps then
+                    if not EzroUI.db or not EzroUI.db.profile or not EzroUI.db.profile.minimap or not EzroUI.db.profile.minimap.fps then
                         return "home"
                     end
-                    return EzUI.db.profile.minimap.fps.pingSource or "home"
+                    return EzroUI.db.profile.minimap.fps.pingSource or "home"
                 end,
                 set = function(_, val)
-                    if not EzUI.db or not EzUI.db.profile then return end
-                    if not EzUI.db.profile.minimap then
-                        EzUI.db.profile.minimap = {}
+                    if not EzroUI.db or not EzroUI.db.profile then return end
+                    if not EzroUI.db.profile.minimap then
+                        EzroUI.db.profile.minimap = {}
                     end
-                    if not EzUI.db.profile.minimap.fps then
-                        EzUI.db.profile.minimap.fps = {}
+                    if not EzroUI.db.profile.minimap.fps then
+                        EzroUI.db.profile.minimap.fps = {}
                     end
-                    EzUI.db.profile.minimap.fps.pingSource = val
-                    if EzUI.Minimap and EzUI.Minimap.Refresh then
-                        EzUI.Minimap:Refresh()
+                    EzroUI.db.profile.minimap.fps.pingSource = val
+                    if EzroUI.Minimap and EzroUI.Minimap.Refresh then
+                        EzroUI.Minimap:Refresh()
                     end
                 end,
             },
@@ -967,23 +967,23 @@ local function CreateMinimapOptions()
                 width = "full",
                 hasAlpha = true,
                 get = function()
-                    if not EzUI.db or not EzUI.db.profile or not EzUI.db.profile.minimap or not EzUI.db.profile.minimap.fps then
+                    if not EzroUI.db or not EzroUI.db.profile or not EzroUI.db.profile.minimap or not EzroUI.db.profile.minimap.fps then
                         return 1, 1, 1, 1
                     end
-                    local c = EzUI.db.profile.minimap.fps.color or {1, 1, 1, 1}
+                    local c = EzroUI.db.profile.minimap.fps.color or {1, 1, 1, 1}
                     return c[1], c[2], c[3], c[4] or 1
                 end,
                 set = function(_, r, g, b, a)
-                    if not EzUI.db or not EzUI.db.profile then return end
-                    if not EzUI.db.profile.minimap then
-                        EzUI.db.profile.minimap = {}
+                    if not EzroUI.db or not EzroUI.db.profile then return end
+                    if not EzroUI.db.profile.minimap then
+                        EzroUI.db.profile.minimap = {}
                     end
-                    if not EzUI.db.profile.minimap.fps then
-                        EzUI.db.profile.minimap.fps = {}
+                    if not EzroUI.db.profile.minimap.fps then
+                        EzroUI.db.profile.minimap.fps = {}
                     end
-                    EzUI.db.profile.minimap.fps.color = {r, g, b, a or 1}
-                    if EzUI.Minimap and EzUI.Minimap.Refresh then
-                        EzUI.Minimap:Refresh()
+                    EzroUI.db.profile.minimap.fps.color = {r, g, b, a or 1}
+                    if EzroUI.Minimap and EzroUI.Minimap.Refresh then
+                        EzroUI.Minimap:Refresh()
                     end
                 end,
             },
@@ -998,22 +998,22 @@ local function CreateMinimapOptions()
                 max = 200,
                 step = 1,
                 get = function()
-                    if not EzUI.db or not EzUI.db.profile or not EzUI.db.profile.minimap or not EzUI.db.profile.minimap.fps then
+                    if not EzroUI.db or not EzroUI.db.profile or not EzroUI.db.profile.minimap or not EzroUI.db.profile.minimap.fps then
                         return 0
                     end
-                    return EzUI.db.profile.minimap.fps.offsetX or 0
+                    return EzroUI.db.profile.minimap.fps.offsetX or 0
                 end,
                 set = function(_, val)
-                    if not EzUI.db or not EzUI.db.profile then return end
-                    if not EzUI.db.profile.minimap then
-                        EzUI.db.profile.minimap = {}
+                    if not EzroUI.db or not EzroUI.db.profile then return end
+                    if not EzroUI.db.profile.minimap then
+                        EzroUI.db.profile.minimap = {}
                     end
-                    if not EzUI.db.profile.minimap.fps then
-                        EzUI.db.profile.minimap.fps = {}
+                    if not EzroUI.db.profile.minimap.fps then
+                        EzroUI.db.profile.minimap.fps = {}
                     end
-                    EzUI.db.profile.minimap.fps.offsetX = val
-                    if EzUI.Minimap and EzUI.Minimap.Refresh then
-                        EzUI.Minimap:Refresh()
+                    EzroUI.db.profile.minimap.fps.offsetX = val
+                    if EzroUI.Minimap and EzroUI.Minimap.Refresh then
+                        EzroUI.Minimap:Refresh()
                     end
                 end,
             },
@@ -1028,22 +1028,22 @@ local function CreateMinimapOptions()
                 max = 200,
                 step = 1,
                 get = function()
-                    if not EzUI.db or not EzUI.db.profile or not EzUI.db.profile.minimap or not EzUI.db.profile.minimap.fps then
+                    if not EzroUI.db or not EzroUI.db.profile or not EzroUI.db.profile.minimap or not EzroUI.db.profile.minimap.fps then
                         return -20
                     end
-                    return EzUI.db.profile.minimap.fps.offsetY or -20
+                    return EzroUI.db.profile.minimap.fps.offsetY or -20
                 end,
                 set = function(_, val)
-                    if not EzUI.db or not EzUI.db.profile then return end
-                    if not EzUI.db.profile.minimap then
-                        EzUI.db.profile.minimap = {}
+                    if not EzroUI.db or not EzroUI.db.profile then return end
+                    if not EzroUI.db.profile.minimap then
+                        EzroUI.db.profile.minimap = {}
                     end
-                    if not EzUI.db.profile.minimap.fps then
-                        EzUI.db.profile.minimap.fps = {}
+                    if not EzroUI.db.profile.minimap.fps then
+                        EzroUI.db.profile.minimap.fps = {}
                     end
-                    EzUI.db.profile.minimap.fps.offsetY = val
-                    if EzUI.Minimap and EzUI.Minimap.Refresh then
-                        EzUI.Minimap:Refresh()
+                    EzroUI.db.profile.minimap.fps.offsetY = val
+                    if EzroUI.Minimap and EzroUI.Minimap.Refresh then
+                        EzroUI.Minimap:Refresh()
                     end
                 end,
             },
@@ -1067,19 +1067,19 @@ local function CreateMinimapOptions()
                 width = "full",
                 order = 61,
                 get = function()
-                    if not EzUI.db or not EzUI.db.profile or not EzUI.db.profile.minimap then
+                    if not EzroUI.db or not EzroUI.db.profile or not EzroUI.db.profile.minimap then
                         return false
                     end
-                    return EzUI.db.profile.minimap.hideTrackingButton or false
+                    return EzroUI.db.profile.minimap.hideTrackingButton or false
                 end,
                 set = function(_, val)
-                    if not EzUI.db or not EzUI.db.profile then return end
-                    if not EzUI.db.profile.minimap then
-                        EzUI.db.profile.minimap = {}
+                    if not EzroUI.db or not EzroUI.db.profile then return end
+                    if not EzroUI.db.profile.minimap then
+                        EzroUI.db.profile.minimap = {}
                     end
-                    EzUI.db.profile.minimap.hideTrackingButton = val
-                    if EzUI.Minimap and EzUI.Minimap.Refresh then
-                        EzUI.Minimap:Refresh()
+                    EzroUI.db.profile.minimap.hideTrackingButton = val
+                    if EzroUI.Minimap and EzroUI.Minimap.Refresh then
+                        EzroUI.Minimap:Refresh()
                     end
                 end,
             },
@@ -1091,19 +1091,19 @@ local function CreateMinimapOptions()
                 width = "full",
                 order = 62,
                 get = function()
-                    if not EzUI.db or not EzUI.db.profile or not EzUI.db.profile.minimap then
+                    if not EzroUI.db or not EzroUI.db.profile or not EzroUI.db.profile.minimap then
                         return false
                     end
-                    return EzUI.db.profile.minimap.hideMailButton or false
+                    return EzroUI.db.profile.minimap.hideMailButton or false
                 end,
                 set = function(_, val)
-                    if not EzUI.db or not EzUI.db.profile then return end
-                    if not EzUI.db.profile.minimap then
-                        EzUI.db.profile.minimap = {}
+                    if not EzroUI.db or not EzroUI.db.profile then return end
+                    if not EzroUI.db.profile.minimap then
+                        EzroUI.db.profile.minimap = {}
                     end
-                    EzUI.db.profile.minimap.hideMailButton = val
-                    if EzUI.Minimap and EzUI.Minimap.Refresh then
-                        EzUI.Minimap:Refresh()
+                    EzroUI.db.profile.minimap.hideMailButton = val
+                    if EzroUI.Minimap and EzroUI.Minimap.Refresh then
+                        EzroUI.Minimap:Refresh()
                     end
                 end,
             },
@@ -1126,22 +1126,22 @@ local function CreateMinimapOptions()
                     ["Bottom Left"] = "Bottom Left",
                 },
                 get = function()
-                    if not EzUI.db or not EzUI.db.profile or not EzUI.db.profile.minimap or not EzUI.db.profile.minimap.mailIcon then
+                    if not EzroUI.db or not EzroUI.db.profile or not EzroUI.db.profile.minimap or not EzroUI.db.profile.minimap.mailIcon then
                         return "Top Left"
                     end
-                    return EzUI.db.profile.minimap.mailIcon.anchor or "Top Left"
+                    return EzroUI.db.profile.minimap.mailIcon.anchor or "Top Left"
                 end,
                 set = function(_, val)
-                    if not EzUI.db or not EzUI.db.profile then return end
-                    if not EzUI.db.profile.minimap then
-                        EzUI.db.profile.minimap = {}
+                    if not EzroUI.db or not EzroUI.db.profile then return end
+                    if not EzroUI.db.profile.minimap then
+                        EzroUI.db.profile.minimap = {}
                     end
-                    if not EzUI.db.profile.minimap.mailIcon then
-                        EzUI.db.profile.minimap.mailIcon = {}
+                    if not EzroUI.db.profile.minimap.mailIcon then
+                        EzroUI.db.profile.minimap.mailIcon = {}
                     end
-                    EzUI.db.profile.minimap.mailIcon.anchor = val
-                    if EzUI.Minimap and EzUI.Minimap.Refresh then
-                        EzUI.Minimap:Refresh()
+                    EzroUI.db.profile.minimap.mailIcon.anchor = val
+                    if EzroUI.Minimap and EzroUI.Minimap.Refresh then
+                        EzroUI.Minimap:Refresh()
                     end
                 end,
             },
@@ -1156,22 +1156,22 @@ local function CreateMinimapOptions()
                 max = 200,
                 step = 1,
                 get = function()
-                    if not EzUI.db or not EzUI.db.profile or not EzUI.db.profile.minimap or not EzUI.db.profile.minimap.mailIcon then
+                    if not EzroUI.db or not EzroUI.db.profile or not EzroUI.db.profile.minimap or not EzroUI.db.profile.minimap.mailIcon then
                         return 3
                     end
-                    return EzUI.db.profile.minimap.mailIcon.offsetX or 3
+                    return EzroUI.db.profile.minimap.mailIcon.offsetX or 3
                 end,
                 set = function(_, val)
-                    if not EzUI.db or not EzUI.db.profile then return end
-                    if not EzUI.db.profile.minimap then
-                        EzUI.db.profile.minimap = {}
+                    if not EzroUI.db or not EzroUI.db.profile then return end
+                    if not EzroUI.db.profile.minimap then
+                        EzroUI.db.profile.minimap = {}
                     end
-                    if not EzUI.db.profile.minimap.mailIcon then
-                        EzUI.db.profile.minimap.mailIcon = {}
+                    if not EzroUI.db.profile.minimap.mailIcon then
+                        EzroUI.db.profile.minimap.mailIcon = {}
                     end
-                    EzUI.db.profile.minimap.mailIcon.offsetX = val
-                    if EzUI.Minimap and EzUI.Minimap.Refresh then
-                        EzUI.Minimap:Refresh()
+                    EzroUI.db.profile.minimap.mailIcon.offsetX = val
+                    if EzroUI.Minimap and EzroUI.Minimap.Refresh then
+                        EzroUI.Minimap:Refresh()
                     end
                 end,
             },
@@ -1186,22 +1186,22 @@ local function CreateMinimapOptions()
                 max = 200,
                 step = 1,
                 get = function()
-                    if not EzUI.db or not EzUI.db.profile or not EzUI.db.profile.minimap or not EzUI.db.profile.minimap.mailIcon then
+                    if not EzroUI.db or not EzroUI.db.profile or not EzroUI.db.profile.minimap or not EzroUI.db.profile.minimap.mailIcon then
                         return -3
                     end
-                    return EzUI.db.profile.minimap.mailIcon.offsetY or -3
+                    return EzroUI.db.profile.minimap.mailIcon.offsetY or -3
                 end,
                 set = function(_, val)
-                    if not EzUI.db or not EzUI.db.profile then return end
-                    if not EzUI.db.profile.minimap then
-                        EzUI.db.profile.minimap = {}
+                    if not EzroUI.db or not EzroUI.db.profile then return end
+                    if not EzroUI.db.profile.minimap then
+                        EzroUI.db.profile.minimap = {}
                     end
-                    if not EzUI.db.profile.minimap.mailIcon then
-                        EzUI.db.profile.minimap.mailIcon = {}
+                    if not EzroUI.db.profile.minimap.mailIcon then
+                        EzroUI.db.profile.minimap.mailIcon = {}
                     end
-                    EzUI.db.profile.minimap.mailIcon.offsetY = val
-                    if EzUI.Minimap and EzUI.Minimap.Refresh then
-                        EzUI.Minimap:Refresh()
+                    EzroUI.db.profile.minimap.mailIcon.offsetY = val
+                    if EzroUI.Minimap and EzroUI.Minimap.Refresh then
+                        EzroUI.Minimap:Refresh()
                     end
                 end,
             },
@@ -1213,19 +1213,19 @@ local function CreateMinimapOptions()
                 width = "full",
                 order = 63,
                 get = function()
-                    if not EzUI.db or not EzUI.db.profile or not EzUI.db.profile.minimap then
+                    if not EzroUI.db or not EzroUI.db.profile or not EzroUI.db.profile.minimap then
                         return false
                     end
-                    return EzUI.db.profile.minimap.hideCalendarButton or false
+                    return EzroUI.db.profile.minimap.hideCalendarButton or false
                 end,
                 set = function(_, val)
-                    if not EzUI.db or not EzUI.db.profile then return end
-                    if not EzUI.db.profile.minimap then
-                        EzUI.db.profile.minimap = {}
+                    if not EzroUI.db or not EzroUI.db.profile then return end
+                    if not EzroUI.db.profile.minimap then
+                        EzroUI.db.profile.minimap = {}
                     end
-                    EzUI.db.profile.minimap.hideCalendarButton = val
-                    if EzUI.Minimap and EzUI.Minimap.Refresh then
-                        EzUI.Minimap:Refresh()
+                    EzroUI.db.profile.minimap.hideCalendarButton = val
+                    if EzroUI.Minimap and EzroUI.Minimap.Refresh then
+                        EzroUI.Minimap:Refresh()
                     end
                 end,
             },
@@ -1237,19 +1237,19 @@ local function CreateMinimapOptions()
                 width = "full",
                 order = 64,
                 get = function()
-                    if not EzUI.db or not EzUI.db.profile or not EzUI.db.profile.minimap then
+                    if not EzroUI.db or not EzroUI.db.profile or not EzroUI.db.profile.minimap then
                         return false
                     end
-                    return EzUI.db.profile.minimap.hideDifficultyIcon or false
+                    return EzroUI.db.profile.minimap.hideDifficultyIcon or false
                 end,
                 set = function(_, val)
-                    if not EzUI.db or not EzUI.db.profile then return end
-                    if not EzUI.db.profile.minimap then
-                        EzUI.db.profile.minimap = {}
+                    if not EzroUI.db or not EzroUI.db.profile then return end
+                    if not EzroUI.db.profile.minimap then
+                        EzroUI.db.profile.minimap = {}
                     end
-                    EzUI.db.profile.minimap.hideDifficultyIcon = val
-                    if EzUI.Minimap and EzUI.Minimap.Refresh then
-                        EzUI.Minimap:Refresh()
+                    EzroUI.db.profile.minimap.hideDifficultyIcon = val
+                    if EzroUI.Minimap and EzroUI.Minimap.Refresh then
+                        EzroUI.Minimap:Refresh()
                     end
                 end,
             },
@@ -1272,22 +1272,22 @@ local function CreateMinimapOptions()
                     ["Bottom Left"] = "Bottom Left",
                 },
                 get = function()
-                    if not EzUI.db or not EzUI.db.profile or not EzUI.db.profile.minimap or not EzUI.db.profile.minimap.difficultyIcon then
+                    if not EzroUI.db or not EzroUI.db.profile or not EzroUI.db.profile.minimap or not EzroUI.db.profile.minimap.difficultyIcon then
                         return "Top Right"
                     end
-                    return EzUI.db.profile.minimap.difficultyIcon.anchor or "Top Right"
+                    return EzroUI.db.profile.minimap.difficultyIcon.anchor or "Top Right"
                 end,
                 set = function(_, val)
-                    if not EzUI.db or not EzUI.db.profile then return end
-                    if not EzUI.db.profile.minimap then
-                        EzUI.db.profile.minimap = {}
+                    if not EzroUI.db or not EzroUI.db.profile then return end
+                    if not EzroUI.db.profile.minimap then
+                        EzroUI.db.profile.minimap = {}
                     end
-                    if not EzUI.db.profile.minimap.difficultyIcon then
-                        EzUI.db.profile.minimap.difficultyIcon = {}
+                    if not EzroUI.db.profile.minimap.difficultyIcon then
+                        EzroUI.db.profile.minimap.difficultyIcon = {}
                     end
-                    EzUI.db.profile.minimap.difficultyIcon.anchor = val
-                    if EzUI.Minimap and EzUI.Minimap.Refresh then
-                        EzUI.Minimap:Refresh()
+                    EzroUI.db.profile.minimap.difficultyIcon.anchor = val
+                    if EzroUI.Minimap and EzroUI.Minimap.Refresh then
+                        EzroUI.Minimap:Refresh()
                     end
                 end,
             },
@@ -1302,22 +1302,22 @@ local function CreateMinimapOptions()
                 max = 200,
                 step = 1,
                 get = function()
-                    if not EzUI.db or not EzUI.db.profile or not EzUI.db.profile.minimap or not EzUI.db.profile.minimap.difficultyIcon then
+                    if not EzroUI.db or not EzroUI.db.profile or not EzroUI.db.profile.minimap or not EzroUI.db.profile.minimap.difficultyIcon then
                         return -5
                     end
-                    return EzUI.db.profile.minimap.difficultyIcon.offsetX or -5
+                    return EzroUI.db.profile.minimap.difficultyIcon.offsetX or -5
                 end,
                 set = function(_, val)
-                    if not EzUI.db or not EzUI.db.profile then return end
-                    if not EzUI.db.profile.minimap then
-                        EzUI.db.profile.minimap = {}
+                    if not EzroUI.db or not EzroUI.db.profile then return end
+                    if not EzroUI.db.profile.minimap then
+                        EzroUI.db.profile.minimap = {}
                     end
-                    if not EzUI.db.profile.minimap.difficultyIcon then
-                        EzUI.db.profile.minimap.difficultyIcon = {}
+                    if not EzroUI.db.profile.minimap.difficultyIcon then
+                        EzroUI.db.profile.minimap.difficultyIcon = {}
                     end
-                    EzUI.db.profile.minimap.difficultyIcon.offsetX = val
-                    if EzUI.Minimap and EzUI.Minimap.Refresh then
-                        EzUI.Minimap:Refresh()
+                    EzroUI.db.profile.minimap.difficultyIcon.offsetX = val
+                    if EzroUI.Minimap and EzroUI.Minimap.Refresh then
+                        EzroUI.Minimap:Refresh()
                     end
                 end,
             },
@@ -1332,22 +1332,22 @@ local function CreateMinimapOptions()
                 max = 200,
                 step = 1,
                 get = function()
-                    if not EzUI.db or not EzUI.db.profile or not EzUI.db.profile.minimap or not EzUI.db.profile.minimap.difficultyIcon then
+                    if not EzroUI.db or not EzroUI.db.profile or not EzroUI.db.profile.minimap or not EzroUI.db.profile.minimap.difficultyIcon then
                         return -5
                     end
-                    return EzUI.db.profile.minimap.difficultyIcon.offsetY or -5
+                    return EzroUI.db.profile.minimap.difficultyIcon.offsetY or -5
                 end,
                 set = function(_, val)
-                    if not EzUI.db or not EzUI.db.profile then return end
-                    if not EzUI.db.profile.minimap then
-                        EzUI.db.profile.minimap = {}
+                    if not EzroUI.db or not EzroUI.db.profile then return end
+                    if not EzroUI.db.profile.minimap then
+                        EzroUI.db.profile.minimap = {}
                     end
-                    if not EzUI.db.profile.minimap.difficultyIcon then
-                        EzUI.db.profile.minimap.difficultyIcon = {}
+                    if not EzroUI.db.profile.minimap.difficultyIcon then
+                        EzroUI.db.profile.minimap.difficultyIcon = {}
                     end
-                    EzUI.db.profile.minimap.difficultyIcon.offsetY = val
-                    if EzUI.Minimap and EzUI.Minimap.Refresh then
-                        EzUI.Minimap:Refresh()
+                    EzroUI.db.profile.minimap.difficultyIcon.offsetY = val
+                    if EzroUI.Minimap and EzroUI.Minimap.Refresh then
+                        EzroUI.Minimap:Refresh()
                     end
                 end,
             },
@@ -1359,19 +1359,19 @@ local function CreateMinimapOptions()
                 width = "full",
                 order = 65,
                 get = function()
-                    if not EzUI.db or not EzUI.db.profile or not EzUI.db.profile.minimap then
+                    if not EzroUI.db or not EzroUI.db.profile or not EzroUI.db.profile.minimap then
                         return false
                     end
-                    return EzUI.db.profile.minimap.hideMissionsButton or false
+                    return EzroUI.db.profile.minimap.hideMissionsButton or false
                 end,
                 set = function(_, val)
-                    if not EzUI.db or not EzUI.db.profile then return end
-                    if not EzUI.db.profile.minimap then
-                        EzUI.db.profile.minimap = {}
+                    if not EzroUI.db or not EzroUI.db.profile then return end
+                    if not EzroUI.db.profile.minimap then
+                        EzroUI.db.profile.minimap = {}
                     end
-                    EzUI.db.profile.minimap.hideMissionsButton = val
-                    if EzUI.Minimap and EzUI.Minimap.Refresh then
-                        EzUI.Minimap:Refresh()
+                    EzroUI.db.profile.minimap.hideMissionsButton = val
+                    if EzroUI.Minimap and EzroUI.Minimap.Refresh then
+                        EzroUI.Minimap:Refresh()
                     end
                 end,
             },
@@ -1386,25 +1386,25 @@ local function CreateMinimapOptions()
                 max = 200,
                 step = 1,
                 get = function()
-                    if not EzUI.db or not EzUI.db.profile or not EzUI.db.profile.minimap then
+                    if not EzroUI.db or not EzroUI.db.profile or not EzroUI.db.profile.minimap then
                         return 0
                     end
-                    if not EzUI.db.profile.minimap.missionsButton then
-                        EzUI.db.profile.minimap.missionsButton = {}
+                    if not EzroUI.db.profile.minimap.missionsButton then
+                        EzroUI.db.profile.minimap.missionsButton = {}
                     end
-                    return EzUI.db.profile.minimap.missionsButton.offsetX or 0
+                    return EzroUI.db.profile.minimap.missionsButton.offsetX or 0
                 end,
                 set = function(_, val)
-                    if not EzUI.db or not EzUI.db.profile then return end
-                    if not EzUI.db.profile.minimap then
-                        EzUI.db.profile.minimap = {}
+                    if not EzroUI.db or not EzroUI.db.profile then return end
+                    if not EzroUI.db.profile.minimap then
+                        EzroUI.db.profile.minimap = {}
                     end
-                    if not EzUI.db.profile.minimap.missionsButton then
-                        EzUI.db.profile.minimap.missionsButton = {}
+                    if not EzroUI.db.profile.minimap.missionsButton then
+                        EzroUI.db.profile.minimap.missionsButton = {}
                     end
-                    EzUI.db.profile.minimap.missionsButton.offsetX = val
-                    if EzUI.Minimap and EzUI.Minimap.Refresh then
-                        EzUI.Minimap:Refresh()
+                    EzroUI.db.profile.minimap.missionsButton.offsetX = val
+                    if EzroUI.Minimap and EzroUI.Minimap.Refresh then
+                        EzroUI.Minimap:Refresh()
                     end
                 end,
             },
@@ -1419,25 +1419,25 @@ local function CreateMinimapOptions()
                 max = 500,
                 step = 1,
                 get = function()
-                    if not EzUI.db or not EzUI.db.profile or not EzUI.db.profile.minimap then
+                    if not EzroUI.db or not EzroUI.db.profile or not EzroUI.db.profile.minimap then
                         return 0
                     end
-                    if not EzUI.db.profile.minimap.missionsButton then
-                        EzUI.db.profile.minimap.missionsButton = {}
+                    if not EzroUI.db.profile.minimap.missionsButton then
+                        EzroUI.db.profile.minimap.missionsButton = {}
                     end
-                    return EzUI.db.profile.minimap.missionsButton.offsetY or 0
+                    return EzroUI.db.profile.minimap.missionsButton.offsetY or 0
                 end,
                 set = function(_, val)
-                    if not EzUI.db or not EzUI.db.profile then return end
-                    if not EzUI.db.profile.minimap then
-                        EzUI.db.profile.minimap = {}
+                    if not EzroUI.db or not EzroUI.db.profile then return end
+                    if not EzroUI.db.profile.minimap then
+                        EzroUI.db.profile.minimap = {}
                     end
-                    if not EzUI.db.profile.minimap.missionsButton then
-                        EzUI.db.profile.minimap.missionsButton = {}
+                    if not EzroUI.db.profile.minimap.missionsButton then
+                        EzroUI.db.profile.minimap.missionsButton = {}
                     end
-                    EzUI.db.profile.minimap.missionsButton.offsetY = val
-                    if EzUI.Minimap and EzUI.Minimap.Refresh then
-                        EzUI.Minimap:Refresh()
+                    EzroUI.db.profile.minimap.missionsButton.offsetY = val
+                    if EzroUI.Minimap and EzroUI.Minimap.Refresh then
+                        EzroUI.Minimap:Refresh()
                     end
                 end,
             },
@@ -1449,19 +1449,19 @@ local function CreateMinimapOptions()
                 width = "full",
                 order = 66,
                 get = function()
-                    if not EzUI.db or not EzUI.db.profile or not EzUI.db.profile.minimap then
+                    if not EzroUI.db or not EzroUI.db.profile or not EzroUI.db.profile.minimap then
                         return false
                     end
-                    return EzUI.db.profile.minimap.hideAddonCompartment or false
+                    return EzroUI.db.profile.minimap.hideAddonCompartment or false
                 end,
                 set = function(_, val)
-                    if not EzUI.db or not EzUI.db.profile then return end
-                    if not EzUI.db.profile.minimap then
-                        EzUI.db.profile.minimap = {}
+                    if not EzroUI.db or not EzroUI.db.profile then return end
+                    if not EzroUI.db.profile.minimap then
+                        EzroUI.db.profile.minimap = {}
                     end
-                    EzUI.db.profile.minimap.hideAddonCompartment = val
-                    if EzUI.Minimap and EzUI.Minimap.Refresh then
-                        EzUI.Minimap:Refresh()
+                    EzroUI.db.profile.minimap.hideAddonCompartment = val
+                    if EzroUI.Minimap and EzroUI.Minimap.Refresh then
+                        EzroUI.Minimap:Refresh()
                     end
                 end,
             },

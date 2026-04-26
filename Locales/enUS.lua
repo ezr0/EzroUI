@@ -1,16 +1,16 @@
 ﻿--[[
-    EzUI Localization - English (enUS)
+    EzroUI Localization - English (enUS)
     Base locale for all English strings
 --]]
 
-local L = LibStub("AceLocale-3.0"):NewLocale("EzUI", "enUS", true)
+local L = LibStub("AceLocale-3.0"):NewLocale("EzroUI", "enUS", true)
 
 if not L then return end
 
 -- ============================================================
 -- GENERAL
 -- ============================================================
-L["EzUI"] = "EzUI"
+L["EzroUI"] = "EzroUI"
 L["Left-click to open configuration"] = "Left-click to open configuration"
 L["Right-click to open configuration"] = "Right-click to open configuration"
 
@@ -61,7 +61,7 @@ L["Rune Timer Options"] = "Rune Timer Options"
 L["Action Bars"] = "Action Bars"
 L["Action Bar Settings"] = "Action Bar Settings"
 L["Enable Action Bar Styling"] = "Enable Action Bar Styling"
-L["Apply custom EzUI styling to action bars"] = "Apply custom EzUI styling to action bars"
+L["Apply custom EzroUI styling to action bars"] = "Apply custom EzroUI styling to action bars"
 L["Border Thickness"] = "Border Thickness"
 L["Thickness of the action button border (expands outward, WHITE8x8 texture)"] = "Thickness of the action button border (expands outward, WHITE8x8 texture)"
 L["Backdrop Color"] = "Backdrop Color"
@@ -154,7 +154,7 @@ L["Vertical offset for keybind text"] = "Vertical offset for keybind text"
 L["Hide Aura Swipe"] = "Hide Aura Swipe"
 L["Show the actual spell cooldown instead of the aura/buff duration. When enabled, the icon will display your spell's cooldown even while the buff is active, with desaturation applied."] = "Show the actual spell cooldown instead of the aura/buff duration. When enabled, the icon will display your spell's cooldown even while the buff is active, with desaturation applied."
 L["Preview Buff Icons"] = "Preview Buff Icons"
-L["Open the full EzUI configuration panel"] = "Open the full EzUI configuration panel"
+L["Open the full EzroUI configuration panel"] = "Open the full EzroUI configuration panel"
 L["Bar Width (0 = Auto Size to Essential Viewer)"] = "Bar Width (0 = Auto Size to Essential Viewer)"
 L["0 = auto width based on the attached viewer."] = "0 = auto width based on the attached viewer."
 L["Bar Height"] = "Bar Height"
@@ -186,7 +186,7 @@ L["Health bar foreground color"] = "Health bar foreground color"
 L["Color health bar by reaction (hostile/neutral/friendly)"] = "Color health bar by reaction (hostile/neutral/friendly)"
 L["Health bar background color"] = "Health bar background color"
 L["Automatically anchor this frame to EssentialCooldownViewer. Only available for Player and Target frames."] = "Automatically anchor this frame to EssentialCooldownViewer. Only available for Player and Target frames."
-L["Frame name to anchor to (e.g., EssentialCooldownViewer, EzUI_Player, EzUI_Target, UIParent)"] = "Frame name to anchor to (e.g., EssentialCooldownViewer, EzUI_Player, EzUI_Target, UIParent)"
+L["Frame name to anchor to (e.g., EssentialCooldownViewer, EzroUI_Player, EzroUI_Target, UIParent)"] = "Frame name to anchor to (e.g., EssentialCooldownViewer, EzroUI_Player, EzroUI_Target, UIParent)"
 L["Anchor point on the frame"] = "Anchor point on the frame"
 L["Anchor point on parent"] = "Anchor point on parent"
 L["Horizontal offset from anchor"] = "Horizontal offset from anchor"
@@ -232,7 +232,7 @@ L["Click Casting"] = "Click Casting"
 L["Click-Casting Addon Conflict"] = "Click-Casting Addon Conflict"
 L["detected.\n\nWhich click-casting addon would you like to use?"] = "detected.\n\nWhich click-casting addon would you like to use?"
 L["Selecting an option will disable the other addon(s)\nand reload your UI."] = "Selecting an option will disable the other addon(s)\nand reload your UI."
-L["Use EzUI"] = "Use EzUI"
+L["Use EzroUI"] = "Use EzroUI"
 L["Are you sure?"] = "Are you sure?"
 L["Having multiple click-casting addons enabled\nmay cause conflicts and unexpected behavior.\n\n|cffff6600Use at your own risk!|r"] = "Having multiple click-casting addons enabled\nmay cause conflicts and unexpected behavior.\n\n|cffff6600Use at your own risk!|r"
 L["This warning will not appear again after confirming."] = "This warning will not appear again after confirming."
@@ -260,12 +260,12 @@ L["Slot"] = "Slot"
 -- ============================================================
 -- MESSAGES & ERRORS
 -- ============================================================
-L["EzUI: Import failed: No data found. Please paste your import string in the Import Profile String field."] = "EzUI: Import failed: No data found. Please paste your import string in the Import Profile String field."
-L["EzUI: Please enter a profile name for the imported profile."] = "EzUI: Please enter a profile name for the imported profile."
-L["EzUI: Profile imported as '%s'. Please reload your UI."] = "EzUI: Profile imported as '%s'. Please reload your UI."
-L["EzUI: Profile imported. Please reload your UI."] = "EzUI: Profile imported. Please reload your UI."
-L["EzUI: Import failed: %s"] = "EzUI: Import failed: %s"
-L["EzUI: Invalid Import String."] = "EzUI: Invalid Import String."
+L["EzroUI: Import failed: No data found. Please paste your import string in the Import Profile String field."] = "EzroUI: Import failed: No data found. Please paste your import string in the Import Profile String field."
+L["EzroUI: Please enter a profile name for the imported profile."] = "EzroUI: Please enter a profile name for the imported profile."
+L["EzroUI: Profile imported as '%s'. Please reload your UI."] = "EzroUI: Profile imported as '%s'. Please reload your UI."
+L["EzroUI: Profile imported. Please reload your UI."] = "EzroUI: Profile imported. Please reload your UI."
+L["EzroUI: Import failed: %s"] = "EzroUI: Import failed: %s"
+L["EzroUI: Invalid Import String."] = "EzroUI: Invalid Import String."
 L["No profile loaded."] = "No profile loaded."
 L["Export requires AceSerializer-3.0 and LibDeflate."] = "Export requires AceSerializer-3.0 and LibDeflate."
 L["Failed to serialize profile."] = "Failed to serialize profile."
@@ -277,8 +277,8 @@ L["Could not decode string (maybe corrupted)."] = "Could not decode string (mayb
 L["Could not decompress data."] = "Could not decompress data."
 L["Could not deserialize profile."] = "Could not deserialize profile."
 L["Profile system not available."] = "Profile system not available."
-L["[EzUI] Warning: Custom GUI not loaded, using AceConfigDialog"] = "[EzUI] Warning: Custom GUI not loaded, using AceConfigDialog"
-L["[EzUI] Party/Raid frames GUI not loaded."] = "[EzUI] Party/Raid frames GUI not loaded."
+L["[EzroUI] Warning: Custom GUI not loaded, using AceConfigDialog"] = "[EzroUI] Warning: Custom GUI not loaded, using AceConfigDialog"
+L["[EzroUI] Party/Raid frames GUI not loaded."] = "[EzroUI] Party/Raid frames GUI not loaded."
 
 -- ============================================================
 -- ANCHOR POSITIONS

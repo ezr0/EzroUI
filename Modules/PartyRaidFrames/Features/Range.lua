@@ -1,12 +1,12 @@
 ﻿--[[
-    EzUI Unit Frames - Range Detection System
+    EzroUI Unit Frames - Range Detection System
     Out of range alpha fading
 ]]
 
 local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
-EzUI.PartyFrames = EzUI.PartyFrames or {}
-local UnitFrames = EzUI.PartyFrames
+local EzroUI = ns.Addon
+EzroUI.PartyFrames = EzroUI.PartyFrames or {}
+local UnitFrames = EzroUI.PartyFrames
 
 -- Cache commonly used API
 local UnitInRange = UnitInRange

@@ -1,10 +1,10 @@
 ﻿local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
+local EzroUI = ns.Addon
 
 -- Get CastBars module
-local CastBars = EzUI.CastBars
+local CastBars = EzroUI.CastBars
 if not CastBars then
-    error("EzUI: CastBars module not initialized! Load CastBars.lua first.")
+    error("EzroUI: CastBars module not initialized! Load CastBars.lua first.")
 end
 
 local CreateBorder = CastBars.CreateBorder
@@ -13,10 +13,10 @@ local function PixelSnap(value)
     return math.max(0, math.floor((value or 0) + 0.5))
 end
 local function SetTargetCastBarColor(state)
-    local cfg = EzUI.db and EzUI.db.profile and EzUI.db.profile.targetCastBar
+    local cfg = EzroUI.db and EzroUI.db.profile and EzroUI.db.profile.targetCastBar
     if not cfg then return end
 
-    local bar = EzUI.targetCastBar
+    local bar = EzroUI.targetCastBar
     if not bar or not bar.status then return end
 
     local color
@@ -35,24 +35,24 @@ end
 -- TARGET CAST BAR
 
 function CastBars:GetTargetCastBar()
-    if EzUI.targetCastBar then return EzUI.targetCastBar end
+    if EzroUI.targetCastBar then return EzroUI.targetCastBar end
 
-    local cfg    = EzUI.db.profile.targetCastBar
+    local cfg    = EzroUI.db.profile.targetCastBar
     local anchor = _G[cfg.attachTo] or UIParent
     local anchorPoint = cfg.anchorPoint or "CENTER"
 
-    local bar = CreateFrame("Frame", ADDON_NAME .. "TargetCastBar", anchor)
+    local bar = CreateFrame("Frame", ADDON_NAME .. "TargetCastBar", UIParent)
     bar:SetFrameStrata("MEDIUM")
 
     local height = cfg.height or 10
-    bar:SetHeight(EzUI:Scale(height))
-    bar:SetPoint("CENTER", anchor, anchorPoint, EzUI:Scale(cfg.offsetX or 0), EzUI:Scale(cfg.offsetY or -50))
+    bar:SetHeight(EzroUI:Scale(height))
+    bar:SetPoint("CENTER", anchor, anchorPoint, EzroUI:Scale(cfg.offsetX or 0), EzroUI:Scale(cfg.offsetY or -50))
     
     local width = cfg.width or 0
     if width <= 0 then
         width = PixelSnap((anchor.__cdmIconWidth or anchor:GetWidth() or 200) - 2)
     else
-        width = EzUI:Scale(width)
+        width = EzroUI:Scale(width)
     end
     bar:SetWidth(width)
 
@@ -61,7 +61,7 @@ function CastBars:GetTargetCastBar()
     -- Status bar
     bar.status = CreateFrame("StatusBar", nil, bar)
     -- Use GetTexture helper: if cfg.texture is set, use it; otherwise use global texture
-    local tex = EzUI:GetTexture(EzUI.db.profile.targetCastBar.texture)
+    local tex = EzroUI:GetTexture(EzroUI.db.profile.targetCastBar.texture)
     bar.status:SetStatusBarTexture(tex)
 
     local sbTex = bar.status:GetStatusBarTexture()
@@ -86,15 +86,15 @@ function CastBars:GetTargetCastBar()
 
     bar:Hide()
 
-    EzUI.targetCastBar = bar
+    EzroUI.targetCastBar = bar
     return bar
 end
 
 function CastBars:UpdateTargetCastBarLayout()
-    local cfg = EzUI.db.profile.targetCastBar
+    local cfg = EzroUI.db.profile.targetCastBar
     if not cfg then return end
     
-    local bar = EzUI.targetCastBar
+    local bar = EzroUI.targetCastBar
     if not bar then return end
     
     if not cfg.enabled then
@@ -111,20 +111,20 @@ function CastBars:UpdateTargetCastBarLayout()
     local anchorPoint = cfg.anchorPoint or "CENTER"
     local height = cfg.height or 18
     bar:ClearAllPoints()
-    bar:SetPoint("CENTER", anchor, anchorPoint, EzUI:Scale(cfg.offsetX or 0), EzUI:Scale(cfg.offsetY or -50))
-    bar:SetHeight(EzUI:Scale(height))
+    bar:SetPoint("CENTER", anchor, anchorPoint, EzroUI:Scale(cfg.offsetX or 0), EzroUI:Scale(cfg.offsetY or -50))
+    bar:SetHeight(EzroUI:Scale(height))
     
     local width = cfg.width or 0
     if width <= 0 then
         width = PixelSnap((anchor.__cdmIconWidth or anchor:GetWidth() or 200) - 2)
     else
-        width = EzUI:Scale(width)
+        width = EzroUI:Scale(width)
     end
     bar:SetWidth(width)
     
     if bar.border then
         bar.border:ClearAllPoints()
-        local borderOffset = EzUI:Scale(1)
+        local borderOffset = EzroUI:Scale(1)
         bar.border:SetPoint("TOPLEFT", bar, -borderOffset, borderOffset)
         bar.border:SetPoint("BOTTOMRIGHT", bar, borderOffset, -borderOffset)
     end
@@ -160,7 +160,7 @@ function CastBars:UpdateTargetCastBarLayout()
     bar.bg:SetColorTexture(bgColor[1], bgColor[2], bgColor[3], bgColor[4] or 1)
     
     -- Update texture (use per-bar texture if set, otherwise use global)
-    local tex = EzUI:GetTexture(cfg.texture)
+    local tex = EzroUI:GetTexture(cfg.texture)
     bar.status:SetStatusBarTexture(tex)
     
     local sbTex = bar.status:GetStatusBarTexture()
@@ -182,13 +182,13 @@ function CastBars:UpdateTargetCastBarLayout()
 
     -- Text positioning
     bar.spellName:ClearAllPoints()
-    bar.spellName:SetPoint("LEFT", bar.status, "LEFT", EzUI:Scale(4 + nameOffsetX), EzUI:Scale(nameOffsetY))
+    bar.spellName:SetPoint("LEFT", bar.status, "LEFT", EzroUI:Scale(4 + nameOffsetX), EzroUI:Scale(nameOffsetY))
     
     bar.timeText:ClearAllPoints()
-    bar.timeText:SetPoint("RIGHT", bar.status, "RIGHT", EzUI:Scale(-4 + timeOffsetX), EzUI:Scale(timeOffsetY))
+    bar.timeText:SetPoint("RIGHT", bar.status, "RIGHT", EzroUI:Scale(-4 + timeOffsetX), EzroUI:Scale(timeOffsetY))
     
     -- Update text size
-    local font = EzUI:GetGlobalFont()
+    local font = EzroUI:GetGlobalFont()
     bar.spellName:SetFont(font, cfg.textSize or 16, "OUTLINE")
     bar.spellName:SetShadowOffset(0, 0)
     
@@ -206,13 +206,13 @@ end
 function CastBars:HookTargetAndFocusCastBars()
     -- Hook Target cast bar
     local targetSpellbar = _G["TargetFrame"] and _G["TargetFrame"].spellbar
-    if targetSpellbar and not targetSpellbar.__EzUIHooked then
-        targetSpellbar.__EzUIHooked = true
+    if targetSpellbar and not targetSpellbar.__EzroUIHooked then
+        targetSpellbar.__EzroUIHooked = true
         
         targetSpellbar:HookScript("OnShow", function(self)
-            local cfg = EzUI.db.profile.targetCastBar
+            local cfg = EzroUI.db.profile.targetCastBar
             if not cfg or not cfg.enabled then
-                if EzUI.targetCastBar then EzUI.targetCastBar:Hide() end
+                if EzroUI.targetCastBar then EzroUI.targetCastBar:Hide() end
                 return
             end
             
@@ -254,8 +254,8 @@ function CastBars:HookTargetAndFocusCastBars()
         end)
         
         targetSpellbar:HookScript("OnHide", function()
-            if EzUI.targetCastBar then
-                EzUI.targetCastBar:Hide()
+            if EzroUI.targetCastBar then
+                EzroUI.targetCastBar:Hide()
             end
         end)
 
@@ -263,7 +263,7 @@ function CastBars:HookTargetAndFocusCastBars()
         targetSpellbar:HookScript("OnEvent", function(self, event, unit)
             if unit ~= "target" then return end
 
-            local cfg = EzUI.db.profile.targetCastBar
+            local cfg = EzroUI.db.profile.targetCastBar
             if not cfg or not cfg.enabled then return end
 
             if event == "UNIT_SPELLCAST_INTERRUPTED" or event == "UNIT_SPELLCAST_FAILED" then
@@ -279,10 +279,10 @@ function CastBars:HookTargetAndFocusCastBars()
         local lastUpdate = 0
         local updateThrottle = 1/60 -- 60fps maximum
         targetSpellbar:HookScript("OnUpdate", function(self, elapsed)
-            local cfg = EzUI.db.profile.targetCastBar
+            local cfg = EzroUI.db.profile.targetCastBar
             if not cfg or not cfg.enabled then return end
 
-            local bar = EzUI.targetCastBar
+            local bar = EzroUI.targetCastBar
             if not bar or not bar:IsShown() then return end
 
             lastUpdate = lastUpdate + elapsed
@@ -306,7 +306,7 @@ function CastBars:HookTargetAndFocusCastBars()
 end
 
 -- Expose to main addon for backwards compatibility
-EzUI.GetTargetCastBar = function(self) return CastBars:GetTargetCastBar() end
-EzUI.UpdateTargetCastBarLayout = function(self) return CastBars:UpdateTargetCastBarLayout() end
-EzUI.HookTargetAndFocusCastBars = function(self) return CastBars:HookTargetAndFocusCastBars() end
+EzroUI.GetTargetCastBar = function(self) return CastBars:GetTargetCastBar() end
+EzroUI.UpdateTargetCastBarLayout = function(self) return CastBars:UpdateTargetCastBarLayout() end
+EzroUI.HookTargetAndFocusCastBars = function(self) return CastBars:HookTargetAndFocusCastBars() end
 

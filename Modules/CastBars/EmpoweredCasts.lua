@@ -1,10 +1,10 @@
 ﻿local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
+local EzroUI = ns.Addon
 
 -- Get CastBars module
-local CastBars = EzUI.CastBars
+local CastBars = EzroUI.CastBars
 if not CastBars then
-    error("EzUI: CastBars module not initialized! Load CastBars.lua first.")
+    error("EzroUI: CastBars module not initialized! Load CastBars.lua first.")
 end
 
 -- EMPOWERED CAST FUNCTIONS
@@ -147,9 +147,9 @@ function CastBars:InitializeEmpoweredStages(bar)
         
         -- Calculate width from bar dimensions to avoid taint from GetWidth()
         -- Status bar width = bar width - icon width
-        local cfg = EzUI.db.profile.castBar
+        local cfg = EzroUI.db.profile.castBar
         local barHeight = (cfg and cfg.height) or 24
-        local iconWidth = EzUI:Scale(barHeight)  -- Icon width equals bar height
+        local iconWidth = EzroUI:Scale(barHeight)  -- Icon width equals bar height
         
         -- Get bar width safely - bar width is set by our code so should be less tainted
         local barOk, barW = pcall(function() return bar:GetWidth() end)
@@ -165,12 +165,12 @@ function CastBars:InitializeEmpoweredStages(bar)
         if barWidth < 0 then barWidth = 100 end  -- Safety fallback
         
         -- Get stage height
-        local cfg = EzUI.db.profile.castBar
+        local cfg = EzroUI.db.profile.castBar
         local stageHeight = (cfg and cfg.height) or 24
         
         -- Calculate border offset to keep segments and ticks within border
         -- This is calculated once and reused for all segments and ticks
-        local borderOffset = (EzUI.ScaleBorder and EzUI:ScaleBorder(1)) or math.floor((EzUI:Scale(1) or 1) + 0.5)
+        local borderOffset = (EzroUI.ScaleBorder and EzroUI:ScaleBorder(1)) or math.floor((EzroUI:Scale(1) or 1) + 0.5)
 
         -- Use the new UnitEmpoweredStageDurations API to get accurate stage durations
         -- This returns duration objects for each stage, with the final element being hold-at-max
@@ -249,7 +249,7 @@ function CastBars:InitializeEmpoweredStages(bar)
         end
         
         -- Get stage colors from config
-        local cfg = EzUI.db.profile.castBar
+        local cfg = EzroUI.db.profile.castBar
         local stageColors = cfg and cfg.empoweredStageColors or {}
         local defaultColors = {
             [1] = {0.3, 0.75, 1, 1},      -- Light blue / Teal
@@ -279,7 +279,7 @@ function CastBars:InitializeEmpoweredStages(bar)
             
             local blankSegmentWidth = stage1StartPercent * barWidth
             -- Calculate border offset
-            local borderOffset = (EzUI.ScaleBorder and EzUI:ScaleBorder(1)) or math.floor((EzUI:Scale(1) or 1) + 0.5)
+            local borderOffset = (EzroUI.ScaleBorder and EzroUI:ScaleBorder(1)) or math.floor((EzroUI:Scale(1) or 1) + 0.5)
             
             blankSegmentBg:ClearAllPoints()
             blankSegmentBg:SetPoint("LEFT", status, "LEFT", 0, 0)
@@ -478,7 +478,7 @@ function CastBars:InitializeEmpoweredStages(bar)
         end
         
         -- Check if we should show empowered ticks
-        local cfg = EzUI.db.profile.castBar
+        local cfg = EzroUI.db.profile.castBar
         -- Default to true if not set, but respect false when explicitly set
         -- Only hide ticks if showEmpoweredTicks is explicitly set to false
         local showTicks = true  -- Default to true
@@ -574,7 +574,7 @@ function CastBars:InitializeEmpoweredStages(bar)
 end
 
 function CastBars:OnPlayerSpellcastEmpowerStart(unit, castGUID, spellID)
-    local cfg = EzUI.db.profile.castBar
+    local cfg = EzroUI.db.profile.castBar
     if not cfg or not cfg.enabled then
         return
     end
@@ -709,7 +709,7 @@ function CastBars:OnPlayerSpellcastEmpowerStart(unit, castGUID, spellID)
     bar.icon:SetTexture(texture)
     bar.spellName:SetText(name)
 
-    local font = EzUI:GetGlobalFont()
+    local font = EzroUI:GetGlobalFont()
     bar.spellName:SetFont(font, cfg.textSize or 10, "OUTLINE")
     bar.spellName:SetShadowOffset(0, 0)
 
@@ -754,12 +754,12 @@ function CastBars:OnPlayerSpellcastEmpowerStart(unit, castGUID, spellID)
 end
 
 function CastBars:OnPlayerSpellcastEmpowerUpdate(unit, castGUID, spellID)
-    if not EzUI.castBar then return end
-    if EzUI.castBar.castGUID and castGUID and castGUID ~= EzUI.castBar.castGUID then
+    if not EzroUI.castBar then return end
+    if EzroUI.castBar.castGUID and castGUID and castGUID ~= EzroUI.castBar.castGUID then
         return
     end
 
-    local bar = EzUI.castBar
+    local bar = EzroUI.castBar
     
     -- Update empowered cast info - use UnitCastingInfo (like PlayersCastbars does)
     local name, _, texture, startTimeMS, endTimeMS, isTradeSkill, castID, notInterruptible, unitSpellID, numStages, isEmpowered, castBarID = UnitCastingInfo("player")
@@ -802,9 +802,9 @@ function CastBars:OnPlayerSpellcastEmpowerUpdate(unit, castGUID, spellID)
 end
 
 function CastBars:OnPlayerSpellcastEmpowerStop(unit, castGUID, spellID)
-    if not EzUI.castBar then return end
+    if not EzroUI.castBar then return end
 
-    if castGUID and EzUI.castBar.castGUID and castGUID ~= EzUI.castBar.castGUID then
+    if castGUID and EzroUI.castBar.castGUID and castGUID ~= EzroUI.castBar.castGUID then
         return
     end
 
@@ -812,17 +812,17 @@ function CastBars:OnPlayerSpellcastEmpowerStop(unit, castGUID, spellID)
     local name, _, texture, startTimeMS, endTimeMS, isTradeSkill, castID, notInterruptible, unitSpellID, numStages, isEmpowered, castBarID = UnitCastingInfo("player")
     if name and startTimeMS and endTimeMS then
         -- Still casting, update the bar
-        EzUI.castBar.icon:SetTexture(texture)
-        EzUI.castBar.spellName:SetText(name)
-        EzUI.castBar.startTime = startTimeMS / 1000
-        EzUI.castBar.endTime = endTimeMS / 1000
-        EzUI.castBar.castBarID = castBarID
-        EzUI.castBar.isEmpowered = false
-        EzUI.castBar.numStages = 0
-        EzUI.castBar.lastNumStages = nil
-        EzUI.castBar.currentEmpoweredStage = nil
-        if EzUI.castBar.empoweredStages then
-            for _, stage in ipairs(EzUI.castBar.empoweredStages) do
+        EzroUI.castBar.icon:SetTexture(texture)
+        EzroUI.castBar.spellName:SetText(name)
+        EzroUI.castBar.startTime = startTimeMS / 1000
+        EzroUI.castBar.endTime = endTimeMS / 1000
+        EzroUI.castBar.castBarID = castBarID
+        EzroUI.castBar.isEmpowered = false
+        EzroUI.castBar.numStages = 0
+        EzroUI.castBar.lastNumStages = nil
+        EzroUI.castBar.currentEmpoweredStage = nil
+        if EzroUI.castBar.empoweredStages then
+            for _, stage in ipairs(EzroUI.castBar.empoweredStages) do
                 if stage then
                     stage:Hide()
                     if stage.border then
@@ -831,29 +831,29 @@ function CastBars:OnPlayerSpellcastEmpowerStop(unit, castGUID, spellID)
                 end
             end
         end
-        if EzUI.castBar.empoweredSegments then
-            for _, segment in ipairs(EzUI.castBar.empoweredSegments) do
+        if EzroUI.castBar.empoweredSegments then
+            for _, segment in ipairs(EzroUI.castBar.empoweredSegments) do
                 if segment then
                     segment:Hide()
                 end
             end
         end
-        if EzUI.castBar.empoweredGlow then
-            EzUI.castBar.empoweredGlow:Hide()
+        if EzroUI.castBar.empoweredGlow then
+            EzroUI.castBar.empoweredGlow:Hide()
         end
         return
     end
 
     -- Cast finished, hide the bar
-    EzUI.castBar.castGUID = nil
-    EzUI.castBar.castBarID = nil
-    EzUI.castBar.isChannel = nil
-    EzUI.castBar.isEmpowered = nil
-    EzUI.castBar.numStages = nil
-    EzUI.castBar.lastNumStages = nil
-    EzUI.castBar.currentEmpoweredStage = nil
-    if EzUI.castBar.empoweredStages then
-        for _, stage in ipairs(EzUI.castBar.empoweredStages) do
+    EzroUI.castBar.castGUID = nil
+    EzroUI.castBar.castBarID = nil
+    EzroUI.castBar.isChannel = nil
+    EzroUI.castBar.isEmpowered = nil
+    EzroUI.castBar.numStages = nil
+    EzroUI.castBar.lastNumStages = nil
+    EzroUI.castBar.currentEmpoweredStage = nil
+    if EzroUI.castBar.empoweredStages then
+        for _, stage in ipairs(EzroUI.castBar.empoweredStages) do
             if stage then
                 stage:Hide()
                 if stage.border then
@@ -862,23 +862,23 @@ function CastBars:OnPlayerSpellcastEmpowerStop(unit, castGUID, spellID)
             end
         end
     end
-    if EzUI.castBar.empoweredSegments then
-        for _, segment in ipairs(EzUI.castBar.empoweredSegments) do
+    if EzroUI.castBar.empoweredSegments then
+        for _, segment in ipairs(EzroUI.castBar.empoweredSegments) do
             if segment then
                 segment:Hide()
             end
         end
     end
-    if EzUI.castBar.empoweredGlow then
-        EzUI.castBar.empoweredGlow:Hide()
+    if EzroUI.castBar.empoweredGlow then
+        EzroUI.castBar.empoweredGlow:Hide()
     end
-    EzUI.castBar:Hide()
-    EzUI.castBar:SetScript("OnUpdate", nil)
+    EzroUI.castBar:Hide()
+    EzroUI.castBar:SetScript("OnUpdate", nil)
 end
 
 -- Expose to main addon for backwards compatibility
-EzUI.InitializeEmpoweredStages = function(self, bar) return CastBars:InitializeEmpoweredStages(bar) end
-EzUI.OnPlayerSpellcastEmpowerStart = function(self, unit, castGUID, spellID) return CastBars:OnPlayerSpellcastEmpowerStart(unit, castGUID, spellID) end
-EzUI.OnPlayerSpellcastEmpowerUpdate = function(self, unit, castGUID, spellID) return CastBars:OnPlayerSpellcastEmpowerUpdate(unit, castGUID, spellID) end
-EzUI.OnPlayerSpellcastEmpowerStop = function(self, unit, castGUID, spellID) return CastBars:OnPlayerSpellcastEmpowerStop(unit, castGUID, spellID) end
+EzroUI.InitializeEmpoweredStages = function(self, bar) return CastBars:InitializeEmpoweredStages(bar) end
+EzroUI.OnPlayerSpellcastEmpowerStart = function(self, unit, castGUID, spellID) return CastBars:OnPlayerSpellcastEmpowerStart(unit, castGUID, spellID) end
+EzroUI.OnPlayerSpellcastEmpowerUpdate = function(self, unit, castGUID, spellID) return CastBars:OnPlayerSpellcastEmpowerUpdate(unit, castGUID, spellID) end
+EzroUI.OnPlayerSpellcastEmpowerStop = function(self, unit, castGUID, spellID) return CastBars:OnPlayerSpellcastEmpowerStop(unit, castGUID, spellID) end
 

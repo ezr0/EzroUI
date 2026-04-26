@@ -1,11 +1,11 @@
 ﻿local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
+local EzroUI = ns.Addon
 local LSM = LibStub("LibSharedMedia-3.0")
 
 -- Get ResourceBars module
-local ResourceBars = EzUI.ResourceBars
+local ResourceBars = EzroUI.ResourceBars
 if not ResourceBars then
-    error("EzUI: ResourceBars module not initialized! Load ResourceDetection.lua first.")
+    error("EzroUI: ResourceBars module not initialized! Load ResourceDetection.lua first.")
 end
 
 -- Get functions from ResourceDetection
@@ -26,23 +26,23 @@ end
 -- PRIMARY POWER BAR
 
 function ResourceBars:GetPowerBar()
-    if EzUI.powerBar then return EzUI.powerBar end
+    if EzroUI.powerBar then return EzroUI.powerBar end
 
-    local cfg = EzUI.db.profile.powerBar
+    local cfg = EzroUI.db.profile.powerBar
     local anchor = _G[cfg.attachTo] or UIParent
     local anchorPoint = cfg.anchorPoint or "CENTER"
 
-    local bar = CreateFrame("Frame", "EzUI_PrimaryPower", anchor)
+    local bar = CreateFrame("Frame", "EzroUI_PrimaryPower", anchor)
     bar:SetFrameStrata("MEDIUM")
-    bar:SetHeight(EzUI:Scale(cfg.height or 6))
-    bar:SetPoint("CENTER", anchor, anchorPoint, EzUI:Scale(cfg.offsetX or 0), EzUI:Scale(cfg.offsetY or 6))
+    bar:SetHeight(EzroUI:Scale(cfg.height or 6))
+    bar:SetPoint("CENTER", anchor, anchorPoint, EzroUI:Scale(cfg.offsetX or 0), EzroUI:Scale(cfg.offsetY or 6))
 
     local width = cfg.width or 0
     if width <= 0 then
         width = PixelSnap(anchor.__cdmIconWidth or anchor:GetWidth())
         -- Width is already in pixels, no need to scale again
     else
-        width = EzUI:Scale(width)
+        width = EzroUI:Scale(width)
     end
 
     bar:SetWidth(width)
@@ -57,7 +57,7 @@ function ResourceBars:GetPowerBar()
     bar.StatusBar = CreateFrame("StatusBar", nil, bar)
     bar.StatusBar:SetAllPoints()
     -- Use GetTexture helper: if cfg.texture is set, use it; otherwise use global texture
-    local tex = EzUI:GetTexture(cfg.texture)
+    local tex = EzroUI:GetTexture(cfg.texture)
     bar.StatusBar:SetStatusBarTexture(tex)
     bar.StatusBar:SetFrameLevel(bar:GetFrameLevel())
 
@@ -71,7 +71,7 @@ function ResourceBars:GetPowerBar()
 
     -- BORDER
     bar.Border = CreateFrame("Frame", nil, bar, "BackdropTemplate")
-    local borderSize = EzUI:ScaleBorder(cfg.borderSize or 1)
+    local borderSize = EzroUI:ScaleBorder(cfg.borderSize or 1)
     local borderOffset = borderSize
     bar.Border:SetPoint("TOPLEFT", bar, -borderOffset, borderOffset)
     bar.Border:SetPoint("BOTTOMRIGHT", bar, borderOffset, -borderOffset)
@@ -108,9 +108,9 @@ function ResourceBars:GetPowerBar()
     bar.ChargedFrame:SetFrameLevel(bar.StatusBar:GetFrameLevel() + 4)
 
     bar.TextValue = bar.TextFrame:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
-    bar.TextValue:SetPoint("CENTER", bar.TextFrame, "CENTER", EzUI:Scale(cfg.textX or 0), EzUI:Scale(cfg.textY or 0))
+    bar.TextValue:SetPoint("CENTER", bar.TextFrame, "CENTER", EzroUI:Scale(cfg.textX or 0), EzroUI:Scale(cfg.textY or 0))
     bar.TextValue:SetJustifyH("CENTER")
-    bar.TextValue:SetFont(EzUI:GetGlobalFont(), cfg.textSize or 12, "OUTLINE")
+    bar.TextValue:SetFont(EzroUI:GetGlobalFont(), cfg.textSize or 12, "OUTLINE")
     bar.TextValue:SetShadowOffset(0, 0)
     bar.TextValue:SetText("0")
 
@@ -126,12 +126,12 @@ function ResourceBars:GetPowerBar()
 
     bar:Hide()
 
-    EzUI.powerBar = bar
+    EzroUI.powerBar = bar
     return bar
 end
 
 function ResourceBars:UpdateChargedPowerSegmentsPrimary(bar, resource, max)
-    local cfg = EzUI.db.profile.powerBar
+    local cfg = EzroUI.db.profile.powerBar
 
     for _, segment in pairs(bar.ChargedSegments) do
         segment:Hide()
@@ -182,8 +182,8 @@ function ResourceBars:UpdateChargedPowerSegmentsPrimary(bar, resource, max)
 end
 
 function ResourceBars:ApplyFragmentTextStylePrimary(bar)
-    local cfg = EzUI.db.profile.powerBar
-    local font = EzUI:GetGlobalFont()
+    local cfg = EzroUI.db.profile.powerBar
+    local font = EzroUI:GetGlobalFont()
     local size = cfg.runeTimerTextSize or 10
     local offsetX = cfg.runeTimerTextX or 0
     local offsetY = cfg.runeTimerTextY or 0
@@ -193,19 +193,19 @@ function ResourceBars:ApplyFragmentTextStylePrimary(bar)
             text:SetFont(font, size, "OUTLINE")
             text:SetShadowOffset(0, 0)
             text:ClearAllPoints()
-            text:SetPoint("CENTER", text:GetParent(), "CENTER", EzUI:Scale(offsetX), EzUI:Scale(offsetY))
+            text:SetPoint("CENTER", text:GetParent(), "CENTER", EzroUI:Scale(offsetX), EzroUI:Scale(offsetY))
         end
     end
 end
 
 function ResourceBars:CreateFragmentedPowerBarsPrimary(bar, resource)
-    local cfg = EzUI.db.profile.powerBar
+    local cfg = EzroUI.db.profile.powerBar
     local maxPower = UnitPowerMax("player", resource) or 0
 
     for i = 1, maxPower do
         if not bar.FragmentedPowerBars[i] then
             local fragmentBar = CreateFrame("StatusBar", nil, bar)
-            local tex = EzUI:GetTexture(cfg.texture)
+            local tex = EzroUI:GetTexture(cfg.texture)
             fragmentBar:SetStatusBarTexture(tex)
             fragmentBar:SetOrientation("HORIZONTAL")
             fragmentBar:SetFrameLevel(bar.StatusBar:GetFrameLevel())
@@ -223,7 +223,7 @@ function ResourceBars:CreateFragmentedPowerBarsPrimary(bar, resource)
 end
 
 function ResourceBars:UpdateFragmentedPowerDisplayPrimary(bar, resource)
-    local cfg = EzUI.db.profile.powerBar
+    local cfg = EzroUI.db.profile.powerBar
     local maxPower = UnitPowerMax("player", resource)
     if maxPower <= 0 then return end
 
@@ -403,18 +403,18 @@ function ResourceBars:UpdateFragmentedPowerDisplayPrimary(bar, resource)
 end
 
 function ResourceBars:UpdatePowerBar()
-    local cfg = EzUI.db.profile.powerBar
+    local cfg = EzroUI.db.profile.powerBar
     if not cfg.enabled then
-        if EzUI.powerBar then
-            EzUI.powerBar:Hide()
-            EzUI.powerBar:SetScript("OnUpdate", nil)
+        if EzroUI.powerBar then
+            EzroUI.powerBar:Hide()
+            EzroUI.powerBar:SetScript("OnUpdate", nil)
         end
         return
     end
 
     local anchor = _G[cfg.attachTo]
     if not anchor or not anchor:IsShown() then
-        local bar = EzUI.powerBar
+        local bar = EzroUI.powerBar
         if bar then
             bar:Hide()
             bar:SetScript("OnUpdate", nil)
@@ -456,16 +456,16 @@ function ResourceBars:UpdatePowerBar()
 
     -- Update layout
     local anchorPoint = cfg.anchorPoint or "CENTER"
-    local desiredHeight = EzUI:Scale(cfg.height or 6)
-    local desiredX = EzUI:Scale(cfg.offsetX or 0)
-    local desiredY = EzUI:Scale(cfg.offsetY or 6)
+    local desiredHeight = EzroUI:Scale(cfg.height or 6)
+    local desiredX = EzroUI:Scale(cfg.offsetX or 0)
+    local desiredY = EzroUI:Scale(cfg.offsetY or 6)
 
     local width = cfg.width or 0
     if width <= 0 then
         width = PixelSnap(anchor.__cdmIconWidth or anchor:GetWidth())
         -- Width is already in pixels, no need to scale again
     else
-        width = EzUI:Scale(width)
+        width = EzroUI:Scale(width)
     end
 
     -- Only reposition / resize when something actually changed to avoid texture flicker
@@ -495,7 +495,7 @@ function ResourceBars:UpdatePowerBar()
     end
 
     -- Update texture (use per-bar texture if set, otherwise use global)
-    local tex = EzUI:GetTexture(cfg.texture)
+    local tex = EzroUI:GetTexture(cfg.texture)
     if bar._lastTexture ~= tex then
         bar.StatusBar:SetStatusBarTexture(tex)
         bar._lastTexture = tex
@@ -512,7 +512,7 @@ function ResourceBars:UpdatePowerBar()
     -- Update border size and color
     local borderSize = cfg.borderSize or 1
     if bar.Border then
-        local scaledBorder = EzUI:ScaleBorder(borderSize)
+        local scaledBorder = EzroUI:ScaleBorder(borderSize)
         bar.Border:ClearAllPoints()
         bar.Border:SetPoint("TOPLEFT", bar, -scaledBorder, scaledBorder)
         bar.Border:SetPoint("BOTTOMRIGHT", bar, scaledBorder, -scaledBorder)
@@ -548,7 +548,7 @@ function ResourceBars:UpdatePowerBar()
     end
 
     -- Set bar color
-    local powerTypeColors = EzUI.db.profile.powerTypeColors
+    local powerTypeColors = EzroUI.db.profile.powerTypeColors
     if powerTypeColors.useClassColor then
         local _, class = UnitClass("player")
         local classColor = RAID_CLASS_COLORS[class]
@@ -611,10 +611,10 @@ function ResourceBars:UpdatePowerBar()
         end
     end
 
-    bar.TextValue:SetFont(EzUI:GetGlobalFont(), cfg.textSize or 12, "OUTLINE")
+    bar.TextValue:SetFont(EzroUI:GetGlobalFont(), cfg.textSize or 12, "OUTLINE")
     bar.TextValue:SetShadowOffset(0, 0)
     bar.TextValue:ClearAllPoints()
-    bar.TextValue:SetPoint("CENTER", bar.TextFrame, "CENTER", EzUI:Scale(cfg.textX or 0), EzUI:Scale(cfg.textY or 0))
+    bar.TextValue:SetPoint("CENTER", bar.TextFrame, "CENTER", EzroUI:Scale(cfg.textX or 0), EzroUI:Scale(cfg.textY or 0))
 
     -- Show text based on config
     bar.TextFrame:SetShown(cfg.showText ~= false)
@@ -669,7 +669,7 @@ function ResourceBars:UpdatePowerBar()
 end
 
 function ResourceBars:UpdatePowerBarTicks(bar, resource, max)
-    local cfg = EzUI.db.profile.powerBar
+    local cfg = EzroUI.db.profile.powerBar
     
     -- Hide all ticks first
     for _, tick in ipairs(bar.ticks) do
@@ -717,7 +717,7 @@ function ResourceBars:UpdatePowerBarTicks(bar, resource, max)
         -- x is already in pixels (calculated from bar width), no need to scale
         tick:SetPoint("LEFT", bar.StatusBar, "LEFT", x, 0)
         -- Ensure tick width is at least 1 pixel to prevent disappearing
-        local tickWidth = math.max(1, EzUI:Scale(1))
+        local tickWidth = math.max(1, EzroUI:Scale(1))
         -- height is already in pixels (from bar:GetHeight()), no need to scale
         tick:SetSize(tickWidth, height)
         tick:Show()
@@ -725,7 +725,7 @@ function ResourceBars:UpdatePowerBarTicks(bar, resource, max)
 end
 
 -- Expose to main addon for backwards compatibility
-EzUI.GetPowerBar = function(self) return ResourceBars:GetPowerBar() end
-EzUI.UpdatePowerBar = function(self) return ResourceBars:UpdatePowerBar() end
-EzUI.UpdatePowerBarTicks = function(self, bar, resource, max) return ResourceBars:UpdatePowerBarTicks(bar, resource, max) end
+EzroUI.GetPowerBar = function(self) return ResourceBars:GetPowerBar() end
+EzroUI.UpdatePowerBar = function(self) return ResourceBars:UpdatePowerBar() end
+EzroUI.UpdatePowerBarTicks = function(self, bar, resource, max) return ResourceBars:UpdatePowerBarTicks(bar, resource, max) end
 

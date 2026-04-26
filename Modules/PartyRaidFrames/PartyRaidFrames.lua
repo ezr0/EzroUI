@@ -1,5 +1,5 @@
 ﻿--[[
-    EzUI Unit Frames Module
+    EzroUI Unit Frames Module
     Core entry point for party and raid unit frame functionality
     
     This module provides customizable unit frames for party and raid groups,
@@ -8,14 +8,14 @@
 ]]
 
 local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
+local EzroUI = ns.Addon
 
 -- Module namespace initialization
-EzUI.PartyFrames = EzUI.PartyFrames or {}
-local UnitFrames = EzUI.PartyFrames
+EzroUI.PartyFrames = EzroUI.PartyFrames or {}
+local UnitFrames = EzroUI.PartyFrames
 
 -- Module metadata
-UnitFrames.IDENTIFIER = "EzUIUnitFrames"
+UnitFrames.IDENTIFIER = "EzroUIUnitFrames"
 UnitFrames.BUILD = (C_AddOns and C_AddOns.GetAddOnMetadata(ADDON_NAME, "Version")) or "1.0.0"
 UnitFrames.LOADED = false
 
@@ -72,9 +72,9 @@ local UnregisterUnitWatch = UnregisterUnitWatch
 -- ============================================================================
 
 function UnitFrames:InitializeDB()
-    -- Prefer EzUI's profile DB if available
-    if EzUI and EzUI.db and EzUI.db.profile then
-        local profile = EzUI.db.profile
+    -- Prefer EzroUI's profile DB if available
+    if EzroUI and EzroUI.db and EzroUI.db.profile then
+        local profile = EzroUI.db.profile
         profile.partyFrames = profile.partyFrames or self:DeepCopy(self.PartyDefaults or {})
         profile.raidFrames = profile.raidFrames or self:DeepCopy(self.RaidDefaults or {})
         
@@ -218,8 +218,8 @@ end
 -- ============================================================================
 
 function UnitFrames:PixelPerfect(value)
-    if EzUI and EzUI.Scale then
-        return EzUI:Scale(value)
+    if EzroUI and EzroUI.Scale then
+        return EzroUI:Scale(value)
     end
     
     local scale = UIParent:GetEffectiveScale()
@@ -263,7 +263,7 @@ end
 -- ============================================================================
 
 local function GetSafeHealthPercent(unitToken)
-    -- Use ScaleTo100 curve - returns 0-100 directly (matches old EzUI)
+    -- Use ScaleTo100 curve - returns 0-100 directly (matches old EzroUI)
     if UnitHealthPercent and CurveConstants and CurveConstants.ScaleTo100 then
         return UnitHealthPercent(unitToken, true, CurveConstants.ScaleTo100)
     end
@@ -492,22 +492,22 @@ end
 -- ============================================================================
 
 function UnitFrames:Print(...)
-    if EzUI and EzUI.Print then
-        EzUI:Print(...)
+    if EzroUI and EzroUI.Print then
+        EzroUI:Print(...)
         return
     end
-    print("|cff00ccff[EzUI UF]|r", ...)
+    print("|cff00ccff[EzroUI UF]|r", ...)
 end
 
 function UnitFrames:DebugPrint(...)
     if self.devMode then
-        print("|cff00ccff[EzUI UF Debug]|r", ...)
+        print("|cff00ccff[EzroUI UF Debug]|r", ...)
     end
 end
 
 function UnitFrames:VerbosePrint(...)
     if self.verboseLogging then
-        print("|cff888888[EzUI UF]|r", ...)
+        print("|cff888888[EzroUI UF]|r", ...)
     end
 end
 

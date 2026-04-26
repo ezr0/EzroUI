@@ -1,9 +1,9 @@
 ﻿local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
+local EzroUI = ns.Addon
 
 function ns.CreateRaidFrameOptions()
-    if EzUI and EzUI.PartyFrames and EzUI.PartyFrames.BuildEzUIOptions then
-        return EzUI.PartyFrames:BuildEzUIOptions("raid", "Raid Frames", 46)
+    if EzroUI and EzroUI.PartyFrames and EzroUI.PartyFrames.BuildEzroUIOptions then
+        return EzroUI.PartyFrames:BuildEzroUIOptions("raid", "Raid Frames", 46)
     end
 
     return {

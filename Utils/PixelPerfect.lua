@@ -1,8 +1,8 @@
 ﻿local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
+local EzroUI = ns.Addon
 
-if not EzUI then
-	error("EzUI not found! PixelPerfect.lua must load after Main.lua")
+if not EzroUI then
+	error("EzroUI not found! PixelPerfect.lua must load after Main.lua")
 end
 
 local math_min, math_max, math_floor = math.min, math.max, math.floor
@@ -41,7 +41,7 @@ local function effectiveWidthUltrawide(physW, physH, enabled)
 end
 
 -- Refresh Blizzard global FX model scenes (Retail) so they respect scale/resolution changes.
-function EzUI:RefreshGlobalFX()
+function EzroUI:RefreshGlobalFX()
 	local GLOBAL_FX_SCENES = {
 		"GlobalFXDialogModelScene", "GlobalFXMediumModelScene", "GlobalFXBackgroundModelScene",
 	}
@@ -54,31 +54,31 @@ function EzUI:RefreshGlobalFX()
 	end
 end
 
-function EzUI:IsEyefinity(width, height)
+function EzroUI:IsEyefinity(width, height)
 	local enabled = (self.db and self.db.profile and self.db.profile.general and self.db.profile.general.eyefinity)
 	return effectiveWidthEyefinity(width, height, enabled)
 end
 
-function EzUI:IsUltrawide(width, height)
+function EzroUI:IsUltrawide(width, height)
 	local enabled = (self.db and self.db.profile and self.db.profile.general and self.db.profile.general.ultrawide)
 	return effectiveWidthUltrawide(width, height, enabled)
 end
 
 -- Recompute pixel-snap multiplier so Scale() rounds to whole pixels at current UIParent scale
-function EzUI:UIMult()
+function EzroUI:UIMult()
 	local uiscale = (self.uiscale or (UIParent and UIParent.GetScale and UIParent:GetScale()) or self.perfect)
 	self.mult = self.perfect / (uiscale or self.perfect)
 end
 
 -- Scale value clamped to a safe range for general use
-function EzUI:PixelBestSize()
+function EzroUI:PixelBestSize()
 	local p = self.perfect
 	if not p then return 1 end
 	return math_max(SCALE_FLOOR, math_min(SCALE_CEIL, p))
 end
 
 -- Apply display / resolution change: update physical size, resolution string, and reference scale
-function EzUI:PixelScaleChanged(event)
+function EzroUI:PixelScaleChanged(event)
 	if event == "UI_SCALE_CHANGED" then
 		local pw, ph = GetPhysicalScreenSize()
 		self.physicalWidth, self.physicalHeight = pw, ph
@@ -97,7 +97,7 @@ end
 -- Apply a scale to UIParent so the entire UI (including other addons) uses this scale.
 -- If scale is nil, uses the recommended pixel-perfect scale for the current resolution.
 -- Defers to PLAYER_REGEN_ENABLED if in combat to avoid taint.
-function EzUI:ApplyGlobalUIScale(scale)
+function EzroUI:ApplyGlobalUIScale(scale)
 	if not UIParent or not UIParent.SetScale then return end
 	local s = (scale and type(scale) == "number") and scale or self:PixelBestSize()
 	s = math_max(SCALE_FLOOR, math_min(SCALE_CEIL, s))
@@ -108,10 +108,10 @@ function EzUI:ApplyGlobalUIScale(scale)
 			f:RegisterEvent("PLAYER_REGEN_ENABLED")
 			f:SetScript("OnEvent", function(frame)
 				frame:UnregisterEvent("PLAYER_REGEN_ENABLED")
-				if EzUI and EzUI.ApplyGlobalUIScale and not InCombatLockdown() then
-					EzUI:ApplyGlobalUIScale(EzUI.__pendingGlobalUIScale)
+				if EzroUI and EzroUI.ApplyGlobalUIScale and not InCombatLockdown() then
+					EzroUI:ApplyGlobalUIScale(EzroUI.__pendingGlobalUIScale)
 				end
-				EzUI.__pendingGlobalUIScale = nil
+				EzroUI.__pendingGlobalUIScale = nil
 			end)
 		else
 			self.__pendingGlobalUIScale = s
@@ -127,7 +127,7 @@ function EzUI:ApplyGlobalUIScale(scale)
 end
 
 -- Snap a value to the pixel grid so it doesn't blur (same scaling/snapping behavior, different implementation)
-function EzUI:Scale(x)
+function EzroUI:Scale(x)
 	local m = self.mult
 	if m == 1 or x == 0 then
 		return x
@@ -138,7 +138,7 @@ function EzUI:Scale(x)
 end
 
 -- Scale a border thickness and round to whole pixels; non-negative (0 = hide border)
-function EzUI:ScaleBorder(borderSize)
+function EzroUI:ScaleBorder(borderSize)
 	local raw = borderSize or 1
 	raw = math_floor(raw + 0.5)
 	if raw < 0 then raw = 0 end

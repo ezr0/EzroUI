@@ -1,12 +1,12 @@
 ﻿--[[
-    EzUI Unit Frames - Frame Update
+    EzroUI Unit Frames - Frame Update
     Handles layout application and frame state updates
 ]]
 
 local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
-EzUI.PartyFrames = EzUI.PartyFrames or {}
-local UnitFrames = EzUI.PartyFrames
+local EzroUI = ns.Addon
+EzroUI.PartyFrames = EzroUI.PartyFrames or {}
+local UnitFrames = EzroUI.PartyFrames
 
 -- Cache commonly used API
 local floor, ceil, min, max = math.floor, math.ceil, math.min, math.max
@@ -777,7 +777,7 @@ function UnitFrames:UpdateHealthText(frame, db, unit, isDead, isOffline)
     -- Avoid boolean checks on secret values; format directly like DandersFrames.
     local success = pcall(function()
         if format == "PERCENT" or format == "PERCENTAGE" then
-            -- Match old EzUI: use the safe percent helper and avoid secret checks.
+            -- Match old EzroUI: use the safe percent helper and avoid secret checks.
             -- NOTE: Use dot notation (not colon) since GetSafeHealthPercent only takes unit as parameter
             if self.GetSafeHealthPercent then
                 local pct = self.GetSafeHealthPercent(unit)

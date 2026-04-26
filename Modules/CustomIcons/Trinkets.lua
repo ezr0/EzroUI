@@ -1,10 +1,10 @@
 ﻿local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
+local EzroUI = ns.Addon
 
 -- Get CustomIcons module
-local CustomIcons = EzUI.CustomIcons
+local CustomIcons = EzroUI.CustomIcons
 if not CustomIcons then
-    error("EzUI: CustomIcons module not initialized! Load CustomIcons.lua first.")
+    error("EzroUI: CustomIcons module not initialized! Load CustomIcons.lua first.")
 end
 
 -- Get functions from CustomIcons
@@ -30,9 +30,9 @@ end
 
 -- Update trinket/weapon icon for a specific slot
 local function UpdateTrinketWeaponIcon(slotID, slotKey)
-    if not slotID or not EzUI.trinketsTrackerFrame then return end
+    if not slotID or not EzroUI.trinketsTrackerFrame then return end
     
-    local db = EzUI.db.profile.customIcons
+    local db = EzroUI.db.profile.customIcons
     if not db or not db.trinkets then return end
     
     -- Check if this slot should be tracked
@@ -63,7 +63,7 @@ local function UpdateTrinketWeaponIcon(slotID, slotKey)
     local icon = trinketWeaponIcons[slotID]
     if icon then
         -- Update existing icon if item changed
-        if icon._EzUI_itemID ~= itemID then
+        if icon._EzroUI_itemID ~= itemID then
             -- Item changed, recreate icon
             icon:Hide()
             icon:SetParent(nil)
@@ -79,10 +79,10 @@ local function UpdateTrinketWeaponIcon(slotID, slotKey)
     
     -- Create new icon
     if not icon then
-        icon = CreateCustomItemIcon(itemID, EzUI.trinketsTrackerFrame)
+        icon = CreateCustomItemIcon(itemID, EzroUI.trinketsTrackerFrame)
         if icon then
-            icon._EzUI_slotID = slotID
-            icon._EzUI_slotKey = slotKey
+            icon._EzroUI_slotID = slotID
+            icon._EzroUI_slotKey = slotKey
             trinketWeaponIcons[slotID] = icon
             UpdateCustomItemCooldown(itemID, icon)
             if CustomIcons.ApplyTrinketsLayout then
@@ -101,7 +101,7 @@ end
 
 -- Update all trinket/weapon tracking based on toggles
 function CustomIcons:UpdateTrinketWeaponTracking()
-    if not EzUI.trinketsTrackerFrame then return end
+    if not EzroUI.trinketsTrackerFrame then return end
     
     for slotKey, slotID in pairs(slotMapping) do
         UpdateTrinketWeaponIcon(slotID, slotKey)
@@ -125,12 +125,12 @@ end
 
 -- Create the trinkets tracker frame
 function CustomIcons:CreateTrinketsTrackerFrame()
-    if EzUI.trinketsTrackerFrame then return EzUI.trinketsTrackerFrame end
+    if EzroUI.trinketsTrackerFrame then return EzroUI.trinketsTrackerFrame end
     
-    local db = EzUI.db.profile.customIcons
+    local db = EzroUI.db.profile.customIcons
     if not db or not db.enabled then return nil end
     
-    local frame = CreateFrame("Frame", "EzUI_TrinketsTrackerFrame", UIParent)
+    local frame = CreateFrame("Frame", "EzroUI_TrinketsTrackerFrame", UIParent)
     frame:SetSize(200, 40)
     frame:SetFrameStrata("MEDIUM")
     frame:SetClampedToScreen(true)
@@ -138,9 +138,9 @@ function CustomIcons:CreateTrinketsTrackerFrame()
     -- Default position (slightly offset from items frame)
     frame:SetPoint("CENTER", UIParent, "CENTER", 0, -250)
     
-    frame._EzUI_TrinketsTracker = true
+    frame._EzroUI_TrinketsTracker = true
     
-    EzUI.trinketsTrackerFrame = frame
+    EzroUI.trinketsTrackerFrame = frame
     
     -- Load trinket/weapon icons
     if self.UpdateTrinketWeaponTracking then
@@ -174,13 +174,13 @@ end
 
 -- Apply layout to trinkets/weapons (similar to ApplyCustomIconsLayout)
 function CustomIcons:ApplyTrinketsLayout()
-    if not EzUI.trinketsTrackerFrame then return end
+    if not EzroUI.trinketsTrackerFrame then return end
     
-    local db = EzUI.db.profile.customIcons
+    local db = EzroUI.db.profile.customIcons
     if not db or not db.enabled then return end
     
     local settings = db.trinkets or {}
-    local container = EzUI.trinketsTrackerFrame
+    local container = EzroUI.trinketsTrackerFrame
     local icons = {}
     
     -- Collect trinket/weapon icons in order: trinket1, trinket2, weapon1, weapon2
@@ -334,7 +334,7 @@ function CustomIcons:ApplyTrinketsLayout()
 end
 
 -- Expose to main addon for backwards compatibility
-EzUI.CreateTrinketsTrackerFrame = function(self) return CustomIcons:CreateTrinketsTrackerFrame() end
-EzUI.ApplyTrinketsLayout = function(self) return CustomIcons:ApplyTrinketsLayout() end
-EzUI.UpdateTrinketWeaponTracking = function(self) return CustomIcons:UpdateTrinketWeaponTracking() end
+EzroUI.CreateTrinketsTrackerFrame = function(self) return CustomIcons:CreateTrinketsTrackerFrame() end
+EzroUI.ApplyTrinketsLayout = function(self) return CustomIcons:ApplyTrinketsLayout() end
+EzroUI.UpdateTrinketWeaponTracking = function(self) return CustomIcons:UpdateTrinketWeaponTracking() end
 

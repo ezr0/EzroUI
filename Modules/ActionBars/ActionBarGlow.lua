@@ -1,8 +1,8 @@
 ﻿local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
+local EzroUI = ns.Addon
 
-EzUI.ActionBarGlow = EzUI.ActionBarGlow or {}
-local ActionBarGlow = EzUI.ActionBarGlow
+EzroUI.ActionBarGlow = EzroUI.ActionBarGlow or {}
+local ActionBarGlow = EzroUI.ActionBarGlow
 
 -- Get LibCustomGlow for glow effects
 local LCG = LibStub and LibStub("LibCustomGlow-1.0", true)
@@ -93,7 +93,7 @@ end
 
 -- Get settings for action bar proc glow
 local function GetActionBarGlowSettings()
-    local settings = EzUI.db.profile.actionBars.procGlow
+    local settings = EzroUI.db.profile.actionBars.procGlow
     if not settings or not settings.enabled then return nil end
     return settings
 end
@@ -167,7 +167,7 @@ local function ApplyLibCustomGlow(button, settings, spellID)
     local lines = settings.lcgLines or 14
     local frequency = settings.lcgFrequency or 0.25
     local thickness = settings.lcgThickness or 2
-    local glowKey = "_EzUIActionBarGlow"
+    local glowKey = "_EzroUIActionBarGlow"
     
     -- Stop any existing glow first
     ActionBarGlow:StopGlow(button)
@@ -228,9 +228,9 @@ function ActionBarGlow:StopGlow(button)
     
     -- Stop LibCustomGlow effects
     if LCG then
-        pcall(LCG.PixelGlow_Stop, button, "_EzUIActionBarGlow")
-        pcall(LCG.AutoCastGlow_Stop, button, "_EzUIActionBarGlow")
-        pcall(LCG.ProcGlow_Stop, button, "_EzUIActionBarGlow")
+        pcall(LCG.PixelGlow_Stop, button, "_EzroUIActionBarGlow")
+        pcall(LCG.AutoCastGlow_Stop, button, "_EzroUIActionBarGlow")
+        pcall(LCG.ProcGlow_Stop, button, "_EzroUIActionBarGlow")
         pcall(LCG.ButtonGlow_Stop, button)
     end
     
@@ -295,7 +295,7 @@ function ActionBarGlow:Initialize()
             local alert = button.SpellActivationAlert
             if alert then
                 -- Hook Show method
-                if not alert._EzUIShowHooked then
+                if not alert._EzroUIShowHooked then
                     local originalShow = alert.Show
                     alert.Show = function(self, ...)
                         if originalShow then
@@ -314,11 +314,11 @@ function ActionBarGlow:Initialize()
                             end
                         end
                     end
-                    alert._EzUIShowHooked = true
+                    alert._EzroUIShowHooked = true
                 end
                 
                 -- Hook Hide method
-                if not alert._EzUIHideHooked then
+                if not alert._EzroUIHideHooked then
                     local originalHide = alert.Hide
                     alert.Hide = function(self, ...)
                         if originalHide then
@@ -330,7 +330,7 @@ function ActionBarGlow:Initialize()
                             ActionBarGlow:StopGlow(btn)
                         end
                     end
-                    alert._EzUIHideHooked = true
+                    alert._EzroUIHideHooked = true
                 end
             end
         end

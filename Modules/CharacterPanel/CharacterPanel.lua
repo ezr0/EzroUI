@@ -1,8 +1,8 @@
 ﻿local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
+local EzroUI = ns.Addon
 
-EzUI.CharacterPanel = EzUI.CharacterPanel or {}
-local CharacterPanel = EzUI.CharacterPanel
+EzroUI.CharacterPanel = EzroUI.CharacterPanel or {}
+local CharacterPanel = EzroUI.CharacterPanel
 
 local isMop = select(4, GetBuildInfo()) >= 50000 and select(4, GetBuildInfo()) < 60000
 
@@ -98,7 +98,7 @@ local GetItemEnchantAsText, GetSocketTextures, ProcessEnchantText, CanEnchantSlo
 if isMop then
     buttonLayout[INVSLOT_RANGED] = "center"
 
-    scanningTooltip = CreateFrame("GameTooltip", "EzUIBCPScanningTooltip", nil, "GameTooltipTemplate")
+    scanningTooltip = CreateFrame("GameTooltip", "EzroUIBCPScanningTooltip", nil, "GameTooltipTemplate")
     scanningTooltip:SetOwner(UIParent, "ANCHOR_NONE")
 
     enchantReplacementTable = {
@@ -147,7 +147,7 @@ if isMop then
 
         -- Original enchant name extraction
         for i = scanningTooltip:NumLines(), 3, -1 do
-            local fontString = _G["EzUIBCPScanningTooltipTextLeft" .. i]
+            local fontString = _G["EzroUIBCPScanningTooltipTextLeft" .. i]
             if fontString and fontString:GetObjectType() == "FontString" then
                 local text = fontString:GetText()
                 if text then
@@ -178,7 +178,7 @@ if isMop then
         local textures = {}
 
         for i = 1, 10 do
-            local texture = _G["EzUIBCPScanningTooltipTexture" .. i]
+            local texture = _G["EzroUIBCPScanningTooltipTexture" .. i]
             if texture and texture:IsShown() then
                 table.insert(textures, texture:GetTexture())
             end
@@ -390,13 +390,13 @@ else
 end
 
 local function GetDB()
-    if not (EzUI.db and EzUI.db.profile) then
+    if not (EzroUI.db and EzroUI.db.profile) then
         return nil
     end
-    if not EzUI.db.profile.qol then
-        EzUI.db.profile.qol = {}
+    if not EzroUI.db.profile.qol then
+        EzroUI.db.profile.qol = {}
     end
-    return EzUI.db.profile.qol
+    return EzroUI.db.profile.qol
 end
 
 local function pairsByKeys(t, f)

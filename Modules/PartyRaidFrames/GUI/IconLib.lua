@@ -1,12 +1,12 @@
 ﻿--[[
-    EzUI Unit Frames - Media Library
+    EzroUI Unit Frames - Media Library
     Provides font and texture utilities via LibSharedMedia integration
 ]]
 
 local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
-EzUI.PartyFrames = EzUI.PartyFrames or {}
-local UnitFrames = EzUI.PartyFrames
+local EzroUI = ns.Addon
+EzroUI.PartyFrames = EzroUI.PartyFrames or {}
+local UnitFrames = EzroUI.PartyFrames
 
 -- Cache LibSharedMedia reference
 local function FetchSharedMedia()

@@ -1,5 +1,5 @@
 ﻿local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
+local EzroUI = ns.Addon
 local L = ns.L or LibStub("AceLocale-3.0"):GetLocale(ADDON_NAME, true) or {}
 
 local importBuffer = ""
@@ -30,7 +30,7 @@ local function CreateProfileOptions()
                 width     = "full",
                 multiline = true,
                 get       = function()
-                    return EzUI:ExportProfileToString()
+                    return EzroUI:ExportProfileToString()
                 end,
                 set       = function() end,
             },
@@ -77,7 +77,7 @@ local function CreateProfileOptions()
                     
                     -- If buffer is empty, try to get text from the custom GUI
                     if not importString or importString == "" then
-                        local configFrame = _G["EzUI_ConfigFrame"]
+                        local configFrame = _G["EzroUI_ConfigFrame"]
                         if configFrame and configFrame:IsShown() then
                             -- Try to find the import edit box in the custom GUI
                             local function FindImportEditBox(parent, depth)
@@ -124,7 +124,7 @@ local function CreateProfileOptions()
                     end
                     
                     if not importString or importString == "" then
-                        print("|cffff0000" .. (L["EzUI: Import failed: No data found. Please paste your import string in the Import Profile String field."] or "EzUI: Import failed: No data found. Please paste your import string in the Import Profile String field.") .. "|r")
+                        print("|cffff0000" .. (L["EzroUI: Import failed: No data found. Please paste your import string in the Import Profile String field."] or "EzroUI: Import failed: No data found. Please paste your import string in the Import Profile String field.") .. "|r")
                         return
                     end
                     
@@ -135,18 +135,18 @@ local function CreateProfileOptions()
                     end
                     
                     if not newProfileName or newProfileName == "" then
-                        print("|cffff0000" .. (L["EzUI: Please enter a profile name for the imported profile."] or "EzUI: Please enter a profile name for the imported profile.") .. "|r")
+                        print("|cffff0000" .. (L["EzroUI: Please enter a profile name for the imported profile."] or "EzroUI: Please enter a profile name for the imported profile.") .. "|r")
                         return
                     end
                     
-                    local ok, err = EzUI:ImportProfileFromString(importString, newProfileName)
+                    local ok, err = EzroUI:ImportProfileFromString(importString, newProfileName)
                     if ok then
-                        print("|cff00ff00" .. (L["EzUI: Profile imported as '%s'. Please reload your UI."] or "EzUI: Profile imported as '%s'. Please reload your UI."):format(newProfileName) .. "|r")
+                        print("|cff00ff00" .. (L["EzroUI: Profile imported as '%s'. Please reload your UI."] or "EzroUI: Profile imported as '%s'. Please reload your UI."):format(newProfileName) .. "|r")
                         -- Clear the buffers after successful import
                         importBuffer = ""
                         newProfileNameBuffer = ""
                     else
-                        local errMsg = L["EzUI: Import failed: %s"] or "EzUI: Import failed: %s"
+                        local errMsg = L["EzroUI: Import failed: %s"] or "EzroUI: Import failed: %s"
                         print("|cffff0000" .. (errMsg:format(err or "Unknown error")) .. "|r")
                     end
                 end,

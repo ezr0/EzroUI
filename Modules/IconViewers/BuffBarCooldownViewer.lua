@@ -1,8 +1,8 @@
 ﻿local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
+local EzroUI = ns.Addon
 
-EzUI.IconViewers = EzUI.IconViewers or {}
-local IconViewers = EzUI.IconViewers
+EzroUI.IconViewers = EzroUI.IconViewers or {}
+local IconViewers = EzroUI.IconViewers
 
 IconViewers.BuffBarCooldownViewer = IconViewers.BuffBarCooldownViewer or {}
 local BuffBar = IconViewers.BuffBarCooldownViewer
@@ -38,14 +38,14 @@ local function StripBlizzardOverlay(icon)
 end
 
 local function GetSettings()
-    if not EzUI.db or not EzUI.db.profile then
+    if not EzroUI.db or not EzroUI.db.profile then
         return nil
     end
 
-    EzUI.db.profile.buffBarViewer = EzUI.db.profile.buffBarViewer or {}
-    EzUI.db.profile.buffBarViewer.barColors = EzUI.db.profile.buffBarViewer.barColors or {}
-    EzUI.db.profile.buffBarViewer.barColorsBySpec = EzUI.db.profile.buffBarViewer.barColorsBySpec or {}
-    return EzUI.db.profile.buffBarViewer
+    EzroUI.db.profile.buffBarViewer = EzroUI.db.profile.buffBarViewer or {}
+    EzroUI.db.profile.buffBarViewer.barColors = EzroUI.db.profile.buffBarViewer.barColors or {}
+    EzroUI.db.profile.buffBarViewer.barColorsBySpec = EzroUI.db.profile.buffBarViewer.barColorsBySpec or {}
+    return EzroUI.db.profile.buffBarViewer
 end
 
 local function GetCurrentSpecID()
@@ -112,7 +112,7 @@ local function ComputeBarWidth(settings, viewer, iconTotal, spacing, barBorder)
         width = PixelSnap(anchorWidth or (viewer and viewer:GetWidth()) or 200)
         width = math.max(1, width - iconTotal - spacing)
     else
-        width = PixelSnap(EzUI:Scale(width))
+        width = PixelSnap(EzroUI:Scale(width))
     end
 
     return width
@@ -120,7 +120,7 @@ end
 
 local function ComputeBarHeight(settings, bar)
     local desired = settings.height or 16
-    local scaled = EzUI:Scale(desired)
+    local scaled = EzroUI:Scale(desired)
     if scaled <= 0 and bar and bar.GetHeight then
         local ok, h = pcall(bar.GetHeight, bar)
         if ok and h and h > 0 then
@@ -182,7 +182,7 @@ end
 local function ApplyIconBorder(iconFrame, settings)
     if not iconFrame then return end
     local size = settings.iconBorderSize or 0
-    local borderSize = EzUI:ScaleBorder(size)
+    local borderSize = EzroUI:ScaleBorder(size)
 
     if not iconFrame.__nuiIconBorder then
         local border = CreateFrame("Frame", nil, iconFrame, "BackdropTemplate")
@@ -264,9 +264,9 @@ local function StyleBarChild(child, settings, viewer)
     local applicationsFS = GetApplicationsFont(iconFrame)
     local barHeight = PixelSnap(ComputeBarHeight(settings, bar))
     local iconSize = barHeight
-    local font = (EzUI.GetGlobalFont and EzUI:GetGlobalFont()) or nil
+    local font = (EzroUI.GetGlobalFont and EzroUI:GetGlobalFont()) or nil
     local iconBorderSize = settings.iconBorderSize or 0
-    local iconBorderScaled = EzUI:ScaleBorder(iconBorderSize)
+    local iconBorderScaled = EzroUI:ScaleBorder(iconBorderSize)
     local barIndex = GetBarIndex(child)
 
     if settings.hideIcon then
@@ -305,11 +305,11 @@ local function StyleBarChild(child, settings, viewer)
     end
     local iconTotalWidth = settings.hideIcon and 0 or PixelSnap(iconSize + (iconBorderScaled * 2))
     local iconTotalHeight = settings.hideIcon and 0 or PixelSnap(iconSize + (iconBorderScaled * 2))
-    local barBorderSize = EzUI:ScaleBorder(settings.borderSize or 1)
+    local barBorderSize = EzroUI:ScaleBorder(settings.borderSize or 1)
 
     local barWidth = ComputeBarWidth(settings, viewer, iconTotalWidth, 0, 0)
     -- Bar visuals
-    local tex = EzUI.GetTexture and EzUI:GetTexture(settings.texture) or WHITE8
+    local tex = EzroUI.GetTexture and EzroUI:GetTexture(settings.texture) or WHITE8
     bar:SetStatusBarTexture(tex)
     local color = GetBarColor(settings, barIndex) or settings.barColor or { 0.9, 0.9, 0.9, 1 }
     bar:SetStatusBarColor(color[1], color[2], color[3], color[4] or 1)
@@ -336,7 +336,7 @@ local function StyleBarChild(child, settings, viewer)
         border = CreateFrame("Frame", nil, bar, "BackdropTemplate")
         bar.__nuiBorder = border
     end
-    local borderSize = EzUI:ScaleBorder(settings.borderSize or 1)
+    local borderSize = EzroUI:ScaleBorder(settings.borderSize or 1)
     border:ClearAllPoints()
     border:SetPoint("TOPLEFT", bar, -borderSize, borderSize)
     border:SetPoint("BOTTOMRIGHT", bar, borderSize, -borderSize)
@@ -630,6 +630,6 @@ function BuffBar:Initialize()
 end
 
 -- Convenience export for external calls
-EzUI.RefreshBuffBarCooldownViewer = function(self)
+EzroUI.RefreshBuffBarCooldownViewer = function(self)
     return BuffBar:Refresh()
 end

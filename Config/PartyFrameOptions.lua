@@ -1,9 +1,9 @@
 ﻿local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
+local EzroUI = ns.Addon
 
 function ns.CreatePartyFrameOptions()
-    if EzUI and EzUI.PartyFrames and EzUI.PartyFrames.BuildEzUIOptions then
-        return EzUI.PartyFrames:BuildEzUIOptions("party", "Party Frames", 45)
+    if EzroUI and EzroUI.PartyFrames and EzroUI.PartyFrames.BuildEzroUIOptions then
+        return EzroUI.PartyFrames:BuildEzroUIOptions("party", "Party Frames", 45)
     end
 
     return {

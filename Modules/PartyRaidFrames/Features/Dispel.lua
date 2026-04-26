@@ -1,12 +1,12 @@
 ﻿--[[
-    EzUI Unit Frames - Dispel Overlay System
+    EzroUI Unit Frames - Dispel Overlay System
     Visual indicators for dispellable debuffs
 ]]
 
 local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
-EzUI.PartyFrames = EzUI.PartyFrames or {}
-local UnitFrames = EzUI.PartyFrames
+local EzroUI = ns.Addon
+EzroUI.PartyFrames = EzroUI.PartyFrames or {}
+local UnitFrames = EzroUI.PartyFrames
 
 -- Cache commonly used API
 local UnitDebuff = UnitDebuff

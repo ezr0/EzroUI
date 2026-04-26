@@ -1,10 +1,10 @@
 ﻿local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
+local EzroUI = ns.Addon
 
 -- Get UnitFrames module
-local UF = EzUI.UnitFrames
+local UF = EzroUI.UnitFrames
 if not UF then
-    error("EzUI: UnitFrames module not initialized! Load UnitFrames.lua first.")
+    error("EzroUI: UnitFrames module not initialized! Load UnitFrames.lua first.")
 end
 
 -- Get helper functions
@@ -54,7 +54,7 @@ function UF:CreateEditModeAnchor(unit)
     
     -- Create text label for frame name
     local label = anchor:CreateFontString(nil, "OVERLAY")
-    local fontPath = EzUI:GetGlobalFont()
+    local fontPath = EzroUI:GetGlobalFont()
     if fontPath then
         label:SetFont(fontPath, 12, "OUTLINE")
     else
@@ -79,7 +79,7 @@ function UF:CreateEditModeAnchor(unit)
     local function UpdateUnitFrameFromAnchor(anchor)
         if InCombatLockdown() then return end
         
-        local db = EzUI.db.profile.unitFrames
+        local db = EzroUI.db.profile.unitFrames
         if not db then return end
         
         local dbUnit = anchor.unit
@@ -223,8 +223,8 @@ local function SetViewerSelectionCenterAlpha()
             if center.SetAlpha then
                 center:SetAlpha(0.3)
                 -- Hook OnShow to maintain alpha when frame is shown
-                if not center.__EzUIAlphaSet then
-                    center.__EzUIAlphaSet = true
+                if not center.__EzroUIAlphaSet then
+                    center.__EzroUIAlphaSet = true
                     center:HookScript("OnShow", function(self)
                         self:SetAlpha(0.3)
                     end)
@@ -236,17 +236,17 @@ end
 
 -- Hide default Blizzard edit mode Selection frames
 local function HideBlizzardSelectionFrames()
-    local db = EzUI.db.profile.unitFrames
+    local db = EzroUI.db.profile.unitFrames
     if not db or not db.enabled then return end
     
     -- Hide Selection frames if they exist and set up hooks
     local function HideSelectionFrame(frame, selectionFrame)
         if frame and selectionFrame then
-            if not selectionFrame.__EzUISelectionHidden then
-                selectionFrame.__EzUISelectionHidden = true
+            if not selectionFrame.__EzroUISelectionHidden then
+                selectionFrame.__EzroUISelectionHidden = true
                 -- Hook OnShow to keep it hidden
                 selectionFrame:HookScript("OnShow", function(self)
-                    local db = EzUI.db.profile.unitFrames
+                    local db = EzroUI.db.profile.unitFrames
                     if db and db.enabled then
                         self:Hide()
                     end
@@ -267,16 +267,16 @@ local function EnsureAnchorModeUnitVisibility(unitFrame, shouldForceShow)
     if not unitFrame then return end
 
     if shouldForceShow then
-        if unitFrame.__EzUIUnitWatchActive and not InCombatLockdown() then
+        if unitFrame.__EzroUIUnitWatchActive and not InCombatLockdown() then
             UnregisterUnitWatch(unitFrame)
-            unitFrame.__EzUIUnitWatchActive = nil
-            unitFrame.__EzUIUnitWatchNeedsRestore = true
+            unitFrame.__EzroUIUnitWatchActive = nil
+            unitFrame.__EzroUIUnitWatchNeedsRestore = true
         end
-        unitFrame.__EzUIEditModeForced = true
+        unitFrame.__EzroUIEditModeForced = true
         unitFrame:Show()
 
         if unitFrame.unit and not UnitExists(unitFrame.unit) then
-            local db = EzUI.db and EzUI.db.profile and EzUI.db.profile.unitFrames
+            local db = EzroUI.db and EzroUI.db.profile and EzroUI.db.profile.unitFrames
             local dbUnit = unitFrame.unit
             if dbUnit and dbUnit:match("^boss(%d+)$") then dbUnit = "boss" end
             local DB = db and db[dbUnit]
@@ -301,13 +301,13 @@ local function EnsureAnchorModeUnitVisibility(unitFrame, shouldForceShow)
                 unitFrame.healthBarBG:Show()
             end
         end
-    elseif unitFrame.__EzUIEditModeForced then
-        unitFrame.__EzUIEditModeForced = nil
+    elseif unitFrame.__EzroUIEditModeForced then
+        unitFrame.__EzroUIEditModeForced = nil
 
-        if unitFrame.__EzUIUnitWatchNeedsRestore and not InCombatLockdown() then
+        if unitFrame.__EzroUIUnitWatchNeedsRestore and not InCombatLockdown() then
             RegisterUnitWatch(unitFrame, false)
-            unitFrame.__EzUIUnitWatchActive = true
-            unitFrame.__EzUIUnitWatchNeedsRestore = nil
+            unitFrame.__EzroUIUnitWatchActive = true
+            unitFrame.__EzroUIUnitWatchNeedsRestore = nil
         end
 
         if unitFrame.unit and not UnitExists(unitFrame.unit) then
@@ -318,7 +318,7 @@ end
 
 -- Update edit mode anchors visibility and position
 function UF:UpdateEditModeAnchors()
-    local db = EzUI.db.profile.unitFrames
+    local db = EzroUI.db.profile.unitFrames
     if not db or not db.General then return end
     
     -- Set viewer selection center alpha
@@ -385,8 +385,8 @@ function UF:UpdateEditModeAnchors()
     self:UpdateBossAnchor()
 
     -- Update center line visibility
-    if EzUI and EzUI.UpdateCenterLine then
-        EzUI.UpdateCenterLine()
+    if EzroUI and EzroUI.UpdateCenterLine then
+        EzroUI.UpdateCenterLine()
     end
 end
 

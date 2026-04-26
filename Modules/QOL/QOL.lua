@@ -1,17 +1,17 @@
 ﻿local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
+local EzroUI = ns.Addon
 
-EzUI.QOL = EzUI.QOL or {}
-local QOL = EzUI.QOL
+EzroUI.QOL = EzroUI.QOL or {}
+local QOL = EzroUI.QOL
 
 local function GetDB()
-    if not (EzUI.db and EzUI.db.profile) then
+    if not (EzroUI.db and EzroUI.db.profile) then
         return nil
     end
-    if not EzUI.db.profile.qol then
-        EzUI.db.profile.qol = {}
+    if not EzroUI.db.profile.qol then
+        EzroUI.db.profile.qol = {}
     end
-    return EzUI.db.profile.qol
+    return EzroUI.db.profile.qol
 end
 
 local function GetBagsBar()
@@ -74,7 +74,7 @@ function QOL:ApplyHiddenState()
 
     self:StoreOriginalParents()
 
-    local hiddenParent = EzUI.ShadowUIParent or UIParent
+    local hiddenParent = EzroUI.ShadowUIParent or UIParent
     if bagsBar.SetParent then
         bagsBar:SetParent(hiddenParent)
     end

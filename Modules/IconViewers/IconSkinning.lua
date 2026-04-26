@@ -1,10 +1,10 @@
 ﻿local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
+local EzroUI = ns.Addon
 
 -- Get IconViewers module
-local IconViewers = EzUI.IconViewers
+local IconViewers = EzroUI.IconViewers
 if not IconViewers then
-    error("EzUI: IconViewers module not initialized! Load IconViewers.lua first.")
+    error("EzroUI: IconViewers module not initialized! Load IconViewers.lua first.")
 end
 
 -- Helper Functions
@@ -250,25 +250,25 @@ function IconViewers:SkinIcon(icon, settings)
         -- Store the desired swipe alpha on the icon frame if custom alpha is set
         -- This allows us to enforce it when Blizzard updates the cooldown
         if settings.cooldownSwipeAlpha ~= nil then
-            icon.__EzUISwipeAlpha = swipeAlpha
+            icon.__EzroUISwipeAlpha = swipeAlpha
             
             -- Hook SetSwipeColor to enforce our custom alpha whenever Blizzard tries to change it
-            if not icon.Cooldown.__EzUISwipeColorHooked then
-                icon.Cooldown.__EzUISwipeColorHooked = true
+            if not icon.Cooldown.__EzroUISwipeColorHooked then
+                icon.Cooldown.__EzroUISwipeColorHooked = true
                 hooksecurefunc(icon.Cooldown, "SetSwipeColor", function(self, r, g, b, a)
                     local parentFrame = self:GetParent()
-                    if not parentFrame or not parentFrame.__EzUISwipeAlpha then return end
-                    if parentFrame.__EzUIBypassSwipeHook then return end
+                    if not parentFrame or not parentFrame.__EzroUISwipeAlpha then return end
+                    if parentFrame.__EzroUIBypassSwipeHook then return end
                     
                     -- Enforce our custom alpha (preserve the RGB values from the call, but use our alpha)
-                    parentFrame.__EzUIBypassSwipeHook = true
-                    self:SetSwipeColor(r, g, b, parentFrame.__EzUISwipeAlpha)
-                    parentFrame.__EzUIBypassSwipeHook = false
+                    parentFrame.__EzroUIBypassSwipeHook = true
+                    self:SetSwipeColor(r, g, b, parentFrame.__EzroUISwipeAlpha)
+                    parentFrame.__EzroUIBypassSwipeHook = false
                 end)
             end
         else
             -- Clear stored alpha if setting is not present
-            icon.__EzUISwipeAlpha = nil
+            icon.__EzroUISwipeAlpha = nil
         end
         
         icon.Cooldown:SetSwipeColor(0, 0, 0, swipeAlpha)
@@ -329,7 +329,7 @@ function IconViewers:SkinIcon(icon, settings)
 
         local desiredSize = settings.countTextSize
         if desiredSize and desiredSize > 0 then
-            local font = EzUI:GetGlobalFont()
+            local font = EzroUI:GetGlobalFont()
             fs:SetFont(font, desiredSize, "OUTLINE")
         end
     end
@@ -366,10 +366,10 @@ function IconViewers:SkinIcon(icon, settings)
     end
 
 	local edgeSize = tonumber(settings.borderSize) or 1
-	if EzUI and EzUI.ScaleBorder then
-		edgeSize = EzUI:ScaleBorder(edgeSize)
-	elseif EzUI and EzUI.Scale then
-		edgeSize = EzUI:Scale(edgeSize)
+	if EzroUI and EzroUI.ScaleBorder then
+		edgeSize = EzroUI:ScaleBorder(edgeSize)
+	elseif EzroUI and EzroUI.Scale then
+		edgeSize = EzroUI:Scale(edgeSize)
 		edgeSize = math.floor(edgeSize + 0.5)
 	else
 		edgeSize = math.floor(edgeSize + 0.5)
@@ -383,19 +383,19 @@ function IconViewers:SkinIcon(icon, settings)
         if InCombatLockdown() then
             -- Defer until out of combat
             -- Check if already pending by checking if frame is in pending table
-            local alreadyPending = EzUI.__cdmPendingBackdrops and EzUI.__cdmPendingBackdrops[frame]
+            local alreadyPending = EzroUI.__cdmPendingBackdrops and EzroUI.__cdmPendingBackdrops[frame]
             if not alreadyPending then
                 frame.__cdmBackdropPending = backdropInfo  -- Can be nil to remove backdrop
                 frame.__cdmBackdropSettings = settings
                 
                 -- Create or reuse event frame for deferred backdrop setup
-                if not EzUI.__cdmBackdropEventFrame then
+                if not EzroUI.__cdmBackdropEventFrame then
                     local eventFrame = CreateFrame("Frame")
                     eventFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
                     eventFrame:SetScript("OnEvent", function(self)
                         self:UnregisterEvent("PLAYER_REGEN_ENABLED")
                         -- Process all pending backdrops
-                        for pendingFrame in pairs(EzUI.__cdmPendingBackdrops or {}) do
+                        for pendingFrame in pairs(EzroUI.__cdmPendingBackdrops or {}) do
                             if pendingFrame then
                                 -- Frame is in pending table, so process it (backdropInfo could be nil to remove backdrop)
                                 local pendingInfo = pendingFrame.__cdmBackdropPending
@@ -435,15 +435,15 @@ function IconViewers:SkinIcon(icon, settings)
                                 end
                             end
                         end
-                        EzUI.__cdmPendingBackdrops = {}
+                        EzroUI.__cdmPendingBackdrops = {}
                     end)
-                    EzUI.__cdmBackdropEventFrame = eventFrame
+                    EzroUI.__cdmBackdropEventFrame = eventFrame
                 end
                 
                 -- Track this frame for deferred processing
-                EzUI.__cdmPendingBackdrops = EzUI.__cdmPendingBackdrops or {}
-                EzUI.__cdmPendingBackdrops[frame] = true
-                EzUI.__cdmBackdropEventFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
+                EzroUI.__cdmPendingBackdrops = EzroUI.__cdmPendingBackdrops or {}
+                EzroUI.__cdmPendingBackdrops[frame] = true
+                EzroUI.__cdmBackdropEventFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
             end
             return false
         end
@@ -463,17 +463,17 @@ function IconViewers:SkinIcon(icon, settings)
         -- If we can't get dimensions safely or they're secret values, defer the backdrop setup
         if not dimensionsOk then
             -- Frame might be tainted or not properly sized, defer backdrop
-            local alreadyPending = EzUI.__cdmPendingBackdrops and EzUI.__cdmPendingBackdrops[frame]
+            local alreadyPending = EzroUI.__cdmPendingBackdrops and EzroUI.__cdmPendingBackdrops[frame]
             if not alreadyPending then
                 frame.__cdmBackdropPending = backdropInfo
                 frame.__cdmBackdropSettings = settings
                 
-                if not EzUI.__cdmBackdropEventFrame then
+                if not EzroUI.__cdmBackdropEventFrame then
                     local eventFrame = CreateFrame("Frame")
                     eventFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
                     eventFrame:SetScript("OnEvent", function(self)
                         self:UnregisterEvent("PLAYER_REGEN_ENABLED")
-                        for pendingFrame in pairs(EzUI.__cdmPendingBackdrops or {}) do
+                        for pendingFrame in pairs(EzroUI.__cdmPendingBackdrops or {}) do
                             if pendingFrame then
                                 local pendingInfo = pendingFrame.__cdmBackdropPending
                                 local pendingSettings = pendingFrame.__cdmBackdropSettings
@@ -508,14 +508,14 @@ function IconViewers:SkinIcon(icon, settings)
                                 end
                             end
                         end
-                        EzUI.__cdmPendingBackdrops = {}
+                        EzroUI.__cdmPendingBackdrops = {}
                     end)
-                    EzUI.__cdmBackdropEventFrame = eventFrame
+                    EzroUI.__cdmBackdropEventFrame = eventFrame
                 end
                 
-                EzUI.__cdmPendingBackdrops = EzUI.__cdmPendingBackdrops or {}
-                EzUI.__cdmPendingBackdrops[frame] = true
-                EzUI.__cdmBackdropEventFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
+                EzroUI.__cdmPendingBackdrops = EzroUI.__cdmPendingBackdrops or {}
+                EzroUI.__cdmPendingBackdrops[frame] = true
+                EzroUI.__cdmBackdropEventFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
             end
             return false
         end
@@ -559,7 +559,7 @@ function IconViewers:SkinAllIconsInViewer(viewer)
     if not viewer or not viewer.GetName then return end
 
     local name     = viewer:GetName()
-    local settings = EzUI.db.profile.viewers[name]
+    local settings = EzroUI.db.profile.viewers[name]
     if not settings or not settings.enabled then return end
 
     local container = viewer.viewerFrame or viewer
@@ -570,18 +570,18 @@ function IconViewers:SkinAllIconsInViewer(viewer)
             local ok, err = pcall(self.SkinIcon, self, icon, settings)
             if not ok then
                 icon.__cdmSkinError = true
-                print("|cffff4444[EzUI] SkinIcon error for", name, "icon:", err, "|r")
+                print("|cffff4444[EzroUI] SkinIcon error for", name, "icon:", err, "|r")
             end
         end
     end
 end
 
 -- Expose to main addon for backwards compatibility
-EzUI.SkinIcon = function(self, icon, settings) return IconViewers:SkinIcon(icon, settings) end
-EzUI.SkinAllIconsInViewer = function(self, viewer) return IconViewers:SkinAllIconsInViewer(viewer) end
+EzroUI.SkinIcon = function(self, icon, settings) return IconViewers:SkinIcon(icon, settings) end
+EzroUI.SkinAllIconsInViewer = function(self, viewer) return IconViewers:SkinAllIconsInViewer(viewer) end
 
 -- Hook to update proc glow when icons are skinned (aspect ratio changes)
-if EzUI.ProcGlow and EzUI.ProcGlow.UpdateButtonGlow then
+if EzroUI.ProcGlow and EzroUI.ProcGlow.UpdateButtonGlow then
     local originalSkinIcon = IconViewers.SkinIcon
     function IconViewers:SkinIcon(icon, settings)
         local result = originalSkinIcon(self, icon, settings)
@@ -589,8 +589,8 @@ if EzUI.ProcGlow and EzUI.ProcGlow.UpdateButtonGlow then
         -- Update proc glow if this icon has one (after aspect ratio is applied)
         if icon and icon.SpellActivationAlert then
             C_Timer.After(0.01, function()
-                if EzUI.ProcGlow and EzUI.ProcGlow.UpdateButtonGlow then
-                    EzUI.ProcGlow:UpdateButtonGlow(icon)
+                if EzroUI.ProcGlow and EzroUI.ProcGlow.UpdateButtonGlow then
+                    EzroUI.ProcGlow:UpdateButtonGlow(icon)
                 end
             end)
         end

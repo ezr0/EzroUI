@@ -1,14 +1,14 @@
 ﻿--[[
-    EzUI Unit Frames - Default Configuration
+    EzroUI Unit Frames - Default Configuration
     Contains all default settings for party and raid frame customization
 ]]
 
 local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
+local EzroUI = ns.Addon
 
 -- Ensure PartyFrames module exists
-EzUI.PartyFrames = EzUI.PartyFrames or {}
-local UnitFrames = EzUI.PartyFrames
+EzroUI.PartyFrames = EzroUI.PartyFrames or {}
+local UnitFrames = EzroUI.PartyFrames
 
 -- ============================================================================
 -- SHARED DEFAULT VALUES
@@ -259,12 +259,12 @@ local SharedDefaults = {
     
     -- Selection Highlight
     selectionHighlightEnabled = true,
-    selectionHighlightTexture = "Interface\\AddOns\\EzUI\\Media\\uf_selected.tga",
+    selectionHighlightTexture = "Interface\\AddOns\\EzroUI\\Media\\uf_selected.tga",
     selectionHighlightAlpha = 0.5,
     
     -- Mouseover Highlight
     mouseoverHighlightEnabled = true,
-    mouseoverHighlightTexture = "Interface\\AddOns\\EzUI\\Media\\uf_mouseover.tga",
+    mouseoverHighlightTexture = "Interface\\AddOns\\EzroUI\\Media\\uf_mouseover.tga",
     mouseoverHighlightAlpha = 0.3,
     
     -- Aggro Highlight

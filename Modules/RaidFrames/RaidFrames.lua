@@ -1,10 +1,10 @@
 ﻿local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
+local EzroUI = ns.Addon
 
 local RaidFrames = {}
-EzUI.RaidFrames = RaidFrames
+EzroUI.RaidFrames = RaidFrames
 
-local Engine = EzUI.CompactFrames
+local Engine = EzroUI.CompactFrames
 
 local function ForEachGroup(callback)
     for i = 1, 8 do
@@ -16,7 +16,7 @@ local function ForEachGroup(callback)
 end
 
 function RaidFrames:ApplyGroupLabels()
-    local cfg = EzUI.db.profile.raidFrames
+    local cfg = EzroUI.db.profile.raidFrames
     if not cfg or not cfg.general then return end
     ForEachGroup(function(group)
         if group.title then

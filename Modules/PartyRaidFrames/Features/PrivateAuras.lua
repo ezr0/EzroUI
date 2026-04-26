@@ -1,12 +1,12 @@
 ﻿--[[
-    EzUI Unit Frames - Private Aura System
+    EzroUI Unit Frames - Private Aura System
     Handles private aura anchors for units
 ]]
 
 local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
-EzUI.PartyFrames = EzUI.PartyFrames or {}
-local UnitFrames = EzUI.PartyFrames
+local EzroUI = ns.Addon
+EzroUI.PartyFrames = EzroUI.PartyFrames or {}
+local UnitFrames = EzroUI.PartyFrames
 
 -- Cache commonly used API
 local CreateFrame = CreateFrame

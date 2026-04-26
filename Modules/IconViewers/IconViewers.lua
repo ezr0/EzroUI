@@ -1,10 +1,10 @@
 ﻿local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
+local EzroUI = ns.Addon
 
-EzUI.IconViewers = EzUI.IconViewers or {}
-local IconViewers = EzUI.IconViewers
+EzroUI.IconViewers = EzroUI.IconViewers or {}
+local IconViewers = EzroUI.IconViewers
 
-local viewers = EzUI.viewers or {
+local viewers = EzroUI.viewers or {
     "EssentialCooldownViewer",
     "UtilityCooldownViewer",
     "BuffIconCooldownViewer",
@@ -59,7 +59,7 @@ end
 function IconViewers:ApplyViewerSkin(viewer)
     if not viewer or not viewer.GetName then return end
     local name     = viewer:GetName()
-    local settings = EzUI.db.profile.viewers[name]
+    local settings = EzroUI.db.profile.viewers[name]
     if not settings or not settings.enabled then return end
 
     if self.ApplyViewerLayout then
@@ -71,14 +71,14 @@ function IconViewers:ApplyViewerSkin(viewer)
     if self.ApplyViewerLayout then
         self:ApplyViewerLayout(viewer)
     end
-    if EzUI.ResourceBars and EzUI.ResourceBars.UpdatePowerBar then
-        EzUI.ResourceBars:UpdatePowerBar()
+    if EzroUI.ResourceBars and EzroUI.ResourceBars.UpdatePowerBar then
+        EzroUI.ResourceBars:UpdatePowerBar()
     end
-    if EzUI.ResourceBars and EzUI.ResourceBars.UpdateSecondaryPowerBar then
-        EzUI.ResourceBars:UpdateSecondaryPowerBar()
+    if EzroUI.ResourceBars and EzroUI.ResourceBars.UpdateSecondaryPowerBar then
+        EzroUI.ResourceBars:UpdateSecondaryPowerBar()
     end
-    if EzUI.CastBars and EzUI.CastBars.UpdateCastBarLayout then
-        EzUI.CastBars:UpdateCastBarLayout()
+    if EzroUI.CastBars and EzroUI.CastBars.UpdateCastBarLayout then
+        EzroUI.CastBars:UpdateCastBarLayout()
     end
     
     if not InCombatLockdown() then
@@ -87,11 +87,11 @@ function IconViewers:ApplyViewerSkin(viewer)
 end
 
 function IconViewers:ProcessPendingIcons()
-    if not EzUI.__cdmPendingIcons then return end
+    if not EzroUI.__cdmPendingIcons then return end
     if InCombatLockdown() then return end
     
     local processed = {}
-    for icon, data in pairs(EzUI.__cdmPendingIcons) do
+    for icon, data in pairs(EzroUI.__cdmPendingIcons) do
         if icon and icon:IsShown() and not icon.__cdmSkinned then
             local success = pcall(self.SkinIcon, self, icon, data.settings)
             if success then
@@ -110,7 +110,7 @@ function IconViewers:ProcessPendingIcons()
             local container = viewer.viewerFrame or viewer
             for _, child in ipairs({ container:GetChildren() }) do
                 if IsCooldownIconFrame(child) and child.__cdmBorderPending and not InCombatLockdown() then
-                    local settings = EzUI.db.profile.viewers[name]
+                    local settings = EzroUI.db.profile.viewers[name]
                     if settings and settings.enabled then
                         -- Re-skin just the border part
                         local border = child.__CDM_Border
@@ -167,11 +167,11 @@ function IconViewers:ProcessPendingIcons()
     end
     
     for icon in pairs(processed) do
-        EzUI.__cdmPendingIcons[icon] = nil
+        EzroUI.__cdmPendingIcons[icon] = nil
     end
     
-    if not next(EzUI.__cdmPendingIcons) then
-        EzUI.__cdmPendingIcons = nil
+    if not next(EzroUI.__cdmPendingIcons) then
+        EzroUI.__cdmPendingIcons = nil
     end
 end
 
@@ -297,7 +297,7 @@ function IconViewers:ForceRefreshBuffIcons()
         if not InCombatLockdown() then
             self:ProcessPendingIcons()
         end
-        print("|cff00ff00[EzUI] Force refreshed BuffIconCooldownViewer|r")
+        print("|cff00ff00[EzroUI] Force refreshed BuffIconCooldownViewer|r")
     end
 end
 
@@ -315,7 +315,7 @@ function IconViewers:AutoLoadBuffIcons(retryCount)
         return
     end
     
-    viewer.__EzUIInitialLoading = true
+    viewer.__EzroUIInitialLoading = true
     
     -- Open CooldownViewerSettings frame instead of showing BuffIconCooldownViewer
     local settingsFrame = _G["CooldownViewerSettings"]
@@ -323,8 +323,8 @@ function IconViewers:AutoLoadBuffIcons(retryCount)
         settingsFrame:Show()
         settingsFrame:Raise()
 
-        if not settingsFrame.__EzUILayoutHook then
-            settingsFrame.__EzUILayoutHook = true
+        if not settingsFrame.__EzroUILayoutHook then
+            settingsFrame.__EzroUILayoutHook = true
             settingsFrame:HookScript("OnHide", function()
                 local buffViewer = _G["CooldownViewerSettings"]
                 if buffViewer and buffViewer:IsShown() and IconViewers.ApplyViewerLayout then
@@ -339,9 +339,9 @@ function IconViewers:AutoLoadBuffIcons(retryCount)
         end
     end
     
-    local settings = EzUI.db.profile.viewers["BuffIconCooldownViewer"]
+    local settings = EzroUI.db.profile.viewers["BuffIconCooldownViewer"]
     if not settings or not settings.enabled then
-        viewer.__EzUIInitialLoading = nil
+        viewer.__EzroUIInitialLoading = nil
         return
     end
     
@@ -385,10 +385,10 @@ function IconViewers:AutoLoadBuffIcons(retryCount)
         elseif not icon.__cdmSkinned then
             if not icon.__cdmSkinPending then
                 icon.__cdmSkinPending = true
-                if not EzUI.__cdmPendingIcons then
-                    EzUI.__cdmPendingIcons = {}
+                if not EzroUI.__cdmPendingIcons then
+                    EzroUI.__cdmPendingIcons = {}
                 end
-                EzUI.__cdmPendingIcons[icon] = { icon = icon, settings = settings, viewer = viewer }
+                EzroUI.__cdmPendingIcons[icon] = { icon = icon, settings = settings, viewer = viewer }
                 pendingCount = pendingCount + 1
             end
         end
@@ -410,7 +410,7 @@ function IconViewers:AutoLoadBuffIcons(retryCount)
     end
     
     if not shouldRetry then
-        viewer.__EzUIInitialLoading = nil
+        viewer.__EzroUIInitialLoading = nil
         
         -- Hide CooldownViewerSettings frame after a couple seconds
         C_Timer.After(2.0, function()
@@ -445,9 +445,9 @@ function IconViewers:RefreshAll()
     end
 end
 
-EzUI.ApplyViewerSkin = function(self, viewer) return IconViewers:ApplyViewerSkin(viewer) end
-EzUI.HookViewers = function(self) return IconViewers:HookViewers() end
-EzUI.AutoLoadBuffIcons = function(self, retryCount) return IconViewers:AutoLoadBuffIcons(retryCount) end
-EzUI.ForceRefreshBuffIcons = function(self) return IconViewers:ForceRefreshBuffIcons() end
-EzUI.ProcessPendingIcons = function(self) return IconViewers:ProcessPendingIcons() end
+EzroUI.ApplyViewerSkin = function(self, viewer) return IconViewers:ApplyViewerSkin(viewer) end
+EzroUI.HookViewers = function(self) return IconViewers:HookViewers() end
+EzroUI.AutoLoadBuffIcons = function(self, retryCount) return IconViewers:AutoLoadBuffIcons(retryCount) end
+EzroUI.ForceRefreshBuffIcons = function(self) return IconViewers:ForceRefreshBuffIcons() end
+EzroUI.ProcessPendingIcons = function(self) return IconViewers:ProcessPendingIcons() end
 

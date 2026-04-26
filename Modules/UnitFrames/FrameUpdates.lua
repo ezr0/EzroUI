@@ -1,10 +1,10 @@
 ﻿local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
+local EzroUI = ns.Addon
 
 -- Get UnitFrames module
-local UF = EzUI.UnitFrames
+local UF = EzroUI.UnitFrames
 if not UF then
-    error("EzUI: UnitFrames module not initialized! Load UnitFrames.lua first.")
+    error("EzroUI: UnitFrames module not initialized! Load UnitFrames.lua first.")
 end
 
 -- Get helper functions
@@ -228,7 +228,7 @@ local function UpdateUnitFrame(self, event, eventUnit, ...)
     -- Handle RAID_TARGET_UPDATE event (player, target, focus, boss)
     if event == "RAID_TARGET_UPDATE" then
         if unit == "player" or unit == "target" or unit == "focus" or unit:match("^boss%d+$") then
-            local db = EzUI.db.profile.unitFrames
+            local db = EzroUI.db.profile.unitFrames
             if db then
                 local dbUnit = unit
                 if unit:match("^boss%d+$") then dbUnit = "boss" end
@@ -269,7 +269,7 @@ local function UpdateUnitFrame(self, event, eventUnit, ...)
         end
     end
         
-    local db = EzUI.db.profile.unitFrames
+    local db = EzroUI.db.profile.unitFrames
     if not db then return end
     
     local dbUnit = unit
@@ -444,7 +444,7 @@ UF.UpdateUnitFrameEventHandler = UpdateUnitFrame
 function UF:UpdateUnitFrame(unit)
     if not unit then return end
     
-    local db = EzUI.db.profile.unitFrames
+    local db = EzroUI.db.profile.unitFrames
     if not db then return end
     
     local dbUnit = unit
@@ -464,20 +464,20 @@ function UF:UpdateUnitFrame(unit)
     if shouldHideUnitFrame then
         unitFrame:Hide()
         unitFrame:UnregisterAllEvents()
-        if unitFrame.__EzUIUnitWatchActive and not inCombat then
+        if unitFrame.__EzroUIUnitWatchActive and not inCombat then
             UnregisterUnitWatch(unitFrame)
-            unitFrame.__EzUIUnitWatchActive = nil
+            unitFrame.__EzroUIUnitWatchActive = nil
         end
         unitFrame:SetScript("OnEvent", nil)
         unitFrame:SetScript("OnEnter", nil)
         unitFrame:SetScript("OnLeave", nil)
         return
     else
-        if unit:match("^boss%d+$") and EzUI.UnitFrames.BossPreviewMode then
+        if unit:match("^boss%d+$") and EzroUI.UnitFrames.BossPreviewMode then
             -- In boss preview mode, unregister unit watch and force show
             if not inCombat then
                 UnregisterUnitWatch(unitFrame)
-                unitFrame.__EzUIUnitWatchActive = false
+                unitFrame.__EzroUIUnitWatchActive = false
             end
             unitFrame:Show()
         else
@@ -485,7 +485,7 @@ function UF:UpdateUnitFrame(unit)
             if not inCombat then
                 UnregisterUnitWatch(unitFrame)
                 RegisterUnitWatch(unitFrame, false)
-                unitFrame.__EzUIUnitWatchActive = true
+                unitFrame.__EzroUIUnitWatchActive = true
             end
             -- Don't force show - let UnitWatch handle visibility
         end
@@ -818,10 +818,10 @@ function UF:UpdateUnitFrame(unit)
     end
 
     -- Re-apply preview data if in boss preview mode
-    if unit:match("^boss%d+$") and EzUI.UnitFrames.BossPreviewMode then
+    if unit:match("^boss%d+$") and EzroUI.UnitFrames.BossPreviewMode then
         local bossIndex = tonumber(unit:match("^boss(%d+)$"))
         if bossIndex then
-            EzUI.UnitFrames:ApplyBossPreviewData(unitFrame, bossIndex)
+            EzroUI.UnitFrames:ApplyBossPreviewData(unitFrame, bossIndex)
         end
     end
 end

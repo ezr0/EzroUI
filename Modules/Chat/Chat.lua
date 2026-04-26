@@ -1,13 +1,13 @@
 ﻿local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
+local EzroUI = ns.Addon
 
-EzUI.Chat = EzUI.Chat or {}
-local Chat = EzUI.Chat
+EzroUI.Chat = EzroUI.Chat or {}
+local Chat = EzroUI.Chat
 
 local function StyleFontString(fontString)
     if not fontString then return end
     
-    local cfg = EzUI.db.profile.chat
+    local cfg = EzroUI.db.profile.chat
     if not cfg or not cfg.enabled then return end
     
     local font, size, flags = fontString:GetFont()
@@ -24,7 +24,7 @@ end
 local function StyleEditBox(editBox)
     if not editBox then return end
     
-    local cfg = EzUI.db.profile.chat
+    local cfg = EzroUI.db.profile.chat
     if not cfg or not cfg.enabled then return end
     
     local font, size, flags = editBox:GetFont()
@@ -39,10 +39,10 @@ local function StyleEditBox(editBox)
 end
 
 local function CreateBorder(frame)
-    if frame.__EzUIBorder then return frame.__EzUIBorder end
+    if frame.__EzroUIBorder then return frame.__EzroUIBorder end
     
     local border = CreateFrame("Frame", nil, frame, "BackdropTemplate")
-    local borderOffset = EzUI:Scale(1)
+    local borderOffset = EzroUI:Scale(1)
     border:SetPoint("TOPLEFT", frame, -borderOffset, borderOffset)
     border:SetPoint("BOTTOMRIGHT", frame, borderOffset, -borderOffset)
     border:SetBackdrop({
@@ -52,14 +52,14 @@ local function CreateBorder(frame)
     border:SetBackdropBorderColor(0, 0, 0, 1)
     border:SetFrameLevel(frame:GetFrameLevel() + 1)
     
-    frame.__EzUIBorder = border
+    frame.__EzroUIBorder = border
     return border
 end
 
 local function SetBackgroundColor(frame)
     if not frame then return end
     
-    local cfg = EzUI.db.profile.chat
+    local cfg = EzroUI.db.profile.chat
     if not cfg or not cfg.enabled then return end
     
     local bgColor = cfg.backgroundColor or {0, 0, 0, 1}
@@ -72,7 +72,7 @@ local function SetBackgroundColor(frame)
     end
     
     if frame.SetBackdrop then
-        if not frame.__EzUIBackdropSet then
+        if not frame.__EzroUIBackdropSet then
             frame:SetBackdrop({
                 bgFile = "Interface\\Buttons\\WHITE8x8",
                 edgeFile = nil,
@@ -80,19 +80,19 @@ local function SetBackgroundColor(frame)
                 tileSize = 0,
                 insets = { left = 0, right = 0, top = 0, bottom = 0 }
             })
-            frame.__EzUIBackdropSet = true
+            frame.__EzroUIBackdropSet = true
         end
         frame:SetBackdropColor(bgColor[1], bgColor[2], bgColor[3], bgColor[4] or 1)
     elseif frame.CreateTexture then
-        if not frame.__EzUIBackground then
+        if not frame.__EzroUIBackground then
             local bg = frame:CreateTexture(nil, "BACKGROUND")
             if bg then
                 bg:SetAllPoints()
                 bg:SetColorTexture(bgColor[1], bgColor[2], bgColor[3], bgColor[4] or 1)
-                frame.__EzUIBackground = bg
+                frame.__EzroUIBackground = bg
             end
         else
-            frame.__EzUIBackground:SetColorTexture(bgColor[1], bgColor[2], bgColor[3], bgColor[4] or 1)
+            frame.__EzroUIBackground:SetColorTexture(bgColor[1], bgColor[2], bgColor[3], bgColor[4] or 1)
         end
     end
 end
@@ -102,9 +102,9 @@ local function StyleAllFontStrings(frame)
     
     if frame.GetFontString then
         local fs = frame:GetFontString()
-        if fs and not fs.__EzUIStyled then
+        if fs and not fs.__EzroUIStyled then
             StyleFontString(fs)
-            fs.__EzUIStyled = true
+            fs.__EzroUIStyled = true
         end
     end
     
@@ -112,9 +112,9 @@ local function StyleAllFontStrings(frame)
         local regions = { frame:GetRegions() }
         for _, region in ipairs(regions) do
             if region and region.GetObjectType and region:GetObjectType() == "FontString" then
-                if not region.__EzUIStyled then
+                if not region.__EzroUIStyled then
                     StyleFontString(region)
-                    region.__EzUIStyled = true
+                    region.__EzroUIStyled = true
                 end
             end
         end
@@ -134,7 +134,7 @@ local function CleanEditBoxTextures(editBox)
         if region and region.GetObjectType then
             local objType = region:GetObjectType()
             if objType == "Texture" then
-                if region ~= editBox.__EzUIBackground and region ~= editBox.__EzUIBorder then
+                if region ~= editBox.__EzroUIBackground and region ~= editBox.__EzroUIBorder then
                     region:Hide()
                 end
             end
@@ -166,17 +166,17 @@ end
 
 -- Function to skin a single chat frame
 function Chat:SkinChatFrame(chatFrame)
-    if not chatFrame or chatFrame:IsForbidden() or chatFrame.__EzUISkinned then
+    if not chatFrame or chatFrame:IsForbidden() or chatFrame.__EzroUISkinned then
         return
     end
     
-    local cfg = EzUI.db.profile.chat
+    local cfg = EzroUI.db.profile.chat
     if not cfg or not cfg.enabled then
         return
     end
     
     -- Mark as skinned
-    chatFrame.__EzUISkinned = true
+    chatFrame.__EzroUISkinned = true
     
     -- Disable clamping to allow movement to screen edges in edit mode
     if chatFrame.SetClampedToScreen then
@@ -194,8 +194,8 @@ function Chat:SkinChatFrame(chatFrame)
         -- Set default background alpha to 0 (transparent)
         background:SetAlpha(0)
         -- Hook OnShow to maintain alpha at 0
-        if not background.__EzUIAlphaHooked then
-            background.__EzUIAlphaHooked = true
+        if not background.__EzroUIAlphaHooked then
+            background.__EzroUIAlphaHooked = true
             if background.HookScript then
                 background:HookScript("OnShow", function(self)
                     self:SetAlpha(0)
@@ -336,15 +336,15 @@ function Chat:SkinChatFrame(chatFrame)
         end
         
         -- Override SetWidth to prevent Blizzard from changing it
-        if not editBox.__EzUISetWidthHooked then
-            editBox.__EzUISetWidthHooked = true
+        if not editBox.__EzroUISetWidthHooked then
+            editBox.__EzroUISetWidthHooked = true
             local originalSetWidth = editBox.SetWidth
             editBox.SetWidth = function(self, width)
                 -- Allow our function to set width, but prevent Blizzard from overriding
-                if not self.__EzUISettingWidth then
-                    self.__EzUISettingWidth = true
+                if not self.__EzroUISettingWidth then
+                    self.__EzroUISettingWidth = true
                     originalSetWidth(self, width)
-                    self.__EzUISettingWidth = nil
+                    self.__EzroUISettingWidth = nil
                 end
             end
         end
@@ -353,8 +353,8 @@ function Chat:SkinChatFrame(chatFrame)
         MatchEditBoxWidthToChatFrame()
         
         -- Hook size changes to maintain width matching
-        if not chatFrame.__EzUIEditBoxWidthHooked then
-            chatFrame.__EzUIEditBoxWidthHooked = true
+        if not chatFrame.__EzroUIEditBoxWidthHooked then
+            chatFrame.__EzroUIEditBoxWidthHooked = true
             
             -- Hook chat frame size changes (our custom background matches this frame)
             if chatFrame.HookScript then
@@ -384,8 +384,8 @@ function Chat:SkinChatFrame(chatFrame)
         end
         
         -- Hook alpha changes to keep it at 1.0
-        if not editBox.__EzUIAlphaHooked then
-            editBox.__EzUIAlphaHooked = true
+        if not editBox.__EzroUIAlphaHooked then
+            editBox.__EzroUIAlphaHooked = true
             
             -- Override SetAlpha to always be 1.0
             local originalSetAlpha = editBox.SetAlpha
@@ -397,8 +397,8 @@ function Chat:SkinChatFrame(chatFrame)
 
         -- Keep only the primary chat edit box visible to avoid duplicates
         local primaryEditBox = _G.ChatFrameEditBox or _G.ChatFrame1EditBox
-        if editBox == primaryEditBox and not editBox.__EzUIShowHooked then
-            editBox.__EzUIShowHooked = true
+        if editBox == primaryEditBox and not editBox.__EzroUIShowHooked then
+            editBox.__EzroUIShowHooked = true
             editBox:Show()
 
             if editBox.HookScript then
@@ -414,16 +414,16 @@ function Chat:SkinChatFrame(chatFrame)
             end
         end
 
-        if editBox == primaryEditBox and not editBox.__EzUIContentHooked then
-            editBox.__EzUIContentHooked = true
+        if editBox == primaryEditBox and not editBox.__EzroUIContentHooked then
+            editBox.__EzroUIContentHooked = true
 
             local function SetEditBoxContentVisible(self, visible)
-                if not self.__EzUITextColor then
+                if not self.__EzroUITextColor then
                     local r, g, b, a = self:GetTextColor()
-                    self.__EzUITextColor = { r or 1, g or 1, b or 1, a or 1 }
+                    self.__EzroUITextColor = { r or 1, g or 1, b or 1, a or 1 }
                 end
 
-                local r, g, b, a = unpack(self.__EzUITextColor)
+                local r, g, b, a = unpack(self.__EzroUITextColor)
                 self:SetTextColor(r, g, b, visible and a or 0)
 
                 local promptFrames = {
@@ -526,8 +526,8 @@ function Chat:SkinChatFrame(chatFrame)
         if selection.Center then
             selection.Center:SetAlpha(0.3)
             -- Hook OnShow to maintain alpha
-            if not selection.Center.__EzUIAlphaHooked then
-                selection.Center.__EzUIAlphaHooked = true
+            if not selection.Center.__EzroUIAlphaHooked then
+                selection.Center.__EzroUIAlphaHooked = true
                 if selection.Center.HookScript then
                     selection.Center:HookScript("OnShow", function(self)
                         self:SetAlpha(0.3)
@@ -540,8 +540,8 @@ function Chat:SkinChatFrame(chatFrame)
         if selection.MouseOverHighlight then
             selection.MouseOverHighlight:SetAlpha(0.3)
             -- Hook OnShow to maintain alpha
-            if not selection.MouseOverHighlight.__EzUIAlphaHooked then
-                selection.MouseOverHighlight.__EzUIAlphaHooked = true
+            if not selection.MouseOverHighlight.__EzroUIAlphaHooked then
+                selection.MouseOverHighlight.__EzroUIAlphaHooked = true
                 if selection.MouseOverHighlight.HookScript then
                     selection.MouseOverHighlight:HookScript("OnShow", function(self)
                         self:SetAlpha(0.3)
@@ -637,7 +637,7 @@ function Chat:Initialize()
     end)
     
     -- Also skin after PLAYER_LOGIN
-    EzUI:RegisterEvent("PLAYER_LOGIN", function()
+    EzroUI:RegisterEvent("PLAYER_LOGIN", function()
         C_Timer.After(0.5, function()
             self:SkinAllChatFrames()
             self:UpdateQuickJoinToastButton()
@@ -701,8 +701,8 @@ function Chat:SetChatSelectionAlpha()
             if selection then
                 if selection.Center then
                     selection.Center:SetAlpha(0.3)
-                    if not selection.Center.__EzUIAlphaHooked then
-                        selection.Center.__EzUIAlphaHooked = true
+                    if not selection.Center.__EzroUIAlphaHooked then
+                        selection.Center.__EzroUIAlphaHooked = true
                         if selection.Center.HookScript then
                             selection.Center:HookScript("OnShow", function(self)
                                 self:SetAlpha(0.3)
@@ -712,8 +712,8 @@ function Chat:SetChatSelectionAlpha()
                 end
                 if selection.MouseOverHighlight then
                     selection.MouseOverHighlight:SetAlpha(0.3)
-                    if not selection.MouseOverHighlight.__EzUIAlphaHooked then
-                        selection.MouseOverHighlight.__EzUIAlphaHooked = true
+                    if not selection.MouseOverHighlight.__EzroUIAlphaHooked then
+                        selection.MouseOverHighlight.__EzroUIAlphaHooked = true
                         if selection.MouseOverHighlight.HookScript then
                             selection.MouseOverHighlight:HookScript("OnShow", function(self)
                                 self:SetAlpha(0.3)
@@ -731,8 +731,8 @@ function Chat:SetChatSelectionAlpha()
         if selection then
             if selection.Center then
                 selection.Center:SetAlpha(0.3)
-                if not selection.Center.__EzUIAlphaHooked then
-                    selection.Center.__EzUIAlphaHooked = true
+                if not selection.Center.__EzroUIAlphaHooked then
+                    selection.Center.__EzroUIAlphaHooked = true
                     if selection.Center.HookScript then
                         selection.Center:HookScript("OnShow", function(self)
                             self:SetAlpha(0.3)
@@ -742,8 +742,8 @@ function Chat:SetChatSelectionAlpha()
             end
             if selection.MouseOverHighlight then
                 selection.MouseOverHighlight:SetAlpha(0.3)
-                if not selection.MouseOverHighlight.__EzUIAlphaHooked then
-                    selection.MouseOverHighlight.__EzUIAlphaHooked = true
+                if not selection.MouseOverHighlight.__EzroUIAlphaHooked then
+                    selection.MouseOverHighlight.__EzroUIAlphaHooked = true
                     if selection.MouseOverHighlight.HookScript then
                         selection.MouseOverHighlight:HookScript("OnShow", function(self)
                             self:SetAlpha(0.3)
@@ -763,8 +763,8 @@ function Chat:DisableChatFrameClamping()
         local chatFrame = _G["ChatFrame" .. i]
         if chatFrame then
             -- Disable clamping on main chat frame
-            if chatFrame.SetClampedToScreen and not chatFrame.__EzUIClampingDisabled then
-                chatFrame.__EzUIClampingDisabled = true
+            if chatFrame.SetClampedToScreen and not chatFrame.__EzroUIClampingDisabled then
+                chatFrame.__EzroUIClampingDisabled = true
                 chatFrame:SetClampedToScreen(false)
                 
                 -- Hook OnShow to maintain unclamped state
@@ -779,8 +779,8 @@ function Chat:DisableChatFrameClamping()
             
             -- Also disable clamping on Background frame (often what's moved in edit mode)
             local background = chatFrame.Background
-            if background and background.SetClampedToScreen and not background.__EzUIClampingDisabled then
-                background.__EzUIClampingDisabled = true
+            if background and background.SetClampedToScreen and not background.__EzroUIClampingDisabled then
+                background.__EzroUIClampingDisabled = true
                 background:SetClampedToScreen(false)
                 
                 if background.HookScript then
@@ -796,8 +796,8 @@ function Chat:DisableChatFrameClamping()
     
     -- Also handle DEFAULT_CHAT_FRAME
     if DEFAULT_CHAT_FRAME then
-        if DEFAULT_CHAT_FRAME.SetClampedToScreen and not DEFAULT_CHAT_FRAME.__EzUIClampingDisabled then
-            DEFAULT_CHAT_FRAME.__EzUIClampingDisabled = true
+        if DEFAULT_CHAT_FRAME.SetClampedToScreen and not DEFAULT_CHAT_FRAME.__EzroUIClampingDisabled then
+            DEFAULT_CHAT_FRAME.__EzroUIClampingDisabled = true
             DEFAULT_CHAT_FRAME:SetClampedToScreen(false)
             if DEFAULT_CHAT_FRAME.HookScript then
                 DEFAULT_CHAT_FRAME:HookScript("OnShow", function(self)
@@ -809,8 +809,8 @@ function Chat:DisableChatFrameClamping()
         end
         
         local defaultBackground = DEFAULT_CHAT_FRAME.Background
-        if defaultBackground and defaultBackground.SetClampedToScreen and not defaultBackground.__EzUIClampingDisabled then
-            defaultBackground.__EzUIClampingDisabled = true
+        if defaultBackground and defaultBackground.SetClampedToScreen and not defaultBackground.__EzroUIClampingDisabled then
+            defaultBackground.__EzroUIClampingDisabled = true
             defaultBackground:SetClampedToScreen(false)
             if defaultBackground.HookScript then
                 defaultBackground:HookScript("OnShow", function(self)
@@ -832,17 +832,17 @@ local function ApplyQuickJoinToastButtonOffset(button, offsetX, offsetY)
     if not point or not relativeTo then return end
     
     -- Store base position if not already stored or if anchor changed
-    if not button.__EzUIBaseAnchor or 
-       button.__EzUIBaseAnchor.relativeTo ~= relativeTo or
-       button.__EzUIBaseAnchor.point ~= point then
+    if not button.__EzroUIBaseAnchor or 
+       button.__EzroUIBaseAnchor.relativeTo ~= relativeTo or
+       button.__EzroUIBaseAnchor.point ~= point then
         
         -- Calculate base position by subtracting previously applied offset
-        local currentOffsetX = button.__EzUILastOffsetX or 0
-        local currentOffsetY = button.__EzUILastOffsetY or 0
+        local currentOffsetX = button.__EzroUILastOffsetX or 0
+        local currentOffsetY = button.__EzroUILastOffsetY or 0
         local baseX = (xOfs or 0) - currentOffsetX
         local baseY = (yOfs or 0) - currentOffsetY
         
-        button.__EzUIBaseAnchor = {
+        button.__EzroUIBaseAnchor = {
             point = point,
             relativeTo = relativeTo,
             relativePoint = relativePoint or point,
@@ -851,13 +851,13 @@ local function ApplyQuickJoinToastButtonOffset(button, offsetX, offsetY)
         }
     end
     
-    local baseAnchor = button.__EzUIBaseAnchor
+    local baseAnchor = button.__EzroUIBaseAnchor
     
     -- Update stored offset values
-    local lastOffsetX = button.__EzUILastOffsetX or 0
-    local lastOffsetY = button.__EzUILastOffsetY or 0
-    button.__EzUILastOffsetX = offsetX
-    button.__EzUILastOffsetY = offsetY
+    local lastOffsetX = button.__EzroUILastOffsetX or 0
+    local lastOffsetY = button.__EzroUILastOffsetY or 0
+    button.__EzroUILastOffsetX = offsetX
+    button.__EzroUILastOffsetY = offsetY
     
     -- Calculate final position
     local finalX = baseAnchor.xOfs + offsetX
@@ -880,7 +880,7 @@ end
 
 -- Function to update QuickJoinToastButton visibility and position
 function Chat:UpdateQuickJoinToastButton()
-    local cfg = EzUI.db.profile.chat
+    local cfg = EzroUI.db.profile.chat
     if not cfg then return end
     
     local quickJoinButton = _G.QuickJoinToastButton
@@ -890,10 +890,10 @@ function Chat:UpdateQuickJoinToastButton()
     if cfg.hideQuickJoinToastButton then
         quickJoinButton:Hide()
         -- Hook OnShow to keep it hidden
-        if not quickJoinButton.__EzUIHideHooked then
-            quickJoinButton.__EzUIHideHooked = true
+        if not quickJoinButton.__EzroUIHideHooked then
+            quickJoinButton.__EzroUIHideHooked = true
             quickJoinButton:HookScript("OnShow", function(self)
-                local cfg2 = EzUI.db.profile.chat
+                local cfg2 = EzroUI.db.profile.chat
                 if cfg2 and cfg2.hideQuickJoinToastButton then
                     self:Hide()
                 end
@@ -901,9 +901,9 @@ function Chat:UpdateQuickJoinToastButton()
         end
     else
         -- Unhook and show if setting is disabled
-        if quickJoinButton.__EzUIHideHooked then
+        if quickJoinButton.__EzroUIHideHooked then
             quickJoinButton:SetScript("OnShow", nil)
-            quickJoinButton.__EzUIHideHooked = nil
+            quickJoinButton.__EzroUIHideHooked = nil
         end
         -- Don't force show, let it show naturally if it wants to
     end
@@ -913,14 +913,14 @@ function Chat:UpdateQuickJoinToastButton()
     local offsetY = cfg.quickJoinToastButtonOffsetY or -23
     
     -- Hook SetPoint to intercept positioning and apply our offset
-    if not quickJoinButton.__EzUISetPointHooked then
-        quickJoinButton.__EzUISetPointHooked = true
+    if not quickJoinButton.__EzroUISetPointHooked then
+        quickJoinButton.__EzroUISetPointHooked = true
         hooksecurefunc(quickJoinButton, "SetPoint", function(self, ...)
             -- Clear base anchor so it gets recalculated from new position
-            self.__EzUIBaseAnchor = nil
+            self.__EzroUIBaseAnchor = nil
             -- Apply offset after Blizzard sets the position
             C_Timer.After(0, function()
-                local cfg3 = EzUI.db.profile.chat
+                local cfg3 = EzroUI.db.profile.chat
                 if cfg3 and not cfg3.hideQuickJoinToastButton then
                     ApplyQuickJoinToastButtonOffset(self, cfg3.quickJoinToastButtonOffsetX or 31, cfg3.quickJoinToastButtonOffsetY or -23)
                 end
@@ -928,11 +928,11 @@ function Chat:UpdateQuickJoinToastButton()
         end)
         
         -- Also hook OnShow to apply offset when button appears
-        if not quickJoinButton.__EzUIShowHooked then
-            quickJoinButton.__EzUIShowHooked = true
+        if not quickJoinButton.__EzroUIShowHooked then
+            quickJoinButton.__EzroUIShowHooked = true
             quickJoinButton:HookScript("OnShow", function(self)
                 C_Timer.After(0.1, function()
-                    local cfg4 = EzUI.db.profile.chat
+                    local cfg4 = EzroUI.db.profile.chat
                     if cfg4 and not cfg4.hideQuickJoinToastButton then
                         ApplyQuickJoinToastButtonOffset(self, cfg4.quickJoinToastButtonOffsetX or 31, cfg4.quickJoinToastButtonOffsetY or -23)
                     end
@@ -957,20 +957,20 @@ function Chat:RefreshAll()
     for i = 1, numChatWindows do
         local chatFrame = _G["ChatFrame" .. i]
         if chatFrame then
-            chatFrame.__EzUISkinned = nil
+            chatFrame.__EzroUISkinned = nil
             -- Also clear clamping disabled flag so it gets reapplied
-            chatFrame.__EzUIClampingDisabled = nil
+            chatFrame.__EzroUIClampingDisabled = nil
             if chatFrame.Background then
-                chatFrame.Background.__EzUIClampingDisabled = nil
+                chatFrame.Background.__EzroUIClampingDisabled = nil
             end
         end
     end
     
     if DEFAULT_CHAT_FRAME then
-        DEFAULT_CHAT_FRAME.__EzUISkinned = nil
-        DEFAULT_CHAT_FRAME.__EzUIClampingDisabled = nil
+        DEFAULT_CHAT_FRAME.__EzroUISkinned = nil
+        DEFAULT_CHAT_FRAME.__EzroUIClampingDisabled = nil
         if DEFAULT_CHAT_FRAME.Background then
-            DEFAULT_CHAT_FRAME.Background.__EzUIClampingDisabled = nil
+            DEFAULT_CHAT_FRAME.Background.__EzroUIClampingDisabled = nil
         end
     end
     

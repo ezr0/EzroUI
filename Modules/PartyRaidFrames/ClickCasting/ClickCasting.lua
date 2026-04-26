@@ -1,12 +1,12 @@
 ﻿--[[
-    EzUI Unit Frames - Click Casting System
+    EzroUI Unit Frames - Click Casting System
     Provides built-in click casting functionality
 ]]
 
 local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
-EzUI.PartyFrames = EzUI.PartyFrames or {}
-local UnitFrames = EzUI.PartyFrames
+local EzroUI = ns.Addon
+EzroUI.PartyFrames = EzroUI.PartyFrames or {}
+local UnitFrames = EzroUI.PartyFrames
 
 -- Click casting storage
 UnitFrames.ClickCastBindings = UnitFrames.ClickCastBindings or {}

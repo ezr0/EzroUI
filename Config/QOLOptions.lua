@@ -1,5 +1,5 @@
 ﻿local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
+local EzroUI = ns.Addon
 
 local function CreateQOLOptions()
     return {
@@ -19,7 +19,7 @@ local function CreateQOLOptions()
                 width = "full",
                 order = 1.5,
                 get = function()
-                    local db = EzUI.db and EzUI.db.profile and EzUI.db.profile.qol
+                    local db = EzroUI.db and EzroUI.db.profile and EzroUI.db.profile.qol
                     if not db then
                         return true
                     end
@@ -29,13 +29,13 @@ local function CreateQOLOptions()
                     return db.characterPanel
                 end,
                 set = function(_, val)
-                    if not EzUI.db or not EzUI.db.profile then
+                    if not EzroUI.db or not EzroUI.db.profile then
                         return
                     end
-                    EzUI.db.profile.qol = EzUI.db.profile.qol or {}
-                    EzUI.db.profile.qol.characterPanel = val
-                    if EzUI.CharacterPanel and EzUI.CharacterPanel.Refresh then
-                        EzUI.CharacterPanel:Refresh()
+                    EzroUI.db.profile.qol = EzroUI.db.profile.qol or {}
+                    EzroUI.db.profile.qol.characterPanel = val
+                    if EzroUI.CharacterPanel and EzroUI.CharacterPanel.Refresh then
+                        EzroUI.CharacterPanel:Refresh()
                     end
                 end,
             },
@@ -46,17 +46,17 @@ local function CreateQOLOptions()
                 width = "full",
                 order = 2,
                 get = function()
-                    local db = EzUI.db and EzUI.db.profile and EzUI.db.profile.qol
+                    local db = EzroUI.db and EzroUI.db.profile and EzroUI.db.profile.qol
                     return db and db.hideBagsBar or false
                 end,
                 set = function(_, val)
-                    if not EzUI.db or not EzUI.db.profile then
+                    if not EzroUI.db or not EzroUI.db.profile then
                         return
                     end
-                    EzUI.db.profile.qol = EzUI.db.profile.qol or {}
-                    EzUI.db.profile.qol.hideBagsBar = val
-                    if EzUI.QOL and EzUI.QOL.Refresh then
-                        EzUI.QOL:Refresh()
+                    EzroUI.db.profile.qol = EzroUI.db.profile.qol or {}
+                    EzroUI.db.profile.qol.hideBagsBar = val
+                    if EzroUI.QOL and EzroUI.QOL.Refresh then
+                        EzroUI.QOL:Refresh()
                     end
                 end,
             },
@@ -67,17 +67,17 @@ local function CreateQOLOptions()
                 width = "full",
                 order = 3,
                 get = function()
-                    local db = EzUI.db and EzUI.db.profile and EzUI.db.profile.qol
+                    local db = EzroUI.db and EzroUI.db.profile and EzroUI.db.profile.qol
                     return db and db.tooltipIDs or false
                 end,
                 set = function(_, val)
-                    if not EzUI.db or not EzUI.db.profile then
+                    if not EzroUI.db or not EzroUI.db.profile then
                         return
                     end
-                    EzUI.db.profile.qol = EzUI.db.profile.qol or {}
-                    EzUI.db.profile.qol.tooltipIDs = val
-                    if EzUI.QOL and EzUI.QOL.Refresh then
-                        EzUI.QOL:Refresh()
+                    EzroUI.db.profile.qol = EzroUI.db.profile.qol or {}
+                    EzroUI.db.profile.qol.tooltipIDs = val
+                    if EzroUI.QOL and EzroUI.QOL.Refresh then
+                        EzroUI.QOL:Refresh()
                     end
                 end,
             },
@@ -88,7 +88,7 @@ local function CreateQOLOptions()
                 width = "full",
                 order = 4,
                 get = function()
-                    local db = EzUI.db and EzUI.db.profile and EzUI.db.profile.qol
+                    local db = EzroUI.db and EzroUI.db.profile and EzroUI.db.profile.qol
                     if not db then
                         return true
                     end
@@ -98,13 +98,13 @@ local function CreateQOLOptions()
                     return db.microMenuSkinning
                 end,
                 set = function(_, val)
-                    if not EzUI.db or not EzUI.db.profile then
+                    if not EzroUI.db or not EzroUI.db.profile then
                         return
                     end
-                    EzUI.db.profile.qol = EzUI.db.profile.qol or {}
-                    EzUI.db.profile.qol.microMenuSkinning = val
-                    if val and EzUI.StyleMicroButtons then
-                        EzUI:StyleMicroButtons()
+                    EzroUI.db.profile.qol = EzroUI.db.profile.qol or {}
+                    EzroUI.db.profile.qol.microMenuSkinning = val
+                    if val and EzroUI.StyleMicroButtons then
+                        EzroUI:StyleMicroButtons()
                     end
                 end,
             },
@@ -125,15 +125,15 @@ local function CreateQOLOptions()
                     guildFirst = "Guild Bank First",
                 },
                 get = function()
-                    local db = EzUI.db and EzUI.db.profile and EzUI.db.profile.qol
+                    local db = EzroUI.db and EzroUI.db.profile and EzroUI.db.profile.qol
                     return db and db.autoRepair or "off"
                 end,
                 set = function(_, val)
-                    if not EzUI.db or not EzUI.db.profile then
+                    if not EzroUI.db or not EzroUI.db.profile then
                         return
                     end
-                    EzUI.db.profile.qol = EzUI.db.profile.qol or {}
-                    EzUI.db.profile.qol.autoRepair = val
+                    EzroUI.db.profile.qol = EzroUI.db.profile.qol or {}
+                    EzroUI.db.profile.qol.autoRepair = val
                 end,
             },
             sellJunk = {
@@ -143,15 +143,15 @@ local function CreateQOLOptions()
                 width = "full",
                 order = 5.2,
                 get = function()
-                    local db = EzUI.db and EzUI.db.profile and EzUI.db.profile.qol
+                    local db = EzroUI.db and EzroUI.db.profile and EzroUI.db.profile.qol
                     return db and db.sellJunk or false
                 end,
                 set = function(_, val)
-                    if not EzUI.db or not EzUI.db.profile then
+                    if not EzroUI.db or not EzroUI.db.profile then
                         return
                     end
-                    EzUI.db.profile.qol = EzUI.db.profile.qol or {}
-                    EzUI.db.profile.qol.sellJunk = val
+                    EzroUI.db.profile.qol = EzroUI.db.profile.qol or {}
+                    EzroUI.db.profile.qol.sellJunk = val
                 end,
             },
             autoInsertKey = {
@@ -161,15 +161,15 @@ local function CreateQOLOptions()
                 width = "full",
                 order = 5.3,
                 get = function()
-                    local db = EzUI.db and EzUI.db.profile and EzUI.db.profile.qol
+                    local db = EzroUI.db and EzroUI.db.profile and EzroUI.db.profile.qol
                     return db and db.autoInsertKey or false
                 end,
                 set = function(_, val)
-                    if not EzUI.db or not EzUI.db.profile then
+                    if not EzroUI.db or not EzroUI.db.profile then
                         return
                     end
-                    EzUI.db.profile.qol = EzUI.db.profile.qol or {}
-                    EzUI.db.profile.qol.autoInsertKey = val
+                    EzroUI.db.profile.qol = EzroUI.db.profile.qol or {}
+                    EzroUI.db.profile.qol.autoInsertKey = val
                 end,
             },
             autoAcceptInvites = {
@@ -179,15 +179,15 @@ local function CreateQOLOptions()
                 width = "full",
                 order = 5.4,
                 get = function()
-                    local db = EzUI.db and EzUI.db.profile and EzUI.db.profile.qol
+                    local db = EzroUI.db and EzroUI.db.profile and EzroUI.db.profile.qol
                     return db and db.autoAcceptInvites or false
                 end,
                 set = function(_, val)
-                    if not EzUI.db or not EzUI.db.profile then
+                    if not EzroUI.db or not EzroUI.db.profile then
                         return
                     end
-                    EzUI.db.profile.qol = EzUI.db.profile.qol or {}
-                    EzUI.db.profile.qol.autoAcceptInvites = val
+                    EzroUI.db.profile.qol = EzroUI.db.profile.qol or {}
+                    EzroUI.db.profile.qol.autoAcceptInvites = val
                 end,
             },
             fastAutoLoot = {
@@ -197,15 +197,15 @@ local function CreateQOLOptions()
                 width = "full",
                 order = 5.5,
                 get = function()
-                    local db = EzUI.db and EzUI.db.profile and EzUI.db.profile.qol
+                    local db = EzroUI.db and EzroUI.db.profile and EzroUI.db.profile.qol
                     return db and db.fastAutoLoot or false
                 end,
                 set = function(_, val)
-                    if not EzUI.db or not EzUI.db.profile then
+                    if not EzroUI.db or not EzroUI.db.profile then
                         return
                     end
-                    EzUI.db.profile.qol = EzUI.db.profile.qol or {}
-                    EzUI.db.profile.qol.fastAutoLoot = val
+                    EzroUI.db.profile.qol = EzroUI.db.profile.qol or {}
+                    EzroUI.db.profile.qol.fastAutoLoot = val
                 end,
             },
             autoDeleteConfirm = {
@@ -215,15 +215,15 @@ local function CreateQOLOptions()
                 width = "full",
                 order = 5.6,
                 get = function()
-                    local db = EzUI.db and EzUI.db.profile and EzUI.db.profile.qol
+                    local db = EzroUI.db and EzroUI.db.profile and EzroUI.db.profile.qol
                     return db and db.autoDeleteConfirm or false
                 end,
                 set = function(_, val)
-                    if not EzUI.db or not EzUI.db.profile then
+                    if not EzroUI.db or not EzroUI.db.profile then
                         return
                     end
-                    EzUI.db.profile.qol = EzUI.db.profile.qol or {}
-                    EzUI.db.profile.qol.autoDeleteConfirm = val
+                    EzroUI.db.profile.qol = EzroUI.db.profile.qol or {}
+                    EzroUI.db.profile.qol.autoDeleteConfirm = val
                 end,
             },
             autoAcceptQuest = {
@@ -233,15 +233,15 @@ local function CreateQOLOptions()
                 width = "full",
                 order = 5.7,
                 get = function()
-                    local db = EzUI.db and EzUI.db.profile and EzUI.db.profile.qol
+                    local db = EzroUI.db and EzroUI.db.profile and EzroUI.db.profile.qol
                     return db and db.autoAcceptQuest or false
                 end,
                 set = function(_, val)
-                    if not EzUI.db or not EzUI.db.profile then
+                    if not EzroUI.db or not EzroUI.db.profile then
                         return
                     end
-                    EzUI.db.profile.qol = EzUI.db.profile.qol or {}
-                    EzUI.db.profile.qol.autoAcceptQuest = val
+                    EzroUI.db.profile.qol = EzroUI.db.profile.qol or {}
+                    EzroUI.db.profile.qol.autoAcceptQuest = val
                 end,
             },
             autoTurnInQuest = {
@@ -251,15 +251,15 @@ local function CreateQOLOptions()
                 width = "full",
                 order = 5.8,
                 get = function()
-                    local db = EzUI.db and EzUI.db.profile and EzUI.db.profile.qol
+                    local db = EzroUI.db and EzroUI.db.profile and EzroUI.db.profile.qol
                     return db and db.autoTurnInQuest or false
                 end,
                 set = function(_, val)
-                    if not EzUI.db or not EzUI.db.profile then
+                    if not EzroUI.db or not EzroUI.db.profile then
                         return
                     end
-                    EzUI.db.profile.qol = EzUI.db.profile.qol or {}
-                    EzUI.db.profile.qol.autoTurnInQuest = val
+                    EzroUI.db.profile.qol = EzroUI.db.profile.qol or {}
+                    EzroUI.db.profile.qol.autoTurnInQuest = val
                 end,
             },
             raidBuffsHeader = {
@@ -273,18 +273,18 @@ local function CreateQOLOptions()
                 width = "full",
                 order = 6.1,
                 get = function()
-                    local db = EzUI.db and EzUI.db.profile and EzUI.db.profile.qol
+                    local db = EzroUI.db and EzroUI.db.profile and EzroUI.db.profile.qol
                     return db and db.raidBuffs and db.raidBuffs.enabled or false
                 end,
                 set = function(_, val)
-                    if not EzUI.db or not EzUI.db.profile then
+                    if not EzroUI.db or not EzroUI.db.profile then
                         return
                     end
-                    EzUI.db.profile.qol = EzUI.db.profile.qol or {}
-                    EzUI.db.profile.qol.raidBuffs = EzUI.db.profile.qol.raidBuffs or {}
-                    EzUI.db.profile.qol.raidBuffs.enabled = val
-                    if EzUI.RaidBuffs and EzUI.RaidBuffs.ForceUpdate then
-                        EzUI.RaidBuffs:ForceUpdate()
+                    EzroUI.db.profile.qol = EzroUI.db.profile.qol or {}
+                    EzroUI.db.profile.qol.raidBuffs = EzroUI.db.profile.qol.raidBuffs or {}
+                    EzroUI.db.profile.qol.raidBuffs.enabled = val
+                    if EzroUI.RaidBuffs and EzroUI.RaidBuffs.ForceUpdate then
+                        EzroUI.RaidBuffs:ForceUpdate()
                     end
                 end,
             },
@@ -294,18 +294,18 @@ local function CreateQOLOptions()
                 width = "full",
                 order = 6.2,
                 get = function()
-                    local db = EzUI.db and EzUI.db.profile and EzUI.db.profile.qol
+                    local db = EzroUI.db and EzroUI.db.profile and EzroUI.db.profile.qol
                     return db and db.raidBuffs and db.raidBuffs.showOnlyInGroup or false
                 end,
                 set = function(_, val)
-                    if not EzUI.db or not EzUI.db.profile then
+                    if not EzroUI.db or not EzroUI.db.profile then
                         return
                     end
-                    EzUI.db.profile.qol = EzUI.db.profile.qol or {}
-                    EzUI.db.profile.qol.raidBuffs = EzUI.db.profile.qol.raidBuffs or {}
-                    EzUI.db.profile.qol.raidBuffs.showOnlyInGroup = val
-                    if EzUI.RaidBuffs and EzUI.RaidBuffs.ForceUpdate then
-                        EzUI.RaidBuffs:ForceUpdate()
+                    EzroUI.db.profile.qol = EzroUI.db.profile.qol or {}
+                    EzroUI.db.profile.qol.raidBuffs = EzroUI.db.profile.qol.raidBuffs or {}
+                    EzroUI.db.profile.qol.raidBuffs.showOnlyInGroup = val
+                    if EzroUI.RaidBuffs and EzroUI.RaidBuffs.ForceUpdate then
+                        EzroUI.RaidBuffs:ForceUpdate()
                     end
                 end,
             },
@@ -315,18 +315,18 @@ local function CreateQOLOptions()
                 width = "full",
                 order = 6.3,
                 get = function()
-                    local db = EzUI.db and EzUI.db.profile and EzUI.db.profile.qol
+                    local db = EzroUI.db and EzroUI.db.profile and EzroUI.db.profile.qol
                     return db and db.raidBuffs and db.raidBuffs.showOnlyInInstance or false
                 end,
                 set = function(_, val)
-                    if not EzUI.db or not EzUI.db.profile then
+                    if not EzroUI.db or not EzroUI.db.profile then
                         return
                     end
-                    EzUI.db.profile.qol = EzUI.db.profile.qol or {}
-                    EzUI.db.profile.qol.raidBuffs = EzUI.db.profile.qol.raidBuffs or {}
-                    EzUI.db.profile.qol.raidBuffs.showOnlyInInstance = val
-                    if EzUI.RaidBuffs and EzUI.RaidBuffs.ForceUpdate then
-                        EzUI.RaidBuffs:ForceUpdate()
+                    EzroUI.db.profile.qol = EzroUI.db.profile.qol or {}
+                    EzroUI.db.profile.qol.raidBuffs = EzroUI.db.profile.qol.raidBuffs or {}
+                    EzroUI.db.profile.qol.raidBuffs.showOnlyInInstance = val
+                    if EzroUI.RaidBuffs and EzroUI.RaidBuffs.ForceUpdate then
+                        EzroUI.RaidBuffs:ForceUpdate()
                     end
                 end,
             },
@@ -336,18 +336,18 @@ local function CreateQOLOptions()
                 width = "full",
                 order = 6.4,
                 get = function()
-                    local db = EzUI.db and EzUI.db.profile and EzUI.db.profile.qol
+                    local db = EzroUI.db and EzroUI.db.profile and EzroUI.db.profile.qol
                     return db and db.raidBuffs and db.raidBuffs.providerMode or false
                 end,
                 set = function(_, val)
-                    if not EzUI.db or not EzUI.db.profile then
+                    if not EzroUI.db or not EzroUI.db.profile then
                         return
                     end
-                    EzUI.db.profile.qol = EzUI.db.profile.qol or {}
-                    EzUI.db.profile.qol.raidBuffs = EzUI.db.profile.qol.raidBuffs or {}
-                    EzUI.db.profile.qol.raidBuffs.providerMode = val
-                    if EzUI.RaidBuffs and EzUI.RaidBuffs.ForceUpdate then
-                        EzUI.RaidBuffs:ForceUpdate()
+                    EzroUI.db.profile.qol = EzroUI.db.profile.qol or {}
+                    EzroUI.db.profile.qol.raidBuffs = EzroUI.db.profile.qol.raidBuffs or {}
+                    EzroUI.db.profile.qol.raidBuffs.providerMode = val
+                    if EzroUI.RaidBuffs and EzroUI.RaidBuffs.ForceUpdate then
+                        EzroUI.RaidBuffs:ForceUpdate()
                     end
                 end,
             },
@@ -360,18 +360,18 @@ local function CreateQOLOptions()
                 width = "full",
                 order = 6.5,
                 get = function()
-                    local db = EzUI.db and EzUI.db.profile and EzUI.db.profile.qol
+                    local db = EzroUI.db and EzroUI.db.profile and EzroUI.db.profile.qol
                     return db and db.raidBuffs and db.raidBuffs.iconSize or 32
                 end,
                 set = function(_, val)
-                    if not EzUI.db or not EzUI.db.profile then
+                    if not EzroUI.db or not EzroUI.db.profile then
                         return
                     end
-                    EzUI.db.profile.qol = EzUI.db.profile.qol or {}
-                    EzUI.db.profile.qol.raidBuffs = EzUI.db.profile.qol.raidBuffs or {}
-                    EzUI.db.profile.qol.raidBuffs.iconSize = val
-                    if EzUI.RaidBuffs and EzUI.RaidBuffs.ForceUpdate then
-                        EzUI.RaidBuffs:ForceUpdate()
+                    EzroUI.db.profile.qol = EzroUI.db.profile.qol or {}
+                    EzroUI.db.profile.qol.raidBuffs = EzroUI.db.profile.qol.raidBuffs or {}
+                    EzroUI.db.profile.qol.raidBuffs.iconSize = val
+                    if EzroUI.RaidBuffs and EzroUI.RaidBuffs.ForceUpdate then
+                        EzroUI.RaidBuffs:ForceUpdate()
                     end
                 end,
             },
@@ -382,7 +382,7 @@ local function CreateQOLOptions()
                 width = "full",
                 order = 6.6,
                 get = function()
-                    local db = EzUI.db and EzUI.db.profile and EzUI.db.profile.qol
+                    local db = EzroUI.db and EzroUI.db.profile and EzroUI.db.profile.qol
                     local color = db and db.raidBuffs and db.raidBuffs.borderColor
                     if color then
                         return color[1], color[2], color[3], color[4] or 1
@@ -390,14 +390,14 @@ local function CreateQOLOptions()
                     return 0, 0, 0, 1
                 end,
                 set = function(_, r, g, b, a)
-                    if not EzUI.db or not EzUI.db.profile then
+                    if not EzroUI.db or not EzroUI.db.profile then
                         return
                     end
-                    EzUI.db.profile.qol = EzUI.db.profile.qol or {}
-                    EzUI.db.profile.qol.raidBuffs = EzUI.db.profile.qol.raidBuffs or {}
-                    EzUI.db.profile.qol.raidBuffs.borderColor = { r, g, b, a or 1 }
-                    if EzUI.RaidBuffs and EzUI.RaidBuffs.ForceUpdate then
-                        EzUI.RaidBuffs:ForceUpdate()
+                    EzroUI.db.profile.qol = EzroUI.db.profile.qol or {}
+                    EzroUI.db.profile.qol.raidBuffs = EzroUI.db.profile.qol.raidBuffs or {}
+                    EzroUI.db.profile.qol.raidBuffs.borderColor = { r, g, b, a or 1 }
+                    if EzroUI.RaidBuffs and EzroUI.RaidBuffs.ForceUpdate then
+                        EzroUI.RaidBuffs:ForceUpdate()
                     end
                 end,
             },
@@ -407,8 +407,8 @@ local function CreateQOLOptions()
                 width = "full",
                 order = 6.7,
                 func = function()
-                    if EzUI.RaidBuffs and EzUI.RaidBuffs.TogglePreview then
-                        EzUI.RaidBuffs:TogglePreview()
+                    if EzroUI.RaidBuffs and EzroUI.RaidBuffs.TogglePreview then
+                        EzroUI.RaidBuffs:TogglePreview()
                     end
                 end,
             },

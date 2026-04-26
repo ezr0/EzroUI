@@ -1,19 +1,19 @@
 ﻿local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
+local EzroUI = ns.Addon
 
 -- Get UnitFrames module
-local UF = EzUI.UnitFrames
+local UF = EzroUI.UnitFrames
 if not UF then
-    error("EzUI: UnitFrames module not initialized! Load UnitFrames.lua first.")
+    error("EzroUI: UnitFrames module not initialized! Load UnitFrames.lua first.")
 end
 
 -- Clique Integration for Unit Frames
--- This module registers EzUI unit frames with Clique for click-casting support
+-- This module registers EzroUI unit frames with Clique for click-casting support
 
-local isEzUI = C_AddOns.IsAddOnLoaded("nUI") or C_AddOns.IsAddOnLoaded("EzUI")
+local isEzroUI = C_AddOns.IsAddOnLoaded("nUI") or C_AddOns.IsAddOnLoaded("EzroUI")
 
-if not isEzUI then
-    return -- Exit if EzUI isn't active
+if not isEzroUI then
+    return -- Exit if EzroUI isn't active
 end
 
 local function TryRegister()
@@ -22,13 +22,13 @@ local function TryRegister()
         return false -- Clique not loaded yet, keep trying
     end
     
-    local playerFrame = _G["EzUI_Player"]
+    local playerFrame = _G["EzroUI_Player"]
     if playerFrame then
         local frames = {
             playerFrame, 
-            _G["EzUI_Target"], 
-            _G["EzUI_Focus"], 
-            _G["EzUI_Pet"]
+            _G["EzroUI_Target"], 
+            _G["EzroUI_Focus"], 
+            _G["EzroUI_Pet"]
         }
         
         for _, frame in ipairs(frames) do
@@ -50,14 +50,14 @@ local function TryRegister()
                 end
             end
         end
-        print("|cFF00FF00Bridge:|r EzUI & Clique linked successfully.")
+        print("|cFF00FF00Bridge:|r EzroUI & Clique linked successfully.")
         return true -- Found and fixed the frames!
     end
     return false -- Frames not spawned yet, try again.
 end
 
 -- Runs every 2 seconds, up to 10 times. Stops once TryRegister returns true.
--- This handles cases where Clique loads after EzUI or frames are created later
+-- This handles cases where Clique loads after EzroUI or frames are created later
 C_Timer.NewTicker(2, function(self)
     if TryRegister() then
         self:Cancel()

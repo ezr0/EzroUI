@@ -1,12 +1,12 @@
 ﻿--[[
-    EzUI Unit Frames - Core Frame Module
+    EzroUI Unit Frames - Core Frame Module
     Contains frame storage, external API, and core frame utilities
 ]]
 
 local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
-EzUI.PartyFrames = EzUI.PartyFrames or {}
-local UnitFrames = EzUI.PartyFrames
+local EzroUI = ns.Addon
+EzroUI.PartyFrames = EzroUI.PartyFrames or {}
+local UnitFrames = EzroUI.PartyFrames
 
 -- Cache commonly used API
 local pairs, ipairs, type = pairs, ipairs, type
@@ -51,7 +51,7 @@ UnitFrames.raidGroupLabels = UnitFrames.raidGroupLabels or {}
 -- ============================================================================
 
 local function GetSafeHealthPercent(unitToken)
-    -- Use ScaleTo100 curve - returns 0-100 directly (matches old EzUI)
+    -- Use ScaleTo100 curve - returns 0-100 directly (matches old EzroUI)
     if UnitHealthPercent and CurveConstants and CurveConstants.ScaleTo100 then
         return UnitHealthPercent(unitToken, true, CurveConstants.ScaleTo100)
     end
@@ -104,8 +104,8 @@ end
 -- ============================================================================
 
 function UnitFrames:PixelPerfect(value)
-    if EzUI and EzUI.Scale then
-        return EzUI:Scale(value)
+    if EzroUI and EzroUI.Scale then
+        return EzroUI:Scale(value)
     end
     
     local scale = UIParent:GetEffectiveScale()

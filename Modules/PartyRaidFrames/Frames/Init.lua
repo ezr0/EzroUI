@@ -1,12 +1,12 @@
 ﻿--[[
-    EzUI Unit Frames - Frame Initialization
+    EzroUI Unit Frames - Frame Initialization
     Handles container setup and frame creation/layout
 ]]
 
 local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
-EzUI.PartyFrames = EzUI.PartyFrames or {}
-local UnitFrames = EzUI.PartyFrames
+local EzroUI = ns.Addon
+EzroUI.PartyFrames = EzroUI.PartyFrames or {}
+local UnitFrames = EzroUI.PartyFrames
 
 -- Cache commonly used API
 local CreateFrame = CreateFrame
@@ -24,7 +24,7 @@ local floor, ceil, max, min = math.floor, math.ceil, math.max, math.min
 function UnitFrames:CreatePartyContainer()
     if self.container then return self.container end
     
-    local container = CreateFrame("Frame", "EzUIPartyContainer", UIParent, "SecureFrameTemplate")
+    local container = CreateFrame("Frame", "EzroUIPartyContainer", UIParent, "SecureFrameTemplate")
     container:SetSize(1, 1)
     container:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
     container:SetMovable(true)
@@ -38,7 +38,7 @@ end
 function UnitFrames:CreateRaidContainer()
     if self.raidContainer then return self.raidContainer end
     
-    local container = CreateFrame("Frame", "EzUIRaidContainer", UIParent, "SecureFrameTemplate")
+    local container = CreateFrame("Frame", "EzroUIRaidContainer", UIParent, "SecureFrameTemplate")
     container:SetSize(1, 1)
     container:SetPoint("CENTER", UIParent, "CENTER", 0, 100)
     container:SetMovable(true)
@@ -749,7 +749,7 @@ function UnitFrames:CreateMoverFrame(parent, name, onDragStop)
     
     -- Label only - blue text like unit frame anchors
     mover.text = mover:CreateFontString(nil, "OVERLAY")
-    local fontPath = EzUI and EzUI:GetGlobalFont()
+    local fontPath = EzroUI and EzroUI:GetGlobalFont()
     if fontPath then
         mover.text:SetFont(fontPath, 12, "OUTLINE")
     else

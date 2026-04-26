@@ -1,8 +1,8 @@
 ﻿local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
+local EzroUI = ns.Addon
 
-EzUI.ProcGlow = EzUI.ProcGlow or {}
-local ProcGlow = EzUI.ProcGlow
+EzroUI.ProcGlow = EzroUI.ProcGlow or {}
+local ProcGlow = EzroUI.ProcGlow
 
 -- Get LibCustomGlow for glow effects
 local LCG = LibStub and LibStub("LibCustomGlow-1.0", true)
@@ -11,7 +11,7 @@ local LCG = LibStub and LibStub("LibCustomGlow-1.0", true)
 local activeGlowingIcons = {}  -- [icon] = true
 
 -- Glow key for LibCustomGlow
-local GLOW_KEY = "_EzUICustomGlow"
+local GLOW_KEY = "_EzroUICustomGlow"
 
 -- LibCustomGlow glow types
 ProcGlow.LibCustomGlowTypes = {
@@ -30,7 +30,7 @@ local function IsCooldownViewerIcon(button)
         if not currentParent then return false end
         local parentName = currentParent:GetName()
         if parentName then
-            local viewers = EzUI.viewers or {
+            local viewers = EzroUI.viewers or {
                 "EssentialCooldownViewer",
                 "UtilityCooldownViewer",
                 "BuffIconCooldownViewer",
@@ -47,7 +47,7 @@ end
 
 -- Get settings for proc glow (viewers only)
 local function GetProcGlowSettings()
-    local settings = EzUI.db.profile.viewers.general.procGlow
+    local settings = EzroUI.db.profile.viewers.general.procGlow
     if not settings or not settings.enabled then return nil end
     return settings
 end
@@ -71,7 +71,7 @@ end
 
 -- Start glow on an icon (like BetterCooldownManager's StartGlow)
 local function StartGlow(iconFrame)
-    if iconFrame._EzUICustomGlowActive then return end
+    if iconFrame._EzroUICustomGlowActive then return end
 
     local glowSettings = GetProcGlowSettings()
     if not glowSettings then return end
@@ -146,13 +146,13 @@ local function StartGlow(iconFrame)
         end
     end
 
-    iconFrame._EzUICustomGlowActive = true
+    iconFrame._EzroUICustomGlowActive = true
     activeGlowingIcons[iconFrame] = true
 end
 
 -- Stop glow on an icon (like BetterCooldownManager's StopGlow)
 local function StopGlow(iconFrame)
-    if not iconFrame._EzUICustomGlowActive then return end
+    if not iconFrame._EzroUICustomGlowActive then return end
     
     if LCG then
         LCG.PixelGlow_Stop(iconFrame, GLOW_KEY)
@@ -161,7 +161,7 @@ local function StopGlow(iconFrame)
         LCG.ButtonGlow_Stop(iconFrame)
     end
     
-    iconFrame._EzUICustomGlowActive = nil
+    iconFrame._EzroUICustomGlowActive = nil
     activeGlowingIcons[iconFrame] = nil
 end
 

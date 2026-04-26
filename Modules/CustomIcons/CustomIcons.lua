@@ -1,11 +1,11 @@
 ﻿local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
+local EzroUI = ns.Addon
 
-EzUI.CustomIcons = EzUI.CustomIcons or {}
-local CustomIcons = EzUI.CustomIcons
+EzroUI.CustomIcons = EzroUI.CustomIcons or {}
+local CustomIcons = EzroUI.CustomIcons
 
-local Widgets = EzUI.GUI and EzUI.GUI.Widgets
-local THEME = EzUI.GUI and EzUI.GUI.THEME
+local Widgets = EzroUI.GUI and EzroUI.GUI.Widgets
+local THEME = EzroUI.GUI and EzroUI.GUI.THEME
 local LSM = LibStub("LibSharedMedia-3.0", true)
 
 -- Forward declarations
@@ -156,7 +156,7 @@ local function EnsureIconSettings(iconData)
 end
 
 local function GetDynamicDB()
-    local profile = EzUI.db.profile
+    local profile = EzroUI.db.profile
     profile.dynamicIcons = profile.dynamicIcons or {}
     local db = profile.dynamicIcons
 
@@ -470,15 +470,15 @@ end
 local function SafeSetBackdrop(frame, backdropInfo, borderColor)
     if not frame or not frame.SetBackdrop then return end
         if InCombatLockdown() then
-            if not EzUI.__cdmPendingBackdrops then
-                EzUI.__cdmPendingBackdrops = {}
+            if not EzroUI.__cdmPendingBackdrops then
+                EzroUI.__cdmPendingBackdrops = {}
             end
-        EzUI.__cdmPendingBackdrops[frame] = {backdropInfo = backdropInfo, borderColor = borderColor}
-            if not EzUI.__cdmBackdropEventFrame then
+        EzroUI.__cdmPendingBackdrops[frame] = {backdropInfo = backdropInfo, borderColor = borderColor}
+            if not EzroUI.__cdmBackdropEventFrame then
                 local eventFrame = CreateFrame("Frame")
                 eventFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
             eventFrame:SetScript("OnEvent", function()
-                for pending, settings in pairs(EzUI.__cdmPendingBackdrops) do
+                for pending, settings in pairs(EzroUI.__cdmPendingBackdrops) do
                     if pending and pending.SetBackdrop then
                         pcall(pending.SetBackdrop, pending, settings.backdropInfo)
                                         if settings.borderColor then
@@ -486,9 +486,9 @@ local function SafeSetBackdrop(frame, backdropInfo, borderColor)
                         end
                             end
                         end
-                        EzUI.__cdmPendingBackdrops = {}
+                        EzroUI.__cdmPendingBackdrops = {}
                 end)
-                EzUI.__cdmBackdropEventFrame = eventFrame
+                EzroUI.__cdmBackdropEventFrame = eventFrame
             end
         return
     end
@@ -545,16 +545,16 @@ local function ApplyCooldownTextStyle(cooldown, iconData)
     if not fontString then return end
 
     local cds = (iconData.settings and iconData.settings.cooldownSettings) or {}
-    local fontPath = EzUI:GetGlobalFont()
+    local fontPath = EzroUI:GetGlobalFont()
     local size = cds.size or 12
     local color = cds.color or { 1, 1, 1, 1 }
 
     -- Reuse general viewer shadow offsets for consistency
     local shadowOffsetX = 1
     local shadowOffsetY = -1
-    if EzUI.db and EzUI.db.profile and EzUI.db.profile.viewers and EzUI.db.profile.viewers.general then
-        shadowOffsetX = EzUI.db.profile.viewers.general.cooldownShadowOffsetX or shadowOffsetX
-        shadowOffsetY = EzUI.db.profile.viewers.general.cooldownShadowOffsetY or shadowOffsetY
+    if EzroUI.db and EzroUI.db.profile and EzroUI.db.profile.viewers and EzroUI.db.profile.viewers.general then
+        shadowOffsetX = EzroUI.db.profile.viewers.general.cooldownShadowOffsetX or shadowOffsetX
+        shadowOffsetY = EzroUI.db.profile.viewers.general.cooldownShadowOffsetY or shadowOffsetY
     end
 
     local _, _, flags = fontString:GetFont()
@@ -623,7 +623,7 @@ local function ApplyIconSettings(iconFrame, iconData)
     })
 
     local cs = BuildCountSettings(settings)
-    local fontPath = EzUI:GetGlobalFont()
+    local fontPath = EzroUI:GetGlobalFont()
     if cs.font and LSM then
         local fetchedFont = LSM:Fetch("font", cs.font)
         if fetchedFont then
@@ -640,7 +640,7 @@ local function ApplyIconSettings(iconFrame, iconData)
     -- Apply cooldown text settings
     local cooldownSettings = settings.cooldownSettings or {size = 12, color = {1, 1, 1, 1}}
     if iconFrame.cooldown.SetCountdownFont then
-        local cdFontPath = EzUI:GetGlobalFont()
+        local cdFontPath = EzroUI:GetGlobalFont()
         iconFrame.cooldown:SetCountdownFont(cdFontPath, cooldownSettings.size, "OUTLINE")
     end
     ApplyCooldownTextStyle(iconFrame.cooldown, iconData)
@@ -926,7 +926,7 @@ function CustomIcons:ShowLoadConditionsWindow(iconKey, iconData)
 
     local lc = iconData.settings.loadConditions
 
-    local f = CreateFrame("Frame", "EzUI_LoadConditions", UIParent, "BackdropTemplate")
+    local f = CreateFrame("Frame", "EzroUI_LoadConditions", UIParent, "BackdropTemplate")
     f:SetSize(360, 460)
     f:SetPoint("CENTER")
     f:SetFrameStrata("DIALOG")
@@ -1086,7 +1086,7 @@ local function CreateItemIcon(iconKey, iconData, parent)
         return nil
     end
 
-    local frame = CreateBaseIcon("EzUI_DynItem_" .. iconKey, parent)
+    local frame = CreateBaseIcon("EzroUI_DynItem_" .. iconKey, parent)
     frame._type = "item"
     frame._itemID = itemID
     frame._iconKey = iconKey
@@ -1104,7 +1104,7 @@ local function CreateSpellIcon(iconKey, iconData, parent)
         return nil
     end
 
-    local frame = CreateBaseIcon("EzUI_DynSpell_" .. iconKey, parent)
+    local frame = CreateBaseIcon("EzroUI_DynSpell_" .. iconKey, parent)
     frame._type = "spell"
     frame._spellID = spellID
     frame._iconKey = iconKey
@@ -1117,7 +1117,7 @@ local function CreateSlotIcon(iconKey, iconData, parent)
     local slotID = iconData.slotID
     if not slotID then return nil end
 
-    local frame = CreateBaseIcon("EzUI_DynSlot_" .. iconKey, parent)
+    local frame = CreateBaseIcon("EzroUI_DynSlot_" .. iconKey, parent)
     frame._type = "slot"
     frame._slotID = slotID
     frame._iconKey = iconKey
@@ -1304,7 +1304,7 @@ local function EnsureGroupFrame(groupKey, settings)
     end
 
     -- Create the main container frame
-    local container = CreateFrame("Frame", "EzUI_DynGroup_" .. groupKey, UIParent)
+    local container = CreateFrame("Frame", "EzroUI_DynGroup_" .. groupKey, UIParent)
     container:SetSize(100, 100) -- Initial size, will be recalculated
     container:SetMovable(true) -- Container itself must be movable
     container:SetClampedToScreen(true)
@@ -1628,22 +1628,22 @@ function CustomIcons:LoadDynamicIcons()
 end
 
 function CustomIcons:CreateCustomIconsTrackerFrame()
-    if not EzUI.db.profile.customIcons.enabled then return nil end
+    if not EzroUI.db.profile.customIcons.enabled then return nil end
 
     -- Create the main container frame (for backwards compatibility)
-    if not EzUI.customIconsTrackerFrame then
-        EzUI.customIconsTrackerFrame = CreateFrame("Frame", "EzUI_CustomIconsTrackerFrame", UIParent)
-        EzUI.customIconsTrackerFrame:SetSize(200, 40)
-        EzUI.customIconsTrackerFrame:SetFrameStrata("MEDIUM")
-        EzUI.customIconsTrackerFrame:SetClampedToScreen(true)
-        EzUI.customIconsTrackerFrame:SetPoint("CENTER", UIParent, "CENTER", 0, -200)
-        EzUI.customIconsTrackerFrame._EzUI_CustomIconsTracker = true
+    if not EzroUI.customIconsTrackerFrame then
+        EzroUI.customIconsTrackerFrame = CreateFrame("Frame", "EzroUI_CustomIconsTrackerFrame", UIParent)
+        EzroUI.customIconsTrackerFrame:SetSize(200, 40)
+        EzroUI.customIconsTrackerFrame:SetFrameStrata("MEDIUM")
+        EzroUI.customIconsTrackerFrame:SetClampedToScreen(true)
+        EzroUI.customIconsTrackerFrame:SetPoint("CENTER", UIParent, "CENTER", 0, -200)
+        EzroUI.customIconsTrackerFrame._EzroUI_CustomIconsTracker = true
     end
 
     -- Load all dynamic icons
     self:LoadDynamicIcons()
 
-    return EzUI.customIconsTrackerFrame
+    return EzroUI.customIconsTrackerFrame
 end
 
 -- ------------------------
@@ -2293,7 +2293,7 @@ function CustomIcons:RefreshDynamicConfigUI()
                 values = fontValues,
                 get = function()
                     local cs = iconData.settings.countSettings or {}
-                    return cs.font or (EzUI.db and EzUI.db.profile and EzUI.db.profile.general and EzUI.db.profile.general.globalFont) or "Expressway"
+                    return cs.font or (EzroUI.db and EzroUI.db.profile and EzroUI.db.profile.general and EzroUI.db.profile.general.globalFont) or "Expressway"
                 end,
                 set = function(_, val)
                     iconData.settings.countSettings = iconData.settings.countSettings or {}
@@ -2671,7 +2671,7 @@ end
 
 function CustomIcons:ConfirmDeleteIcon(iconKey, label)
     if not uiFrames.confirmFrame then
-        local f = CreateFrame("Frame", "EzUI_DynIconConfirm", UIParent, "BackdropTemplate")
+        local f = CreateFrame("Frame", "EzroUI_DynIconConfirm", UIParent, "BackdropTemplate")
         f:SetSize(320, 140)
         f:SetPoint("CENTER")
         f:SetFrameStrata("TOOLTIP")
@@ -2862,7 +2862,7 @@ end
 
 function CustomIcons:ShowCreateIconDialog()
     if not uiFrames.createFrame then
-        local f = CreateFrame("Frame", "EzUI_DynIconCreate", UIParent, "BackdropTemplate")
+        local f = CreateFrame("Frame", "EzroUI_DynIconCreate", UIParent, "BackdropTemplate")
         f:SetSize(360, 220)
         f:SetPoint("CENTER")
         f:SetFrameStrata("TOOLTIP")
@@ -2913,7 +2913,7 @@ function CustomIcons:ShowCreateIconDialog()
         idLabel:SetText("Spell or Item ID")
 
         -- Slot dropdown
-        local dropdown = CreateFrame("Frame", "EzUI_DynIconCreateSlotDrop", f, "UIDropDownMenuTemplate")
+        local dropdown = CreateFrame("Frame", "EzroUI_DynIconCreateSlotDrop", f, "UIDropDownMenuTemplate")
         dropdown:SetPoint("TOPLEFT", idBox, "TOPLEFT", -16, -2)
         UIDropDownMenu_SetWidth(dropdown, 180)
         UIDropDownMenu_SetText(dropdown, "Select Slot")
@@ -2988,7 +2988,7 @@ end
 
 local function ShouldShowAnchors()
     local showFromButton = false
-    local uf = EzUI.db and EzUI.db.profile and EzUI.db.profile.unitFrames
+    local uf = EzroUI.db and EzroUI.db.profile and EzroUI.db.profile.unitFrames
     if uf and uf.General and uf.General.ShowEditModeAnchors then
         showFromButton = true
     end
@@ -3003,8 +3003,8 @@ end
 local anchorHooked = false
 local function EnsureAnchorHooks()
     if anchorHooked then return end
-    if EzUI.UnitFrames and EzUI.UnitFrames.UpdateEditModeAnchors then
-        hooksecurefunc(EzUI.UnitFrames, "UpdateEditModeAnchors", function()
+    if EzroUI.UnitFrames and EzroUI.UnitFrames.UpdateEditModeAnchors then
+        hooksecurefunc(EzroUI.UnitFrames, "UpdateEditModeAnchors", function()
             CustomIcons:RefreshAnchorVisibility()
         end)
         anchorHooked = true
@@ -3024,7 +3024,7 @@ CustomIcons.RefreshAnchorVisibility = CustomIcons.RefreshAnchorVisibility
 CustomIcons.ShowLoadConditionsWindow = CustomIcons.ShowLoadConditionsWindow
 
 -- Auto-load saved icons when DB is available
-if EzUI.db and EzUI.db.profile then
+if EzroUI.db and EzroUI.db.profile then
     CustomIcons:LoadDynamicIcons()
     CustomIcons:RefreshAnchorVisibility()
     EnsureAnchorHooks()

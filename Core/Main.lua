@@ -1,12 +1,12 @@
 ﻿local ADDON_NAME, ns = ...
 
-local EzUI = LibStub("AceAddon-3.0"):NewAddon(
+local EzroUI = LibStub("AceAddon-3.0"):NewAddon(
     ADDON_NAME,
     "AceConsole-3.0",
     "AceEvent-3.0"
 )
 
-ns.Addon = EzUI
+ns.Addon = EzroUI
 
 -- Get localization table (should be loaded by Locales/Locale.lua)
 local L = ns.L or LibStub("AceLocale-3.0"):GetLocale(ADDON_NAME, true) or {}
@@ -42,8 +42,8 @@ local function ApplyAlphaToRegion(region)
     end
 
     region:SetAlpha(SELECTION_ALPHA)
-    if region.HookScript and not region.__EzUISelectionAlphaHooked then
-        region.__EzUISelectionAlphaHooked = true
+    if region.HookScript and not region.__EzroUISelectionAlphaHooked then
+        region.__EzroUISelectionAlphaHooked = true
         region:HookScript("OnShow", function(self)
             self:SetAlpha(SELECTION_ALPHA)
         end)
@@ -55,29 +55,29 @@ local function ForceSelectionAlpha(selection)
         return
     end
 
-    selection.__EzUISelectionAlphaLock = true
+    selection.__EzroUISelectionAlphaLock = true
     selection:SetAlpha(SELECTION_ALPHA)
-    selection.__EzUISelectionAlphaLock = nil
+    selection.__EzroUISelectionAlphaLock = nil
 end
 
-function EzUI:ApplySelectionAlpha(selection)
+function EzroUI:ApplySelectionAlpha(selection)
     if not selection then
         return
     end
 
     ForceSelectionAlpha(selection)
 
-    if selection.HookScript and not selection.__EzUISelectionOnShowHooked then
-        selection.__EzUISelectionOnShowHooked = true
+    if selection.HookScript and not selection.__EzroUISelectionOnShowHooked then
+        selection.__EzroUISelectionOnShowHooked = true
         selection:HookScript("OnShow", function(self)
-            EzUI:ApplySelectionAlpha(self)
+            EzroUI:ApplySelectionAlpha(self)
         end)
     end
 
-    if selection.SetAlpha and not selection.__EzUISelectionAlphaHooked then
-        selection.__EzUISelectionAlphaHooked = true
+    if selection.SetAlpha and not selection.__EzroUISelectionAlphaHooked then
+        selection.__EzroUISelectionAlphaHooked = true
         hooksecurefunc(selection, "SetAlpha", function(frame)
-            if frame.__EzUISelectionAlphaLock then
+            if frame.__EzroUISelectionAlphaLock then
                 return
             end
             ForceSelectionAlpha(frame)
@@ -89,7 +89,7 @@ function EzUI:ApplySelectionAlpha(selection)
     end
 end
 
-function EzUI:ApplySelectionAlphaToFrame(frame)
+function EzroUI:ApplySelectionAlphaToFrame(frame)
     if not frame then
         return
     end
@@ -101,7 +101,7 @@ function EzUI:ApplySelectionAlphaToFrame(frame)
     end
 end
 
-function EzUI:ApplySelectionAlphaToAllFrames()
+function EzroUI:ApplySelectionAlphaToAllFrames()
     local frame = EnumerateFrames()
     while frame do
         self:ApplySelectionAlphaToFrame(frame)
@@ -109,7 +109,7 @@ function EzUI:ApplySelectionAlphaToAllFrames()
     end
 end
 
-function EzUI:InitializeSelectionAlphaController()
+function EzroUI:InitializeSelectionAlphaController()
     if self.__selectionAlphaInitialized then
         return
     end
@@ -122,10 +122,10 @@ function EzUI:InitializeSelectionAlphaController()
         if EditModeSelectionFrameBaseMixin then
             self.__selectionMixinHooked = true
             hooksecurefunc(EditModeSelectionFrameBaseMixin, "OnLoad", function(selectionFrame)
-                EzUI:ApplySelectionAlpha(selectionFrame)
+                EzroUI:ApplySelectionAlpha(selectionFrame)
             end)
             hooksecurefunc(EditModeSelectionFrameBaseMixin, "OnShow", function(selectionFrame)
-                EzUI:ApplySelectionAlpha(selectionFrame)
+                EzroUI:ApplySelectionAlpha(selectionFrame)
             end)
             return true
         end
@@ -147,12 +147,12 @@ function EzUI:InitializeSelectionAlphaController()
 
     self:ApplySelectionAlphaToAllFrames()
     C_Timer.After(0.5, function()
-        EzUI:ApplySelectionAlphaToAllFrames()
+        EzroUI:ApplySelectionAlphaToAllFrames()
     end)
 
     self.SelectionAlphaTicker = C_Timer.NewTicker(1.0, function()
         if EditModeManagerFrame and EditModeManagerFrame.editModeActive then
-            EzUI:ApplySelectionAlphaToAllFrames()
+            EzroUI:ApplySelectionAlphaToAllFrames()
         end
     end)
 end
@@ -278,12 +278,12 @@ local function LooksLikeCooldownManagerDB(db)
     return false
 end
 
--- Merges legacy data into the existing SavedVariable table. Never replace _G["EzUIDB"]:
+-- Merges legacy data into the existing SavedVariable table. Never replace _G["EzroUIDB"]:
 -- AceDB holds a reference to that table; replacing it would make runtime writes go to the
 -- old table while WoW saves the new one, so nothing would persist.
-function EzUI:ImportLegacyCooldownManagerDB()
+function EzroUI:ImportLegacyCooldownManagerDB()
     local sv = self.db and self.db.sv
-    if not sv or sv ~= _G["EzUIDB"] then
+    if not sv or sv ~= _G["EzroUIDB"] then
         return false
     end
     if type(sv) ~= "table" or next(sv) ~= nil then
@@ -291,11 +291,11 @@ function EzUI:ImportLegacyCooldownManagerDB()
     end
 
     local legacyCandidates = {
-        "EzUICooldownManagerDB",
-        "EzUICooldownManager",
-        "EzUICDMDB",
-        "EzUICooldownDB",
-        "EzUICooldownViewerDB",
+        "EzroUICooldownManagerDB",
+        "EzroUICooldownManager",
+        "EzroUICDMDB",
+        "EzroUICooldownDB",
+        "EzroUICooldownViewerDB",
         "CooldownManagerDB",
     }
 
@@ -340,7 +340,7 @@ function EzUI:ImportLegacyCooldownManagerDB()
                 end
             end
 
-            sv.__EzUILegacySource = name
+            sv.__EzroUILegacySource = name
             return true, name
         end
     end
@@ -348,7 +348,7 @@ function EzUI:ImportLegacyCooldownManagerDB()
     return false
 end
 
-function EzUI:ExportProfileToString()
+function EzroUI:ExportProfileToString()
     if not self.db or not self.db.profile then
         return L["No profile loaded."] or "No profile loaded."
     end
@@ -374,7 +374,7 @@ function EzUI:ExportProfileToString()
     return "NUI1:" .. encoded
 end
 
-function EzUI:ImportProfileFromString(str, profileName)
+function EzroUI:ImportProfileFromString(str, profileName)
     if not self.db then
         return false, L["No profile loaded."] or "No profile loaded."
     end
@@ -443,7 +443,7 @@ function EzUI:ImportProfileFromString(str, profileName)
 end
 
 -- Wago UI Pack Installer Integration Functions
-function EzUI:ExportEzUI(profileKey)
+function EzroUI:ExportEzroUI(profileKey)
     local profile = self.db.profiles[profileKey]
     if not profile then return nil end
 
@@ -452,17 +452,17 @@ function EzUI:ExportEzUI(profileKey)
     local SerializedInfo = AceSerializer:Serialize(profileData)
     local CompressedInfo = LibDeflate:CompressDeflate(SerializedInfo)
     local EncodedInfo = LibDeflate:EncodeForPrint(CompressedInfo)
-    EncodedInfo = "!EzUI_" .. EncodedInfo
+    EncodedInfo = "!EzroUI_" .. EncodedInfo
     return EncodedInfo
 end
 
-function EzUI:ImportEzUI(importString, profileKey)
+function EzroUI:ImportEzroUI(importString, profileKey)
     local DecodedInfo = LibDeflate:DecodeForPrint(importString:sub(9))
     local DecompressedInfo = LibDeflate:DecompressDeflate(DecodedInfo)
     local success, profileData = AceSerializer:Deserialize(DecompressedInfo)
 
     if not success or type(profileData) ~= "table" then 
-        print("|cFF8080FF" .. (L["EzUI: Invalid Import String."] or "EzUI: Invalid Import String.") .. "|r") 
+        print("|cFF8080FF" .. (L["EzroUI: Invalid Import String."] or "EzroUI: Invalid Import String.") .. "|r") 
         return 
     end
 
@@ -472,19 +472,19 @@ function EzUI:ImportEzUI(importString, profileKey)
     end
 end
 
-function EzUI:OnInitialize()
-    local defaults = EzUI.defaults
+function EzroUI:OnInitialize()
+    local defaults = EzroUI.defaults
     if not defaults then
-        error("EzUI: Defaults not loaded! Make sure Core/Defaults.lua is loaded before Core/Main.lua")
+        error("EzroUI: Defaults not loaded! Make sure Core/Defaults.lua is loaded before Core/Main.lua")
     end
     
     -- Use a unique database namespace to avoid conflicts with other addons
-    -- The name must match the SavedVariables in EzUI.toc
-    self.db = LibStub("AceDB-3.0"):New("EzUIDB", defaults, true)
+    -- The name must match the SavedVariables in EzroUI.toc
+    self.db = LibStub("AceDB-3.0"):New("EzroUIDB", defaults, true)
     
     -- Verify the database was created with the correct namespace
     if not self.db or not self.db.sv then
-        error("EzUI: Failed to initialize database! Check SavedVariables in EzUI.toc")
+        error("EzroUI: Failed to initialize database! Check SavedVariables in EzroUI.toc")
     end
 
     -- AceDB strips values that match defaults at PLAYER_LOGOUT, so SavedVariables only
@@ -536,16 +536,16 @@ function EzUI:OnInitialize()
 
     self:SetupOptions()
     
-    self:RegisterChatCommand("EzUI", "OpenConfig")
-    self:RegisterChatCommand("EzUIrefresh", "ForceRefreshBuffIcons")
-    self:RegisterChatCommand("EzUIcheckdualspec", "CheckDualSpec")
+    self:RegisterChatCommand("EzroUI", "OpenConfig")
+    self:RegisterChatCommand("EzroUIrefresh", "ForceRefreshBuffIcons")
+    self:RegisterChatCommand("EzroUIcheckdualspec", "CheckDualSpec")
     self:RegisterChatCommand("cdm", "OpenCooldownViewerSettings")
     self:RegisterChatCommand("wa", "OpenCooldownViewerSettings")
     
     self:CreateMinimapButton()
 end
 
-function EzUI:OnProfileChanged(event, db, profileKey)
+function EzroUI:OnProfileChanged(event, db, profileKey)
     if self.RefreshAll then
         -- Defer RefreshAll if in combat to avoid taint/secret value errors
         if InCombatLockdown() then
@@ -555,10 +555,10 @@ function EzUI:OnProfileChanged(event, db, profileKey)
                 eventFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
                 eventFrame:SetScript("OnEvent", function(self)
                     self:UnregisterEvent("PLAYER_REGEN_ENABLED")
-                    if EzUI.RefreshAll and not InCombatLockdown() then
-                        EzUI:RefreshAll()
+                    if EzroUI.RefreshAll and not InCombatLockdown() then
+                        EzroUI:RefreshAll()
                     end
-                    EzUI.__pendingRefreshAll = nil
+                    EzroUI.__pendingRefreshAll = nil
                 end)
             end
         else
@@ -584,14 +584,14 @@ local function IsElvUILoaded()
     return C_AddOns.IsAddOnLoaded("ElvUI")
 end
 
-function EzUI:ShowElvUIConflictPopup()
+function EzroUI:ShowElvUIConflictPopup()
     if not self.db or not self.db.profile then
         return
     end
 
     local frame = self.ElvUIConflictPopup
     if not frame then
-        frame = CreateFrame("Frame", "EzUIElvUIConflictPopup", UIParent, "BackdropTemplate")
+        frame = CreateFrame("Frame", "EzroUIElvUIConflictPopup", UIParent, "BackdropTemplate")
         frame:SetSize(420, 280)
         frame:SetPoint("CENTER")
         frame:SetFrameStrata("DIALOG")
@@ -623,7 +623,7 @@ function EzUI:ShowElvUIConflictPopup()
 
         local desc = frame:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
         desc:SetPoint("TOP", title, "BOTTOM", 0, -8)
-        desc:SetText("To avoid conflicts, disable these EzUI features:")
+        desc:SetText("To avoid conflicts, disable these EzroUI features:")
         frame.Description = desc
 
         local function CreateConflictCheckbox(label, anchor)
@@ -710,7 +710,7 @@ function EzUI:ShowElvUIConflictPopup()
     frame:Raise()
 end
 
-function EzUI:MaybeShowElvUIConflictPopup()
+function EzroUI:MaybeShowElvUIConflictPopup()
     if self.__elvuiConflictPopupShown then
         return
     end
@@ -741,8 +741,8 @@ function EzUI:MaybeShowElvUIConflictPopup()
             eventFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
             eventFrame:SetScript("OnEvent", function(self)
                 self:UnregisterEvent("PLAYER_REGEN_ENABLED")
-                EzUI.__pendingElvUIConflictPopup = nil
-                EzUI:MaybeShowElvUIConflictPopup()
+                EzroUI.__pendingElvUIConflictPopup = nil
+                EzroUI:MaybeShowElvUIConflictPopup()
             end)
         end
         return
@@ -752,7 +752,7 @@ function EzUI:MaybeShowElvUIConflictPopup()
     self:ShowElvUIConflictPopup()
 end
 
-function EzUI:InitializePixelPerfect()
+function EzroUI:InitializePixelPerfect()
     self.physicalWidth, self.physicalHeight = GetPhysicalScreenSize()
     self.resolution = string.format('%dx%d', self.physicalWidth, self.physicalHeight)
     self.perfect = 768 / self.physicalHeight
@@ -763,7 +763,7 @@ function EzUI:InitializePixelPerfect()
     self:RegisterEvent('UI_SCALE_CHANGED')
 end
 
-function EzUI:UI_SCALE_CHANGED()
+function EzroUI:UI_SCALE_CHANGED()
     self:PixelScaleChanged('UI_SCALE_CHANGED')
     -- Re-apply our global scale so we keep control after resolution/scale changes
     if self.AutoUIScale and self.AutoUIScale.ApplySavedScale then
@@ -775,11 +775,11 @@ local function StyleMicroButtonRegion(button, region)
     if not (button and region) then
         return
     end
-    if region.__EzUIStyled then
+    if region.__EzroUIStyled then
         return
     end
 
-    region.__EzUIStyled = true
+    region.__EzroUIStyled = true
     region:SetTexture(WHITE8)
     region:SetVertexColor(0, 0, 0, 1)
     region:SetAlpha(0.8)
@@ -796,7 +796,7 @@ local function StyleMicroButton(button)
     StyleMicroButtonRegion(button, button.PushedBackground)
 end
 
-function EzUI:StyleMicroButtons()
+function EzroUI:StyleMicroButtons()
     local db = self.db and self.db.profile and self.db.profile.qol
     if db and db.microMenuSkinning == false then
         return
@@ -810,7 +810,7 @@ function EzUI:StyleMicroButtons()
     StyleMicroButton(_G.CharacterMicroButton)
 end
 
-function EzUI:PLAYER_LOGIN()
+function EzroUI:PLAYER_LOGIN()
     if self.ApplyGlobalFont then
         self:ApplyGlobalFont()
     end
@@ -832,7 +832,7 @@ function EzUI:PLAYER_LOGIN()
     self:UnregisterEvent("PLAYER_LOGIN")
 end
 
-function EzUI:PLAYER_ENTERING_WORLD()
+function EzroUI:PLAYER_ENTERING_WORLD()
     -- Setup hooks and apply anchors if the toggle is enabled
     -- Use the exact same logic as when the toggle is enabled in config
     local cfg = self.db.profile.viewers.general
@@ -862,7 +862,7 @@ local unitFrameAddons = {
     ["Grid2"] = true,
 }
 
-function EzUI:ADDON_LOADED(_, addonName)
+function EzroUI:ADDON_LOADED(_, addonName)
     -- Re-apply anchors when a unit frame addon finishes loading
     if unitFrameAddons[addonName] then
         local cfg = self.db and self.db.profile and self.db.profile.viewers and self.db.profile.viewers.general
@@ -882,7 +882,7 @@ function EzUI:ADDON_LOADED(_, addonName)
     end
 end
 
-function EzUI:OnEnable()
+function EzroUI:OnEnable()
     SetCVar("cooldownViewerEnabled", 1)
     
     if self.UIMult then
@@ -919,7 +919,7 @@ function EzUI:OnEnable()
     end
     
     C_Timer.After(0.1, function()
-        EzUI:StyleMicroButtons()
+        EzroUI:StyleMicroButtons()
     end)
     
     if self.IconViewers and self.IconViewers.HookViewers then
@@ -1026,20 +1026,20 @@ function EzUI:OnEnable()
     self:InitializeSelectionAlphaController()
 
     C_Timer.After(1.0, function()
-        EzUI:MaybeShowElvUIConflictPopup()
+        EzroUI:MaybeShowElvUIConflictPopup()
     end)
 end
 
-function EzUI:OpenConfig()
+function EzroUI:OpenConfig()
     if self.OpenConfigGUI then
         self:OpenConfigGUI()
     else
-        print("|cffff0000[EzUI] Warning: Custom GUI not loaded, using AceConfigDialog|r")
+        print("|cffff0000[EzroUI] Warning: Custom GUI not loaded, using AceConfigDialog|r")
         LibStub("AceConfigDialog-3.0"):Open(ADDON_NAME)
     end
 end
 
-function EzUI:OpenCooldownViewerSettings()
+function EzroUI:OpenCooldownViewerSettings()
     local frame = _G["CooldownViewerSettings"]
     if frame then
         frame:Show()
@@ -1052,44 +1052,44 @@ function EzUI:OpenCooldownViewerSettings()
 end
 
 
-function EzUI:CheckDualSpec()
+function EzroUI:CheckDualSpec()
     local LibDualSpec = LibStub("LibDualSpec-1.0", true)
     if not LibDualSpec then
-        print("|cffff0000[EzUI] LibDualSpec-1.0 is NOT loaded.|r")
+        print("|cffff0000[EzroUI] LibDualSpec-1.0 is NOT loaded.|r")
         print("|cffffff00This is normal on Classic Era realms (except Season of Discovery/Anniversary).|r")
         return
     end
     
-    print("|cff00ff00[EzUI] LibDualSpec-1.0 is loaded.|r")
+    print("|cff00ff00[EzroUI] LibDualSpec-1.0 is loaded.|r")
     
     if not self.db then
-        print("|cffff0000[EzUI] Database not initialized yet.|r")
+        print("|cffff0000[EzroUI] Database not initialized yet.|r")
         return
     end
     
     if self.db.IsDualSpecEnabled then
         local isEnabled = self.db:IsDualSpecEnabled()
-        print(string.format("|cff00ff00[EzUI] Dual Spec support: %s|r", isEnabled and "ENABLED" or "DISABLED"))
+        print(string.format("|cff00ff00[EzroUI] Dual Spec support: %s|r", isEnabled and "ENABLED" or "DISABLED"))
         
         if isEnabled then
             local currentSpec = GetSpecialization() or GetActiveTalentGroup() or 0
-            print(string.format("|cff00ff00[EzUI] Current spec: %d|r", currentSpec))
+            print(string.format("|cff00ff00[EzroUI] Current spec: %d|r", currentSpec))
             
             local currentProfile = self.db:GetCurrentProfile()
-            print(string.format("|cff00ff00[EzUI] Current profile: %s|r", currentProfile))
+            print(string.format("|cff00ff00[EzroUI] Current profile: %s|r", currentProfile))
             
             -- Check spec profiles
             for i = 1, 2 do
                 local specProfile = self.db:GetDualSpecProfile(i)
-                print(string.format("|cff00ff00[EzUI] Spec %d profile: %s|r", i, specProfile))
+                print(string.format("|cff00ff00[EzroUI] Spec %d profile: %s|r", i, specProfile))
             end
         end
     else
-        print("|cffff0000[EzUI] LibDualSpec methods not found on database (database not enhanced).|r")
+        print("|cffff0000[EzroUI] LibDualSpec methods not found on database (database not enhanced).|r")
     end
 end
 
-function EzUI:CreateMinimapButton()
+function EzroUI:CreateMinimapButton()
     local LDB = LibStub("LibDataBroker-1.1", true)
     local LibDBIcon = LibStub("LibDBIcon-1.0", true)
     
@@ -1105,7 +1105,7 @@ function EzUI:CreateMinimapButton()
     
     local dataObj = LDB:NewDataObject(ADDON_NAME, {
         type = "launcher",
-        icon = "Interface\\AddOns\\EzUI\\Media\\EzUI.tga",
+        icon = "Interface\\AddOns\\EzroUI\\Media\\EzroUI.tga",
         label = ADDON_NAME,
         OnClick = function(clickedframe, button)
             if button == "LeftButton" then
@@ -1134,7 +1134,7 @@ function EzUI:CreateMinimapButton()
     end
 end
 
-function EzUI:RefreshViewers()
+function EzroUI:RefreshViewers()
     if self.IconViewers and self.IconViewers.RefreshAll then
         self.IconViewers:RefreshAll()
     end
@@ -1166,21 +1166,21 @@ local unitFrameNames = {
     "ElvUF_Pet",
 }
 
--- Debug command to check frame status: /EzUIdebuganchor
-SLASH_EzUIDEBUGANCHOR1 = "/EzUIdebuganchor"
-SlashCmdList["EzUIDEBUGANCHOR"] = function()
-    print("|cFF00FF00[EzUI Anchor Debug]|r")
+-- Debug command to check frame status: /EzroUIdebuganchor
+SLASH_EzroUIDEBUGANCHOR1 = "/EzroUIdebuganchor"
+SlashCmdList["EzroUIDEBUGANCHOR"] = function()
+    print("|cFF00FF00[EzroUI Anchor Debug]|r")
     local viewer = _G["EssentialCooldownViewer"]
     print("  Viewer exists: " .. tostring(viewer ~= nil))
     if viewer then
         print("  Viewer shown: " .. tostring(viewer:IsShown()))
     end
-    print("  anchorToUnitFrame enabled: " .. tostring(EzUI.db and EzUI.db.profile and EzUI.db.profile.viewers and EzUI.db.profile.viewers.general and EzUI.db.profile.viewers.general.anchorToUnitFrame or false))
+    print("  anchorToUnitFrame enabled: " .. tostring(EzroUI.db and EzroUI.db.profile and EzroUI.db.profile.viewers and EzroUI.db.profile.viewers.general and EzroUI.db.profile.viewers.general.anchorToUnitFrame or false))
     print("  Unit frames:")
     for _, frameName in ipairs(unitFrameNames) do
         local frame = _G[frameName]
         if frame then
-            local hooked = frame.__EzUIAnchorHooked and "YES" or "NO"
+            local hooked = frame.__EzroUIAnchorHooked and "YES" or "NO"
             local _, relativeTo = frame:GetPoint(1)
             local anchoredTo = relativeTo and (relativeTo.GetName and relativeTo:GetName() or tostring(relativeTo)) or "nil"
             print(string.format("    %s: EXISTS, hooked=%s, anchored to=%s", frameName, hooked, anchoredTo))
@@ -1191,36 +1191,36 @@ SlashCmdList["EzUIDEBUGANCHOR"] = function()
 end
 
 -- Reload UI shortcut: /rl
-SLASH_EzUIRELOAD1 = "/rl"
-SlashCmdList["EzUIRELOAD"] = function()
+SLASH_EzroUIRELOAD1 = "/rl"
+SlashCmdList["EzroUIRELOAD"] = function()
     ReloadUI()
 end
 
 -- Helper function to hook a single unit frame
 local function HookUnitFrame(frame)
-    if not frame or frame.__EzUIAnchorHooked then
+    if not frame or frame.__EzroUIAnchorHooked then
         return false
     end
 
-    frame.__EzUIAnchorHooked = true
-    frame.__EzUIOriginalSetPoint = frame.SetPoint
-    frame.__EzUIOriginalClearAllPoints = frame.ClearAllPoints
+    frame.__EzroUIAnchorHooked = true
+    frame.__EzroUIOriginalSetPoint = frame.SetPoint
+    frame.__EzroUIOriginalClearAllPoints = frame.ClearAllPoints
 
     -- Override SetPoint to intercept other addons trying to reposition the frame
     frame.SetPoint = function(unitFrame, ...)
         local viewer = _G["EssentialCooldownViewer"]
-        local anchorCfg = EzUI.db and EzUI.db.profile and EzUI.db.profile.viewers and EzUI.db.profile.viewers.general
+        local anchorCfg = EzroUI.db and EzroUI.db.profile and EzroUI.db.profile.viewers and EzroUI.db.profile.viewers.general
 
         -- If anchoring is enabled and viewer exists, ignore external SetPoint calls
         -- and re-apply our anchor instead
-        if anchorCfg and anchorCfg.anchorToUnitFrame and viewer and not unitFrame.__EzUIApplyingAnchor then
+        if anchorCfg and anchorCfg.anchorToUnitFrame and viewer and not unitFrame.__EzroUIApplyingAnchor then
             -- Schedule re-application of our anchor (debounced)
-            if not unitFrame.__EzUIReanchorPending then
-                unitFrame.__EzUIReanchorPending = true
+            if not unitFrame.__EzroUIReanchorPending then
+                unitFrame.__EzroUIReanchorPending = true
                 C_Timer.After(0.1, function()
-                    unitFrame.__EzUIReanchorPending = nil
-                    if EzUI.ApplyUnitFrameAnchors then
-                        EzUI:ApplyUnitFrameAnchors()
+                    unitFrame.__EzroUIReanchorPending = nil
+                    if EzroUI.ApplyUnitFrameAnchors then
+                        EzroUI:ApplyUnitFrameAnchors()
                     end
                 end)
             end
@@ -1228,19 +1228,19 @@ local function HookUnitFrame(frame)
         end
 
         -- If not anchoring or viewer doesn't exist, use original SetPoint
-        if unitFrame.__EzUIOriginalSetPoint then
-            unitFrame.__EzUIOriginalSetPoint(unitFrame, ...)
+        if unitFrame.__EzroUIOriginalSetPoint then
+            unitFrame.__EzroUIOriginalSetPoint(unitFrame, ...)
         end
     end
 
     -- Override ClearAllPoints similarly
     frame.ClearAllPoints = function(unitFrame)
-        local anchorCfg = EzUI.db and EzUI.db.profile and EzUI.db.profile.viewers and EzUI.db.profile.viewers.general
+        local anchorCfg = EzroUI.db and EzroUI.db.profile and EzroUI.db.profile.viewers and EzroUI.db.profile.viewers.general
 
         -- If we're applying our own anchor, allow it
-        if unitFrame.__EzUIApplyingAnchor then
-            if unitFrame.__EzUIOriginalClearAllPoints then
-                unitFrame.__EzUIOriginalClearAllPoints(unitFrame)
+        if unitFrame.__EzroUIApplyingAnchor then
+            if unitFrame.__EzroUIOriginalClearAllPoints then
+                unitFrame.__EzroUIOriginalClearAllPoints(unitFrame)
             end
             return
         end
@@ -1251,8 +1251,8 @@ local function HookUnitFrame(frame)
         end
 
         -- Otherwise use original
-        if unitFrame.__EzUIOriginalClearAllPoints then
-            unitFrame.__EzUIOriginalClearAllPoints(unitFrame)
+        if unitFrame.__EzroUIOriginalClearAllPoints then
+            unitFrame.__EzroUIOriginalClearAllPoints(unitFrame)
         end
     end
 
@@ -1260,7 +1260,7 @@ local function HookUnitFrame(frame)
 end
 
 -- Setup hooks on unit frames (doesn't require viewer to exist)
-function EzUI:SetupUnitFrameHooks()
+function EzroUI:SetupUnitFrameHooks()
     local cfg = self.db.profile.viewers.general
     if not cfg then
         return
@@ -1280,8 +1280,8 @@ function EzUI:SetupUnitFrameHooks()
         end
 
         -- If some frames don't exist yet, poll for them
-        if #unhookedFrames > 0 and not self.__EzUIPollingForFrames then
-            self.__EzUIPollingForFrames = true
+        if #unhookedFrames > 0 and not self.__EzroUIPollingForFrames then
+            self.__EzroUIPollingForFrames = true
             local attempts = 0
             local maxAttempts = 20 -- Poll for up to 10 seconds (20 * 0.5s)
 
@@ -1295,8 +1295,8 @@ function EzUI:SetupUnitFrameHooks()
                         if HookUnitFrame(frame) then
                             -- Successfully hooked, apply anchor
                             C_Timer.After(0.1, function()
-                                if EzUI.ApplyUnitFrameAnchors then
-                                    EzUI:ApplyUnitFrameAnchors()
+                                if EzroUI.ApplyUnitFrameAnchors then
+                                    EzroUI:ApplyUnitFrameAnchors()
                                 end
                             end)
                         end
@@ -1311,7 +1311,7 @@ function EzUI:SetupUnitFrameHooks()
                 if #unhookedFrames > 0 and attempts < maxAttempts then
                     C_Timer.After(0.5, PollForFrames)
                 else
-                    self.__EzUIPollingForFrames = nil
+                    self.__EzroUIPollingForFrames = nil
                 end
             end
 
@@ -1321,15 +1321,15 @@ function EzUI:SetupUnitFrameHooks()
         -- Unhook and restore original behavior
         for _, frameName in ipairs(unitFrameNames) do
             local frame = _G[frameName]
-            if frame and frame.__EzUIAnchorHooked then
-                frame.__EzUIAnchorHooked = nil
-                if frame.__EzUIOriginalSetPoint then
-                    frame.SetPoint = frame.__EzUIOriginalSetPoint
-                    frame.__EzUIOriginalSetPoint = nil
+            if frame and frame.__EzroUIAnchorHooked then
+                frame.__EzroUIAnchorHooked = nil
+                if frame.__EzroUIOriginalSetPoint then
+                    frame.SetPoint = frame.__EzroUIOriginalSetPoint
+                    frame.__EzroUIOriginalSetPoint = nil
                 end
-                if frame.__EzUIOriginalClearAllPoints then
-                    frame.ClearAllPoints = frame.__EzUIOriginalClearAllPoints
-                    frame.__EzUIOriginalClearAllPoints = nil
+                if frame.__EzroUIOriginalClearAllPoints then
+                    frame.ClearAllPoints = frame.__EzroUIOriginalClearAllPoints
+                    frame.__EzroUIOriginalClearAllPoints = nil
                 end
             end
         end
@@ -1337,7 +1337,7 @@ function EzUI:SetupUnitFrameHooks()
 end
 
 -- Function to anchor unit frames to EssentialCooldownViewer
-function EzUI:UpdateViewerUnitFrameAnchor()
+function EzroUI:UpdateViewerUnitFrameAnchor()
     local cfg = self.db.profile.viewers.general
     if not cfg then
         return
@@ -1348,24 +1348,24 @@ function EzUI:UpdateViewerUnitFrameAnchor()
 
     -- Hook the viewer's OnShow to re-apply anchors whenever it becomes visible
     local viewer = _G["EssentialCooldownViewer"]
-    if viewer and not viewer.__EzUIAnchorOnShowHooked then
-        viewer.__EzUIAnchorOnShowHooked = true
+    if viewer and not viewer.__EzroUIAnchorOnShowHooked then
+        viewer.__EzroUIAnchorOnShowHooked = true
         viewer:HookScript("OnShow", function()
-            local anchorCfg = EzUI.db and EzUI.db.profile and EzUI.db.profile.viewers and EzUI.db.profile.viewers.general
+            local anchorCfg = EzroUI.db and EzroUI.db.profile and EzroUI.db.profile.viewers and EzroUI.db.profile.viewers.general
             if anchorCfg and anchorCfg.anchorToUnitFrame then
                 -- Apply anchors with delays to override other addons
                 C_Timer.After(0.1, function()
-                    EzUI:ApplyUnitFrameAnchors()
+                    EzroUI:ApplyUnitFrameAnchors()
                 end)
                 C_Timer.After(1.0, function()
-                    EzUI:ApplyUnitFrameAnchors()
+                    EzroUI:ApplyUnitFrameAnchors()
                 end)
             end
         end)
     elseif not viewer and cfg.anchorToUnitFrame then
         -- Viewer doesn't exist yet, set up a watcher to hook it when it appears
-        if not self.__EzUIViewerWatcher then
-            self.__EzUIViewerWatcher = true
+        if not self.__EzroUIViewerWatcher then
+            self.__EzroUIViewerWatcher = true
             local attempts = 0
             local maxAttempts = 30 -- Poll for up to 15 seconds (30 * 0.5s)
             
@@ -1373,34 +1373,34 @@ function EzUI:UpdateViewerUnitFrameAnchor()
                 attempts = attempts + 1
                 local viewer = _G["EssentialCooldownViewer"]
                 
-                if viewer and not viewer.__EzUIAnchorOnShowHooked then
+                if viewer and not viewer.__EzroUIAnchorOnShowHooked then
                     -- Viewer appeared, hook it now
-                    viewer.__EzUIAnchorOnShowHooked = true
+                    viewer.__EzroUIAnchorOnShowHooked = true
                     viewer:HookScript("OnShow", function()
-                        local anchorCfg = EzUI.db and EzUI.db.profile and EzUI.db.profile.viewers and EzUI.db.profile.viewers.general
+                        local anchorCfg = EzroUI.db and EzroUI.db.profile and EzroUI.db.profile.viewers and EzroUI.db.profile.viewers.general
                         if anchorCfg and anchorCfg.anchorToUnitFrame then
                             -- Apply anchors with delays to override other addons
                             C_Timer.After(0.1, function()
-                                EzUI:ApplyUnitFrameAnchors()
+                                EzroUI:ApplyUnitFrameAnchors()
                             end)
                             C_Timer.After(1.0, function()
-                                EzUI:ApplyUnitFrameAnchors()
+                                EzroUI:ApplyUnitFrameAnchors()
                             end)
                         end
                     end)
                     -- Apply anchors immediately since viewer now exists
                     if cfg.anchorToUnitFrame then
                         C_Timer.After(0.1, function()
-                            EzUI:ApplyUnitFrameAnchors()
+                            EzroUI:ApplyUnitFrameAnchors()
                         end)
                     end
-                    self.__EzUIViewerWatcher = nil
+                    self.__EzroUIViewerWatcher = nil
                 elseif attempts < maxAttempts then
                     -- Keep watching
                     C_Timer.After(0.5, WatchForViewer)
                 else
                     -- Give up after max attempts
-                    self.__EzUIViewerWatcher = nil
+                    self.__EzroUIViewerWatcher = nil
                 end
             end
             
@@ -1415,7 +1415,7 @@ function EzUI:UpdateViewerUnitFrameAnchor()
 end
 
 -- Apply anchors from unit frames to EssentialCooldownViewer
-function EzUI:ApplyUnitFrameAnchors()
+function EzroUI:ApplyUnitFrameAnchors()
     local cfg = self.db.profile.viewers.general
     if not cfg or not cfg.anchorToUnitFrame then
         return
@@ -1509,7 +1509,7 @@ function EzUI:ApplyUnitFrameAnchors()
         local frame = _G[frameName]
         if frame and type(frame) == "table" then
             -- Set flag so our hooks allow our own calls through
-            frame.__EzUIApplyingAnchor = true
+            frame.__EzroUIApplyingAnchor = true
 
             -- Get stored offsets or use defaults
             local storedPos = anchorPositions[frameName]
@@ -1518,25 +1518,25 @@ function EzUI:ApplyUnitFrameAnchors()
             local offsetY = (storedPos and storedPos.offsetY ~= nil) and storedPos.offsetY or defaultOffset.offsetY
 
             -- Frame exists, anchor it
-            if frame.__EzUIOriginalClearAllPoints then
-                frame.__EzUIOriginalClearAllPoints(frame)
+            if frame.__EzroUIOriginalClearAllPoints then
+                frame.__EzroUIOriginalClearAllPoints(frame)
             else
                 frame:ClearAllPoints()
             end
 
-            if frame.__EzUIOriginalSetPoint then
-                frame.__EzUIOriginalSetPoint(frame, config.anchorPoint, viewer, config.viewerPoint, offsetX, offsetY)
+            if frame.__EzroUIOriginalSetPoint then
+                frame.__EzroUIOriginalSetPoint(frame, config.anchorPoint, viewer, config.viewerPoint, offsetX, offsetY)
             else
                 frame:SetPoint(config.anchorPoint, viewer, config.viewerPoint, offsetX, offsetY)
             end
 
-            frame.__EzUIApplyingAnchor = nil
+            frame.__EzroUIApplyingAnchor = nil
             anchoredAny = true
         end
     end
 end
 
-function EzUI:RefreshCustomIcons()
+function EzroUI:RefreshCustomIcons()
     if not (self.CustomIcons and self.db and self.db.profile and self.db.profile.customIcons) then
         return
     end
@@ -1550,7 +1550,7 @@ function EzUI:RefreshCustomIcons()
     end
 end
 
-function EzUI:RefreshAll()
+function EzroUI:RefreshAll()
     self:RefreshViewers()
     
     if self.ResourceBars and self.ResourceBars.RefreshAll then

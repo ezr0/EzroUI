@@ -1,26 +1,26 @@
 ﻿local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
+local EzroUI = ns.Addon
 local LSM = LibStub("LibSharedMedia-3.0")
 
-EzUI.CompactFrames = EzUI.CompactFrames or {}
-local Engine = EzUI.CompactFrames
+EzroUI.CompactFrames = EzroUI.CompactFrames or {}
+local Engine = EzroUI.CompactFrames
 
 local PartyFrames = {}
-EzUI.PartyFrames = PartyFrames
+EzroUI.PartyFrames = PartyFrames
 
 local pendingResizeFrames = {}
 local ShouldHidePartyPlayerEntry
 
 local ROLE_TEXTURES = {
-    TANK = "Interface\\AddOns\\EzUI\\Media\\Tank.tga",
-    HEALER = "Interface\\AddOns\\EzUI\\Media\\Healer.tga",
-    DAMAGER = "Interface\\AddOns\\EzUI\\Media\\DPS.tga",
+    TANK = "Interface\\AddOns\\EzroUI\\Media\\Tank.tga",
+    HEALER = "Interface\\AddOns\\EzroUI\\Media\\Healer.tga",
+    DAMAGER = "Interface\\AddOns\\EzroUI\\Media\\DPS.tga",
 }
 
 local HIGHLIGHT_REPLACEMENTS = {
-    selection = "Interface\\AddOns\\EzUI\\Media\\uf_selected.tga",
-    aggro = "Interface\\AddOns\\EzUI\\Media\\uf_aggro.tga",
-    mouseover = "Interface\\AddOns\\EzUI\\Media\\uf_mouseover.tga",
+    selection = "Interface\\AddOns\\EzroUI\\Media\\uf_selected.tga",
+    aggro = "Interface\\AddOns\\EzroUI\\Media\\uf_aggro.tga",
+    mouseover = "Interface\\AddOns\\EzroUI\\Media\\uf_mouseover.tga",
 }
 
 -- Safely fetch health percent across API variants (12.0 curve vs legacy boolean)
@@ -247,7 +247,7 @@ local function GetUnitToken(frame)
 end
 
 local ICON_ZOOM = 0.08
-local CUSTOM_DEBUFF_BORDER = "Interface\\AddOns\\EzUI\\Media\\white_border.tga"
+local CUSTOM_DEBUFF_BORDER = "Interface\\AddOns\\EzroUI\\Media\\white_border.tga"
 
 local function GetUnitClassColor(unit)
     if not unit then return nil end
@@ -442,11 +442,11 @@ local function UpdateMouseoverState(frame, entering)
 end
 
 function Engine:GetConfig(mode)
-    if not EzUI.db or not EzUI.db.profile then return nil end
+    if not EzroUI.db or not EzroUI.db.profile then return nil end
     if mode == "raid" then
-        return EzUI.db.profile.raidFrames
+        return EzroUI.db.profile.raidFrames
     elseif mode == "party" then
-        return EzUI.db.profile.partyFrames
+        return EzroUI.db.profile.partyFrames
     end
     return nil
 end
@@ -528,19 +528,19 @@ local function FormatNumber(value, abbreviate)
 end
 
 function Engine:EnsureOverlay(frame)
-    if frame.EzUIOverlay then return frame.EzUIOverlay end
+    if frame.EzroUIOverlay then return frame.EzroUIOverlay end
     local overlay = CreateFrame("Frame", nil, frame)
     overlay:SetAllPoints(frame)
     overlay:SetFrameLevel(frame:GetFrameLevel() + 70)
-    frame.EzUIOverlay = overlay
+    frame.EzroUIOverlay = overlay
     return overlay
 end
 
 function Engine:EnsureBorder(frame)
-    if frame.EzUIBorder then return frame.EzUIBorder end
+    if frame.EzroUIBorder then return frame.EzroUIBorder end
     local border = CreateFrame("Frame", nil, frame, "BackdropTemplate")
     border:SetFrameLevel(frame:GetFrameLevel() + 55)
-    frame.EzUIBorder = border
+    frame.EzroUIBorder = border
     return border
 end
 
@@ -797,8 +797,8 @@ function Engine:ApplyLayout(frame, cfg)
         border:SetPoint("TOPLEFT", frame, "TOPLEFT", -borderSize, borderSize)
         border:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", borderSize, -borderSize)
         border:Show()
-    elseif frame.EzUIBorder then
-        frame.EzUIBorder:Hide()
+    elseif frame.EzroUIBorder then
+        frame.EzroUIBorder:Hide()
     end
 end
 
@@ -917,7 +917,7 @@ function Engine:ApplyHealth(frame, cfg)
     frame.healthBar:SetOrientation((healthCfg.orientation or "HORIZONTAL"):upper())
 
     -- Background bar uses global background texture for missing health visualization (consistent with unit frames)
-    frame.healthBarBG:SetStatusBarTexture(EzUI:GetTexture() or "Interface\\TargetingFrame\\UI-StatusBar")
+    frame.healthBarBG:SetStatusBarTexture(EzroUI:GetTexture() or "Interface\\TargetingFrame\\UI-StatusBar")
     frame.healthBarBG:SetOrientation((healthCfg.orientation or "HORIZONTAL"):upper())
 
     local unit = GetUnitToken(frame)
@@ -1002,44 +1002,44 @@ function Engine:ApplyTexts(frame, cfg)
     local overlay = self:EnsureOverlay(frame)
     local healthCfg = cfg.text.health
     if healthCfg and healthCfg.enabled then
-        if not frame.EzUIHealthText then
-            frame.EzUIHealthText = overlay:CreateFontString(nil, "OVERLAY")
-            frame.EzUIHealthText:SetDrawLayer("OVERLAY", 3)
+        if not frame.EzroUIHealthText then
+            frame.EzroUIHealthText = overlay:CreateFontString(nil, "OVERLAY")
+            frame.EzroUIHealthText:SetDrawLayer("OVERLAY", 3)
         end
-        if frame.EzUIHealthText.SetDrawLayer then
-            frame.EzUIHealthText:SetDrawLayer("OVERLAY", 3)
+        if frame.EzroUIHealthText.SetDrawLayer then
+            frame.EzroUIHealthText:SetDrawLayer("OVERLAY", 3)
         end
         local font = ResolveFont(healthCfg.font)
-        frame.EzUIHealthText:SetFont(font, healthCfg.size or 12, healthCfg.outline or "OUTLINE")
-        frame.EzUIHealthText:ClearAllPoints()
-        frame.EzUIHealthText:SetPoint(healthCfg.anchor or "CENTER", frame, healthCfg.anchor or "CENTER", healthCfg.offsetX or 0, healthCfg.offsetY or 0)
-        frame.EzUIHealthText:SetText(self:FormatHealth(frame, cfg))
-        frame.EzUIHealthText:SetShadowOffset(healthCfg.shadowOffsetX or 0, healthCfg.shadowOffsetY or 0)
+        frame.EzroUIHealthText:SetFont(font, healthCfg.size or 12, healthCfg.outline or "OUTLINE")
+        frame.EzroUIHealthText:ClearAllPoints()
+        frame.EzroUIHealthText:SetPoint(healthCfg.anchor or "CENTER", frame, healthCfg.anchor or "CENTER", healthCfg.offsetX or 0, healthCfg.offsetY or 0)
+        frame.EzroUIHealthText:SetText(self:FormatHealth(frame, cfg))
+        frame.EzroUIHealthText:SetShadowOffset(healthCfg.shadowOffsetX or 0, healthCfg.shadowOffsetY or 0)
         if not healthCfg.useClassColor then
             local color = healthCfg.color or {1, 1, 1, 1}
-            frame.EzUIHealthText:SetTextColor(color[1], color[2], color[3], color[4] or 1)
+            frame.EzroUIHealthText:SetTextColor(color[1], color[2], color[3], color[4] or 1)
         else
             local unit = GetUnitToken(frame)
             local cr, cg, cb = GetUnitClassColor(unit)
             if cr then
-                frame.EzUIHealthText:SetTextColor(cr, cg, cb)
+                frame.EzroUIHealthText:SetTextColor(cr, cg, cb)
             end
         end
-        frame.EzUIHealthText:Show()
-    elseif frame.EzUIHealthText then
-        frame.EzUIHealthText:Hide()
+        frame.EzroUIHealthText:Show()
+    elseif frame.EzroUIHealthText then
+        frame.EzroUIHealthText:Hide()
     end
 
     local nameCfg = cfg.text and cfg.text.name
     if nameCfg and nameCfg.enabled then
-        if not frame.EzUINameText then
-            frame.EzUINameText = overlay:CreateFontString(nil, "OVERLAY")
-            frame.EzUINameText:SetDrawLayer("OVERLAY", 4)
+        if not frame.EzroUINameText then
+            frame.EzroUINameText = overlay:CreateFontString(nil, "OVERLAY")
+            frame.EzroUINameText:SetDrawLayer("OVERLAY", 4)
         end
-        if frame.EzUINameText.SetDrawLayer then
-            frame.EzUINameText:SetDrawLayer("OVERLAY", 4)
+        if frame.EzroUINameText.SetDrawLayer then
+            frame.EzroUINameText:SetDrawLayer("OVERLAY", 4)
         end
-        local target = frame.EzUINameText
+        local target = frame.EzroUINameText
         target:SetFont(ResolveFont(nameCfg.font), nameCfg.size or 11, nameCfg.outline or "OUTLINE")
         target:ClearAllPoints()
         target:SetPoint(nameCfg.anchor or "TOP", frame, nameCfg.anchor or "TOP", nameCfg.offsetX or 0, nameCfg.offsetY or 0)
@@ -1060,8 +1060,8 @@ function Engine:ApplyTexts(frame, cfg)
             frame.name:Hide()
         end
     else
-        if frame.EzUINameText then
-            frame.EzUINameText:Hide()
+        if frame.EzroUINameText then
+            frame.EzroUINameText:Hide()
         end
         if frame.name then
             frame.name:Show()
@@ -1495,32 +1495,32 @@ end
 
 function Engine:UpdateResource(frame, cfg)
     if not frame or not cfg or not cfg.resource then
-        if frame and frame.EzUIResourceBar then
-            frame.EzUIResourceBar:Hide()
+        if frame and frame.EzroUIResourceBar then
+            frame.EzroUIResourceBar:Hide()
         end
         return
     end
     local settings = cfg.resource
     if settings.enabled == false then
-        if frame.EzUIResourceBar then
-            frame.EzUIResourceBar:Hide()
+        if frame.EzroUIResourceBar then
+            frame.EzroUIResourceBar:Hide()
         end
         return
     end
-    if not frame.EzUIResourceBar then
-        frame.EzUIResourceBar = CreateFrame("StatusBar", nil, frame)
-        frame.EzUIResourceBar.bg = frame.EzUIResourceBar:CreateTexture(nil, "BACKGROUND")
-        frame.EzUIResourceBar.bg:SetAllPoints()
-        frame.EzUIResourceBar.border = CreateFrame("Frame", nil, frame.EzUIResourceBar, "BackdropTemplate")
-        frame.EzUIResourceBar.border:SetFrameLevel(frame.EzUIResourceBar:GetFrameLevel() + 1)
-        frame.EzUIResourceBar.border:SetBackdrop({
+    if not frame.EzroUIResourceBar then
+        frame.EzroUIResourceBar = CreateFrame("StatusBar", nil, frame)
+        frame.EzroUIResourceBar.bg = frame.EzroUIResourceBar:CreateTexture(nil, "BACKGROUND")
+        frame.EzroUIResourceBar.bg:SetAllPoints()
+        frame.EzroUIResourceBar.border = CreateFrame("Frame", nil, frame.EzroUIResourceBar, "BackdropTemplate")
+        frame.EzroUIResourceBar.border:SetFrameLevel(frame.EzroUIResourceBar:GetFrameLevel() + 1)
+        frame.EzroUIResourceBar.border:SetBackdrop({
             edgeFile = "Interface\\Buttons\\WHITE8x8",
             edgeSize = 1,
             insets = {left = 0, right = 0, top = 0, bottom = 0},
         })
-        frame.EzUIResourceBar.border:SetBackdropBorderColor(0, 0, 0, 1)
+        frame.EzroUIResourceBar.border:SetBackdropBorderColor(0, 0, 0, 1)
     end
-    local bar = frame.EzUIResourceBar
+    local bar = frame.EzroUIResourceBar
     bar:SetStatusBarTexture(ResolveTexture(settings.texture))
     bar:SetOrientation((settings.orientation or "HORIZONTAL"):upper())
     local width = settings.width or SafeGetNumber(frame, "GetWidth")
@@ -1645,8 +1645,8 @@ function Engine:UpdateAbsorbs(frame, cfg)
     local damageCfg = cfg and cfg.damageAbsorbs
     local healDefaultColor = {0.4, 0.1, 0.1, 0.7}
     local damageDefaultColor = {0.15, 0.35, 0.8, 0.7}
-    UpdateAbsorbLayer(frame, unit, healCfg, "EzUIHealAbsorb", UnitGetTotalHealAbsorbs, healDefaultColor)
-    UpdateAbsorbLayer(frame, unit, damageCfg, "EzUIDamageAbsorb", UnitGetTotalAbsorbs, damageDefaultColor)
+    UpdateAbsorbLayer(frame, unit, healCfg, "EzroUIHealAbsorb", UnitGetTotalHealAbsorbs, healDefaultColor)
+    UpdateAbsorbLayer(frame, unit, damageCfg, "EzroUIDamageAbsorb", UnitGetTotalAbsorbs, damageDefaultColor)
 end
 
 function Engine:UpdateRange(frame, cfg)
@@ -1720,65 +1720,65 @@ function Engine:ApplyMouseoverHighlight(frame, cfg)
     if not frame or not cfg or not cfg.highlights then return end
     local settings = cfg.highlights.mouseover
     if not settings or settings.enabled == false then
-        if frame.EzUIMouseoverHighlight then
-            frame.EzUIMouseoverHighlight:Hide()
+        if frame.EzroUIMouseoverHighlight then
+            frame.EzroUIMouseoverHighlight:Hide()
         end
         return
     end
-    if not frame.EzUIMouseoverHighlight then
-        frame.EzUIMouseoverHighlight = frame:CreateTexture(nil, "OVERLAY")
-        frame.EzUIMouseoverHighlight:SetAllPoints(frame)
-        frame.EzUIMouseoverHighlight:SetTexture(HIGHLIGHT_REPLACEMENTS.mouseover)
-        frame.EzUIMouseoverHighlight:SetDrawLayer("OVERLAY", 2)
+    if not frame.EzroUIMouseoverHighlight then
+        frame.EzroUIMouseoverHighlight = frame:CreateTexture(nil, "OVERLAY")
+        frame.EzroUIMouseoverHighlight:SetAllPoints(frame)
+        frame.EzroUIMouseoverHighlight:SetTexture(HIGHLIGHT_REPLACEMENTS.mouseover)
+        frame.EzroUIMouseoverHighlight:SetDrawLayer("OVERLAY", 2)
     end
-    frame.EzUIMouseoverHighlight:SetAlpha(settings.alpha or 0.5)
-    frame.EzUIMouseoverHighlight:SetShown(frame.__nuiMouseoverActive == true)
+    frame.EzroUIMouseoverHighlight:SetAlpha(settings.alpha or 0.5)
+    frame.EzroUIMouseoverHighlight:SetShown(frame.__nuiMouseoverActive == true)
 end
 
 function Engine:UpdateHighlights(frame, cfg)
     if not frame or not cfg or not cfg.highlights then return end
     local selection = cfg.highlights.selection
     if selection and selection.mode ~= "BLIZZARD" then
-        if not frame.EzUISelectionHighlight then
-            frame.EzUISelectionHighlight = frame:CreateTexture(nil, "OVERLAY")
-            frame.EzUISelectionHighlight:SetAllPoints(frame)
+        if not frame.EzroUISelectionHighlight then
+            frame.EzroUISelectionHighlight = frame:CreateTexture(nil, "OVERLAY")
+            frame.EzroUISelectionHighlight:SetAllPoints(frame)
         end
         local color = selection.color or {1, 1, 1, 1}
         local selectionAlpha = selection.alpha
-        frame.EzUISelectionHighlight:SetColorTexture(color[1], color[2], color[3], 1)
-        frame.EzUISelectionHighlight:SetAlpha(selectionAlpha or color[4] or 0.35)
+        frame.EzroUISelectionHighlight:SetColorTexture(color[1], color[2], color[3], 1)
+        frame.EzroUISelectionHighlight:SetAlpha(selectionAlpha or color[4] or 0.35)
         local unit = GetUnitToken(frame)
         local showSelection = false
         if unit then
             local ok, result = pcall(UnitIsUnit, "target", unit)
             showSelection = ok and result == true
         end
-        frame.EzUISelectionHighlight:SetShown(showSelection)
-    elseif frame.EzUISelectionHighlight then
-        frame.EzUISelectionHighlight:Hide()
+        frame.EzroUISelectionHighlight:SetShown(showSelection)
+    elseif frame.EzroUISelectionHighlight then
+        frame.EzroUISelectionHighlight:Hide()
     end
 
     local aggro = cfg.highlights.aggro
     if aggro and aggro.mode ~= "BLIZZARD" then
-        if not frame.EzUIAggroHighlight then
+        if not frame.EzroUIAggroHighlight then
             local overlay = self:EnsureOverlay(frame)
-            frame.EzUIAggroHighlight = overlay:CreateTexture(nil, "OVERLAY")
-            frame.EzUIAggroHighlight:SetAllPoints(frame)
+            frame.EzroUIAggroHighlight = overlay:CreateTexture(nil, "OVERLAY")
+            frame.EzroUIAggroHighlight:SetAllPoints(frame)
         end
-        if frame.EzUIAggroHighlight.SetDrawLayer then
-            frame.EzUIAggroHighlight:SetDrawLayer("OVERLAY", 7)
+        if frame.EzroUIAggroHighlight.SetDrawLayer then
+            frame.EzroUIAggroHighlight:SetDrawLayer("OVERLAY", 7)
         end
         local unit = GetUnitToken(frame)
         local status = unit and UnitThreatSituation("player", unit)
         if status and status > 0 then
             local r, g, b = GetThreatStatusColor(status)
-            frame.EzUIAggroHighlight:SetColorTexture(r, g, b, 0.35)
-            frame.EzUIAggroHighlight:Show()
+            frame.EzroUIAggroHighlight:SetColorTexture(r, g, b, 0.35)
+            frame.EzroUIAggroHighlight:Show()
         else
-            frame.EzUIAggroHighlight:Hide()
+            frame.EzroUIAggroHighlight:Hide()
         end
-    elseif frame.EzUIAggroHighlight then
-        frame.EzUIAggroHighlight:Hide()
+    elseif frame.EzroUIAggroHighlight then
+        frame.EzroUIAggroHighlight:Hide()
     end
 
     self:ApplySelectionHighlightSkin(frame, cfg)
@@ -2002,7 +2002,7 @@ function Engine:Initialize()
 end
 
 function PartyFrames:ApplySoloVisibility()
-    local cfg = EzUI.db.profile.partyFrames
+    local cfg = EzroUI.db.profile.partyFrames
     if not cfg then return end
     if CompactPartyFrameTitle then
         CompactPartyFrameTitle:SetShown(not cfg.general.hideHeaderText)

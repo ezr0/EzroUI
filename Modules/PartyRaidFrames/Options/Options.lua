@@ -1,25 +1,25 @@
 ﻿--[[
-    EzUI Unit Frames - Options Integration
+    EzroUI Unit Frames - Options Integration
     Provides options panel integration for the addon's configuration system
 ]]
 
 local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
-EzUI.PartyFrames = EzUI.PartyFrames or {}
-local UnitFrames = EzUI.PartyFrames
+local EzroUI = ns.Addon
+EzroUI.PartyFrames = EzroUI.PartyFrames or {}
+local UnitFrames = EzroUI.PartyFrames
 
 -- ============================================================================
 -- OPTIONS CREATION FUNCTIONS
 -- ============================================================================
 
 --[[
-    Create party frame options table for EzUI config
+    Create party frame options table for EzroUI config
     @return table - AceConfig options table
 ]]
 function ns.CreatePartyFrameOptions()
     -- Check if UnitFrames is initialized
-    if UnitFrames and UnitFrames.BuildEzUIOptions then
-        return UnitFrames:BuildEzUIOptions("party", "Party Frames", 45)
+    if UnitFrames and UnitFrames.BuildEzroUIOptions then
+        return UnitFrames:BuildEzroUIOptions("party", "Party Frames", 45)
     end
     
     -- Fallback if module not ready
@@ -38,13 +38,13 @@ function ns.CreatePartyFrameOptions()
 end
 
 --[[
-    Create raid frame options table for EzUI config
+    Create raid frame options table for EzroUI config
     @return table - AceConfig options table
 ]]
 function ns.CreateRaidFrameOptions()
     -- Check if UnitFrames is initialized
-    if UnitFrames and UnitFrames.BuildEzUIOptions then
-        return UnitFrames:BuildEzUIOptions("raid", "Raid Frames", 46)
+    if UnitFrames and UnitFrames.BuildEzroUIOptions then
+        return UnitFrames:BuildEzroUIOptions("raid", "Raid Frames", 46)
     end
     
     -- Fallback if module not ready
@@ -75,16 +75,16 @@ SlashCmdList["EZFRAMES"] = function(msg)
     if msg == "party" then
         -- Open party frame options
         if Settings and Settings.OpenToCategory then
-            Settings.OpenToCategory("EzUI|Party Frames")
+            Settings.OpenToCategory("EzroUI|Party Frames")
         elseif InterfaceOptionsFrame_OpenToCategory then
-            InterfaceOptionsFrame_OpenToCategory("EzUI")
+            InterfaceOptionsFrame_OpenToCategory("EzroUI")
         end
     elseif msg == "raid" then
         -- Open raid frame options
         if Settings and Settings.OpenToCategory then
-            Settings.OpenToCategory("EzUI|Raid Frames")
+            Settings.OpenToCategory("EzroUI|Raid Frames")
         elseif InterfaceOptionsFrame_OpenToCategory then
-            InterfaceOptionsFrame_OpenToCategory("EzUI")
+            InterfaceOptionsFrame_OpenToCategory("EzroUI")
         end
     elseif msg == "test" then
         UnitFrames:ToggleTestMode("party")
@@ -94,12 +94,12 @@ SlashCmdList["EZFRAMES"] = function(msg)
         UnitFrames:ToggleMovers()
     elseif msg == "reset party" then
         UnitFrames:ResetProfile("party")
-        print("|cFF00FF00EzUI:|r Party frame settings reset to defaults.")
+        print("|cFF00FF00EzroUI:|r Party frame settings reset to defaults.")
     elseif msg == "reset raid" then
         UnitFrames:ResetProfile("raid")
-        print("|cFF00FF00EzUI:|r Raid frame settings reset to defaults.")
+        print("|cFF00FF00EzroUI:|r Raid frame settings reset to defaults.")
     elseif msg == "help" or msg == "" then
-        print("|cFF00FF00EzUI Party/Raid Frames Commands:|r")
+        print("|cFF00FF00EzroUI Party/Raid Frames Commands:|r")
         print("  /ezframes party - Open party frame options")
         print("  /ezframes raid - Open raid frame options")
         print("  /ezframes test - Toggle test mode")
@@ -107,7 +107,7 @@ SlashCmdList["EZFRAMES"] = function(msg)
         print("  /ezframes reset party - Reset party settings")
         print("  /ezframes reset raid - Reset raid settings")
     else
-        print("|cFF00FF00EzUI:|r Unknown command. Use '/ezframes help' for available commands.")
+        print("|cFF00FF00EzroUI:|r Unknown command. Use '/ezframes help' for available commands.")
             end
         end
         
@@ -116,12 +116,12 @@ SlashCmdList["EZFRAMES"] = function(msg)
 -- ============================================================================
 
 --[[
-    Register options with EzUI's config system
+    Register options with EzroUI's config system
     Called during addon initialization
 ]]
 function UnitFrames:RegisterOptions()
-    -- This would integrate with EzUI's main config system
-    -- The exact implementation depends on how EzUI handles option registration
+    -- This would integrate with EzroUI's main config system
+    -- The exact implementation depends on how EzroUI handles option registration
     
     -- For now, we expose the creation functions for the main addon to call
     if ns.RegisterOptionsCallback then
@@ -187,21 +187,21 @@ function UnitFrames:CreateMinimapButton()
     
     if not LDB or not LDBIcon then return end
     
-    local dataObject = LDB:NewDataObject("EzUIFrames", {
+    local dataObject = LDB:NewDataObject("EzroUIFrames", {
         type = "launcher",
-        icon = "Interface\\AddOns\\EzUI\\Media\\EzUI",
+        icon = "Interface\\AddOns\\EzroUI\\Media\\EzroUI",
         OnClick = function(self, button)
             if button == "LeftButton" then
                 UnitFrames:ToggleMovers()
             elseif button == "RightButton" then
                 -- Open options
                 if Settings and Settings.OpenToCategory then
-                    Settings.OpenToCategory("EzUI")
+                    Settings.OpenToCategory("EzroUI")
                 end
             end
         end,
         OnTooltipShow = function(tooltip)
-            tooltip:AddLine("EzUI Frames")
+            tooltip:AddLine("EzroUI Frames")
             tooltip:AddLine(" ")
             tooltip:AddLine("|cFFFFFFFFLeft-click:|r Toggle movers")
             tooltip:AddLine("|cFFFFFFFFRight-click:|r Open options")
@@ -215,6 +215,6 @@ function UnitFrames:CreateMinimapButton()
         lock = false,
     }
     
-    LDBIcon:Register("EzUIFrames", dataObject, minimapDB)
+    LDBIcon:Register("EzroUIFrames", dataObject, minimapDB)
     minimapButton = true
 end

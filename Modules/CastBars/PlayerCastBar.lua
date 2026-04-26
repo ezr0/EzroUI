@@ -1,10 +1,10 @@
 ﻿local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
+local EzroUI = ns.Addon
 
 -- Get CastBars module
-local CastBars = EzUI.CastBars
+local CastBars = EzroUI.CastBars
 if not CastBars then
-    error("EzUI: CastBars module not initialized! Load CastBars.lua first.")
+    error("EzroUI: CastBars module not initialized! Load CastBars.lua first.")
 end
 
 local CastBar_OnUpdate = CastBars.CastBar_OnUpdate
@@ -18,18 +18,18 @@ end
 -- PLAYER CAST BAR
 
 function CastBars:GetCastBar()
-    if EzUI.castBar then return EzUI.castBar end
+    if EzroUI.castBar then return EzroUI.castBar end
 
-    local cfg    = EzUI.db.profile.castBar
+    local cfg    = EzroUI.db.profile.castBar
     local anchor = _G[cfg.attachTo] or UIParent
     local anchorPoint = cfg.anchorPoint or "CENTER"
 
-    local bar = CreateFrame("Frame", ADDON_NAME .. "CastBar", anchor)
+    local bar = CreateFrame("Frame", ADDON_NAME .. "CastBar", UIParent)
     bar:SetFrameStrata("MEDIUM")
 
     local height = cfg.height or 10
-    bar:SetHeight(EzUI:Scale(height))
-    bar:SetPoint("CENTER", anchor, anchorPoint, EzUI:Scale(cfg.offsetX or 0), EzUI:Scale(cfg.offsetY or 18))
+    bar:SetHeight(EzroUI:Scale(height))
+    bar:SetPoint("CENTER", anchor, anchorPoint, EzroUI:Scale(cfg.offsetX or 0), EzroUI:Scale(cfg.offsetY or 18))
     -- Use pixel-snapped width from the anchor (viewer or frame)
     bar:SetWidth(PixelSnap(anchor.__cdmIconWidth or anchor:GetWidth()))
 
@@ -38,7 +38,7 @@ function CastBars:GetCastBar()
     -- Status bar
     bar.status = CreateFrame("StatusBar", nil, bar)
     -- Use GetTexture helper: if cfg.texture is set, use it; otherwise use global texture
-    local tex = EzUI:GetTexture(EzUI.db.profile.castBar.texture)
+    local tex = EzroUI:GetTexture(EzroUI.db.profile.castBar.texture)
     bar.status:SetStatusBarTexture(tex)
 
     local sbTex = bar.status:GetStatusBarTexture()
@@ -66,12 +66,12 @@ function CastBars:GetCastBar()
     -- Empowered stages storage
     bar.empoweredStages = {}
 
-    EzUI.castBar = bar
+    EzroUI.castBar = bar
     return bar
 end
 
 function CastBars:UpdateCastBarLayout()
-    local cfg = EzUI.db.profile.castBar
+    local cfg = EzroUI.db.profile.castBar
     
     -- Set default cast bar alpha to 0 only if custom cast bar is enabled
     local defaultCastBar = _G["PlayerCastingBarFrame"] or _G["CastingBarFrame"]
@@ -80,8 +80,8 @@ function CastBars:UpdateCastBarLayout()
             -- Custom cast bar is enabled, hide the default one
             defaultCastBar:SetAlpha(0)
             -- Hook OnShow to keep it at alpha 0 and hide child regions (including "Interrupted" text)
-            if not defaultCastBar.__EzUIAlphaHooked then
-                defaultCastBar.__EzUIAlphaHooked = true
+            if not defaultCastBar.__EzroUIAlphaHooked then
+                defaultCastBar.__EzroUIAlphaHooked = true
                 
                 -- Hide all child regions (including "Interrupted" text)
                 local function HideChildRegions(frame)
@@ -119,7 +119,7 @@ function CastBars:UpdateCastBarLayout()
                 
                 -- Hook OnShow to keep it at alpha 0 and hide children
                 defaultCastBar:HookScript("OnShow", function(self)
-                    local cfg = EzUI.db.profile.castBar
+                    local cfg = EzroUI.db.profile.castBar
                     if cfg and cfg.enabled then
                         self:SetAlpha(0)
                         HideChildRegions(self)
@@ -128,7 +128,7 @@ function CastBars:UpdateCastBarLayout()
                 
                 -- Hook OnUpdate to continuously hide any new child regions (like "Interrupted" text)
                 defaultCastBar:HookScript("OnUpdate", function(self)
-                    local cfg = EzUI.db.profile.castBar
+                    local cfg = EzroUI.db.profile.castBar
                     if cfg and cfg.enabled then
                         HideChildRegions(self)
                     end
@@ -142,30 +142,30 @@ function CastBars:UpdateCastBarLayout()
         end
     end
     
-    if not EzUI.castBar then return end
+    if not EzroUI.castBar then return end
 
-    local bar    = EzUI.castBar
+    local bar    = EzroUI.castBar
     local anchor = _G[cfg.attachTo] or UIParent
     local anchorPoint = cfg.anchorPoint or "CENTER"
     local height = cfg.height or 10
 
     bar:ClearAllPoints()
-    bar:SetPoint("CENTER", anchor, anchorPoint, EzUI:Scale(cfg.offsetX or 0), EzUI:Scale(cfg.offsetY or 18))
-    bar:SetHeight(EzUI:Scale(height))
+    bar:SetPoint("CENTER", anchor, anchorPoint, EzroUI:Scale(cfg.offsetX or 0), EzroUI:Scale(cfg.offsetY or 18))
+    bar:SetHeight(EzroUI:Scale(height))
 
     local width = cfg.width or 0
     if width <= 0 then
         width = PixelSnap(anchor.__cdmIconWidth or anchor:GetWidth())
         -- Width is already in pixels, no need to scale again
     else
-        width = EzUI:Scale(width)
+        width = EzroUI:Scale(width)
     end
     
     bar:SetWidth(width)
 
     if bar.border then
         bar.border:ClearAllPoints()
-        local borderOffset = EzUI:Scale(1)
+        local borderOffset = EzroUI:Scale(1)
         bar.border:SetPoint("TOPLEFT", bar, -borderOffset, borderOffset)
         bar.border:SetPoint("BOTTOMRIGHT", bar, borderOffset, -borderOffset)
     end
@@ -201,7 +201,7 @@ function CastBars:UpdateCastBarLayout()
     bar.bg:SetColorTexture(bgColor[1], bgColor[2], bgColor[3], bgColor[4] or 1)
 
     -- Use GetTexture helper: if cfg.texture is set, use it; otherwise use global texture
-    local tex = EzUI:GetTexture(cfg.texture)
+    local tex = EzroUI:GetTexture(cfg.texture)
     bar.status:SetStatusBarTexture(tex)
 
     local sbTex = bar.status:GetStatusBarTexture()
@@ -229,10 +229,10 @@ function CastBars:UpdateCastBarLayout()
     local timeOffsetY = cfg.timeOffsetY or 0
 
     bar.spellName:ClearAllPoints()
-    bar.spellName:SetPoint("LEFT", bar.status, "LEFT", EzUI:Scale(4 + nameOffsetX), EzUI:Scale(nameOffsetY))
+    bar.spellName:SetPoint("LEFT", bar.status, "LEFT", EzroUI:Scale(4 + nameOffsetX), EzroUI:Scale(nameOffsetY))
 
     bar.timeText:ClearAllPoints()
-    bar.timeText:SetPoint("RIGHT", bar.status, "RIGHT", EzUI:Scale(-4 + timeOffsetX), EzUI:Scale(timeOffsetY))
+    bar.timeText:SetPoint("RIGHT", bar.status, "RIGHT", EzroUI:Scale(-4 + timeOffsetX), EzroUI:Scale(timeOffsetY))
 
     local font, _, flags = bar.spellName:GetFont()
     bar.spellName:SetFont(font, cfg.textSize or 10, "OUTLINE")
@@ -257,9 +257,9 @@ function CastBars:UpdateCastBarLayout()
 end
 
 function CastBars:OnPlayerSpellcastStart(unit, castGUID, spellID)
-    local cfg = EzUI.db.profile.castBar
+    local cfg = EzroUI.db.profile.castBar
     if not cfg.enabled then
-        if EzUI.castBar then EzUI.castBar:Hide() end
+        if EzroUI.castBar then EzroUI.castBar:Hide() end
         return
     end
 
@@ -267,7 +267,7 @@ function CastBars:OnPlayerSpellcastStart(unit, castGUID, spellID)
     -- Regular casts are never empowered - empowered casts come through UnitChannelInfo or UNIT_SPELLCAST_EMPOWER_START
     local name, _, texture, startTimeMS, endTimeMS, isTradeSkill, castID, notInterruptible, unitSpellID, numStages, isEmpowered, castBarID = UnitCastingInfo("player")
     if not name or not startTimeMS or not endTimeMS then
-        if EzUI.castBar then EzUI.castBar:Hide() end
+        if EzroUI.castBar then EzroUI.castBar:Hide() end
         return
     end
 
@@ -285,7 +285,7 @@ function CastBars:OnPlayerSpellcastStart(unit, castGUID, spellID)
     bar.icon:SetTexture(texture)
     bar.spellName:SetText(name)
 
-    local font = EzUI:GetGlobalFont()
+    local font = EzroUI:GetGlobalFont()
     bar.spellName:SetFont(font, cfg.textSize or 10, "OUTLINE")
     bar.spellName:SetShadowOffset(0, 0)
 
@@ -331,37 +331,37 @@ function CastBars:OnPlayerSpellcastStart(unit, castGUID, spellID)
 end
 
 function CastBars:OnPlayerSpellcastStop(unit, castGUID, spellID)
-    if not EzUI.castBar then return end
+    if not EzroUI.castBar then return end
 
-    if castGUID and EzUI.castBar.castGUID and castGUID ~= EzUI.castBar.castGUID then
+    if castGUID and EzroUI.castBar.castGUID and castGUID ~= EzroUI.castBar.castGUID then
         return
     end
 
     -- Check if player is still channeling - if so, don't hide the cast bar
     -- This handles the case where a spell is attempted during a channel (GCD locked)
     -- and UNIT_SPELLCAST_STOP/FAILED fires, but the channel continues
-    if EzUI.castBar.isChannel then
+    if EzroUI.castBar.isChannel then
         local name, _, texture, startTimeMS, endTimeMS, isTradeSkill, castID, notInterruptible, unitSpellID, numStages, isEmpowered, castBarID = UnitChannelInfo("player")
         if name and startTimeMS and endTimeMS then
             -- Still channeling, update the cast bar instead of hiding it
-            EzUI.castBar.icon:SetTexture(texture)
-            EzUI.castBar.spellName:SetText(name)
-            EzUI.castBar.startTime = startTimeMS / 1000
-            EzUI.castBar.endTime = endTimeMS / 1000
-            EzUI.castBar.castBarID = castBarID
+            EzroUI.castBar.icon:SetTexture(texture)
+            EzroUI.castBar.spellName:SetText(name)
+            EzroUI.castBar.startTime = startTimeMS / 1000
+            EzroUI.castBar.endTime = endTimeMS / 1000
+            EzroUI.castBar.castBarID = castBarID
             return
         end
     end
 
-    EzUI.castBar.castGUID  = nil
-    EzUI.castBar.castBarID = nil
-    EzUI.castBar.isChannel = nil
-    EzUI.castBar.isEmpowered = nil
-    EzUI.castBar.numStages = nil
-    EzUI.castBar.lastNumStages = nil
-    EzUI.castBar.currentEmpoweredStage = nil
-    if EzUI.castBar.empoweredStages then
-        for _, stage in ipairs(EzUI.castBar.empoweredStages) do
+    EzroUI.castBar.castGUID  = nil
+    EzroUI.castBar.castBarID = nil
+    EzroUI.castBar.isChannel = nil
+    EzroUI.castBar.isEmpowered = nil
+    EzroUI.castBar.numStages = nil
+    EzroUI.castBar.lastNumStages = nil
+    EzroUI.castBar.currentEmpoweredStage = nil
+    if EzroUI.castBar.empoweredStages then
+        for _, stage in ipairs(EzroUI.castBar.empoweredStages) do
             if stage then
                 stage:Hide()
                 if stage.border then
@@ -370,24 +370,24 @@ function CastBars:OnPlayerSpellcastStop(unit, castGUID, spellID)
             end
         end
     end
-    if EzUI.castBar.empoweredSegments then
-        for _, segment in ipairs(EzUI.castBar.empoweredSegments) do
+    if EzroUI.castBar.empoweredSegments then
+        for _, segment in ipairs(EzroUI.castBar.empoweredSegments) do
             if segment then
                 segment:Hide()
             end
         end
     end
-    if EzUI.castBar.empoweredGlow then
-        EzUI.castBar.empoweredGlow:Hide()
+    if EzroUI.castBar.empoweredGlow then
+        EzroUI.castBar.empoweredGlow:Hide()
     end
-    EzUI.castBar:Hide()
-    EzUI.castBar:SetScript("OnUpdate", nil)
+    EzroUI.castBar:Hide()
+    EzroUI.castBar:SetScript("OnUpdate", nil)
 end
 
 function CastBars:OnPlayerSpellcastChannelStart(unit, castGUID, spellID)
-    local cfg = EzUI.db.profile.castBar
+    local cfg = EzroUI.db.profile.castBar
     if not cfg.enabled then
-        if EzUI.castBar then EzUI.castBar:Hide() end
+        if EzroUI.castBar then EzroUI.castBar:Hide() end
         return
     end
 
@@ -395,7 +395,7 @@ function CastBars:OnPlayerSpellcastChannelStart(unit, castGUID, spellID)
     -- Check UnitChannelInfo for empowered casts - if EmpowerStages (numStages) is present, it's empowered
     local name, _, texture, startTimeMS, endTimeMS, isTradeSkill, castID, notInterruptible, unitSpellID, numStages, isEmpowered, castBarID = UnitChannelInfo("player")
     if not name or not startTimeMS or not endTimeMS then
-        if EzUI.castBar then EzUI.castBar:Hide() end
+        if EzroUI.castBar then EzroUI.castBar:Hide() end
         return
     end
 
@@ -416,7 +416,7 @@ function CastBars:OnPlayerSpellcastChannelStart(unit, castGUID, spellID)
     bar.icon:SetTexture(texture)
     bar.spellName:SetText(name)
 
-    local font = EzUI:GetGlobalFont()
+    local font = EzroUI:GetGlobalFont()
     bar.spellName:SetFont(font, cfg.textSize or 10, "OUTLINE")
     bar.spellName:SetShadowOffset(0, 0)
 
@@ -465,8 +465,8 @@ function CastBars:OnPlayerSpellcastChannelStart(unit, castGUID, spellID)
 end
 
 function CastBars:OnPlayerSpellcastChannelUpdate(unit, castGUID, spellID)
-    if not EzUI.castBar then return end
-    if EzUI.castBar.castGUID and castGUID and castGUID ~= EzUI.castBar.castGUID then
+    if not EzroUI.castBar then return end
+    if EzroUI.castBar.castGUID and castGUID and castGUID ~= EzroUI.castBar.castGUID then
         return
     end
 
@@ -475,7 +475,7 @@ function CastBars:OnPlayerSpellcastChannelUpdate(unit, castGUID, spellID)
         return
     end
 
-    local bar = EzUI.castBar
+    local bar = EzroUI.castBar
     bar.isChannel = true
     bar.castGUID  = castGUID
     bar.castBarID = castBarID  -- Update castBarID
@@ -503,11 +503,11 @@ function CastBars:OnPlayerSpellcastChannelUpdate(unit, castGUID, spellID)
 end
 
 -- Expose to main addon for backwards compatibility
-EzUI.GetCastBar = function(self) return CastBars:GetCastBar() end
-EzUI.UpdateCastBarLayout = function(self) return CastBars:UpdateCastBarLayout() end
-EzUI.OnPlayerSpellcastStart = function(self, unit, castGUID, spellID) return CastBars:OnPlayerSpellcastStart(unit, castGUID, spellID) end
-EzUI.OnPlayerSpellcastStop = function(self, unit, castGUID, spellID) return CastBars:OnPlayerSpellcastStop(unit, castGUID, spellID) end
-EzUI.OnPlayerSpellcastChannelStart = function(self, unit, castGUID, spellID) return CastBars:OnPlayerSpellcastChannelStart(unit, castGUID, spellID) end
-EzUI.OnPlayerSpellcastChannelUpdate = function(self, unit, castGUID, spellID) return CastBars:OnPlayerSpellcastChannelUpdate(unit, castGUID, spellID) end
+EzroUI.GetCastBar = function(self) return CastBars:GetCastBar() end
+EzroUI.UpdateCastBarLayout = function(self) return CastBars:UpdateCastBarLayout() end
+EzroUI.OnPlayerSpellcastStart = function(self, unit, castGUID, spellID) return CastBars:OnPlayerSpellcastStart(unit, castGUID, spellID) end
+EzroUI.OnPlayerSpellcastStop = function(self, unit, castGUID, spellID) return CastBars:OnPlayerSpellcastStop(unit, castGUID, spellID) end
+EzroUI.OnPlayerSpellcastChannelStart = function(self, unit, castGUID, spellID) return CastBars:OnPlayerSpellcastChannelStart(unit, castGUID, spellID) end
+EzroUI.OnPlayerSpellcastChannelUpdate = function(self, unit, castGUID, spellID) return CastBars:OnPlayerSpellcastChannelUpdate(unit, castGUID, spellID) end
 
 

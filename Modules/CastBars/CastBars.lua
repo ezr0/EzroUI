@@ -1,9 +1,9 @@
 ﻿local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
+local EzroUI = ns.Addon
 
 -- Create namespace
-EzUI.CastBars = EzUI.CastBars or {}
-local CastBars = EzUI.CastBars
+EzroUI.CastBars = EzroUI.CastBars or {}
+local CastBars = EzroUI.CastBars
 
 -- Build helpers so we can branch between Midnight (>=120000) and retail (TWW)
 local BUILD_NUMBER = tonumber((select(4, GetBuildInfo()))) or 0
@@ -22,7 +22,7 @@ local function CreateBorder(frame)
     if frame.border then return frame.border end
 
     local bord = CreateFrame("Frame", nil, frame, "BackdropTemplate")
-	local borderSize = (EzUI.ScaleBorder and EzUI:ScaleBorder(1)) or math.floor((EzUI:Scale(1) or 1) + 0.5)
+	local borderSize = (EzroUI.ScaleBorder and EzroUI:ScaleBorder(1)) or math.floor((EzroUI:Scale(1) or 1) + 0.5)
 	local borderOffset = borderSize
 	bord:SetPoint("TOPLEFT", frame, -borderOffset, borderOffset)
 	bord:SetPoint("BOTTOMRIGHT", frame, borderOffset, -borderOffset)
@@ -270,7 +270,7 @@ local function CastBar_OnUpdate(frame, elapsed)
         end
         
         -- Get stage colors from config
-        local cfg = EzUI.db.profile.castBar
+        local cfg = EzroUI.db.profile.castBar
         local stageColors = cfg and cfg.empoweredStageColors or {}
         local defaultColors = {
             [1] = {0.3, 0.75, 1, 1},      -- Teal
@@ -640,8 +640,8 @@ local function CastBar_OnUpdate(frame, elapsed)
         -- Status bar texture is already at alpha 1 for regular casts
         
         -- Restore normal background color
-        if frame == EzUI.castBar then
-            local cfg = EzUI.db.profile.castBar
+        if frame == EzroUI.castBar then
+            local cfg = EzroUI.db.profile.castBar
             local bgColor = cfg and cfg.bgColor or { 0.1, 0.1, 0.1, 1 }
             if frame.bg then
                 frame.bg:SetColorTexture(bgColor[1], bgColor[2], bgColor[3], bgColor[4] or 1)
@@ -652,17 +652,17 @@ local function CastBar_OnUpdate(frame, elapsed)
     if frame.timeText then
         -- Get the config for this cast bar
         local cfg
-        if frame == EzUI.castBar then
-            cfg = EzUI.db.profile.castBar
-        elseif frame == EzUI.targetCastBar then
-            cfg = EzUI.db.profile.targetCastBar
-        elseif frame == EzUI.focusCastBar then
-            cfg = EzUI.db.profile.focusCastBar
-        elseif EzUI.bossCastBars then
+        if frame == EzroUI.castBar then
+            cfg = EzroUI.db.profile.castBar
+        elseif frame == EzroUI.targetCastBar then
+            cfg = EzroUI.db.profile.targetCastBar
+        elseif frame == EzroUI.focusCastBar then
+            cfg = EzroUI.db.profile.focusCastBar
+        elseif EzroUI.bossCastBars then
             -- Check if this is a boss cast bar
-            for _, bossBar in pairs(EzUI.bossCastBars) do
+            for _, bossBar in pairs(EzroUI.bossCastBars) do
                 if frame == bossBar then
-                    cfg = EzUI.db.profile.bossCastBar
+                    cfg = EzroUI.db.profile.bossCastBar
                     break
                 end
             end
@@ -672,7 +672,7 @@ local function CastBar_OnUpdate(frame, elapsed)
         if cfg and cfg.showTimeText ~= false then
             frame.timeText:Show()
             -- Boss cast bars show current/max format, others show remaining time
-            if cfg == EzUI.db.profile.bossCastBar then
+            if cfg == EzroUI.db.profile.bossCastBar then
                 frame.timeText:SetFormattedText("%.1f/%.1f", progress, duration)
             else
                 frame.timeText:SetFormattedText("%.1f", remaining)
@@ -689,62 +689,62 @@ CastBars.CastBar_OnUpdate = CastBar_OnUpdate
 -- Initialize function
 function CastBars:Initialize()
     -- Register player cast bar events
-    EzUI:RegisterEvent("UNIT_SPELLCAST_START", function(_, unit, castGUID, spellID)
+    EzroUI:RegisterEvent("UNIT_SPELLCAST_START", function(_, unit, castGUID, spellID)
         if unit == "player" and self.OnPlayerSpellcastStart then
             self:OnPlayerSpellcastStart(unit, castGUID, spellID)
         end
     end)
     
-    EzUI:RegisterEvent("UNIT_SPELLCAST_STOP", function(_, unit, castGUID, spellID)
+    EzroUI:RegisterEvent("UNIT_SPELLCAST_STOP", function(_, unit, castGUID, spellID)
         if unit == "player" and self.OnPlayerSpellcastStop then
             self:OnPlayerSpellcastStop(unit, castGUID, spellID)
         end
     end)
     
-    EzUI:RegisterEvent("UNIT_SPELLCAST_FAILED", function(_, unit, castGUID, spellID)
+    EzroUI:RegisterEvent("UNIT_SPELLCAST_FAILED", function(_, unit, castGUID, spellID)
         if unit == "player" and self.OnPlayerSpellcastStop then
             self:OnPlayerSpellcastStop(unit, castGUID, spellID)
         end
     end)
     
-    EzUI:RegisterEvent("UNIT_SPELLCAST_INTERRUPTED", function(_, unit, castGUID, spellID)
+    EzroUI:RegisterEvent("UNIT_SPELLCAST_INTERRUPTED", function(_, unit, castGUID, spellID)
         if unit == "player" and self.OnPlayerSpellcastStop then
             self:OnPlayerSpellcastStop(unit, castGUID, spellID)
         end
     end)
     
-    EzUI:RegisterEvent("UNIT_SPELLCAST_CHANNEL_START", function(_, unit, castGUID, spellID)
+    EzroUI:RegisterEvent("UNIT_SPELLCAST_CHANNEL_START", function(_, unit, castGUID, spellID)
         if unit == "player" and self.OnPlayerSpellcastChannelStart then
             self:OnPlayerSpellcastChannelStart(unit, castGUID, spellID)
         end
     end)
     
-    EzUI:RegisterEvent("UNIT_SPELLCAST_CHANNEL_STOP", function(_, unit, castGUID, spellID)
+    EzroUI:RegisterEvent("UNIT_SPELLCAST_CHANNEL_STOP", function(_, unit, castGUID, spellID)
         if unit == "player" and self.OnPlayerSpellcastStop then
             self:OnPlayerSpellcastStop(unit, castGUID, spellID)
         end
     end)
     
-    EzUI:RegisterEvent("UNIT_SPELLCAST_CHANNEL_UPDATE", function(_, unit, castGUID, spellID)
+    EzroUI:RegisterEvent("UNIT_SPELLCAST_CHANNEL_UPDATE", function(_, unit, castGUID, spellID)
         if unit == "player" and self.OnPlayerSpellcastChannelUpdate then
             self:OnPlayerSpellcastChannelUpdate(unit, castGUID, spellID)
         end
     end)
     
     -- Register empowered cast events
-    EzUI:RegisterEvent("UNIT_SPELLCAST_EMPOWER_START", function(_, unit, castGUID, spellID)
+    EzroUI:RegisterEvent("UNIT_SPELLCAST_EMPOWER_START", function(_, unit, castGUID, spellID)
         if unit == "player" and self.OnPlayerSpellcastEmpowerStart then
             self:OnPlayerSpellcastEmpowerStart(unit, castGUID, spellID)
         end
     end)
     
-    EzUI:RegisterEvent("UNIT_SPELLCAST_EMPOWER_UPDATE", function(_, unit, castGUID, spellID)
+    EzroUI:RegisterEvent("UNIT_SPELLCAST_EMPOWER_UPDATE", function(_, unit, castGUID, spellID)
         if unit == "player" and self.OnPlayerSpellcastEmpowerUpdate then
             self:OnPlayerSpellcastEmpowerUpdate(unit, castGUID, spellID)
         end
     end)
     
-    EzUI:RegisterEvent("UNIT_SPELLCAST_EMPOWER_STOP", function(_, unit, castGUID, spellID)
+    EzroUI:RegisterEvent("UNIT_SPELLCAST_EMPOWER_STOP", function(_, unit, castGUID, spellID)
         if unit == "player" and self.OnPlayerSpellcastEmpowerStop then
             self:OnPlayerSpellcastEmpowerStop(unit, castGUID, spellID)
         end
@@ -794,8 +794,8 @@ function CastBars:ShowTestCastBar()
     bar.icon:SetTexture(136243)  -- Default spell icon
     bar.spellName:SetText("Test Cast")
     
-    local cfg = EzUI.db.profile.castBar
-    local font = EzUI:GetGlobalFont()
+    local cfg = EzroUI.db.profile.castBar
+    local font = EzroUI:GetGlobalFont()
     bar.spellName:SetFont(font, cfg.textSize or 10, "OUTLINE")
     bar.spellName:SetShadowOffset(0, 0)
     
@@ -829,8 +829,8 @@ function CastBars:ShowTestTargetCastBar()
     bar.icon:SetTexture(136243)  -- Default spell icon
     bar.spellName:SetText("Test Target Cast")
     
-    local cfg = EzUI.db.profile.targetCastBar
-    local font = EzUI:GetGlobalFont()
+    local cfg = EzroUI.db.profile.targetCastBar
+    local font = EzroUI:GetGlobalFont()
     bar.spellName:SetFont(font, cfg.textSize or 10, "OUTLINE")
     bar.spellName:SetShadowOffset(0, 0)
     
@@ -864,8 +864,8 @@ function CastBars:ShowTestFocusCastBar()
     bar.icon:SetTexture(136243)  -- Default spell icon
     bar.spellName:SetText("Test Focus Cast")
     
-    local cfg = EzUI.db.profile.focusCastBar
-    local font = EzUI:GetGlobalFont()
+    local cfg = EzroUI.db.profile.focusCastBar
+    local font = EzroUI:GetGlobalFont()
     bar.spellName:SetFont(font, cfg.textSize or 10, "OUTLINE")
     bar.spellName:SetShadowOffset(0, 0)
     
@@ -879,8 +879,8 @@ function CastBars:ShowTestFocusCastBar()
 end
 
 -- Expose test functions to main addon
-EzUI.ShowTestCastBar = function(self) return CastBars:ShowTestCastBar() end
-EzUI.ShowTestTargetCastBar = function(self) return CastBars:ShowTestTargetCastBar() end
-EzUI.ShowTestFocusCastBar = function(self) return CastBars:ShowTestFocusCastBar() end
+EzroUI.ShowTestCastBar = function(self) return CastBars:ShowTestCastBar() end
+EzroUI.ShowTestTargetCastBar = function(self) return CastBars:ShowTestTargetCastBar() end
+EzroUI.ShowTestFocusCastBar = function(self) return CastBars:ShowTestFocusCastBar() end
 
 

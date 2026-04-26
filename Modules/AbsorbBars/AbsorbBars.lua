@@ -1,12 +1,12 @@
 ﻿local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
+local EzroUI = ns.Addon
 
-EzUI.AbsorbBars = EzUI.AbsorbBars or {}
-local AbsorbBars = EzUI.AbsorbBars
+EzroUI.AbsorbBars = EzroUI.AbsorbBars or {}
+local AbsorbBars = EzroUI.AbsorbBars
 
 local AbsorbBarUnitToFrame = {
-    player = "EzUI_Player",
-    target = "EzUI_Target",
+    player = "EzroUI_Player",
+    target = "EzroUI_Target",
     -- Boss frames will be handled dynamically
 }
 
@@ -16,7 +16,7 @@ local function CreateAbsorbBarForUnit(unit)
 
     -- Handle boss frames dynamically
     if not frameName and unit:match("^boss%d+$") then
-        frameName = "EzUI_Boss" .. unit:match("^boss(%d+)$")
+        frameName = "EzroUI_Boss" .. unit:match("^boss(%d+)$")
     end
 
     if not frameName then return end
@@ -28,7 +28,7 @@ local function CreateAbsorbBarForUnit(unit)
         return
     end
     
-    if unitFrame.__EzUIAbsorbBar then
+    if unitFrame.__EzroUIAbsorbBar then
         return
     end
     
@@ -69,9 +69,9 @@ local function CreateAbsorbBarForUnit(unit)
     
     -- Function to update texture from config
     local function UpdateAbsorbBarTexture()
-        local db = EzUI.db.profile.unitFrames
+        local db = EzroUI.db.profile.unitFrames
         if not db or not db[unit] or not db[unit].AbsorbBar then
-            local tex = EzUI:GetGlobalTexture()
+            local tex = EzroUI:GetGlobalTexture()
             if tex then
                 absorbBar:SetStatusBarTexture(tex)
             else
@@ -87,7 +87,7 @@ local function CreateAbsorbBarForUnit(unit)
             if texture then
                 absorbBar:SetStatusBarTexture(texture)
             else
-                local tex = EzUI:GetGlobalTexture()
+                local tex = EzroUI:GetGlobalTexture()
                 if tex then
                     absorbBar:SetStatusBarTexture(tex)
                 else
@@ -95,7 +95,7 @@ local function CreateAbsorbBarForUnit(unit)
                 end
             end
         else
-            local tex = EzUI:GetGlobalTexture()
+            local tex = EzroUI:GetGlobalTexture()
             if tex then
                 absorbBar:SetStatusBarTexture(tex)
             else
@@ -106,7 +106,7 @@ local function CreateAbsorbBarForUnit(unit)
     
     -- Function to update color from config
     local function UpdateAbsorbBarColor()
-        local db = EzUI.db.profile.unitFrames
+        local db = EzroUI.db.profile.unitFrames
         if not db or not db[unit] or not db[unit].AbsorbBar then
             -- Default: light blue/purple for absorbs
             absorbBar:SetStatusBarColor(0.3, 0.6, 1.0, 0.8)
@@ -126,7 +126,7 @@ local function CreateAbsorbBarForUnit(unit)
     
     -- Set fill direction based on config (default to left)
     local function UpdateAbsorbBarFillDirection()
-        local db = EzUI.db.profile.unitFrames
+        local db = EzroUI.db.profile.unitFrames
         if not db or not db[unit] or not db[unit].AbsorbBar then
             -- Default: left to right (anchored left, grows right)
             absorbBar:SetReverseFill(false)
@@ -196,7 +196,7 @@ local function CreateAbsorbBarForUnit(unit)
     -- Also update text tag levels periodically to ensure they stay on top
     -- This handles cases where the unit frame might be recreated or updated
     local textTagUpdateTicker = C_Timer.NewTicker(1.0, function()
-        if unitFrame and unitFrame.__EzUIAbsorbBar then
+        if unitFrame and unitFrame.__EzroUIAbsorbBar then
             UpdateTextTagFrameLevels()
         else
             -- Stop ticking if the frame is gone
@@ -210,7 +210,7 @@ local function CreateAbsorbBarForUnit(unit)
     local function UpdateAbsorbBarPosition()
         if not absorbBar or not healthBar then return end
         
-        local db = EzUI.db.profile.unitFrames
+        local db = EzroUI.db.profile.unitFrames
         local anchorMode = "health"
         if db and db[unit] and db[unit].AbsorbBar then
             anchorMode = db[unit].AbsorbBar.AnchorMode or "health"
@@ -317,7 +317,7 @@ local function CreateAbsorbBarForUnit(unit)
     end
     
     -- Store references and update functions
-    unitFrame.__EzUIAbsorbBar = absorbBar
+    unitFrame.__EzroUIAbsorbBar = absorbBar
     absorbBar.healthBar = healthBar
     absorbBar.unitFrame = unitFrame
     absorbBar.unit = unit

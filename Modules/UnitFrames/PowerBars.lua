@@ -1,10 +1,10 @@
 ﻿local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
+local EzroUI = ns.Addon
 
 -- Get UnitFrames module
-local UF = EzUI.UnitFrames
+local UF = EzroUI.UnitFrames
 if not UF then
-    error("EzUI: UnitFrames module not initialized! Load UnitFrames.lua first.")
+    error("EzroUI: UnitFrames module not initialized! Load UnitFrames.lua first.")
 end
 
 -- Get helper functions
@@ -13,7 +13,7 @@ local FetchPowerBarColor = UF.FetchPowerBarColor
 local PowerBarColor = UF.PowerBarColor
 
 local function GetUnitDB(unit)
-    local db = EzUI.db and EzUI.db.profile and EzUI.db.profile.unitFrames
+    local db = EzroUI.db and EzroUI.db.profile and EzroUI.db.profile.unitFrames
     if not db or not unit then return nil end
     local dbUnit = unit
     if unit:match("^boss(%d+)$") then dbUnit = "boss" end
@@ -152,7 +152,7 @@ local function UpdateUnitFramePowerBar(self, event, eventUnit, ...)
     
     -- Ensure background color is always applied (important when power is 0)
     if self.bg then
-        local db = EzUI.db.profile.unitFrames
+        local db = EzroUI.db.profile.unitFrames
         if db then
             local dbUnit = unit
             if unit:match("^boss(%d+)$") then dbUnit = "boss" end
@@ -183,8 +183,8 @@ function UF:CreatePowerBar(unitFrame, unit, DB, PowerBarDB)
     local unitFramePowerBar = CreateFrame("StatusBar", nil, unitFrame)
     unitFrame.powerBar = unitFramePowerBar
 
-    if not unitFramePowerBar.__EzUIHealthAnchorHooks then
-        unitFramePowerBar.__EzUIHealthAnchorHooks = true
+    if not unitFramePowerBar.__EzroUIHealthAnchorHooks then
+        unitFramePowerBar.__EzroUIHealthAnchorHooks = true
         unitFramePowerBar:HookScript("OnShow", function(bar)
             local parentFrame = bar:GetParent()
             local barUnit = bar.unit or (parentFrame and parentFrame.unit)
@@ -339,11 +339,11 @@ function UF:HookTargetAndFocusPowerBars()
     -- Hook Target power bar
     local targetFrame = _G["TargetFrame"]
     local targetPowerBar = targetFrame and (targetFrame.manabar or targetFrame.powerBar)
-    if targetPowerBar and not targetPowerBar.__EzUIHooked then
-        targetPowerBar.__EzUIHooked = true
+    if targetPowerBar and not targetPowerBar.__EzroUIHooked then
+        targetPowerBar.__EzroUIHooked = true
         
         -- Get our custom target power bar
-        local targetUnitFrame = _G["EzUI_Target"]
+        local targetUnitFrame = _G["EzroUI_Target"]
         local customTargetPowerBar = targetUnitFrame and targetUnitFrame.powerBar
         
         if customTargetPowerBar then
@@ -361,7 +361,7 @@ function UF:HookTargetAndFocusPowerBars()
                     
                     -- Update power text from Blizzard's bar values (check if enabled)
                     if targetUnitFrame and targetUnitFrame.PowerText then
-                        local db = EzUI.db.profile.unitFrames
+                        local db = EzroUI.db.profile.unitFrames
                         local PowerTextDB = db and db.target and db.target.Tags and db.target.Tags.Power
                         if PowerTextDB and PowerTextDB.Enabled ~= false then
                             local powerValue = value or 0
@@ -423,11 +423,11 @@ function UF:HookTargetAndFocusPowerBars()
     -- Hook Focus power bar
     local focusFrame = _G["FocusFrame"]
     local focusPowerBar = focusFrame and (focusFrame.manabar or focusFrame.powerBar)
-    if focusPowerBar and not focusPowerBar.__EzUIHooked then
-        focusPowerBar.__EzUIHooked = true
+    if focusPowerBar and not focusPowerBar.__EzroUIHooked then
+        focusPowerBar.__EzroUIHooked = true
         
         -- Get our custom focus power bar
-        local focusUnitFrame = _G["EzUI_Focus"]
+        local focusUnitFrame = _G["EzroUI_Focus"]
         local customFocusPowerBar = focusUnitFrame and focusUnitFrame.powerBar
         
         if customFocusPowerBar then
@@ -445,7 +445,7 @@ function UF:HookTargetAndFocusPowerBars()
                     
                     -- Update power text from Blizzard's bar values (check if enabled)
                     if focusUnitFrame and focusUnitFrame.PowerText then
-                        local db = EzUI.db.profile.unitFrames
+                        local db = EzroUI.db.profile.unitFrames
                         local PowerTextDB = db and db.focus and db.focus.Tags and db.focus.Tags.Power
                         if PowerTextDB and PowerTextDB.Enabled ~= false then
                             local powerValue = value or 0

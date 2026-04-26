@@ -1,25 +1,25 @@
 ﻿--[[
-    EzUI Unit Frames - Configuration GUI System
+    EzroUI Unit Frames - Configuration GUI System
     Builds AceConfig options tables for party and raid frames
 ]]
 
 local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
-EzUI.PartyFrames = EzUI.PartyFrames or {}
-local UnitFrames = EzUI.PartyFrames
+local EzroUI = ns.Addon
+EzroUI.PartyFrames = EzroUI.PartyFrames or {}
+local UnitFrames = EzroUI.PartyFrames
 
 -- ============================================================================
 -- GUI BUILDER
 -- ============================================================================
 
 --[[
-    Build EzUI options for a frame type
+    Build EzroUI options for a frame type
     @param frameType string - "party" or "raid"
     @param displayName string - Display name for the options
     @param order number - Order in the options panel
     @return table - AceConfig options table
 ]]
-function UnitFrames:BuildEzUIOptions(frameType, displayName, order)
+function UnitFrames:BuildEzroUIOptions(frameType, displayName, order)
     local isRaid = frameType == "raid"
     
     local options = {
@@ -815,7 +815,7 @@ function UnitFrames:BuildProfileOptions(frameType, isRaid)
                 func = function()
                     local exportString = self:ExportProfile(nil, {frameType}, frameType .. "_export")
                     -- Would open a dialog with the export string
-                    print("Export string generated. Use /EzUI export to view.")
+                    print("Export string generated. Use /EzroUI export to view.")
                 end,
             },
         },

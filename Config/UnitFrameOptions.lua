@@ -1,5 +1,5 @@
 ﻿local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
+local EzroUI = ns.Addon
 local LSM = LibStub("LibSharedMedia-3.0")
 
 -- Anchor points for positioning
@@ -20,29 +20,29 @@ local function GetUnitDB(unit)
     local dbUnit = unit
     if unit:match("^boss(%d+)$") then dbUnit = "boss" end
     
-    if not EzUI.db.profile.unitFrames then
-        EzUI.db.profile.unitFrames = {}
+    if not EzroUI.db.profile.unitFrames then
+        EzroUI.db.profile.unitFrames = {}
     end
-    if not EzUI.db.profile.unitFrames[dbUnit] then
-        EzUI.db.profile.unitFrames[dbUnit] = {}
+    if not EzroUI.db.profile.unitFrames[dbUnit] then
+        EzroUI.db.profile.unitFrames[dbUnit] = {}
     end
-    return EzUI.db.profile.unitFrames[dbUnit]
+    return EzroUI.db.profile.unitFrames[dbUnit]
 end
 
 -- Helper to update unit frame
 local function UpdateUnitFrame(unit)
-    if EzUI.UnitFrames then
+    if EzroUI.UnitFrames then
         -- Resolve media first in case textures changed
-        EzUI.UnitFrames:ResolveMedia()
+        EzroUI.UnitFrames:ResolveMedia()
         
         -- For boss frames, update all boss frames (boss1-boss8)
         if unit == "boss" then
             for i = 1, 8 do
-                EzUI.UnitFrames:UpdateUnitFrame("boss" .. i)
+                EzroUI.UnitFrames:UpdateUnitFrame("boss" .. i)
             end
         else
             -- Update the specific unit frame
-            EzUI.UnitFrames:UpdateUnitFrame(unit)
+            EzroUI.UnitFrames:UpdateUnitFrame(unit)
         end
     end
 end
@@ -104,8 +104,8 @@ local function CreateBossFrameTab()
                     DB.Frame.Width = val
                     UpdateUnitFrame("boss")
                     -- Reposition all boss frames when size changes
-                    if EzUI.UnitFrames and EzUI.UnitFrames.LayoutBossFrames then
-                        EzUI.UnitFrames:LayoutBossFrames()
+                    if EzroUI.UnitFrames and EzroUI.UnitFrames.LayoutBossFrames then
+                        EzroUI.UnitFrames:LayoutBossFrames()
                     end
                 end,
             },
@@ -123,8 +123,8 @@ local function CreateBossFrameTab()
                     DB.Frame.Height = val
                     UpdateUnitFrame("boss")
                     -- Reposition all boss frames when size changes
-                    if EzUI.UnitFrames and EzUI.UnitFrames.LayoutBossFrames then
-                        EzUI.UnitFrames:LayoutBossFrames()
+                    if EzroUI.UnitFrames and EzroUI.UnitFrames.LayoutBossFrames then
+                        EzroUI.UnitFrames:LayoutBossFrames()
                     end
                 end,
             },
@@ -143,15 +143,15 @@ local function CreateBossFrameTab()
                 width = "full",
                 min = -1000, max = 1000, step = 1,
                 get = function()
-                    local db = EzUI.db.profile.unitFrames
+                    local db = EzroUI.db.profile.unitFrames
                     return (db.boss and db.boss.OffsetX) or 0
                 end,
                 set = function(_, val)
-                    local db = EzUI.db.profile.unitFrames
+                    local db = EzroUI.db.profile.unitFrames
                     if not db.boss then db.boss = {} end
                     db.boss.OffsetX = val
-                    if EzUI.UnitFrames and EzUI.UnitFrames.LayoutBossFrames then
-                        EzUI.UnitFrames:LayoutBossFrames()
+                    if EzroUI.UnitFrames and EzroUI.UnitFrames.LayoutBossFrames then
+                        EzroUI.UnitFrames:LayoutBossFrames()
                     end
                 end,
             },
@@ -163,15 +163,15 @@ local function CreateBossFrameTab()
                 width = "full",
                 min = -1000, max = 1000, step = 1,
                 get = function()
-                    local db = EzUI.db.profile.unitFrames
+                    local db = EzroUI.db.profile.unitFrames
                     return (db.boss and db.boss.OffsetY) or 0
                 end,
                 set = function(_, val)
-                    local db = EzUI.db.profile.unitFrames
+                    local db = EzroUI.db.profile.unitFrames
                     if not db.boss then db.boss = {} end
                     db.boss.OffsetY = val
-                    if EzUI.UnitFrames and EzUI.UnitFrames.LayoutBossFrames then
-                        EzUI.UnitFrames:LayoutBossFrames()
+                    if EzroUI.UnitFrames and EzroUI.UnitFrames.LayoutBossFrames then
+                        EzroUI.UnitFrames:LayoutBossFrames()
                     end
                 end,
             },
@@ -186,15 +186,15 @@ local function CreateBossFrameTab()
                     ["DOWN"] = "Down",
                 },
                 get = function()
-                    local db = EzUI.db.profile.unitFrames
+                    local db = EzroUI.db.profile.unitFrames
                     return (db.boss and db.boss.GrowthDirection) or "UP"
                 end,
                 set = function(_, val)
-                    local db = EzUI.db.profile.unitFrames
+                    local db = EzroUI.db.profile.unitFrames
                     if not db.boss then db.boss = {} end
                     db.boss.GrowthDirection = val
-                    if EzUI.UnitFrames and EzUI.UnitFrames.LayoutBossFrames then
-                        EzUI.UnitFrames:LayoutBossFrames()
+                    if EzroUI.UnitFrames and EzroUI.UnitFrames.LayoutBossFrames then
+                        EzroUI.UnitFrames:LayoutBossFrames()
                     end
                 end,
             },
@@ -206,15 +206,15 @@ local function CreateBossFrameTab()
                 width = "full",
                 min = 0, max = 100, step = 1,
                 get = function()
-                    local db = EzUI.db.profile.unitFrames
+                    local db = EzroUI.db.profile.unitFrames
                     return (db.boss and db.boss.Spacing) or 26
                 end,
                 set = function(_, val)
-                    local db = EzUI.db.profile.unitFrames
+                    local db = EzroUI.db.profile.unitFrames
                     if not db.boss then db.boss = {} end
                     db.boss.Spacing = val
-                    if EzUI.UnitFrames and EzUI.UnitFrames.LayoutBossFrames then
-                        EzUI.UnitFrames:LayoutBossFrames()
+                    if EzroUI.UnitFrames and EzroUI.UnitFrames.LayoutBossFrames then
+                        EzroUI.UnitFrames:LayoutBossFrames()
                     end
                 end,
             },
@@ -241,15 +241,15 @@ local function CreateBossPositioningTab()
                 width = "full",
                 min = -1000, max = 1000, step = 1,
                 get = function()
-                    local db = EzUI.db.profile.unitFrames
+                    local db = EzroUI.db.profile.unitFrames
                     return (db.boss and db.boss.OffsetX) or 0
                 end,
                 set = function(_, val)
-                    local db = EzUI.db.profile.unitFrames
+                    local db = EzroUI.db.profile.unitFrames
                     if not db.boss then db.boss = {} end
                     db.boss.OffsetX = val
-                    if EzUI.UnitFrames and EzUI.UnitFrames.LayoutBossFrames then
-                        EzUI.UnitFrames:LayoutBossFrames()
+                    if EzroUI.UnitFrames and EzroUI.UnitFrames.LayoutBossFrames then
+                        EzroUI.UnitFrames:LayoutBossFrames()
                     end
                 end,
             },
@@ -261,15 +261,15 @@ local function CreateBossPositioningTab()
                 width = "full",
                 min = -1000, max = 1000, step = 1,
                 get = function()
-                    local db = EzUI.db.profile.unitFrames
+                    local db = EzroUI.db.profile.unitFrames
                     return (db.boss and db.boss.OffsetY) or 0
                 end,
                 set = function(_, val)
-                    local db = EzUI.db.profile.unitFrames
+                    local db = EzroUI.db.profile.unitFrames
                     if not db.boss then db.boss = {} end
                     db.boss.OffsetY = val
-                    if EzUI.UnitFrames and EzUI.UnitFrames.LayoutBossFrames then
-                        EzUI.UnitFrames:LayoutBossFrames()
+                    if EzroUI.UnitFrames and EzroUI.UnitFrames.LayoutBossFrames then
+                        EzroUI.UnitFrames:LayoutBossFrames()
                     end
                 end,
             },
@@ -284,15 +284,15 @@ local function CreateBossPositioningTab()
                     ["DOWN"] = "Down",
                 },
                 get = function()
-                    local db = EzUI.db.profile.unitFrames
+                    local db = EzroUI.db.profile.unitFrames
                     return (db.boss and db.boss.GrowthDirection) or "DOWN"
                 end,
                 set = function(_, val)
-                    local db = EzUI.db.profile.unitFrames
+                    local db = EzroUI.db.profile.unitFrames
                     if not db.boss then db.boss = {} end
                     db.boss.GrowthDirection = val
-                    if EzUI.UnitFrames and EzUI.UnitFrames.LayoutBossFrames then
-                        EzUI.UnitFrames:LayoutBossFrames()
+                    if EzroUI.UnitFrames and EzroUI.UnitFrames.LayoutBossFrames then
+                        EzroUI.UnitFrames:LayoutBossFrames()
                     end
                 end,
             },
@@ -304,15 +304,15 @@ local function CreateBossPositioningTab()
                 width = "full",
                 min = 0, max = 100, step = 1,
                 get = function()
-                    local db = EzUI.db.profile.unitFrames
+                    local db = EzroUI.db.profile.unitFrames
                     return (db.boss and db.boss.Spacing) or 26
                 end,
                 set = function(_, val)
-                    local db = EzUI.db.profile.unitFrames
+                    local db = EzroUI.db.profile.unitFrames
                     if not db.boss then db.boss = {} end
                     db.boss.Spacing = val
-                    if EzUI.UnitFrames and EzUI.UnitFrames.LayoutBossFrames then
-                        EzUI.UnitFrames:LayoutBossFrames()
+                    if EzroUI.UnitFrames and EzroUI.UnitFrames.LayoutBossFrames then
+                        EzroUI.UnitFrames:LayoutBossFrames()
                     end
                 end,
             },
@@ -368,14 +368,14 @@ local function CreateUnitFrameOptions(unit, displayName, order)
                     order = 4,
                     width = "full",
                     get = function()
-                        return EzUI.UnitFrames and EzUI.UnitFrames.BossPreviewMode or false
+                        return EzroUI.UnitFrames and EzroUI.UnitFrames.BossPreviewMode or false
                     end,
                     set = function(_, val)
-                        if EzUI.UnitFrames then
+                        if EzroUI.UnitFrames then
                             if val then
-                                EzUI.UnitFrames:ShowBossFramesPreview()
+                                EzroUI.UnitFrames:ShowBossFramesPreview()
                             else
-                                EzUI.UnitFrames:HideBossFramesPreview()
+                                EzroUI.UnitFrames:HideBossFramesPreview()
                             end
                         end
                     end,
@@ -515,7 +515,7 @@ local function CreateUnitFrameOptions(unit, displayName, order)
                     end,
                     set = function(_, val)
                         -- Get the current frame
-                        local frameName = (unit == "player") and "EzUI_Player" or "EzUI_Target"
+                        local frameName = (unit == "player") and "EzroUI_Player" or "EzroUI_Target"
                         local unitFrame = _G[frameName]
                         
                         if unitFrame then
@@ -553,9 +553,9 @@ local function CreateUnitFrameOptions(unit, displayName, order)
                         
                         UpdateUnitFrame(unit)
                         -- Re-hook anchor frames after change
-                        if EzUI.UnitFrames then
+                        if EzroUI.UnitFrames then
                             C_Timer.After(0.1, function()
-                                EzUI.UnitFrames:HookAnchorFrames()
+                                EzroUI.UnitFrames:HookAnchorFrames()
                             end)
                         end
                     end,
@@ -563,7 +563,7 @@ local function CreateUnitFrameOptions(unit, displayName, order)
                 anchorFrame = unit ~= "boss" and {
                     type = "input",
                     name = "Anchor Frame",
-                    desc = "Frame name to anchor to (e.g., EssentialCooldownViewer, EzUI_Player, EzUI_Target, UIParent)",
+                    desc = "Frame name to anchor to (e.g., EssentialCooldownViewer, EzroUI_Player, EzroUI_Target, UIParent)",
                     order = 22,
                     width = "full",
                     get = function()
@@ -573,9 +573,9 @@ local function CreateUnitFrameOptions(unit, displayName, order)
                         DB.Frame.AnchorFrame = val
                         UpdateUnitFrame(unit)
                         -- Re-hook anchor frames after change
-                        if EzUI.UnitFrames then
+                        if EzroUI.UnitFrames then
                             C_Timer.After(0.1, function()
-                                EzUI.UnitFrames:HookAnchorFrames()
+                                EzroUI.UnitFrames:HookAnchorFrames()
                             end)
                         end
                     end,
@@ -1457,16 +1457,16 @@ local function CreateUnitFrameOptions(unit, displayName, order)
                     min = 8, max = 48, step = 1,
                     get = function()
                         return DB.Auras.Debuffs.cooldownFontSize or
-                               (EzUI.db.profile.viewers.general and EzUI.db.profile.viewers.general.cooldownFontSize) or 18
+                               (EzroUI.db.profile.viewers.general and EzroUI.db.profile.viewers.general.cooldownFontSize) or 18
                     end,
                     set = function(_, val)
                         DB.Auras.Debuffs.cooldownFontSize = val
                         -- Refresh all cooldown fonts
-                        if EzUI.ApplyGlobalFont then
-                            EzUI:ApplyGlobalFont()
+                        if EzroUI.ApplyGlobalFont then
+                            EzroUI:ApplyGlobalFont()
                         end
                         -- Force refresh unit frame auras and their cooldowns
-                        local unitFrameName = (unit == "player") and "EzUI_Player" or (unit == "focus") and "EzUI_Focus" or "EzUI_Target"
+                        local unitFrameName = (unit == "player") and "EzroUI_Player" or (unit == "focus") and "EzroUI_Focus" or "EzroUI_Target"
                         local unitFrame = _G[unitFrameName]
                         if unitFrame then
                             UpdateUnitFrame(unit)
@@ -1475,18 +1475,18 @@ local function CreateUnitFrameOptions(unit, displayName, order)
                                 for _, icon in ipairs(unitFrame.debuffIcons) do
                                     if icon and icon.cooldown then
                                         -- Trigger cooldown font refresh
-                                        if icon.cooldown._EzUI_fontString then
+                                        if icon.cooldown._EzroUI_fontString then
                                             local debuffSettings = DB.Auras.Debuffs
                                             local fontSize = debuffSettings.cooldownFontSize or
-                                                          (EzUI.db.profile.viewers.general and EzUI.db.profile.viewers.general.cooldownFontSize) or 18
+                                                          (EzroUI.db.profile.viewers.general and EzroUI.db.profile.viewers.general.cooldownFontSize) or 18
                                             local textColor = debuffSettings.cooldownTextColor or
-                                                           (EzUI.db.profile.viewers.general and EzUI.db.profile.viewers.general.cooldownTextColor) or {1, 1, 1, 1}
-                                            local fontPath = EzUI:GetGlobalFont()
+                                                           (EzroUI.db.profile.viewers.general and EzroUI.db.profile.viewers.general.cooldownTextColor) or {1, 1, 1, 1}
+                                            local fontPath = EzroUI:GetGlobalFont()
                                             if fontPath then
-                                                icon.cooldown._EzUI_fontString:SetFont(fontPath, fontSize, "OUTLINE")
-                                                icon.cooldown._EzUI_fontString:SetTextColor(textColor[1], textColor[2], textColor[3], textColor[4] or 1)
+                                                icon.cooldown._EzroUI_fontString:SetFont(fontPath, fontSize, "OUTLINE")
+                                                icon.cooldown._EzroUI_fontString:SetTextColor(textColor[1], textColor[2], textColor[3], textColor[4] or 1)
                                                 -- No shadow for target auras, they use outline instead
-                                                icon.cooldown._EzUI_fontString:SetShadowOffset(0, 0)
+                                                icon.cooldown._EzroUI_fontString:SetShadowOffset(0, 0)
                                             end
                                         end
                                     end
@@ -1504,17 +1504,17 @@ local function CreateUnitFrameOptions(unit, displayName, order)
                     hasAlpha = true,
                     get = function()
                         local c = DB.Auras.Debuffs.cooldownTextColor or
-                                 (EzUI.db.profile.viewers.general and EzUI.db.profile.viewers.general.cooldownTextColor) or {1, 1, 1, 1}
+                                 (EzroUI.db.profile.viewers.general and EzroUI.db.profile.viewers.general.cooldownTextColor) or {1, 1, 1, 1}
                         return c[1], c[2], c[3], c[4] or 1
                     end,
                     set = function(_, r, g, b, a)
                         DB.Auras.Debuffs.cooldownTextColor = {r, g, b, a or 1}
                         -- Refresh all cooldown fonts
-                        if EzUI.ApplyGlobalFont then
-                            EzUI:ApplyGlobalFont()
+                        if EzroUI.ApplyGlobalFont then
+                            EzroUI:ApplyGlobalFont()
                         end
                         -- Force refresh unit frame auras and their cooldowns
-                        local unitFrameName = (unit == "player") and "EzUI_Player" or (unit == "focus") and "EzUI_Focus" or "EzUI_Target"
+                        local unitFrameName = (unit == "player") and "EzroUI_Player" or (unit == "focus") and "EzroUI_Focus" or "EzroUI_Target"
                         local unitFrame = _G[unitFrameName]
                         if unitFrame then
                             UpdateUnitFrame(unit)
@@ -1523,18 +1523,18 @@ local function CreateUnitFrameOptions(unit, displayName, order)
                                 for _, icon in ipairs(unitFrame.debuffIcons) do
                                     if icon and icon.cooldown then
                                         -- Trigger cooldown font refresh
-                                        if icon.cooldown._EzUI_fontString then
+                                        if icon.cooldown._EzroUI_fontString then
                                             local debuffSettings = DB.Auras.Debuffs
                                             local fontSize = debuffSettings.cooldownFontSize or
-                                                          (EzUI.db.profile.viewers.general and EzUI.db.profile.viewers.general.cooldownFontSize) or 18
+                                                          (EzroUI.db.profile.viewers.general and EzroUI.db.profile.viewers.general.cooldownFontSize) or 18
                                             local textColor = debuffSettings.cooldownTextColor or
-                                                           (EzUI.db.profile.viewers.general and EzUI.db.profile.viewers.general.cooldownTextColor) or {1, 1, 1, 1}
-                                            local fontPath = EzUI:GetGlobalFont()
+                                                           (EzroUI.db.profile.viewers.general and EzroUI.db.profile.viewers.general.cooldownTextColor) or {1, 1, 1, 1}
+                                            local fontPath = EzroUI:GetGlobalFont()
                                             if fontPath then
-                                                icon.cooldown._EzUI_fontString:SetFont(fontPath, fontSize, "OUTLINE")
-                                                icon.cooldown._EzUI_fontString:SetTextColor(textColor[1], textColor[2], textColor[3], textColor[4] or 1)
+                                                icon.cooldown._EzroUI_fontString:SetFont(fontPath, fontSize, "OUTLINE")
+                                                icon.cooldown._EzroUI_fontString:SetTextColor(textColor[1], textColor[2], textColor[3], textColor[4] or 1)
                                                 -- No shadow for target auras, they use outline instead
-                                                icon.cooldown._EzUI_fontString:SetShadowOffset(0, 0)
+                                                icon.cooldown._EzroUI_fontString:SetShadowOffset(0, 0)
                                             end
                                         end
                                     end
@@ -1765,16 +1765,16 @@ local function CreateUnitFrameOptions(unit, displayName, order)
                     min = 8, max = 48, step = 1,
                     get = function()
                         return DB.Auras.Buffs.cooldownFontSize or
-                               (EzUI.db.profile.viewers.general and EzUI.db.profile.viewers.general.cooldownFontSize) or 18
+                               (EzroUI.db.profile.viewers.general and EzroUI.db.profile.viewers.general.cooldownFontSize) or 18
                     end,
                     set = function(_, val)
                         DB.Auras.Buffs.cooldownFontSize = val
                         -- Refresh all cooldown fonts
-                        if EzUI.ApplyGlobalFont then
-                            EzUI:ApplyGlobalFont()
+                        if EzroUI.ApplyGlobalFont then
+                            EzroUI:ApplyGlobalFont()
                         end
                         -- Force refresh unit frame auras and their cooldowns
-                        local unitFrameName = (unit == "player") and "EzUI_Player" or (unit == "focus") and "EzUI_Focus" or "EzUI_Target"
+                        local unitFrameName = (unit == "player") and "EzroUI_Player" or (unit == "focus") and "EzroUI_Focus" or "EzroUI_Target"
                         local unitFrame = _G[unitFrameName]
                         if unitFrame then
                             UpdateUnitFrame(unit)
@@ -1783,18 +1783,18 @@ local function CreateUnitFrameOptions(unit, displayName, order)
                                 for _, icon in ipairs(unitFrame.buffIcons) do
                                     if icon and icon.cooldown then
                                         -- Trigger cooldown font refresh
-                                        if icon.cooldown._EzUI_fontString then
+                                        if icon.cooldown._EzroUI_fontString then
                                             local buffSettings = DB.Auras.Buffs
                                             local fontSize = buffSettings.cooldownFontSize or
-                                                          (EzUI.db.profile.viewers.general and EzUI.db.profile.viewers.general.cooldownFontSize) or 18
+                                                          (EzroUI.db.profile.viewers.general and EzroUI.db.profile.viewers.general.cooldownFontSize) or 18
                                             local textColor = buffSettings.cooldownTextColor or
-                                                           (EzUI.db.profile.viewers.general and EzUI.db.profile.viewers.general.cooldownTextColor) or {1, 1, 1, 1}
-                                            local fontPath = EzUI:GetGlobalFont()
+                                                           (EzroUI.db.profile.viewers.general and EzroUI.db.profile.viewers.general.cooldownTextColor) or {1, 1, 1, 1}
+                                            local fontPath = EzroUI:GetGlobalFont()
                                             if fontPath then
-                                                icon.cooldown._EzUI_fontString:SetFont(fontPath, fontSize, "OUTLINE")
-                                                icon.cooldown._EzUI_fontString:SetTextColor(textColor[1], textColor[2], textColor[3], textColor[4] or 1)
+                                                icon.cooldown._EzroUI_fontString:SetFont(fontPath, fontSize, "OUTLINE")
+                                                icon.cooldown._EzroUI_fontString:SetTextColor(textColor[1], textColor[2], textColor[3], textColor[4] or 1)
                                                 -- No shadow for target auras, they use outline instead
-                                                icon.cooldown._EzUI_fontString:SetShadowOffset(0, 0)
+                                                icon.cooldown._EzroUI_fontString:SetShadowOffset(0, 0)
                                             end
                                         end
                                     end
@@ -1812,17 +1812,17 @@ local function CreateUnitFrameOptions(unit, displayName, order)
                     hasAlpha = true,
                     get = function()
                         local c = DB.Auras.Buffs.cooldownTextColor or
-                                 (EzUI.db.profile.viewers.general and EzUI.db.profile.viewers.general.cooldownTextColor) or {1, 1, 1, 1}
+                                 (EzroUI.db.profile.viewers.general and EzroUI.db.profile.viewers.general.cooldownTextColor) or {1, 1, 1, 1}
                         return c[1], c[2], c[3], c[4] or 1
                     end,
                     set = function(_, r, g, b, a)
                         DB.Auras.Buffs.cooldownTextColor = {r, g, b, a or 1}
                         -- Refresh all cooldown fonts
-                        if EzUI.ApplyGlobalFont then
-                            EzUI:ApplyGlobalFont()
+                        if EzroUI.ApplyGlobalFont then
+                            EzroUI:ApplyGlobalFont()
                         end
                         -- Force refresh unit frame auras and their cooldowns
-                        local unitFrameName = (unit == "player") and "EzUI_Player" or (unit == "focus") and "EzUI_Focus" or "EzUI_Target"
+                        local unitFrameName = (unit == "player") and "EzroUI_Player" or (unit == "focus") and "EzroUI_Focus" or "EzroUI_Target"
                         local unitFrame = _G[unitFrameName]
                         if unitFrame then
                             UpdateUnitFrame(unit)
@@ -1831,18 +1831,18 @@ local function CreateUnitFrameOptions(unit, displayName, order)
                                 for _, icon in ipairs(unitFrame.buffIcons) do
                                     if icon and icon.cooldown then
                                         -- Trigger cooldown font refresh
-                                        if icon.cooldown._EzUI_fontString then
+                                        if icon.cooldown._EzroUI_fontString then
                                             local buffSettings = DB.Auras.Buffs
                                             local fontSize = buffSettings.cooldownFontSize or
-                                                          (EzUI.db.profile.viewers.general and EzUI.db.profile.viewers.general.cooldownFontSize) or 18
+                                                          (EzroUI.db.profile.viewers.general and EzroUI.db.profile.viewers.general.cooldownFontSize) or 18
                                             local textColor = buffSettings.cooldownTextColor or
-                                                           (EzUI.db.profile.viewers.general and EzUI.db.profile.viewers.general.cooldownTextColor) or {1, 1, 1, 1}
-                                            local fontPath = EzUI:GetGlobalFont()
+                                                           (EzroUI.db.profile.viewers.general and EzroUI.db.profile.viewers.general.cooldownTextColor) or {1, 1, 1, 1}
+                                            local fontPath = EzroUI:GetGlobalFont()
                                             if fontPath then
-                                                icon.cooldown._EzUI_fontString:SetFont(fontPath, fontSize, "OUTLINE")
-                                                icon.cooldown._EzUI_fontString:SetTextColor(textColor[1], textColor[2], textColor[3], textColor[4] or 1)
+                                                icon.cooldown._EzroUI_fontString:SetFont(fontPath, fontSize, "OUTLINE")
+                                                icon.cooldown._EzroUI_fontString:SetTextColor(textColor[1], textColor[2], textColor[3], textColor[4] or 1)
                                                 -- No shadow for target auras, they use outline instead
-                                                icon.cooldown._EzUI_fontString:SetShadowOffset(0, 0)
+                                                icon.cooldown._EzroUI_fontString:SetShadowOffset(0, 0)
                                             end
                                         end
                                     end
@@ -1886,10 +1886,10 @@ local function CreateUnitFrameOptions(unit, displayName, order)
                     set = function(_, val)
                         DB.AbsorbBar.Texture = val
                         -- Trigger absorb bar texture update
-                        local frameName = (unit == "player") and "EzUI_Player" or "EzUI_Target"
+                        local frameName = (unit == "player") and "EzroUI_Player" or "EzroUI_Target"
                         local unitFrame = _G[frameName]
-                        if unitFrame and unitFrame.__EzUIAbsorbBar then
-                            local absorbBar = unitFrame.__EzUIAbsorbBar
+                        if unitFrame and unitFrame.__EzroUIAbsorbBar then
+                            local absorbBar = unitFrame.__EzroUIAbsorbBar
                             if absorbBar.UpdateTexture then
                                 absorbBar.UpdateTexture()
                             end
@@ -1910,10 +1910,10 @@ local function CreateUnitFrameOptions(unit, displayName, order)
                     set = function(_, r, g, b, a)
                         DB.AbsorbBar.Color = {r, g, b, a or 0.8}
                         -- Trigger absorb bar color update
-                        local frameName = (unit == "player") and "EzUI_Player" or "EzUI_Target"
+                        local frameName = (unit == "player") and "EzroUI_Player" or "EzroUI_Target"
                         local unitFrame = _G[frameName]
-                        if unitFrame and unitFrame.__EzUIAbsorbBar then
-                            local absorbBar = unitFrame.__EzUIAbsorbBar
+                        if unitFrame and unitFrame.__EzroUIAbsorbBar then
+                            local absorbBar = unitFrame.__EzroUIAbsorbBar
                             if absorbBar.UpdateColor then
                                 absorbBar.UpdateColor()
                             end
@@ -1937,10 +1937,10 @@ local function CreateUnitFrameOptions(unit, displayName, order)
                     set = function(_, val)
                         DB.AbsorbBar.AnchorMode = val
                         -- Trigger absorb bar position update
-                        local frameName = (unit == "player") and "EzUI_Player" or "EzUI_Target"
+                        local frameName = (unit == "player") and "EzroUI_Player" or "EzroUI_Target"
                         local unitFrame = _G[frameName]
-                        if unitFrame and unitFrame.__EzUIAbsorbBar then
-                            local absorbBar = unitFrame.__EzUIAbsorbBar
+                        if unitFrame and unitFrame.__EzroUIAbsorbBar then
+                            local absorbBar = unitFrame.__EzroUIAbsorbBar
                             if absorbBar.UpdatePosition then
                                 absorbBar.UpdatePosition()
                             end
@@ -1963,10 +1963,10 @@ local function CreateUnitFrameOptions(unit, displayName, order)
                     set = function(_, val)
                         DB.AbsorbBar.FillDirection = val
                         -- Trigger absorb bar fill direction update
-                        local frameName = (unit == "player") and "EzUI_Player" or "EzUI_Target"
+                        local frameName = (unit == "player") and "EzroUI_Player" or "EzroUI_Target"
                         local unitFrame = _G[frameName]
-                        if unitFrame and unitFrame.__EzUIAbsorbBar then
-                            local absorbBar = unitFrame.__EzUIAbsorbBar
+                        if unitFrame and unitFrame.__EzroUIAbsorbBar then
+                            local absorbBar = unitFrame.__EzroUIAbsorbBar
                             if absorbBar.UpdateFillDirection then
                                 absorbBar.UpdateFillDirection()
                             end
@@ -2525,23 +2525,23 @@ local function CreateUnitFrameOptionsGroup()
                         width = "full",
                         order = 2,
                         get = function()
-                            if not EzUI.db.profile.unitFrames then
-                                EzUI.db.profile.unitFrames = {}
+                            if not EzroUI.db.profile.unitFrames then
+                                EzroUI.db.profile.unitFrames = {}
                             end
-                            return EzUI.db.profile.unitFrames.enabled or false
+                            return EzroUI.db.profile.unitFrames.enabled or false
                         end,
                         set = function(_, val)
-                            if not EzUI.db.profile.unitFrames then
-                                EzUI.db.profile.unitFrames = {}
+                            if not EzroUI.db.profile.unitFrames then
+                                EzroUI.db.profile.unitFrames = {}
                             end
-                            EzUI.db.profile.unitFrames.enabled = val
-                            if EzUI.UnitFrames then
+                            EzroUI.db.profile.unitFrames.enabled = val
+                            if EzroUI.UnitFrames then
                                 if val then
-                                    EzUI.UnitFrames:Initialize()
+                                    EzroUI.UnitFrames:Initialize()
                                 else
                                     -- Hide all frames when disabled
                                     for unit in pairs({player = true, target = true, targettarget = true, pet = true, focus = true}) do
-                                        local frameName = "EzUI_" .. unit:gsub("^%l", string.upper):gsub("targettarget", "TargetTarget")
+                                        local frameName = "EzroUI_" .. unit:gsub("^%l", string.upper):gsub("targettarget", "TargetTarget")
                                         local frame = _G[frameName]
                                         if frame then frame:Hide() end
                                     end
@@ -2566,11 +2566,11 @@ local function CreateUnitFrameOptionsGroup()
                         width = "normal",
                         order = 5,
                         func = function()
-                            local db = EzUI.db.profile.unitFrames
+                            local db = EzroUI.db.profile.unitFrames
                             if not db.General then db.General = {} end
                             db.General.ShowEditModeAnchors = true
-                            if EzUI.UnitFrames then
-                                EzUI.UnitFrames:UpdateEditModeAnchors()
+                            if EzroUI.UnitFrames then
+                                EzroUI.UnitFrames:UpdateEditModeAnchors()
                             end
                         end,
                     },
@@ -2581,11 +2581,11 @@ local function CreateUnitFrameOptionsGroup()
                         width = "normal",
                         order = 6,
                         func = function()
-                            local db = EzUI.db.profile.unitFrames
+                            local db = EzroUI.db.profile.unitFrames
                             if not db.General then db.General = {} end
                             db.General.ShowEditModeAnchors = false
-                            if EzUI.UnitFrames then
-                                EzUI.UnitFrames:UpdateEditModeAnchors()
+                            if EzroUI.UnitFrames then
+                                EzroUI.UnitFrames:UpdateEditModeAnchors()
                             end
                         end,
                     },
@@ -2610,22 +2610,22 @@ local function CreateUnitFrameOptionsGroup()
                             return names
                         end,
                         get = function()
-                            local db = EzUI.db.profile.unitFrames
+                            local db = EzroUI.db.profile.unitFrames
                             if not db or not db.General then return "Blizzard Raid Bar" end
                             local override = db.General and db.General.ForegroundTexture
                             if override and override ~= "" then
                                 return override
                             end
                             -- Return global texture name when override is nil
-                            return EzUI.db.profile.general.globalTexture or "Ez"
+                            return EzroUI.db.profile.general.globalTexture or "Ez"
                         end,
                         set = function(_, val)
-                            local db = EzUI.db.profile.unitFrames
+                            local db = EzroUI.db.profile.unitFrames
                             if not db.General then db.General = {} end
                             db.General.ForegroundTexture = val
-                            if EzUI.UnitFrames then
-                                EzUI.UnitFrames:ResolveMedia()
-                                EzUI.UnitFrames:RefreshFrames()
+                            if EzroUI.UnitFrames then
+                                EzroUI.UnitFrames:ResolveMedia()
+                                EzroUI.UnitFrames:RefreshFrames()
                             end
                         end,
                     },
@@ -2644,22 +2644,22 @@ local function CreateUnitFrameOptionsGroup()
                             return names
                         end,
                         get = function()
-                            local db = EzUI.db.profile.unitFrames
+                            local db = EzroUI.db.profile.unitFrames
                             if not db or not db.General then return "Solid" end
                             local override = db.General and db.General.BackgroundTexture
                             if override and override ~= "" then
                                 return override
                             end
                             -- Return global texture name when override is nil
-                            return EzUI.db.profile.general.globalTexture or "Ez"
+                            return EzroUI.db.profile.general.globalTexture or "Ez"
                         end,
                         set = function(_, val)
-                            local db = EzUI.db.profile.unitFrames
+                            local db = EzroUI.db.profile.unitFrames
                             if not db.General then db.General = {} end
                             db.General.BackgroundTexture = val
-                            if EzUI.UnitFrames then
-                                EzUI.UnitFrames:ResolveMedia()
-                                EzUI.UnitFrames:RefreshFrames()
+                            if EzroUI.UnitFrames then
+                                EzroUI.UnitFrames:ResolveMedia()
+                                EzroUI.UnitFrames:RefreshFrames()
                             end
                         end,
                     },
@@ -2685,15 +2685,15 @@ local function CreateUnitFrameOptionsGroup()
                             return names
                         end,
                         get = function()
-                            return EzUI.db.profile.general.globalFont or "Friz Quadrata TT"
+                            return EzroUI.db.profile.general.globalFont or "Friz Quadrata TT"
                         end,
                         set = function(_, val)
-                            EzUI.db.profile.general.globalFont = val
-                            if EzUI.ApplyGlobalFont then
-                                EzUI:ApplyGlobalFont()
+                            EzroUI.db.profile.general.globalFont = val
+                            if EzroUI.ApplyGlobalFont then
+                                EzroUI:ApplyGlobalFont()
                             end
-                            if EzUI.RefreshAll then
-                                EzUI:RefreshAll()
+                            if EzroUI.RefreshAll then
+                                EzroUI:RefreshAll()
                             end
                         end,
                     },
@@ -2710,16 +2710,16 @@ local function CreateUnitFrameOptionsGroup()
                             ["NONE"] = "None",
                         },
                         get = function()
-                            local db = EzUI.db.profile.unitFrames
+                            local db = EzroUI.db.profile.unitFrames
                             if not db or not db.General then return "OUTLINE" end
                             return db.General.FontFlag or "OUTLINE"
                         end,
                         set = function(_, val)
-                            local db = EzUI.db.profile.unitFrames
+                            local db = EzroUI.db.profile.unitFrames
                             if not db.General then db.General = {} end
                             db.General.FontFlag = val
-                            if EzUI.UnitFrames then
-                                EzUI.UnitFrames:RefreshFrames()
+                            if EzroUI.UnitFrames then
+                                EzroUI.UnitFrames:RefreshFrames()
                             end
                         end,
                     },
@@ -2737,17 +2737,17 @@ local function CreateUnitFrameOptionsGroup()
                         width = "normal",
                         min = -10, max = 10, step = 1,
                         get = function()
-                            local db = EzUI.db.profile.unitFrames
+                            local db = EzroUI.db.profile.unitFrames
                             if not db or not db.General or not db.General.FontShadows then return 0 end
                             return db.General.FontShadows.OffsetX or 0
                         end,
                         set = function(_, val)
-                            local db = EzUI.db.profile.unitFrames
+                            local db = EzroUI.db.profile.unitFrames
                             if not db.General then db.General = {} end
                             if not db.General.FontShadows then db.General.FontShadows = {} end
                             db.General.FontShadows.OffsetX = val
-                            if EzUI.UnitFrames then
-                                EzUI.UnitFrames:RefreshFrames()
+                            if EzroUI.UnitFrames then
+                                EzroUI.UnitFrames:RefreshFrames()
                             end
                         end,
                     },
@@ -2758,17 +2758,17 @@ local function CreateUnitFrameOptionsGroup()
                         width = "normal",
                         min = -10, max = 10, step = 1,
                         get = function()
-                            local db = EzUI.db.profile.unitFrames
+                            local db = EzroUI.db.profile.unitFrames
                             if not db or not db.General or not db.General.FontShadows then return 0 end
                             return db.General.FontShadows.OffsetY or 0
                         end,
                         set = function(_, val)
-                            local db = EzUI.db.profile.unitFrames
+                            local db = EzroUI.db.profile.unitFrames
                             if not db.General then db.General = {} end
                             if not db.General.FontShadows then db.General.FontShadows = {} end
                             db.General.FontShadows.OffsetY = val
-                            if EzUI.UnitFrames then
-                                EzUI.UnitFrames:RefreshFrames()
+                            if EzroUI.UnitFrames then
+                                EzroUI.UnitFrames:RefreshFrames()
                             end
                         end,
                     },
@@ -2779,18 +2779,18 @@ local function CreateUnitFrameOptionsGroup()
                         width = "normal",
                         hasAlpha = true,
                         get = function()
-                            local db = EzUI.db.profile.unitFrames
+                            local db = EzroUI.db.profile.unitFrames
                             if not db or not db.General or not db.General.FontShadows then return 0, 0, 0, 0 end
                             local c = db.General.FontShadows.Color or {0, 0, 0, 0}
                             return c[1], c[2], c[3], c[4] or 0
                         end,
                         set = function(_, r, g, b, a)
-                            local db = EzUI.db.profile.unitFrames
+                            local db = EzroUI.db.profile.unitFrames
                             if not db.General then db.General = {} end
                             if not db.General.FontShadows then db.General.FontShadows = {} end
                             db.General.FontShadows.Color = {r, g, b, a or 0}
-                            if EzUI.UnitFrames then
-                                EzUI.UnitFrames:RefreshFrames()
+                            if EzroUI.UnitFrames then
+                                EzroUI.UnitFrames:RefreshFrames()
                             end
                         end,
                     },
@@ -2803,28 +2803,28 @@ local function CreateUnitFrameOptionsGroup()
                     mouseoverToggle = {
                         type = "toggle",
                         name = "Enable Mouseover Highlight",
-                        desc = "Show the custom mouseover glow on all EzUI unit frames",
+                        desc = "Show the custom mouseover glow on all EzroUI unit frames",
                         order = 35,
                         width = "full",
                         get = function()
-                            local db = EzUI.db.profile.unitFrames
+                            local db = EzroUI.db.profile.unitFrames
                             local settings = db and db.General and db.General.MouseoverHighlight
                             if settings == nil then return true end
                             return settings.Enabled ~= false
                         end,
                         set = function(_, val)
-                            local db = EzUI.db.profile.unitFrames
+                            local db = EzroUI.db.profile.unitFrames
                             if not db then
-                                EzUI.db.profile.unitFrames = {}
-                                db = EzUI.db.profile.unitFrames
+                                EzroUI.db.profile.unitFrames = {}
+                                db = EzroUI.db.profile.unitFrames
                             end
                             if not db.General then db.General = {} end
                             if not db.General.MouseoverHighlight then
                                 db.General.MouseoverHighlight = {Enabled = true, Alpha = 0.5}
                             end
                             db.General.MouseoverHighlight.Enabled = val
-                            if EzUI.UnitFrames then
-                                EzUI.UnitFrames:RefreshFrames()
+                            if EzroUI.UnitFrames then
+                                EzroUI.UnitFrames:RefreshFrames()
                             end
                         end,
                     },
@@ -2838,28 +2838,28 @@ local function CreateUnitFrameOptionsGroup()
                         max = 1,
                         step = 0.05,
                         disabled = function()
-                            local db = EzUI.db.profile.unitFrames
+                            local db = EzroUI.db.profile.unitFrames
                             local settings = db and db.General and db.General.MouseoverHighlight
                             return settings and settings.Enabled == false
                         end,
                         get = function()
-                            local db = EzUI.db.profile.unitFrames
+                            local db = EzroUI.db.profile.unitFrames
                             local settings = db and db.General and db.General.MouseoverHighlight
                             return (settings and settings.Alpha) or 0.5
                         end,
                         set = function(_, val)
-                            local db = EzUI.db.profile.unitFrames
+                            local db = EzroUI.db.profile.unitFrames
                             if not db then
-                                EzUI.db.profile.unitFrames = {}
-                                db = EzUI.db.profile.unitFrames
+                                EzroUI.db.profile.unitFrames = {}
+                                db = EzroUI.db.profile.unitFrames
                             end
                             if not db.General then db.General = {} end
                             if not db.General.MouseoverHighlight then
                                 db.General.MouseoverHighlight = {Enabled = true, Alpha = 0.5}
                             end
                             db.General.MouseoverHighlight.Alpha = val
-                            if EzUI.UnitFrames then
-                                EzUI.UnitFrames:RefreshFrames()
+                            if EzroUI.UnitFrames then
+                                EzroUI.UnitFrames:RefreshFrames()
                             end
                         end,
                     },
@@ -2882,7 +2882,7 @@ local function CreateUnitFrameOptionsGroup()
                         width = "normal",
                         hasAlpha = false,
                         get = function()
-                            local db = EzUI.db.profile.unitFrames
+                            local db = EzroUI.db.profile.unitFrames
                             if not db or not db.General or not db.General.CustomColors or not db.General.CustomColors.Power then
                                 return 0, 0, 1
                             end
@@ -2890,13 +2890,13 @@ local function CreateUnitFrameOptionsGroup()
                             return c[1], c[2], c[3]
                         end,
                         set = function(_, r, g, b)
-                            local db = EzUI.db.profile.unitFrames
+                            local db = EzroUI.db.profile.unitFrames
                             if not db.General then db.General = {} end
                             if not db.General.CustomColors then db.General.CustomColors = {} end
                             if not db.General.CustomColors.Power then db.General.CustomColors.Power = {} end
                             db.General.CustomColors.Power[0] = {r, g, b}
-                            if EzUI.UnitFrames then
-                                EzUI.UnitFrames:RefreshFrames()
+                            if EzroUI.UnitFrames then
+                                EzroUI.UnitFrames:RefreshFrames()
                             end
                         end,
                     },
@@ -2907,7 +2907,7 @@ local function CreateUnitFrameOptionsGroup()
                         width = "normal",
                         hasAlpha = false,
                         get = function()
-                            local db = EzUI.db.profile.unitFrames
+                            local db = EzroUI.db.profile.unitFrames
                             if not db or not db.General or not db.General.CustomColors or not db.General.CustomColors.Power then
                                 return 1, 0, 0
                             end
@@ -2915,13 +2915,13 @@ local function CreateUnitFrameOptionsGroup()
                             return c[1], c[2], c[3]
                         end,
                         set = function(_, r, g, b)
-                            local db = EzUI.db.profile.unitFrames
+                            local db = EzroUI.db.profile.unitFrames
                             if not db.General then db.General = {} end
                             if not db.General.CustomColors then db.General.CustomColors = {} end
                             if not db.General.CustomColors.Power then db.General.CustomColors.Power = {} end
                             db.General.CustomColors.Power[1] = {r, g, b}
-                            if EzUI.UnitFrames then
-                                EzUI.UnitFrames:RefreshFrames()
+                            if EzroUI.UnitFrames then
+                                EzroUI.UnitFrames:RefreshFrames()
                             end
                         end,
                     },
@@ -2932,7 +2932,7 @@ local function CreateUnitFrameOptionsGroup()
                         width = "normal",
                         hasAlpha = false,
                         get = function()
-                            local db = EzUI.db.profile.unitFrames
+                            local db = EzroUI.db.profile.unitFrames
                             if not db or not db.General or not db.General.CustomColors or not db.General.CustomColors.Power then
                                 return 1, 1, 0
                             end
@@ -2940,13 +2940,13 @@ local function CreateUnitFrameOptionsGroup()
                             return c[1], c[2], c[3]
                         end,
                         set = function(_, r, g, b)
-                            local db = EzUI.db.profile.unitFrames
+                            local db = EzroUI.db.profile.unitFrames
                             if not db.General then db.General = {} end
                             if not db.General.CustomColors then db.General.CustomColors = {} end
                             if not db.General.CustomColors.Power then db.General.CustomColors.Power = {} end
                             db.General.CustomColors.Power[3] = {r, g, b}
-                            if EzUI.UnitFrames then
-                                EzUI.UnitFrames:RefreshFrames()
+                            if EzroUI.UnitFrames then
+                                EzroUI.UnitFrames:RefreshFrames()
                             end
                         end,
                     },
@@ -2957,7 +2957,7 @@ local function CreateUnitFrameOptionsGroup()
                         width = "normal",
                         hasAlpha = false,
                         get = function()
-                            local db = EzUI.db.profile.unitFrames
+                            local db = EzroUI.db.profile.unitFrames
                             if not db or not db.General or not db.General.CustomColors or not db.General.CustomColors.Power then
                                 return 0, 0.82, 1
                             end
@@ -2965,13 +2965,13 @@ local function CreateUnitFrameOptionsGroup()
                             return c[1], c[2], c[3]
                         end,
                         set = function(_, r, g, b)
-                            local db = EzUI.db.profile.unitFrames
+                            local db = EzroUI.db.profile.unitFrames
                             if not db.General then db.General = {} end
                             if not db.General.CustomColors then db.General.CustomColors = {} end
                             if not db.General.CustomColors.Power then db.General.CustomColors.Power = {} end
                             db.General.CustomColors.Power[6] = {r, g, b}
-                            if EzUI.UnitFrames then
-                                EzUI.UnitFrames:RefreshFrames()
+                            if EzroUI.UnitFrames then
+                                EzroUI.UnitFrames:RefreshFrames()
                             end
                         end,
                     },
@@ -2982,7 +2982,7 @@ local function CreateUnitFrameOptionsGroup()
                         width = "normal",
                         hasAlpha = false,
                         get = function()
-                            local db = EzUI.db.profile.unitFrames
+                            local db = EzroUI.db.profile.unitFrames
                             if not db or not db.General or not db.General.CustomColors or not db.General.CustomColors.Power then
                                 return 1, 0.5, 0.25
                             end
@@ -2990,13 +2990,13 @@ local function CreateUnitFrameOptionsGroup()
                             return c[1], c[2], c[3]
                         end,
                         set = function(_, r, g, b)
-                            local db = EzUI.db.profile.unitFrames
+                            local db = EzroUI.db.profile.unitFrames
                             if not db.General then db.General = {} end
                             if not db.General.CustomColors then db.General.CustomColors = {} end
                             if not db.General.CustomColors.Power then db.General.CustomColors.Power = {} end
                             db.General.CustomColors.Power[2] = {r, g, b}
-                            if EzUI.UnitFrames then
-                                EzUI.UnitFrames:RefreshFrames()
+                            if EzroUI.UnitFrames then
+                                EzroUI.UnitFrames:RefreshFrames()
                             end
                         end,
                     },
@@ -3007,7 +3007,7 @@ local function CreateUnitFrameOptionsGroup()
                         width = "normal",
                         hasAlpha = false,
                         get = function()
-                            local db = EzUI.db.profile.unitFrames
+                            local db = EzroUI.db.profile.unitFrames
                             if not db or not db.General or not db.General.CustomColors or not db.General.CustomColors.Power then
                                 return 0.3, 0.52, 0.9
                             end
@@ -3015,13 +3015,13 @@ local function CreateUnitFrameOptionsGroup()
                             return c[1], c[2], c[3]
                         end,
                         set = function(_, r, g, b)
-                            local db = EzUI.db.profile.unitFrames
+                            local db = EzroUI.db.profile.unitFrames
                             if not db.General then db.General = {} end
                             if not db.General.CustomColors then db.General.CustomColors = {} end
                             if not db.General.CustomColors.Power then db.General.CustomColors.Power = {} end
                             db.General.CustomColors.Power[8] = {r, g, b}
-                            if EzUI.UnitFrames then
-                                EzUI.UnitFrames:RefreshFrames()
+                            if EzroUI.UnitFrames then
+                                EzroUI.UnitFrames:RefreshFrames()
                             end
                         end,
                     },
@@ -3032,7 +3032,7 @@ local function CreateUnitFrameOptionsGroup()
                         width = "normal",
                         hasAlpha = false,
                         get = function()
-                            local db = EzUI.db.profile.unitFrames
+                            local db = EzroUI.db.profile.unitFrames
                             if not db or not db.General or not db.General.CustomColors or not db.General.CustomColors.Power then
                                 return 0, 0.5, 1
                             end
@@ -3040,13 +3040,13 @@ local function CreateUnitFrameOptionsGroup()
                             return c[1], c[2], c[3]
                         end,
                         set = function(_, r, g, b)
-                            local db = EzUI.db.profile.unitFrames
+                            local db = EzroUI.db.profile.unitFrames
                             if not db.General then db.General = {} end
                             if not db.General.CustomColors then db.General.CustomColors = {} end
                             if not db.General.CustomColors.Power then db.General.CustomColors.Power = {} end
                             db.General.CustomColors.Power[11] = {r, g, b}
-                            if EzUI.UnitFrames then
-                                EzUI.UnitFrames:RefreshFrames()
+                            if EzroUI.UnitFrames then
+                                EzroUI.UnitFrames:RefreshFrames()
                             end
                         end,
                     },
@@ -3057,7 +3057,7 @@ local function CreateUnitFrameOptionsGroup()
                         width = "normal",
                         hasAlpha = false,
                         get = function()
-                            local db = EzUI.db.profile.unitFrames
+                            local db = EzroUI.db.profile.unitFrames
                             if not db or not db.General or not db.General.CustomColors or not db.General.CustomColors.Power then
                                 return 0.4, 0, 0.8
                             end
@@ -3065,13 +3065,13 @@ local function CreateUnitFrameOptionsGroup()
                             return c[1], c[2], c[3]
                         end,
                         set = function(_, r, g, b)
-                            local db = EzUI.db.profile.unitFrames
+                            local db = EzroUI.db.profile.unitFrames
                             if not db.General then db.General = {} end
                             if not db.General.CustomColors then db.General.CustomColors = {} end
                             if not db.General.CustomColors.Power then db.General.CustomColors.Power = {} end
                             db.General.CustomColors.Power[13] = {r, g, b}
-                            if EzUI.UnitFrames then
-                                EzUI.UnitFrames:RefreshFrames()
+                            if EzroUI.UnitFrames then
+                                EzroUI.UnitFrames:RefreshFrames()
                             end
                         end,
                     },
@@ -3082,7 +3082,7 @@ local function CreateUnitFrameOptionsGroup()
                         width = "normal",
                         hasAlpha = false,
                         get = function()
-                            local db = EzUI.db.profile.unitFrames
+                            local db = EzroUI.db.profile.unitFrames
                             if not db or not db.General or not db.General.CustomColors or not db.General.CustomColors.Power then
                                 return 0.79, 0.26, 0.99
                             end
@@ -3090,13 +3090,13 @@ local function CreateUnitFrameOptionsGroup()
                             return c[1], c[2], c[3]
                         end,
                         set = function(_, r, g, b)
-                            local db = EzUI.db.profile.unitFrames
+                            local db = EzroUI.db.profile.unitFrames
                             if not db.General then db.General = {} end
                             if not db.General.CustomColors then db.General.CustomColors = {} end
                             if not db.General.CustomColors.Power then db.General.CustomColors.Power = {} end
                             db.General.CustomColors.Power[17] = {r, g, b}
-                            if EzUI.UnitFrames then
-                                EzUI.UnitFrames:RefreshFrames()
+                            if EzroUI.UnitFrames then
+                                EzroUI.UnitFrames:RefreshFrames()
                             end
                         end,
                     },
@@ -3107,7 +3107,7 @@ local function CreateUnitFrameOptionsGroup()
                         width = "normal",
                         hasAlpha = false,
                         get = function()
-                            local db = EzUI.db.profile.unitFrames
+                            local db = EzroUI.db.profile.unitFrames
                             if not db or not db.General or not db.General.CustomColors or not db.General.CustomColors.Power then
                                 return 1, 0.61, 0
                             end
@@ -3115,13 +3115,13 @@ local function CreateUnitFrameOptionsGroup()
                             return c[1], c[2], c[3]
                         end,
                         set = function(_, r, g, b)
-                            local db = EzUI.db.profile.unitFrames
+                            local db = EzroUI.db.profile.unitFrames
                             if not db.General then db.General = {} end
                             if not db.General.CustomColors then db.General.CustomColors = {} end
                             if not db.General.CustomColors.Power then db.General.CustomColors.Power = {} end
                             db.General.CustomColors.Power[18] = {r, g, b}
-                            if EzUI.UnitFrames then
-                                EzUI.UnitFrames:RefreshFrames()
+                            if EzroUI.UnitFrames then
+                                EzroUI.UnitFrames:RefreshFrames()
                             end
                         end,
                     },
@@ -3137,7 +3137,7 @@ local function CreateUnitFrameOptionsGroup()
                         width = "normal",
                         hasAlpha = false,
                         get = function()
-                            local db = EzUI.db.profile.unitFrames
+                            local db = EzroUI.db.profile.unitFrames
                             if not db or not db.General or not db.General.CustomColors or not db.General.CustomColors.Reaction then
                                 return 204/255, 64/255, 64/255
                             end
@@ -3145,13 +3145,13 @@ local function CreateUnitFrameOptionsGroup()
                             return c[1], c[2], c[3]
                         end,
                         set = function(_, r, g, b)
-                            local db = EzUI.db.profile.unitFrames
+                            local db = EzroUI.db.profile.unitFrames
                             if not db.General then db.General = {} end
                             if not db.General.CustomColors then db.General.CustomColors = {} end
                             if not db.General.CustomColors.Reaction then db.General.CustomColors.Reaction = {} end
                             db.General.CustomColors.Reaction[2] = {r, g, b}
-                            if EzUI.UnitFrames then
-                                EzUI.UnitFrames:RefreshFrames()
+                            if EzroUI.UnitFrames then
+                                EzroUI.UnitFrames:RefreshFrames()
                             end
                         end,
                     },
@@ -3162,7 +3162,7 @@ local function CreateUnitFrameOptionsGroup()
                         width = "normal",
                         hasAlpha = false,
                         get = function()
-                            local db = EzUI.db.profile.unitFrames
+                            local db = EzroUI.db.profile.unitFrames
                             if not db or not db.General or not db.General.CustomColors or not db.General.CustomColors.Reaction then
                                 return 204/255, 204/255, 64/255
                             end
@@ -3170,13 +3170,13 @@ local function CreateUnitFrameOptionsGroup()
                             return c[1], c[2], c[3]
                         end,
                         set = function(_, r, g, b)
-                            local db = EzUI.db.profile.unitFrames
+                            local db = EzroUI.db.profile.unitFrames
                             if not db.General then db.General = {} end
                             if not db.General.CustomColors then db.General.CustomColors = {} end
                             if not db.General.CustomColors.Reaction then db.General.CustomColors.Reaction = {} end
                             db.General.CustomColors.Reaction[4] = {r, g, b}
-                            if EzUI.UnitFrames then
-                                EzUI.UnitFrames:RefreshFrames()
+                            if EzroUI.UnitFrames then
+                                EzroUI.UnitFrames:RefreshFrames()
                             end
                         end,
                     },
@@ -3187,7 +3187,7 @@ local function CreateUnitFrameOptionsGroup()
                         width = "normal",
                         hasAlpha = false,
                         get = function()
-                            local db = EzUI.db.profile.unitFrames
+                            local db = EzroUI.db.profile.unitFrames
                             if not db or not db.General or not db.General.CustomColors or not db.General.CustomColors.Reaction then
                                 return 64/255, 204/255, 64/255
                             end
@@ -3195,13 +3195,13 @@ local function CreateUnitFrameOptionsGroup()
                             return c[1], c[2], c[3]
                         end,
                         set = function(_, r, g, b)
-                            local db = EzUI.db.profile.unitFrames
+                            local db = EzroUI.db.profile.unitFrames
                             if not db.General then db.General = {} end
                             if not db.General.CustomColors then db.General.CustomColors = {} end
                             if not db.General.CustomColors.Reaction then db.General.CustomColors.Reaction = {} end
                             db.General.CustomColors.Reaction[5] = {r, g, b}
-                            if EzUI.UnitFrames then
-                                EzUI.UnitFrames:RefreshFrames()
+                            if EzroUI.UnitFrames then
+                                EzroUI.UnitFrames:RefreshFrames()
                             end
                         end,
                     },

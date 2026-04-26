@@ -1,17 +1,17 @@
 ﻿-- Keybinds
 
 local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
+local EzroUI = ns.Addon
 
-EzUI.Keybinds = EzUI.Keybinds or {}
-local Keybinds = EzUI.Keybinds
+EzroUI.Keybinds = EzroUI.Keybinds or {}
+local Keybinds = EzroUI.Keybinds
 
 local LSM = LibStub("LibSharedMedia-3.0", true)
 
 local CMC_KEYBIND_DEBUG = false
 local PrintDebug = function(...)
     if CMC_KEYBIND_DEBUG then
-        print("[EzUI Keybinds]", ...)
+        print("[EzroUI Keybinds]", ...)
     end
 end
 local isModuleKeybindsEnabled = false
@@ -65,13 +65,13 @@ local cachedStateData = {
     valid = false,
 }
 local function IsKeybindEnabledForAnyViewer()
-    if not EzUI.db or not EzUI.db.profile then
+    if not EzroUI.db or not EzroUI.db.profile then
         return false
     end
 
     for _, viewerSettingName in pairs(viewersSettingKey) do
         local enabledKey = "cooldownManager_showKeybinds_" .. viewerSettingName
-        if EzUI.db.profile[enabledKey] then
+        if EzroUI.db.profile[enabledKey] then
             return true
         end
     end
@@ -88,25 +88,25 @@ local function GetKeybindSettings(viewerSettingName)
         fontName = "Friz Quadrata TT",
     }
 
-    if not EzUI.db or not EzUI.db.profile then
+    if not EzroUI.db or not EzroUI.db.profile then
         return defaults
     end
 
-    local fontName = EzUI.db.profile["cooldownManager_keybindFontName_" .. viewerSettingName]
+    local fontName = EzroUI.db.profile["cooldownManager_keybindFontName_" .. viewerSettingName]
     if not fontName or fontName == "" then
-        fontName = EzUI.db.profile.cooldownManager_keybindFontName or defaults.fontName
+        fontName = EzroUI.db.profile.cooldownManager_keybindFontName or defaults.fontName
     end
 
-    local fontColor = EzUI.db.profile["cooldownManager_keybindFontColor_" .. viewerSettingName]
+    local fontColor = EzroUI.db.profile["cooldownManager_keybindFontColor_" .. viewerSettingName]
     if not fontColor then
-        fontColor = EzUI.db.profile.cooldownManager_keybindFontColor or defaults.fontColor
+        fontColor = EzroUI.db.profile.cooldownManager_keybindFontColor or defaults.fontColor
     end
 
     return {
-        anchor = EzUI.db.profile["cooldownManager_keybindAnchor_" .. viewerSettingName] or defaults.anchor,
-        fontSize = EzUI.db.profile["cooldownManager_keybindFontSize_" .. viewerSettingName] or defaults.fontSize,
-        offsetX = EzUI.db.profile["cooldownManager_keybindOffsetX_" .. viewerSettingName] or defaults.offsetX,
-        offsetY = EzUI.db.profile["cooldownManager_keybindOffsetY_" .. viewerSettingName] or defaults.offsetY,
+        anchor = EzroUI.db.profile["cooldownManager_keybindAnchor_" .. viewerSettingName] or defaults.anchor,
+        fontSize = EzroUI.db.profile["cooldownManager_keybindFontSize_" .. viewerSettingName] or defaults.fontSize,
+        offsetX = EzroUI.db.profile["cooldownManager_keybindOffsetX_" .. viewerSettingName] or defaults.offsetX,
+        offsetY = EzroUI.db.profile["cooldownManager_keybindOffsetY_" .. viewerSettingName] or defaults.offsetY,
         fontColor = fontColor,
         fontName = fontName,
     }
@@ -433,7 +433,7 @@ local function ApplyKeybindTextSettings(icon, viewerSettingName)
     keybindText:SetPoint(settings.anchor, icon, settings.anchor, settings.offsetX, settings.offsetY)
     local fontPath = GetFontPath(settings.fontName)
     -- Always use OUTLINE for 1 pixel black outline, combine with any other font flags
-    local fontFlags = EzUI.db.profile.cooldownManager_keybindFontFlags or {}
+    local fontFlags = EzroUI.db.profile.cooldownManager_keybindFontFlags or {}
     local fontFlag = "OUTLINE"
     for n, v in pairs(fontFlags) do
         if v == true and n ~= "OUTLINE" then
@@ -500,7 +500,7 @@ local function InjectCachedDataOntoIcons()
         end
     end
 
-    PrintDebug("[EzUI Keybinds] Injected cached data onto", injectedCount, "icons")
+    PrintDebug("[EzroUI Keybinds] Injected cached data onto", injectedCount, "icons")
 
     return injectedCount
 end
@@ -574,7 +574,7 @@ local function UpdateIconKeybind(icon, viewerSettingName)
     end
 
     local enabledKey = "cooldownManager_showKeybinds_" .. viewerSettingName
-    if not EzUI.db.profile[enabledKey] then
+    if not EzroUI.db.profile[enabledKey] then
         if icon.cmcKeybindText then
             icon.cmcKeybindText:Hide()
         end
@@ -650,7 +650,7 @@ eventFrame:SetScript("OnEvent", function(self, event, ...)
     end
 
     if event == "EDIT_MODE_LAYOUTS_UPDATED" then
-        PrintDebug("[EzUI Keybinds] EditMode layout changed - rebuilding cache")
+        PrintDebug("[EzroUI Keybinds] EditMode layout changed - rebuilding cache")
         BuildAllIconSpellCaches()
         Keybinds:UpdateAllKeybinds()
     elseif event == "UPDATE_BINDINGS" then
@@ -662,7 +662,7 @@ eventFrame:SetScript("OnEvent", function(self, event, ...)
         BuildAllIconSpellCaches()
         Keybinds:UpdateAllKeybinds()
         PrintDebug(
-            "[EzUI Keybinds] PLAYER_ENTERING_WORLD - LoadOrBuild result:",
+            "[EzroUI Keybinds] PLAYER_ENTERING_WORLD - LoadOrBuild result:",
             "inLockdown:",
             tostring(InCombatLockdown())
         )
@@ -693,7 +693,7 @@ eventFrame:SetScript("OnEvent", function(self, event, ...)
 end)
 
 function Keybinds:Shutdown()
-    PrintDebug("[EzUI Keybinds] Shutting down module")
+    PrintDebug("[EzroUI Keybinds] Shutting down module")
 
     isModuleKeybindsEnabled = false
 
@@ -708,10 +708,10 @@ function Keybinds:Shutdown()
     wipe(iconSpellCache)
     cachedStateData.valid = false
 
-    if EzUI.db and EzUI.db.profile and EzUI.db.profile.keybindCache then
-        EzUI.db.profile.keybindCache = nil
+    if EzroUI.db and EzroUI.db.profile and EzroUI.db.profile.keybindCache then
+        EzroUI.db.profile.keybindCache = nil
 
-        PrintDebug("[EzUI Keybinds] Wiped DB cache")
+        PrintDebug("[EzroUI Keybinds] Wiped DB cache")
     end
 
     for viewerName, _ in pairs(viewersSettingKey) do
@@ -731,7 +731,7 @@ function Keybinds:Enable()
     if isModuleKeybindsEnabled then
         return
     end
-    PrintDebug("[EzUI Keybinds] Enabling module")
+    PrintDebug("[EzroUI Keybinds] Enabling module")
 
     isModuleKeybindsEnabled = true
 
@@ -758,7 +758,7 @@ function Keybinds:Enable()
                         return
                     end
 
-                    PrintDebug("[EzUI Keybinds] RefreshLayout called for viewer:", viewerName)
+                    PrintDebug("[EzroUI Keybinds] RefreshLayout called for viewer:", viewerName)
 
                     -- if not InCombatLockdown() then
                     BuildIconSpellCacheForViewer(viewerName)
@@ -777,24 +777,24 @@ function Keybinds:Disable()
     if not isModuleKeybindsEnabled then
         return
     end
-    PrintDebug("[EzUI Keybinds] Disabling module")
+    PrintDebug("[EzroUI Keybinds] Disabling module")
 
     self:Shutdown()
 end
 
 function Keybinds:Initialize()
     if not IsKeybindEnabledForAnyViewer() then
-        PrintDebug("[EzUI Keybinds] Not initializing - no viewers enabled")
+        PrintDebug("[EzroUI Keybinds] Not initializing - no viewers enabled")
         return
     end
 
-    PrintDebug("[EzUI Keybinds] Initializing module")
+    PrintDebug("[EzroUI Keybinds] Initializing module")
 
     self:Enable()
 
     --  CLEANUPS:
-    if EzUI.db and EzUI.db.profile then
-        EzUI.db.profile.keybindCache = nil
+    if EzroUI.db and EzroUI.db.profile then
+        EzroUI.db.profile.keybindCache = nil
     end
 end
 

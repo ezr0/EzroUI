@@ -1,8 +1,8 @@
 ﻿local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
+local EzroUI = ns.Addon
 
-EzUI.BuffDebuffFrames = EzUI.BuffDebuffFrames or {}
-local BDF = EzUI.BuffDebuffFrames
+EzroUI.BuffDebuffFrames = EzroUI.BuffDebuffFrames or {}
+local BDF = EzroUI.BuffDebuffFrames
 
 local LSM = LibStub("LibSharedMedia-3.0")
 
@@ -45,7 +45,7 @@ BDF._processing = false
 
 -- Create custom border overlay using textures instead of backdrop
 local function CreateAuraBorderOverlay(auraFrame)
-    if auraFrame.__EzUIBorderOverlay then return end
+    if auraFrame.__EzroUIBorderOverlay then return end
     
     local overlay = CreateFrame("Frame", nil, auraFrame)
     overlay:SetAllPoints(auraFrame.Icon or auraFrame)
@@ -79,19 +79,19 @@ local function CreateAuraBorderOverlay(auraFrame)
         end
     end
     
-    auraFrame.__EzUIBorderOverlay = overlay
+    auraFrame.__EzroUIBorderOverlay = overlay
 end
 
 local function EnsureAuraTextOverlay(auraFrame)
-    if auraFrame.__EzUITextOverlay then return auraFrame.__EzUITextOverlay end
+    if auraFrame.__EzroUITextOverlay then return auraFrame.__EzroUITextOverlay end
 
-    local overlayParent = auraFrame.__EzUIBorderOverlay or auraFrame
+    local overlayParent = auraFrame.__EzroUIBorderOverlay or auraFrame
     local textOverlay = CreateFrame("Frame", nil, auraFrame)
     textOverlay:SetAllPoints(overlayParent or auraFrame)
 
     local baseLevel = (overlayParent and overlayParent:GetFrameLevel()) or (auraFrame:GetFrameLevel() or 0)
     textOverlay:SetFrameLevel(baseLevel + 1)
-    auraFrame.__EzUITextOverlay = textOverlay
+    auraFrame.__EzroUITextOverlay = textOverlay
 
     return textOverlay
 end
@@ -128,7 +128,7 @@ local function EnhanceAuraFrame(auraFrame, config)
         
         -- Check if duration text is enabled
             if durConfig.enabled ~= false then
-                local font = EzUI:GetGlobalFont()
+                local font = EzroUI:GetGlobalFont()
                 
                 auraFrame.Duration:ClearAllPoints()
                 if textOverlay then
@@ -164,7 +164,7 @@ local function EnhanceAuraFrame(auraFrame, config)
         
         -- Check if count text is enabled
         if countConfig.enabled ~= false then
-            local font = EzUI:GetGlobalFont()
+            local font = EzroUI:GetGlobalFont()
             
             auraFrame.Count:ClearAllPoints()
             if textOverlay then
@@ -228,7 +228,7 @@ local function ProcessBuffFrames()
     if BDF._processing then return end
     BDF._processing = true
 
-    local db = EzUI.db.profile.buffDebuffFrames
+    local db = EzroUI.db.profile.buffDebuffFrames
     if not db or not db.enabled then
         BDF._processing = false
         return
@@ -266,7 +266,7 @@ local function ProcessDebuffFrames()
     if BDF._processing then return end
     BDF._processing = true
 
-    local db = EzUI.db.profile.buffDebuffFrames
+    local db = EzroUI.db.profile.buffDebuffFrames
     if not db or not db.enabled then
         BDF._processing = false
         return
@@ -345,7 +345,7 @@ end
 
 -- Initialize the module
 function BDF:Initialize()
-    local db = EzUI.db.profile.buffDebuffFrames
+    local db = EzroUI.db.profile.buffDebuffFrames
     if not db or not db.enabled then return end
     
     -- Wait for frames to be ready
@@ -367,7 +367,7 @@ function BDF:RefreshAll()
         BDF._updateTicker = nil
     end
 
-    if EzUI.db.profile.buffDebuffFrames and EzUI.db.profile.buffDebuffFrames.enabled then
+    if EzroUI.db.profile.buffDebuffFrames and EzroUI.db.profile.buffDebuffFrames.enabled then
         ProcessBuffFrames()
         ProcessDebuffFrames()
         HookAuraUpdates()

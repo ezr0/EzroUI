@@ -1,12 +1,12 @@
 ﻿--[[
-    EzUI Unit Frames - Highlight System
+    EzroUI Unit Frames - Highlight System
     Selection, mouseover, and aggro highlights
 ]]
 
 local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
-EzUI.PartyFrames = EzUI.PartyFrames or {}
-local UnitFrames = EzUI.PartyFrames
+local EzroUI = ns.Addon
+EzroUI.PartyFrames = EzroUI.PartyFrames or {}
+local UnitFrames = EzroUI.PartyFrames
 
 -- Cache commonly used API
 local UnitIsUnit = UnitIsUnit

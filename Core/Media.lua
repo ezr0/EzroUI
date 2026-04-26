@@ -1,24 +1,24 @@
 ﻿local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
+local EzroUI = ns.Addon
 
 local LSM = LibStub("LibSharedMedia-3.0")
 
-LSM:Register("statusbar","Ez", [[Interface\AddOns\EzUI\Media\Ez.tga]])
-LSM:Register("font","Expressway", [[Interface\AddOns\EzUI\Fonts\Expressway.TTF]])
+LSM:Register("statusbar","Ez", [[Interface\AddOns\EzroUI\Media\Ez.tga]])
+LSM:Register("font","Expressway", [[Interface\AddOns\EzroUI\Fonts\Expressway.TTF]])
 
-function EzUI:GetGlobalFont()
+function EzroUI:GetGlobalFont()
     local fontName = self.db.profile.general.globalFont or "Expressway"
-    return LSM:Fetch("font", fontName) or [[Interface\AddOns\EzUI\Fonts\Expressway.TTF]]
+    return LSM:Fetch("font", fontName) or [[Interface\AddOns\EzroUI\Fonts\Expressway.TTF]]
 end
 
-function EzUI:GetGlobalTexture()
+function EzroUI:GetGlobalTexture()
     local textureName = self.db.profile.general.globalTexture or "Ez"
     return LSM:Fetch("statusbar", textureName) or "Interface\\RaidFrame\\Raid-Bar-Hp-Fill"
 end
 
 -- Helper function to get texture with override support
 -- If overrideTexture is provided and valid, use it; otherwise use global texture
-function EzUI:GetTexture(overrideTexture)
+function EzroUI:GetTexture(overrideTexture)
     if overrideTexture and overrideTexture ~= "" then
         -- User has set a specific override texture
         local tex = LSM:Fetch("statusbar", overrideTexture)
@@ -30,7 +30,7 @@ function EzUI:GetTexture(overrideTexture)
     return self:GetGlobalTexture()
 end
 
-function EzUI:ApplyGlobalFont()
+function EzroUI:ApplyGlobalFont()
     local fontPath = self:GetGlobalFont()
     if not fontPath then return end
     
@@ -215,7 +215,7 @@ function EzUI:ApplyGlobalFont()
     end
     end -- End of applyToBlizzard conditional
     
-    -- Always apply fonts to EzUI's own elements (cooldown viewers, target auras, etc.)
+    -- Always apply fonts to EzroUI's own elements (cooldown viewers, target auras, etc.)
     if not self._cooldownFontHooked then
         local function IdentifyCooldownSource(cooldownFrame)
             if not cooldownFrame then return nil end
@@ -228,7 +228,7 @@ function EzUI:ApplyGlobalFont()
             local hasCooldownRef = iconFrame.cooldown == cooldownFrame
             
             if hasIcon or hasCooldownRef then
-                -- EzUI CustomIcons: per-icon cooldown text settings
+                -- EzroUI CustomIcons: per-icon cooldown text settings
                 if iconFrame._iconKey then
                     return "customIcon:" .. tostring(iconFrame._iconKey)
                 end
@@ -237,7 +237,7 @@ function EzUI:ApplyGlobalFont()
                 local buttonName = iconFrame:GetName() or ""
                 if buttonName:match("ActionButton") or buttonName:match("MultiBar") or 
                    buttonName:match("PetActionButton") or buttonName:match("StanceButton") then
-                    -- Check if EzUI action bars are enabled
+                    -- Check if EzroUI action bars are enabled
                     if self.db and self.db.profile and self.db.profile.actionBars and self.db.profile.actionBars.enabled then
                         return "actionButton"
                     end
@@ -253,7 +253,7 @@ function EzUI:ApplyGlobalFont()
                             return "UtilityCooldownViewer"
                         elseif viewerName == "BuffIconCooldownViewer" then
                             return "BuffIconCooldownViewer"
-                            elseif viewerName == "EzUI_Target" then
+                            elseif viewerName == "EzroUI_Target" then
                                 if viewerFrame.buffIcons or viewerFrame.debuffIcons then
                                     local isInArray = false
                                     if viewerFrame.buffIcons then
@@ -279,11 +279,11 @@ function EzUI:ApplyGlobalFont()
                             end
                         end
                         
-                        -- Also check if viewerFrame's parent is EzUI_Target (in case of nested frames)
+                        -- Also check if viewerFrame's parent is EzroUI_Target (in case of nested frames)
                         local targetFrame = viewerFrame:GetParent()
                         if targetFrame then
                             local targetFrameName = targetFrame:GetName()
-                            if targetFrameName == "EzUI_Target" then
+                            if targetFrameName == "EzroUI_Target" then
                                 -- Check if this icon frame is in buffIcons or debuffIcons
                                 if targetFrame.buffIcons or targetFrame.debuffIcons then
                                     -- Double-check by seeing if iconFrame is in the arrays
@@ -316,7 +316,7 @@ function EzUI:ApplyGlobalFont()
                 local parentName = parent:GetName() or ""
                 if parentName:match("ActionButton") or parentName:match("MultiBar") or 
                    parentName:match("PetActionButton") or parentName:match("StanceButton") then
-                    -- Check if EzUI action bars are enabled
+                    -- Check if EzroUI action bars are enabled
                     if self.db and self.db.profile and self.db.profile.actionBars and self.db.profile.actionBars.enabled then
                         return "actionButton"
                     end
@@ -330,7 +330,7 @@ function EzUI:ApplyGlobalFont()
                         return "UtilityCooldownViewer"
                     elseif viewerName == "BuffIconCooldownViewer" then
                         return "BuffIconCooldownViewer"
-                    elseif viewerName == "EzUI_Target" then
+                    elseif viewerName == "EzroUI_Target" then
                         if parent.buffIcons or parent.debuffIcons then
                             return "targetAuras"
                         end
@@ -340,7 +340,7 @@ function EzUI:ApplyGlobalFont()
                 local targetFrame = parent:GetParent()
                 if targetFrame then
                     local targetFrameName = targetFrame:GetName()
-                    if targetFrameName == "EzUI_Target" then
+                    if targetFrameName == "EzroUI_Target" then
                         if targetFrame.buffIcons or targetFrame.debuffIcons then
                             return "targetAuras"
                         end
@@ -430,13 +430,13 @@ function EzUI:ApplyGlobalFont()
         local function GetCooldownFontString(cooldownFrame)
             if not cooldownFrame then return nil end
             
-            if cooldownFrame._EzUI_fontString then
-                return cooldownFrame._EzUI_fontString
+            if cooldownFrame._EzroUI_fontString then
+                return cooldownFrame._EzroUI_fontString
             end
             
             for _, region in ipairs({cooldownFrame:GetRegions()}) do
                 if region:GetObjectType() == "FontString" then
-                    cooldownFrame._EzUI_fontString = region
+                    cooldownFrame._EzroUI_fontString = region
                     return region
                 end
             end
@@ -484,10 +484,10 @@ function EzUI:ApplyGlobalFont()
                 return
             end
             
-            -- Only apply fonts to EzUI cooldowns
+            -- Only apply fonts to EzroUI cooldowns
             local source = IdentifyCooldownSource(cooldownFrame)
             if not source then
-                -- This cooldown doesn't belong to EzUI, skip it
+                -- This cooldown doesn't belong to EzroUI, skip it
                 return
             end
             
@@ -544,7 +544,7 @@ function EzUI:ApplyGlobalFont()
                 
                 -- Use pcall to safely handle any errors during combat
                 pcall(function()
-                    cooldownFrame._EzUI_fontString = nil
+                    cooldownFrame._EzroUI_fontString = nil
                     C_Timer.After(0, function()
                         if cooldownFrame and not cooldownFrame:IsForbidden() then
                             pcall(ApplyCooldownFont, cooldownFrame)
@@ -562,7 +562,7 @@ function EzUI:ApplyGlobalFont()
                 
                 -- Use pcall to safely handle any errors during combat
                 pcall(function()
-                    cooldownFrame._EzUI_fontString = nil
+                    cooldownFrame._EzroUI_fontString = nil
                     C_Timer.After(0, function()
                         if cooldownFrame and not cooldownFrame:IsForbidden() then
                             pcall(ApplyCooldownFont, cooldownFrame)
@@ -601,7 +601,7 @@ function EzUI:ApplyGlobalFont()
                 local frame = EnumerateFrames()
                 while frame do
                     if frame:GetObjectType() == "Cooldown" then
-                        frame._EzUI_fontString = nil
+                        frame._EzroUI_fontString = nil
                         ApplyCooldownFont(frame)
                     end
                     frame = EnumerateFrames(frame)
@@ -611,9 +611,9 @@ function EzUI:ApplyGlobalFont()
         
         C_Timer.After(1.0, ApplyFontToExistingCooldowns)
         
-        if EzUI.UnitFrames and EzUI.UnitFrames.UpdateTargetAuras then
-            local originalUpdateTargetAuras = EzUI.UnitFrames.UpdateTargetAuras
-            EzUI.UnitFrames.UpdateTargetAuras = function(frame, ...)
+        if EzroUI.UnitFrames and EzroUI.UnitFrames.UpdateTargetAuras then
+            local originalUpdateTargetAuras = EzroUI.UnitFrames.UpdateTargetAuras
+            EzroUI.UnitFrames.UpdateTargetAuras = function(frame, ...)
                 local result = originalUpdateTargetAuras(frame, ...)
                 C_Timer.After(0.1, function()
                     if frame and (frame.buffIcons or frame.debuffIcons) then
@@ -633,7 +633,7 @@ function EzUI:ApplyGlobalFont()
                             end
                         end
                         for _, cooldownFrame in ipairs(allIcons) do
-                            cooldownFrame._EzUI_fontString = nil
+                            cooldownFrame._EzroUI_fontString = nil
                             ApplyCooldownFont(cooldownFrame)
                         end
                     end
@@ -653,7 +653,7 @@ function EzUI:ApplyGlobalFont()
                 if not parent then return nil end
                 
                 -- Check if parent is an icon frame (has icon texture or cooldown property)
-                -- For target auras: iconFrame is parent of cooldown, and iconFrame's parent is EzUI_Target
+                -- For target auras: iconFrame is parent of cooldown, and iconFrame's parent is EzroUI_Target
                 local iconFrame = parent
                 local hasIcon = iconFrame.icon or iconFrame.Icon
                 local hasCooldownRef = iconFrame.cooldown == cooldownFrame
@@ -663,7 +663,7 @@ function EzUI:ApplyGlobalFont()
                     local buttonName = iconFrame:GetName() or ""
                     if buttonName:match("ActionButton") or buttonName:match("MultiBar") or 
                        buttonName:match("PetActionButton") or buttonName:match("StanceButton") then
-                        -- Check if EzUI action bars are enabled
+                        -- Check if EzroUI action bars are enabled
                         if self.db and self.db.profile and self.db.profile.actionBars and self.db.profile.actionBars.enabled then
                             return "actionButton"
                         end
@@ -681,7 +681,7 @@ function EzUI:ApplyGlobalFont()
                                 return "UtilityCooldownViewer"
                             elseif viewerName == "BuffIconCooldownViewer" then
                                 return "BuffIconCooldownViewer"
-                            elseif viewerName == "EzUI_Target" then
+                            elseif viewerName == "EzroUI_Target" then
                                 -- This is a target aura icon frame
                                 -- Verify by checking if the frame has buffIcons or debuffIcons
                                 -- Also check if this iconFrame is actually in those arrays
@@ -711,11 +711,11 @@ function EzUI:ApplyGlobalFont()
                             end
                         end
                         
-                        -- Also check if viewerFrame's parent is EzUI_Target (in case of nested frames)
+                        -- Also check if viewerFrame's parent is EzroUI_Target (in case of nested frames)
                         local targetFrame = viewerFrame:GetParent()
                         if targetFrame then
                             local targetFrameName = targetFrame:GetName()
-                            if targetFrameName == "EzUI_Target" then
+                            if targetFrameName == "EzroUI_Target" then
                                 -- Check if this icon frame is in buffIcons or debuffIcons
                                 if targetFrame.buffIcons or targetFrame.debuffIcons then
                                     -- Double-check by seeing if iconFrame is in the arrays
@@ -748,7 +748,7 @@ function EzUI:ApplyGlobalFont()
                     local parentName = parent:GetName() or ""
                     if parentName:match("ActionButton") or parentName:match("MultiBar") or 
                        parentName:match("PetActionButton") or parentName:match("StanceButton") then
-                        -- Check if EzUI action bars are enabled
+                        -- Check if EzroUI action bars are enabled
                         if self.db and self.db.profile and self.db.profile.actionBars and self.db.profile.actionBars.enabled then
                             return "actionButton"
                         end
@@ -763,7 +763,7 @@ function EzUI:ApplyGlobalFont()
                             return "UtilityCooldownViewer"
                         elseif viewerName == "BuffIconCooldownViewer" then
                             return "BuffIconCooldownViewer"
-                        elseif viewerName == "EzUI_Target" then
+                        elseif viewerName == "EzroUI_Target" then
                             -- Direct child of target frame - check if it has aura properties
                             if parent.buffIcons or parent.debuffIcons then
                                 return "targetAuras"
@@ -775,7 +775,7 @@ function EzUI:ApplyGlobalFont()
                     local targetFrame = parent:GetParent()
                     if targetFrame then
                         local targetFrameName = targetFrame:GetName()
-                        if targetFrameName == "EzUI_Target" then
+                        if targetFrameName == "EzroUI_Target" then
                             if targetFrame.buffIcons or targetFrame.debuffIcons then
                                 return "targetAuras"
                             end
@@ -841,12 +841,12 @@ function EzUI:ApplyGlobalFont()
             
             local function GetCooldownFontString(cooldownFrame)
                 if not cooldownFrame then return nil end
-                if cooldownFrame._EzUI_fontString then
-                    return cooldownFrame._EzUI_fontString
+                if cooldownFrame._EzroUI_fontString then
+                    return cooldownFrame._EzroUI_fontString
                 end
                 for _, region in ipairs({cooldownFrame:GetRegions()}) do
                     if region:GetObjectType() == "FontString" then
-                        cooldownFrame._EzUI_fontString = region
+                        cooldownFrame._EzroUI_fontString = region
                         return region
                     end
                 end
@@ -858,8 +858,8 @@ function EzUI:ApplyGlobalFont()
                     local frame = EnumerateFrames()
                     while frame do
                         if frame:GetObjectType() == "Cooldown" then
-                            frame._EzUI_fontString = nil -- Clear cache
-                            -- Only apply fonts to EzUI cooldowns
+                            frame._EzroUI_fontString = nil -- Clear cache
+                            -- Only apply fonts to EzroUI cooldowns
                             local source = IdentifyCooldownSource(frame)
                             if source then
                                 local fontString = GetCooldownFontString(frame)

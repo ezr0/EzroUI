@@ -1,5 +1,5 @@
 ﻿local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
+local EzroUI = ns.Addon
 
 local function CreateChatOptions()
     return {
@@ -18,11 +18,11 @@ local function CreateChatOptions()
                 desc = "Apply custom styling to chat frames",
                 width = "full",
                 order = 2,
-                get = function() return EzUI.db.profile.chat.enabled end,
+                get = function() return EzroUI.db.profile.chat.enabled end,
                 set = function(_, val)
-                    EzUI.db.profile.chat.enabled = val
-                    if EzUI.Chat and EzUI.Chat.RefreshAll then
-                        EzUI.Chat:RefreshAll()
+                    EzroUI.db.profile.chat.enabled = val
+                    if EzroUI.Chat and EzroUI.Chat.RefreshAll then
+                        EzroUI.Chat:RefreshAll()
                     end
                 end,
             },
@@ -39,13 +39,13 @@ local function CreateChatOptions()
                 width = "full",
                 hasAlpha = true,
                 get = function()
-                    local c = EzUI.db.profile.chat.backgroundColor
+                    local c = EzroUI.db.profile.chat.backgroundColor
                     return c[1], c[2], c[3], c[4] or 1
                 end,
                 set = function(_, r, g, b, a)
-                    EzUI.db.profile.chat.backgroundColor = { r, g, b, a or 1 }
-                    if EzUI.Chat and EzUI.Chat.RefreshAll then
-                        EzUI.Chat:RefreshAll()
+                    EzroUI.db.profile.chat.backgroundColor = { r, g, b, a or 1 }
+                    if EzroUI.Chat and EzroUI.Chat.RefreshAll then
+                        EzroUI.Chat:RefreshAll()
                     end
                 end,
             },
@@ -60,11 +60,11 @@ local function CreateChatOptions()
                 desc = "Hide the Quick Join toast button that appears in chat",
                 width = "full",
                 order = 12,
-                get = function() return EzUI.db.profile.chat.hideQuickJoinToastButton end,
+                get = function() return EzroUI.db.profile.chat.hideQuickJoinToastButton end,
                 set = function(_, val)
-                    EzUI.db.profile.chat.hideQuickJoinToastButton = val
-                    if EzUI.Chat and EzUI.Chat.UpdateQuickJoinToastButton then
-                        EzUI.Chat:UpdateQuickJoinToastButton()
+                    EzroUI.db.profile.chat.hideQuickJoinToastButton = val
+                    if EzroUI.Chat and EzroUI.Chat.UpdateQuickJoinToastButton then
+                        EzroUI.Chat:UpdateQuickJoinToastButton()
                     end
                 end,
             },
@@ -78,12 +78,12 @@ local function CreateChatOptions()
                 step = 1,
                 order = 13,
                 get = function()
-                    return EzUI.db.profile.chat.quickJoinToastButtonOffsetX or 31
+                    return EzroUI.db.profile.chat.quickJoinToastButtonOffsetX or 31
                 end,
                 set = function(_, val)
-                    EzUI.db.profile.chat.quickJoinToastButtonOffsetX = val
-                    if EzUI.Chat and EzUI.Chat.UpdateQuickJoinToastButton then
-                        EzUI.Chat:UpdateQuickJoinToastButton()
+                    EzroUI.db.profile.chat.quickJoinToastButtonOffsetX = val
+                    if EzroUI.Chat and EzroUI.Chat.UpdateQuickJoinToastButton then
+                        EzroUI.Chat:UpdateQuickJoinToastButton()
                     end
                 end,
             },
@@ -97,12 +97,12 @@ local function CreateChatOptions()
                 step = 1,
                 order = 14,
                 get = function()
-                    return EzUI.db.profile.chat.quickJoinToastButtonOffsetY or -23
+                    return EzroUI.db.profile.chat.quickJoinToastButtonOffsetY or -23
                 end,
                 set = function(_, val)
-                    EzUI.db.profile.chat.quickJoinToastButtonOffsetY = val
-                    if EzUI.Chat and EzUI.Chat.UpdateQuickJoinToastButton then
-                        EzUI.Chat:UpdateQuickJoinToastButton()
+                    EzroUI.db.profile.chat.quickJoinToastButtonOffsetY = val
+                    if EzroUI.Chat and EzroUI.Chat.UpdateQuickJoinToastButton then
+                        EzroUI.Chat:UpdateQuickJoinToastButton()
                     end
                 end,
             },

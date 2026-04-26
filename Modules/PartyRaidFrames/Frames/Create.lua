@@ -1,12 +1,12 @@
 ﻿--[[
-    EzUI Unit Frames - Frame Creation
+    EzroUI Unit Frames - Frame Creation
     Handles construction of unit frames and their visual components
 ]]
 
 local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
-EzUI.PartyFrames = EzUI.PartyFrames or {}
-local UnitFrames = EzUI.PartyFrames
+local EzroUI = ns.Addon
+EzroUI.PartyFrames = EzroUI.PartyFrames or {}
+local UnitFrames = EzroUI.PartyFrames
 
 -- Cache commonly used API
 local CreateFrame = CreateFrame
@@ -41,8 +41,8 @@ function UnitFrames:CreateUnitFrame(unitToken, frameIndex, isRaidFrame)
     
     -- Generate unique frame name
     local frameName = isRaidFrame 
-        and ("EzUIRaidFrame" .. frameIndex)
-        or ("EzUIPartyFrame" .. (frameIndex == 0 and "Player" or frameIndex))
+        and ("EzroUIRaidFrame" .. frameIndex)
+        or ("EzroUIPartyFrame" .. (frameIndex == 0 and "Player" or frameIndex))
     
     -- Create main secure button frame
     local frame = CreateFrame("Button", frameName, UIParent, "SecureUnitButtonTemplate")
@@ -634,11 +634,11 @@ end
 function UnitFrames:RegisterAuraWithMasque(icon, auraType)
     if not self.Masque then return end
     
-    local groupName = auraType == "BUFF" and "EzUI Buffs" or "EzUI Debuffs"
+    local groupName = auraType == "BUFF" and "EzroUI Buffs" or "EzroUI Debuffs"
     
     if auraType == "BUFF" then
         if not self.MasqueGroup_Buffs then
-            self.MasqueGroup_Buffs = self.Masque:Group("EzUI", "Buffs")
+            self.MasqueGroup_Buffs = self.Masque:Group("EzroUI", "Buffs")
         end
         self.MasqueGroup_Buffs:AddButton(icon, {
             Icon = icon.texture,
@@ -647,7 +647,7 @@ function UnitFrames:RegisterAuraWithMasque(icon, auraType)
         })
     else
         if not self.MasqueGroup_Debuffs then
-            self.MasqueGroup_Debuffs = self.Masque:Group("EzUI", "Debuffs")
+            self.MasqueGroup_Debuffs = self.Masque:Group("EzroUI", "Debuffs")
         end
         self.MasqueGroup_Debuffs:AddButton(icon, {
             Icon = icon.texture,

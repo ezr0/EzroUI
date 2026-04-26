@@ -1,11 +1,11 @@
 ﻿local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
+local EzroUI = ns.Addon
 
-EzUI.CustomBuffs = EzUI.CustomBuffs or {}
-local CustomBuffs = EzUI.CustomBuffs
+EzroUI.CustomBuffs = EzroUI.CustomBuffs or {}
+local CustomBuffs = EzroUI.CustomBuffs
 
-local Widgets = EzUI.GUI and EzUI.GUI.Widgets
-local THEME = EzUI.GUI and EzUI.GUI.THEME
+local Widgets = EzroUI.GUI and EzroUI.GUI.Widgets
+local THEME = EzroUI.GUI and EzroUI.GUI.THEME
 local LSM = LibStub("LibSharedMedia-3.0", true)
 
 -- ------------------------
@@ -117,7 +117,7 @@ local function CopyColor(c)
 end
 
 local function GetCustomBuffsDB()
-    local profile = EzUI.db.profile
+    local profile = EzroUI.db.profile
     profile.customBuffs = profile.customBuffs or {}
     local db = profile.customBuffs
     db.iconData = db.iconData or {}
@@ -366,7 +366,7 @@ local function ApplyCooldownTextStyle(cooldown, iconData)
     end
     if not fs then return end
     local cds = (iconData.settings and iconData.settings.cooldownSettings) or {}
-    local fontPath = EzUI:GetGlobalFont()
+    local fontPath = EzroUI:GetGlobalFont()
     local size = cds.size or 12
     local color = cds.color or { 1, 1, 1, 1 }
     local _, _, flags = fs:GetFont()
@@ -491,7 +491,7 @@ local function CreateCustomBuffIcon(buffKey, iconData, parent)
     if not spellID then return nil end
     local info = C_Spell and C_Spell.GetSpellInfo(iconSpellID)
     local tex = (info and info.iconID) or (C_Spell and C_Spell.GetSpellTexture and C_Spell.GetSpellTexture(iconSpellID))
-    local frame = CreateBaseIcon("EzUI_CustomBuff_" .. buffKey, parent)
+    local frame = CreateBaseIcon("EzroUI_CustomBuff_" .. buffKey, parent)
     frame._buffKey = buffKey
     frame._spellID = spellID
     frame.icon:SetTexture(tex or "Interface\\Icons\\INV_Misc_QuestionMark")
@@ -529,7 +529,7 @@ local function ApplyBarSettings(barFrame, iconData)
     local totalW = showIcon and (w + h) or w
     barFrame:SetSize(totalW, h)
 
-    local fgTex = (EzUI and EzUI.GetTexture) and EzUI:GetTexture(bs.foregroundTexture) or "Interface\\RaidFrame\\Raid-Bar-Hp-Fill"
+    local fgTex = (EzroUI and EzroUI.GetTexture) and EzroUI:GetTexture(bs.foregroundTexture) or "Interface\\RaidFrame\\Raid-Bar-Hp-Fill"
     barFrame.StatusBar:SetStatusBarTexture(fgTex)
     local fg = bs.foregroundColor or { 0.2, 0.6, 1, 1 }
     barFrame.StatusBar:SetStatusBarColor(fg[1], fg[2], fg[3], fg[4] or 1)
@@ -561,7 +561,7 @@ local function ApplyBarSettings(barFrame, iconData)
     local iconOffsetX = (showIcon and h) or 0
 
     local dt = bs.durationText or {}
-    local font = EzUI and EzUI.GetGlobalFont and EzUI:GetGlobalFont() or "GameFontHighlightSmall"
+    local font = EzroUI and EzroUI.GetGlobalFont and EzroUI:GetGlobalFont() or "GameFontHighlightSmall"
     local showDuration = dt.show ~= false
     barFrame.DurationText:SetFont(font, dt.size or 12, "OUTLINE")
     barFrame.DurationText:SetTextColor((dt.color or { 1,1,1,1 })[1], (dt.color or { 1,1,1,1 })[2], (dt.color or { 1,1,1,1 })[3], (dt.color or { 1,1,1,1 })[4] or 1)
@@ -596,7 +596,7 @@ local function CreateCustomBuffBar(buffKey, iconData, parent)
     local h = math.max(8, bs.height or 18)
     local totalW = (bs.showSpellIcon and (w + h)) or w
 
-    local bar = CreateFrame("Frame", "EzUI_CustomBuffBar_" .. buffKey, parent)
+    local bar = CreateFrame("Frame", "EzroUI_CustomBuffBar_" .. buffKey, parent)
     bar:SetSize(totalW, h)
     bar._buffKey = buffKey
     bar._spellID = spellID
@@ -801,7 +801,7 @@ local function EnsureGroupFrame(groupKey, settings)
     settings = settings or GetGroupSettings(groupKey)
     NormalizeAnchor(settings)
     if runtime.groupFrames[groupKey] then return runtime.groupFrames[groupKey] end
-    local container = CreateFrame("Frame", "EzUI_CBGroup_" .. groupKey, UIParent)
+    local container = CreateFrame("Frame", "EzroUI_CBGroup_" .. groupKey, UIParent)
     container:SetSize(100, 100)
     container:SetMovable(true)
     container:SetClampedToScreen(true)
@@ -1063,7 +1063,7 @@ function CustomBuffs:ShowLoadConditionsWindow(buffKey, iconData)
 
     local lc = iconData.settings.loadConditions
 
-    local f = CreateFrame("Frame", "EzUI_CustomBuff_LoadConditions", UIParent, "BackdropTemplate")
+    local f = CreateFrame("Frame", "EzroUI_CustomBuff_LoadConditions", UIParent, "BackdropTemplate")
     f:SetSize(360, 460)
     f:SetPoint("CENTER")
     f:SetFrameStrata("DIALOG")
@@ -2050,7 +2050,7 @@ end
 
 function CustomBuffs:ConfirmDeleteBuff(buffKey, label)
     if not uiFrames.confirmFrame then
-        local f = CreateFrame("Frame", "EzUI_CBConfirm", UIParent, "BackdropTemplate")
+        local f = CreateFrame("Frame", "EzroUI_CBConfirm", UIParent, "BackdropTemplate")
         f:SetSize(320, 140)
         f:SetPoint("CENTER")
         f:SetFrameStrata("TOOLTIP")
@@ -2093,7 +2093,7 @@ end
 function CustomBuffs:ShowCreateBuffDialog()
     if not Widgets or not THEME then return end
     if not uiFrames.createFrame then
-        local f = CreateFrame("Frame", "EzUI_CBCreate", UIParent, "BackdropTemplate")
+        local f = CreateFrame("Frame", "EzroUI_CBCreate", UIParent, "BackdropTemplate")
         f:SetSize(360, 260)
         f:SetPoint("CENTER")
         f:SetFrameStrata("TOOLTIP")
@@ -2297,7 +2297,7 @@ function CustomBuffs:DisableConfigMode()
 end
 
 ShouldShowAnchors = function()
-    local uf = EzUI.db and EzUI.db.profile and EzUI.db.profile.unitFrames
+    local uf = EzroUI.db and EzroUI.db.profile and EzroUI.db.profile.unitFrames
     if uf and uf.General and uf.General.ShowEditModeAnchors then return true end
     return EditModeManagerFrame and EditModeManagerFrame:IsShown()
 end
@@ -2310,8 +2310,8 @@ end
 local anchorHooked = false
 local function EnsureAnchorHooks()
     if anchorHooked then return end
-    if EzUI.UnitFrames and EzUI.UnitFrames.UpdateEditModeAnchors then
-        hooksecurefunc(EzUI.UnitFrames, "UpdateEditModeAnchors", function()
+    if EzroUI.UnitFrames and EzroUI.UnitFrames.UpdateEditModeAnchors then
+        hooksecurefunc(EzroUI.UnitFrames, "UpdateEditModeAnchors", function()
             CustomBuffs:RefreshAnchorVisibility()
         end)
         anchorHooked = true
@@ -2321,8 +2321,8 @@ end
 -- ------------------------
 -- Init
 -- ------------------------
-if EzUI.db and EzUI.db.profile then
-    local profile = EzUI.db.profile
+if EzroUI.db and EzroUI.db.profile then
+    local profile = EzroUI.db.profile
     profile.customBuffs = profile.customBuffs or {}
     if profile.customBuffs.enabled ~= false then
         CustomBuffs:LoadCustomBuffs()
@@ -2346,10 +2346,10 @@ if not CustomBuffs.__anchorWatcher then
     w:RegisterEvent("EDIT_MODE_LAYOUTS_UPDATED")
     w:SetScript("OnEvent", function(_, event)
         -- Ensure custom buffs are loaded when the world is ready
-        -- This handles cases where EzUI.db wasn't ready at file load time
+        -- This handles cases where EzroUI.db wasn't ready at file load time
         if event == "PLAYER_ENTERING_WORLD" then
-            if EzUI.db and EzUI.db.profile then
-                local profile = EzUI.db.profile
+            if EzroUI.db and EzroUI.db.profile then
+                local profile = EzroUI.db.profile
                 profile.customBuffs = profile.customBuffs or {}
                 if profile.customBuffs.enabled ~= false then
                     CustomBuffs:LoadCustomBuffs()

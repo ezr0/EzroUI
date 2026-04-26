@@ -1,10 +1,10 @@
 ﻿local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
+local EzroUI = ns.Addon
 
 -- Get CastBars module
-local CastBars = EzUI.CastBars
+local CastBars = EzroUI.CastBars
 if not CastBars then
-    error("EzUI: CastBars module not initialized! Load CastBars.lua first.")
+    error("EzroUI: CastBars module not initialized! Load CastBars.lua first.")
 end
 
 local CreateBorder = CastBars.CreateBorder
@@ -17,13 +17,13 @@ end
 -- Boss frames have individual cast bars that attach to each boss frame
 
 -- Table to store boss cast bars
-EzUI.bossCastBars = EzUI.bossCastBars or {}
+EzroUI.bossCastBars = EzroUI.bossCastBars or {}
 
 local function SetBossCastBarColor(bossIndex, state)
-    local cfg = EzUI.db and EzUI.db.profile and EzUI.db.profile.bossCastBar
+    local cfg = EzroUI.db and EzroUI.db.profile and EzroUI.db.profile.bossCastBar
     if not cfg then return end
 
-    local bar = EzUI.bossCastBars[bossIndex]
+    local bar = EzroUI.bossCastBars[bossIndex]
     if not bar or not bar.status then return end
 
     local color
@@ -40,10 +40,10 @@ local function SetBossCastBarColor(bossIndex, state)
 end
 
 function CastBars:GetBossCastBar(bossIndex)
-    if EzUI.bossCastBars[bossIndex] then return EzUI.bossCastBars[bossIndex] end
+    if EzroUI.bossCastBars[bossIndex] then return EzroUI.bossCastBars[bossIndex] end
 
-    local cfg = EzUI.db.profile.bossCastBar
-    local frameName = "EzUI_Boss" .. bossIndex
+    local cfg = EzroUI.db.profile.bossCastBar
+    local frameName = "EzroUI_Boss" .. bossIndex
     local anchor = _G[frameName] or UIParent
     local anchorPoint = cfg.anchorPoint or "BOTTOM"
 
@@ -51,14 +51,14 @@ function CastBars:GetBossCastBar(bossIndex)
     bar:SetFrameStrata("MEDIUM")
 
     local height = cfg.height or 24
-    bar:SetHeight(EzUI:Scale(height))
-    bar:SetPoint(anchorPoint, anchor, anchorPoint, EzUI:Scale(cfg.offsetX or 0), EzUI:Scale(cfg.offsetY or 0))
+    bar:SetHeight(EzroUI:Scale(height))
+    bar:SetPoint(anchorPoint, anchor, anchorPoint, EzroUI:Scale(cfg.offsetX or 0), EzroUI:Scale(cfg.offsetY or 0))
 
     local width = cfg.width or 0
     if width <= 0 then
         width = PixelSnap((anchor.__cdmIconWidth or anchor:GetWidth() or 200) - 2)
     else
-        width = EzUI:Scale(width)
+        width = EzroUI:Scale(width)
     end
     bar:SetWidth(width)
 
@@ -67,7 +67,7 @@ function CastBars:GetBossCastBar(bossIndex)
     -- Status bar
     bar.status = CreateFrame("StatusBar", nil, bar)
     -- Use GetTexture helper: if cfg.texture is set, use it; otherwise use global texture
-    local tex = EzUI:GetTexture(EzUI.db.profile.bossCastBar.texture)
+    local tex = EzroUI:GetTexture(EzroUI.db.profile.bossCastBar.texture)
     bar.status:SetStatusBarTexture(tex)
 
     local sbTex = bar.status:GetStatusBarTexture()
@@ -92,15 +92,15 @@ function CastBars:GetBossCastBar(bossIndex)
 
     bar:Hide()
 
-    EzUI.bossCastBars[bossIndex] = bar
+    EzroUI.bossCastBars[bossIndex] = bar
     return bar
 end
 
 function CastBars:UpdateBossCastBarLayout(bossIndex)
-    local cfg = EzUI.db.profile.bossCastBar
+    local cfg = EzroUI.db.profile.bossCastBar
     if not cfg then return end
 
-    local bar = EzUI.bossCastBars[bossIndex]
+    local bar = EzroUI.bossCastBars[bossIndex]
     if not bar then return end
 
     if not cfg.enabled then
@@ -108,26 +108,26 @@ function CastBars:UpdateBossCastBarLayout(bossIndex)
         return
     end
 
-    local frameName = "EzUI_Boss" .. bossIndex
+    local frameName = "EzroUI_Boss" .. bossIndex
     local anchor = _G[frameName] or UIParent
     local anchorPoint = cfg.anchorPoint or "BOTTOM"
 
     bar:ClearAllPoints()
-    bar:SetPoint(anchorPoint, anchor, anchorPoint, EzUI:Scale(cfg.offsetX or 0), EzUI:Scale(cfg.offsetY or 0))
+    bar:SetPoint(anchorPoint, anchor, anchorPoint, EzroUI:Scale(cfg.offsetX or 0), EzroUI:Scale(cfg.offsetY or 0))
 
     local height = cfg.height or 24
-    bar:SetHeight(EzUI:Scale(height))
+    bar:SetHeight(EzroUI:Scale(height))
 
     local width = cfg.width or 0
     if width <= 0 then
         width = PixelSnap((anchor.__cdmIconWidth or anchor:GetWidth() or 200) - 2)
     else
-        width = EzUI:Scale(width)
+        width = EzroUI:Scale(width)
     end
     bar:SetWidth(width)
 
     -- Update status bar texture
-    local tex = EzUI:GetTexture(EzUI.db.profile.bossCastBar.texture)
+    local tex = EzroUI:GetTexture(EzroUI.db.profile.bossCastBar.texture)
     bar.status:SetStatusBarTexture(tex)
 
     -- Update background color
@@ -135,7 +135,7 @@ function CastBars:UpdateBossCastBarLayout(bossIndex)
     bar.bg:SetColorTexture(bgColor[1], bgColor[2], bgColor[3], bgColor[4] or 1)
 
     -- Update text font and styling (match target/focus cast bars)
-    local font = EzUI:GetGlobalFont()
+    local font = EzroUI:GetGlobalFont()
     bar.spellName:SetFont(font, cfg.textSize or 16, "OUTLINE")
     bar.spellName:SetShadowOffset(0, 0)
 
@@ -171,10 +171,10 @@ function CastBars:UpdateBossCastBarLayout(bossIndex)
 
     -- Position text (match target/focus cast bars)
     bar.spellName:ClearAllPoints()
-    bar.spellName:SetPoint("LEFT", bar.status, "LEFT", EzUI:Scale(4 + nameOffsetX), EzUI:Scale(nameOffsetY))
+    bar.spellName:SetPoint("LEFT", bar.status, "LEFT", EzroUI:Scale(4 + nameOffsetX), EzroUI:Scale(nameOffsetY))
 
     bar.timeText:ClearAllPoints()
-    bar.timeText:SetPoint("RIGHT", bar.status, "RIGHT", EzUI:Scale(-4 + timeOffsetX), EzUI:Scale(timeOffsetY))
+    bar.timeText:SetPoint("RIGHT", bar.status, "RIGHT", EzroUI:Scale(-4 + timeOffsetX), EzroUI:Scale(timeOffsetY))
 
     -- Show/hide time text based on setting
     if cfg.showTimeText ~= false then
@@ -200,17 +200,17 @@ function CastBars:HookBossCastBars()
     -- Hook each boss frame's spellbar
     for i = 1, 8 do
         local bossFrame = _G["Boss" .. i .. "TargetFrame"] or _G["Boss" .. i .. "Frame"]
-        if bossFrame and bossFrame.spellbar and not bossFrame.spellbar.__EzUIHooked then
-            bossFrame.spellbar.__EzUIHooked = true
+        if bossFrame and bossFrame.spellbar and not bossFrame.spellbar.__EzroUIHooked then
+            bossFrame.spellbar.__EzroUIHooked = true
 
             -- Per-boss throttling variables
             local lastUpdate = 0
             local updateThrottle = 1/60 -- 60fps maximum
 
             bossFrame.spellbar:HookScript("OnShow", function(self)
-                local cfg = EzUI.db.profile.bossCastBar
+                local cfg = EzroUI.db.profile.bossCastBar
                 if not cfg or not cfg.enabled then
-                    if EzUI.bossCastBars[i] then EzUI.bossCastBars[i]:Hide() end
+                    if EzroUI.bossCastBars[i] then EzroUI.bossCastBars[i]:Hide() end
                     return
                 end
 
@@ -252,8 +252,8 @@ function CastBars:HookBossCastBars()
             end)
 
             bossFrame.spellbar:HookScript("OnHide", function()
-                if EzUI.bossCastBars[i] then
-                    EzUI.bossCastBars[i]:Hide()
+                if EzroUI.bossCastBars[i] then
+                    EzroUI.bossCastBars[i]:Hide()
                 end
             end)
 
@@ -261,7 +261,7 @@ function CastBars:HookBossCastBars()
             bossFrame.spellbar:HookScript("OnEvent", function(self, event, unit)
                 if unit ~= ("boss" .. i) then return end
 
-                local cfg = EzUI.db.profile.bossCastBar
+                local cfg = EzroUI.db.profile.bossCastBar
                 if not cfg or not cfg.enabled then return end
 
                 if event == "UNIT_SPELLCAST_INTERRUPTED" or event == "UNIT_SPELLCAST_FAILED" then
@@ -275,10 +275,10 @@ function CastBars:HookBossCastBars()
 
             -- Hook OnUpdate to sync progress and time text (throttled to 60fps for performance)
             bossFrame.spellbar:HookScript("OnUpdate", function(self, elapsed)
-                local cfg = EzUI.db.profile.bossCastBar
+                local cfg = EzroUI.db.profile.bossCastBar
                 if not cfg or not cfg.enabled then return end
 
-                local bar = EzUI.bossCastBars[i]
+                local bar = EzroUI.bossCastBars[i]
                 if not bar or not bar:IsShown() then return end
 
                 lastUpdate = lastUpdate + elapsed
@@ -304,13 +304,13 @@ end
 
 function CastBars:ShowTestBossCastBars()
     -- Show test cast bars on boss frames that are in preview mode
-    if not EzUI.UnitFrames or not EzUI.UnitFrames.BossPreviewMode then
+    if not EzroUI.UnitFrames or not EzroUI.UnitFrames.BossPreviewMode then
         print("Boss frames must be in preview mode to test cast bars")
         return
     end
 
     for i = 1, 8 do
-        local unitFrame = _G["EzUI_Boss" .. i]
+        local unitFrame = _G["EzroUI_Boss" .. i]
         if unitFrame and unitFrame:IsShown() then
             local bar = CastBars:GetBossCastBar(i)
             if bar then
@@ -331,8 +331,8 @@ function CastBars:ShowTestBossCastBars()
                 bar.spellName:SetText("Test Cast")
 
                 -- Set up fonts (match other cast bars)
-                local cfg = EzUI.db.profile.bossCastBar
-                local font = EzUI:GetGlobalFont()
+                local cfg = EzroUI.db.profile.bossCastBar
+                local font = EzroUI:GetGlobalFont()
                 bar.spellName:SetFont(font, cfg.textSize or 16, "OUTLINE")
                 bar.spellName:SetShadowOffset(0, 0)
 
@@ -353,8 +353,8 @@ function CastBars:ShowTestBossCastBars()
 end
 
 -- Expose to main addon for backwards compatibility
-EzUI.GetBossCastBar = function(self, bossIndex) return CastBars:GetBossCastBar(bossIndex) end
-EzUI.UpdateBossCastBarLayout = function(self, bossIndex) return CastBars:UpdateBossCastBarLayout(bossIndex) end
-EzUI.UpdateAllBossCastBarLayouts = function(self) return CastBars:UpdateAllBossCastBarLayouts() end
-EzUI.HookBossCastBars = function(self) return CastBars:HookBossCastBars() end
-EzUI.ShowTestBossCastBars = function(self) return CastBars:ShowTestBossCastBars() end
+EzroUI.GetBossCastBar = function(self, bossIndex) return CastBars:GetBossCastBar(bossIndex) end
+EzroUI.UpdateBossCastBarLayout = function(self, bossIndex) return CastBars:UpdateBossCastBarLayout(bossIndex) end
+EzroUI.UpdateAllBossCastBarLayouts = function(self) return CastBars:UpdateAllBossCastBarLayouts() end
+EzroUI.HookBossCastBars = function(self) return CastBars:HookBossCastBars() end
+EzroUI.ShowTestBossCastBars = function(self) return CastBars:ShowTestBossCastBars() end

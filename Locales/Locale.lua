@@ -1,5 +1,5 @@
 ﻿--[[
-    EzUI Localization System
+    EzroUI Localization System
     Core loader that initializes AceLocale-3.0 and provides access to locale strings
 --]]
 

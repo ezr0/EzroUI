@@ -1,10 +1,10 @@
 ﻿local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
+local EzroUI = ns.Addon
 
 -- Get UnitFrames module
-local UF = EzUI.UnitFrames
+local UF = EzroUI.UnitFrames
 if not UF then
-    error("EzUI: UnitFrames module not initialized! Load UnitFrames.lua first.")
+    error("EzroUI: UnitFrames module not initialized! Load UnitFrames.lua first.")
 end
 
 local TruncateWhenZero = C_StringUtil and C_StringUtil.TruncateWhenZero
@@ -31,7 +31,7 @@ local function UpdateUnitAuras(frame)
 
     local hasAuraAPI = C_UnitAuras and C_UnitAuras.GetAuraDataByIndex
 
-    local db = EzUI.db.profile.unitFrames
+    local db = EzroUI.db.profile.unitFrames
     if not db then return end
     local dbUnit = unit
     if unit:match("^boss%d+$") then

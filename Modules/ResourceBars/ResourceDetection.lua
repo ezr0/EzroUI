@@ -1,5 +1,5 @@
 ﻿local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
+local EzroUI = ns.Addon
 
 -- Tables
 local buildVersion = select(4, GetBuildInfo())
@@ -123,12 +123,12 @@ local classSpecResources = {
 }
 
 -- Export tables for use in other ResourceBars files
-EzUI.ResourceBars = EzUI.ResourceBars or {}
-EzUI.ResourceBars.tickedPowerTypes = tickedPowerTypes
-EzUI.ResourceBars.fragmentedPowerTypes = fragmentedPowerTypes
-EzUI.ResourceBars.HAS_UNIT_POWER_PERCENT = HAS_UNIT_POWER_PERCENT
-EzUI.ResourceBars.buildVersion = buildVersion
-EzUI.ResourceBars.classSpecResources = classSpecResources
+EzroUI.ResourceBars = EzroUI.ResourceBars or {}
+EzroUI.ResourceBars.tickedPowerTypes = tickedPowerTypes
+EzroUI.ResourceBars.fragmentedPowerTypes = fragmentedPowerTypes
+EzroUI.ResourceBars.HAS_UNIT_POWER_PERCENT = HAS_UNIT_POWER_PERCENT
+EzroUI.ResourceBars.buildVersion = buildVersion
+EzroUI.ResourceBars.classSpecResources = classSpecResources
 
 -- RESOURCE DETECTION
 
@@ -269,7 +269,7 @@ local function GetResourceKey(resource)
 end
 
 local function GetResourceBarAssignment(class, specID, resource)
-    local profile = EzUI.db and EzUI.db.profile
+    local profile = EzroUI.db and EzroUI.db.profile
     local assignments = profile and profile.resourceBarAssignments
     local classAssignments = assignments and assignments[class]
     local specAssignments = classAssignments and classAssignments[specID]
@@ -390,15 +390,15 @@ local function GetResourceColor(resource)
         -- Use configurable colors if available, otherwise fall back to defaults
         if percent >= 60 then
             -- Heavy stagger - use configured heavy color or default red
-            local heavyColor = EzUI.db and EzUI.db.profile and EzUI.db.profile.powerTypeColors and EzUI.db.profile.powerTypeColors.colors and EzUI.db.profile.powerTypeColors.colors["STAGGER_HEAVY"]
+            local heavyColor = EzroUI.db and EzroUI.db.profile and EzroUI.db.profile.powerTypeColors and EzroUI.db.profile.powerTypeColors.colors and EzroUI.db.profile.powerTypeColors.colors["STAGGER_HEAVY"]
             color = heavyColor or { r = 1.00, g = 0.42, b = 0.42 }
         elseif percent >= 30 then
             -- Medium stagger - use configured medium color or default yellow
-            local mediumColor = EzUI.db and EzUI.db.profile and EzUI.db.profile.powerTypeColors and EzUI.db.profile.powerTypeColors.colors and EzUI.db.profile.powerTypeColors.colors["STAGGER_MEDIUM"]
+            local mediumColor = EzroUI.db and EzroUI.db.profile and EzroUI.db.profile.powerTypeColors and EzroUI.db.profile.powerTypeColors.colors and EzroUI.db.profile.powerTypeColors.colors["STAGGER_MEDIUM"]
             color = mediumColor or { r = 1.00, g = 0.98, b = 0.72 }
         else
             -- Light stagger - use configured light color or default green
-            local lightColor = EzUI.db and EzUI.db.profile and EzUI.db.profile.powerTypeColors and EzUI.db.profile.powerTypeColors.colors and EzUI.db.profile.powerTypeColors.colors["STAGGER_LIGHT"]
+            local lightColor = EzroUI.db and EzroUI.db.profile and EzroUI.db.profile.powerTypeColors and EzroUI.db.profile.powerTypeColors.colors and EzroUI.db.profile.powerTypeColors.colors["STAGGER_LIGHT"]
             color = lightColor or { r = 0.52, g = 1.00, b = 0.52 }
         end
 
@@ -461,7 +461,7 @@ local function GetSecondaryResourceValue(resource, cfg)
     if not resource then return nil, nil, nil, nil, nil end
 
     -- Allow callers to pass config for formatting; fall back to current DB if omitted
-    cfg = cfg or (EzUI.db and EzUI.db.profile and EzUI.db.profile.secondaryPowerBar) or {}
+    cfg = cfg or (EzroUI.db and EzroUI.db.profile and EzroUI.db.profile.secondaryPowerBar) or {}
 
     if resource == "STAGGER" then
         local stagger = UnitStagger("player") or 0
@@ -548,14 +548,14 @@ local function GetSecondaryResourceValue(resource, cfg)
 end
 
 -- Export functions
-EzUI.ResourceBars.GetPrimaryResource = GetPrimaryResource
-EzUI.ResourceBars.GetSecondaryResource = GetSecondaryResource
-EzUI.ResourceBars.GetResourceBarAssignment = GetResourceBarAssignment
-EzUI.ResourceBars.GetAssignedResources = GetAssignedResources
-EzUI.ResourceBars.IsSecondaryResourceForSpec = IsSecondaryResourceForSpec
-EzUI.ResourceBars.GetDefaultBarAssignment = GetDefaultBarAssignment
-EzUI.ResourceBars.GetResourceColor = GetResourceColor
-EzUI.ResourceBars.GetPrimaryResourceValue = GetPrimaryResourceValue
-EzUI.ResourceBars.GetSecondaryResourceValue = GetSecondaryResourceValue
-EzUI.ResourceBars.GetChargedPowerPoints = GetChargedPowerPoints
+EzroUI.ResourceBars.GetPrimaryResource = GetPrimaryResource
+EzroUI.ResourceBars.GetSecondaryResource = GetSecondaryResource
+EzroUI.ResourceBars.GetResourceBarAssignment = GetResourceBarAssignment
+EzroUI.ResourceBars.GetAssignedResources = GetAssignedResources
+EzroUI.ResourceBars.IsSecondaryResourceForSpec = IsSecondaryResourceForSpec
+EzroUI.ResourceBars.GetDefaultBarAssignment = GetDefaultBarAssignment
+EzroUI.ResourceBars.GetResourceColor = GetResourceColor
+EzroUI.ResourceBars.GetPrimaryResourceValue = GetPrimaryResourceValue
+EzroUI.ResourceBars.GetSecondaryResourceValue = GetSecondaryResourceValue
+EzroUI.ResourceBars.GetChargedPowerPoints = GetChargedPowerPoints
 

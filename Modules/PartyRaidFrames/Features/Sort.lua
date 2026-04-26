@@ -1,12 +1,12 @@
 ﻿--[[
-    EzUI Unit Frames - Frame Sorting
+    EzroUI Unit Frames - Frame Sorting
     Sort frames by role, class, name, or group
 ]]
 
 local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
-EzUI.PartyFrames = EzUI.PartyFrames or {}
-local UnitFrames = EzUI.PartyFrames
+local EzroUI = ns.Addon
+EzroUI.PartyFrames = EzroUI.PartyFrames or {}
+local UnitFrames = EzroUI.PartyFrames
 
 -- Cache commonly used API
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned

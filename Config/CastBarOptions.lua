@@ -1,5 +1,5 @@
 ﻿local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
+local EzroUI = ns.Addon
 local LSM = LibStub("LibSharedMedia-3.0")
 
 local function GetViewerOptions()
@@ -33,10 +33,10 @@ local function CreateCastBarOptions()
                         desc = "Show a bar when casting or channeling spells",
                         width = "full",
                         order = 2,
-                        get = function() return EzUI.db.profile.castBar.enabled end,
+                        get = function() return EzroUI.db.profile.castBar.enabled end,
                         set = function(_, val)
-                            EzUI.db.profile.castBar.enabled = val
-                            EzUI:UpdateCastBarLayout()
+                            EzroUI.db.profile.castBar.enabled = val
+                            EzroUI:UpdateCastBarLayout()
                         end,
                     },
                     testCast = {
@@ -45,7 +45,7 @@ local function CreateCastBarOptions()
                         desc  = "Show a fake cast so you can preview and tweak the bar without casting.",
                         order = 3,
                         func  = function()
-                            EzUI:ShowTestCastBar()
+                            EzroUI:ShowTestCastBar()
                         end,
                     },
                     positionHeader = {
@@ -61,8 +61,8 @@ local function CreateCastBarOptions()
                         width = "full",
                         values = function()
                             local opts = {}
-                            if EzUI.db.profile.unitFrames and EzUI.db.profile.unitFrames.enabled then
-                                opts["EzUI_Player"] = "Player Frame (Custom)"
+                            if EzroUI.db.profile.unitFrames and EzroUI.db.profile.unitFrames.enabled then
+                                opts["EzroUI_Player"] = "Player Frame (Custom)"
                             end
                             local viewerOpts = GetViewerOptions()
                             for k, v in pairs(viewerOpts) do
@@ -71,10 +71,10 @@ local function CreateCastBarOptions()
                             opts["UIParent"] = "Screen Center"
                             return opts
                         end,
-                        get = function() return EzUI.db.profile.castBar.attachTo end,
+                        get = function() return EzroUI.db.profile.castBar.attachTo end,
                         set = function(_, val)
-                            EzUI.db.profile.castBar.attachTo = val
-                            EzUI:UpdateCastBarLayout()
+                            EzroUI.db.profile.castBar.attachTo = val
+                            EzroUI:UpdateCastBarLayout()
                         end,
                     },
                     anchorPoint = {
@@ -88,10 +88,10 @@ local function CreateCastBarOptions()
                             ["BOTTOM"] = "Bottom",
                             ["TOP"] = "Top",
                         },
-                        get = function() return EzUI.db.profile.castBar.anchorPoint or "CENTER" end,
+                        get = function() return EzroUI.db.profile.castBar.anchorPoint or "CENTER" end,
                         set = function(_, val)
-                            EzUI.db.profile.castBar.anchorPoint = val
-                            EzUI:UpdateCastBarLayout()
+                            EzroUI.db.profile.castBar.anchorPoint = val
+                            EzroUI:UpdateCastBarLayout()
                         end,
                     },
                     height = {
@@ -100,10 +100,10 @@ local function CreateCastBarOptions()
                         order = 12,
                         width = "normal",
                         min = 6, max = 100, step = 1,
-                        get = function() return EzUI.db.profile.castBar.height end,
+                        get = function() return EzroUI.db.profile.castBar.height end,
                         set = function(_, val)
-                            EzUI.db.profile.castBar.height = val
-                            EzUI:UpdateCastBarLayout()
+                            EzroUI.db.profile.castBar.height = val
+                            EzroUI:UpdateCastBarLayout()
                         end,
                     },
                     width = {
@@ -113,10 +113,10 @@ local function CreateCastBarOptions()
                         order = 13,
                         width = "normal",
                         min = 0, max = 1000, step = 1,
-                        get = function() return EzUI.db.profile.castBar.width end,
+                        get = function() return EzroUI.db.profile.castBar.width end,
                         set = function(_, val)
-                            EzUI.db.profile.castBar.width = val
-                            EzUI:UpdateCastBarLayout()
+                            EzroUI.db.profile.castBar.width = val
+                            EzroUI:UpdateCastBarLayout()
                         end,
                     },
                     offsetY = {
@@ -126,10 +126,10 @@ local function CreateCastBarOptions()
                         order = 14,
                         width = "full",
                         min = -500, max = 500, step = 1,
-                        get = function() return EzUI.db.profile.castBar.offsetY end,
+                        get = function() return EzroUI.db.profile.castBar.offsetY end,
                         set = function(_, val)
-                            EzUI.db.profile.castBar.offsetY = val
-                            EzUI:UpdateCastBarLayout()
+                            EzroUI.db.profile.castBar.offsetY = val
+                            EzroUI:UpdateCastBarLayout()
                         end,
                     },
                     offsetX = {
@@ -139,10 +139,10 @@ local function CreateCastBarOptions()
                         order = 15,
                         width = "full",
                         min = -500, max = 500, step = 1,
-                        get = function() return EzUI.db.profile.castBar.offsetX or 0 end,
+                        get = function() return EzroUI.db.profile.castBar.offsetX or 0 end,
                         set = function(_, val)
-                            EzUI.db.profile.castBar.offsetX = val
-                            EzUI:UpdateCastBarLayout()
+                            EzroUI.db.profile.castBar.offsetX = val
+                            EzroUI:UpdateCastBarLayout()
                         end,
                     },
                     
@@ -165,16 +165,16 @@ local function CreateCastBarOptions()
                             return names
                         end,
                         get = function() 
-                            local override = EzUI.db.profile.castBar.texture
+                            local override = EzroUI.db.profile.castBar.texture
                             if override and override ~= "" then
                                 return override
                             end
                             -- Return global texture name when override is nil
-                            return EzUI.db.profile.general.globalTexture or "Ez"
+                            return EzroUI.db.profile.general.globalTexture or "Ez"
                         end,
                         set = function(_, val)
-                            EzUI.db.profile.castBar.texture = val
-                            EzUI:UpdateCastBarLayout()
+                            EzroUI.db.profile.castBar.texture = val
+                            EzroUI:UpdateCastBarLayout()
                         end,
                     },
                     useClassColor = {
@@ -183,10 +183,10 @@ local function CreateCastBarOptions()
                         desc = "Use your class color instead of custom color",
                         order = 22,
                         width = "normal",
-                        get = function() return EzUI.db.profile.castBar.useClassColor end,
+                        get = function() return EzroUI.db.profile.castBar.useClassColor end,
                         set = function(_, val)
-                            EzUI.db.profile.castBar.useClassColor = val
-                            EzUI:UpdateCastBarLayout()
+                            EzroUI.db.profile.castBar.useClassColor = val
+                            EzroUI:UpdateCastBarLayout()
                         end,
                     },
                     barColor = {
@@ -197,15 +197,15 @@ local function CreateCastBarOptions()
                     width = "normal",
                     hasAlpha = true,
                     get = function()
-                            local c = EzUI.db.profile.castBar.color
+                            local c = EzroUI.db.profile.castBar.color
                             if c then
                                 return c[1], c[2], c[3], c[4] or 1
                             end
                             return 1, 0.7, 0, 1
                         end,
                         set = function(_, r, g, b, a)
-                            EzUI.db.profile.castBar.color = { r, g, b, a }
-                            EzUI:UpdateCastBarLayout()
+                            EzroUI.db.profile.castBar.color = { r, g, b, a }
+                            EzroUI:UpdateCastBarLayout()
                         end,
                     },
                     bgColor = {
@@ -216,15 +216,15 @@ local function CreateCastBarOptions()
                         width = "normal",
                         hasAlpha = true,
                         get = function()
-                            local c = EzUI.db.profile.castBar.bgColor
+                            local c = EzroUI.db.profile.castBar.bgColor
                             if c then
                                 return c[1], c[2], c[3], c[4] or 1
                             end
                             return 0.1, 0.1, 0.1, 1
                         end,
                         set = function(_, r, g, b, a)
-                            EzUI.db.profile.castBar.bgColor = { r, g, b, a }
-                            EzUI:UpdateCastBarLayout()
+                            EzroUI.db.profile.castBar.bgColor = { r, g, b, a }
+                            EzroUI:UpdateCastBarLayout()
                         end,
                     },
                     textSize = {
@@ -233,10 +233,10 @@ local function CreateCastBarOptions()
                         order = 25,
                         width = "normal",
                         min = 6, max = 40, step = 1,
-                        get = function() return EzUI.db.profile.castBar.textSize end,
+                        get = function() return EzroUI.db.profile.castBar.textSize end,
                         set = function(_, val)
-                            EzUI.db.profile.castBar.textSize = val
-                            EzUI:UpdateCastBarLayout()
+                            EzroUI.db.profile.castBar.textSize = val
+                            EzroUI:UpdateCastBarLayout()
                         end,
                     },
                     textPositionHeader = {
@@ -250,10 +250,10 @@ local function CreateCastBarOptions()
                         order = 25.2,
                         width = "normal",
                         min = -100, max = 100, step = 1,
-                        get = function() return EzUI.db.profile.castBar.nameOffsetX or 0 end,
+                        get = function() return EzroUI.db.profile.castBar.nameOffsetX or 0 end,
                         set = function(_, val)
-                            EzUI.db.profile.castBar.nameOffsetX = val
-                            EzUI:UpdateCastBarLayout()
+                            EzroUI.db.profile.castBar.nameOffsetX = val
+                            EzroUI:UpdateCastBarLayout()
                         end,
                     },
                     nameOffsetY = {
@@ -262,10 +262,10 @@ local function CreateCastBarOptions()
                         order = 25.3,
                         width = "normal",
                         min = -100, max = 100, step = 1,
-                        get = function() return EzUI.db.profile.castBar.nameOffsetY or 0 end,
+                        get = function() return EzroUI.db.profile.castBar.nameOffsetY or 0 end,
                         set = function(_, val)
-                            EzUI.db.profile.castBar.nameOffsetY = val
-                            EzUI:UpdateCastBarLayout()
+                            EzroUI.db.profile.castBar.nameOffsetY = val
+                            EzroUI:UpdateCastBarLayout()
                         end,
                     },
                     timeOffsetX = {
@@ -274,10 +274,10 @@ local function CreateCastBarOptions()
                         order = 25.4,
                         width = "normal",
                         min = -100, max = 100, step = 1,
-                        get = function() return EzUI.db.profile.castBar.timeOffsetX or 0 end,
+                        get = function() return EzroUI.db.profile.castBar.timeOffsetX or 0 end,
                         set = function(_, val)
-                            EzUI.db.profile.castBar.timeOffsetX = val
-                            EzUI:UpdateCastBarLayout()
+                            EzroUI.db.profile.castBar.timeOffsetX = val
+                            EzroUI:UpdateCastBarLayout()
                         end,
                     },
                     timeOffsetY = {
@@ -286,10 +286,10 @@ local function CreateCastBarOptions()
                         order = 25.5,
                         width = "normal",
                         min = -100, max = 100, step = 1,
-                        get = function() return EzUI.db.profile.castBar.timeOffsetY or 0 end,
+                        get = function() return EzroUI.db.profile.castBar.timeOffsetY or 0 end,
                         set = function(_, val)
-                            EzUI.db.profile.castBar.timeOffsetY = val
-                            EzUI:UpdateCastBarLayout()
+                            EzroUI.db.profile.castBar.timeOffsetY = val
+                            EzroUI:UpdateCastBarLayout()
                         end,
                     },
                     showTimeText = {
@@ -298,10 +298,10 @@ local function CreateCastBarOptions()
                         desc = "Show the remaining cast time on the cast bar",
                         order = 26,
                         width = "normal",
-                        get = function() return EzUI.db.profile.castBar.showTimeText ~= false end,
+                        get = function() return EzroUI.db.profile.castBar.showTimeText ~= false end,
                         set = function(_, val)
-                            EzUI.db.profile.castBar.showTimeText = val
-                            EzUI:UpdateCastBarLayout()
+                            EzroUI.db.profile.castBar.showTimeText = val
+                            EzroUI:UpdateCastBarLayout()
                         end,
                     },
                     showIcon = {
@@ -310,10 +310,10 @@ local function CreateCastBarOptions()
                         desc = "Hide the spell icon if you prefer a bar-only look",
                         order = 27,
                         width = "normal",
-                        get = function() return EzUI.db.profile.castBar.showIcon ~= false end,
+                        get = function() return EzroUI.db.profile.castBar.showIcon ~= false end,
                         set = function(_, val)
-                            EzUI.db.profile.castBar.showIcon = val
-                            EzUI:UpdateCastBarLayout()
+                            EzroUI.db.profile.castBar.showIcon = val
+                            EzroUI:UpdateCastBarLayout()
                         end,
                     },
                     empoweredHeader = {
@@ -328,18 +328,18 @@ local function CreateCastBarOptions()
                         order = 29,
                         width = "normal",
                         get = function() 
-                            local val = EzUI.db.profile.castBar.showEmpoweredTicks
+                            local val = EzroUI.db.profile.castBar.showEmpoweredTicks
                             return val ~= false  -- Default to true if nil
                         end,
                         set = function(_, val)
-                            EzUI.db.profile.castBar.showEmpoweredTicks = val
+                            EzroUI.db.profile.castBar.showEmpoweredTicks = val
                             -- Reinitialize empowered stages if currently showing an empowered cast
-                            if EzUI.castBar and EzUI.castBar.isEmpowered and EzUI.castBar.numStages and EzUI.castBar.numStages > 0 then
-                                if EzUI.CastBars and EzUI.CastBars.InitializeEmpoweredStages then
+                            if EzroUI.castBar and EzroUI.castBar.isEmpowered and EzroUI.castBar.numStages and EzroUI.castBar.numStages > 0 then
+                                if EzroUI.CastBars and EzroUI.CastBars.InitializeEmpoweredStages then
                                     -- Force reinitialize to apply the setting change
                                     C_Timer.After(0.01, function()
-                                        if EzUI.castBar and EzUI.castBar.isEmpowered then
-                                            EzUI.CastBars:InitializeEmpoweredStages(EzUI.castBar)
+                                        if EzroUI.castBar and EzroUI.castBar.isEmpowered then
+                                            EzroUI.CastBars:InitializeEmpoweredStages(EzroUI.castBar)
                                         end
                                     end)
                                 end
@@ -353,18 +353,18 @@ local function CreateCastBarOptions()
                         order = 29.5,
                         width = "normal",
                         get = function() 
-                            local val = EzUI.db.profile.castBar.showEmpoweredStageColors
+                            local val = EzroUI.db.profile.castBar.showEmpoweredStageColors
                             return val ~= false  -- Default to true if nil
                         end,
                         set = function(_, val)
-                            EzUI.db.profile.castBar.showEmpoweredStageColors = val
+                            EzroUI.db.profile.castBar.showEmpoweredStageColors = val
                             -- Reinitialize empowered stages if currently showing an empowered cast
-                            if EzUI.castBar and EzUI.castBar.isEmpowered and EzUI.castBar.numStages and EzUI.castBar.numStages > 0 then
-                                if EzUI.CastBars and EzUI.CastBars.InitializeEmpoweredStages then
+                            if EzroUI.castBar and EzroUI.castBar.isEmpowered and EzroUI.castBar.numStages and EzroUI.castBar.numStages > 0 then
+                                if EzroUI.CastBars and EzroUI.CastBars.InitializeEmpoweredStages then
                                     -- Force reinitialize to apply the setting change
                                     C_Timer.After(0.01, function()
-                                        if EzUI.castBar and EzUI.castBar.isEmpowered then
-                                            EzUI.CastBars:InitializeEmpoweredStages(EzUI.castBar)
+                                        if EzroUI.castBar and EzroUI.castBar.isEmpowered then
+                                            EzroUI.CastBars:InitializeEmpoweredStages(EzroUI.castBar)
                                         end
                                     end)
                                 end
@@ -379,17 +379,17 @@ local function CreateCastBarOptions()
                         width = "normal",
                         hasAlpha = true,
                         get = function()
-                            local c = EzUI.db.profile.castBar.empoweredStageColors and EzUI.db.profile.castBar.empoweredStageColors[1]
+                            local c = EzroUI.db.profile.castBar.empoweredStageColors and EzroUI.db.profile.castBar.empoweredStageColors[1]
                             if c then
                                 return c[1], c[2], c[3], c[4] or 1
                             end
                             return 0.3, 0.75, 1, 1
                         end,
                         set = function(_, r, g, b, a)
-                            if not EzUI.db.profile.castBar.empoweredStageColors then
-                                EzUI.db.profile.castBar.empoweredStageColors = {}
+                            if not EzroUI.db.profile.castBar.empoweredStageColors then
+                                EzroUI.db.profile.castBar.empoweredStageColors = {}
                             end
-                            EzUI.db.profile.castBar.empoweredStageColors[1] = { r, g, b, a or 1 }
+                            EzroUI.db.profile.castBar.empoweredStageColors[1] = { r, g, b, a or 1 }
                         end,
                     },
                     empoweredStage2Color = {
@@ -400,17 +400,17 @@ local function CreateCastBarOptions()
                         width = "normal",
                         hasAlpha = true,
                         get = function()
-                            local c = EzUI.db.profile.castBar.empoweredStageColors and EzUI.db.profile.castBar.empoweredStageColors[2]
+                            local c = EzroUI.db.profile.castBar.empoweredStageColors and EzroUI.db.profile.castBar.empoweredStageColors[2]
                             if c then
                                 return c[1], c[2], c[3], c[4] or 1
                             end
                             return 0.4, 1, 0.4, 1
                         end,
                         set = function(_, r, g, b, a)
-                            if not EzUI.db.profile.castBar.empoweredStageColors then
-                                EzUI.db.profile.castBar.empoweredStageColors = {}
+                            if not EzroUI.db.profile.castBar.empoweredStageColors then
+                                EzroUI.db.profile.castBar.empoweredStageColors = {}
                             end
-                            EzUI.db.profile.castBar.empoweredStageColors[2] = { r, g, b, a or 1 }
+                            EzroUI.db.profile.castBar.empoweredStageColors[2] = { r, g, b, a or 1 }
                         end,
                     },
                     empoweredStage3Color = {
@@ -421,17 +421,17 @@ local function CreateCastBarOptions()
                         width = "normal",
                         hasAlpha = true,
                         get = function()
-                            local c = EzUI.db.profile.castBar.empoweredStageColors and EzUI.db.profile.castBar.empoweredStageColors[3]
+                            local c = EzroUI.db.profile.castBar.empoweredStageColors and EzroUI.db.profile.castBar.empoweredStageColors[3]
                             if c then
                                 return c[1], c[2], c[3], c[4] or 1
                             end
                             return 1, 0.85, 0, 1
                         end,
                         set = function(_, r, g, b, a)
-                            if not EzUI.db.profile.castBar.empoweredStageColors then
-                                EzUI.db.profile.castBar.empoweredStageColors = {}
+                            if not EzroUI.db.profile.castBar.empoweredStageColors then
+                                EzroUI.db.profile.castBar.empoweredStageColors = {}
                             end
-                            EzUI.db.profile.castBar.empoweredStageColors[3] = { r, g, b, a or 1 }
+                            EzroUI.db.profile.castBar.empoweredStageColors[3] = { r, g, b, a or 1 }
                         end,
                     },
                     empoweredStage4Color = {
@@ -442,17 +442,17 @@ local function CreateCastBarOptions()
                         width = "normal",
                         hasAlpha = true,
                         get = function()
-                            local c = EzUI.db.profile.castBar.empoweredStageColors and EzUI.db.profile.castBar.empoweredStageColors[4]
+                            local c = EzroUI.db.profile.castBar.empoweredStageColors and EzroUI.db.profile.castBar.empoweredStageColors[4]
                             if c then
                                 return c[1], c[2], c[3], c[4] or 1
                             end
                             return 1, 0.5, 0, 1
                         end,
                         set = function(_, r, g, b, a)
-                            if not EzUI.db.profile.castBar.empoweredStageColors then
-                                EzUI.db.profile.castBar.empoweredStageColors = {}
+                            if not EzroUI.db.profile.castBar.empoweredStageColors then
+                                EzroUI.db.profile.castBar.empoweredStageColors = {}
                             end
-                            EzUI.db.profile.castBar.empoweredStageColors[4] = { r, g, b, a or 1 }
+                            EzroUI.db.profile.castBar.empoweredStageColors[4] = { r, g, b, a or 1 }
                         end,
                     },
                     empoweredStage5Color = {
@@ -463,17 +463,17 @@ local function CreateCastBarOptions()
                         width = "normal",
                         hasAlpha = true,
                         get = function()
-                            local c = EzUI.db.profile.castBar.empoweredStageColors and EzUI.db.profile.castBar.empoweredStageColors[5]
+                            local c = EzroUI.db.profile.castBar.empoweredStageColors and EzroUI.db.profile.castBar.empoweredStageColors[5]
                             if c then
                                 return c[1], c[2], c[3], c[4] or 1
                             end
                             return 1, 0.2, 0.2, 1
                         end,
                         set = function(_, r, g, b, a)
-                            if not EzUI.db.profile.castBar.empoweredStageColors then
-                                EzUI.db.profile.castBar.empoweredStageColors = {}
+                            if not EzroUI.db.profile.castBar.empoweredStageColors then
+                                EzroUI.db.profile.castBar.empoweredStageColors = {}
                             end
-                            EzUI.db.profile.castBar.empoweredStageColors[5] = { r, g, b, a or 1 }
+                            EzroUI.db.profile.castBar.empoweredStageColors[5] = { r, g, b, a or 1 }
                         end,
                     },
                 },
@@ -494,10 +494,10 @@ local function CreateCastBarOptions()
                         desc = "Show a bar when your target is casting or channeling spells",
                         width = "full",
                         order = 2,
-                        get = function() return EzUI.db.profile.targetCastBar.enabled end,
+                        get = function() return EzroUI.db.profile.targetCastBar.enabled end,
                         set = function(_, val)
-                            EzUI.db.profile.targetCastBar.enabled = val
-                            EzUI:UpdateTargetCastBarLayout()
+                            EzroUI.db.profile.targetCastBar.enabled = val
+                            EzroUI:UpdateTargetCastBarLayout()
                         end,
                     },
                     testCast = {
@@ -506,7 +506,7 @@ local function CreateCastBarOptions()
                         desc  = "Show a fake cast so you can preview and tweak the bar without a target casting. Unit Must Be active to test.",
                         order = 3,
                         func  = function()
-                            EzUI:ShowTestTargetCastBar()
+                            EzroUI:ShowTestTargetCastBar()
                         end,
                     },
                     positionHeader = {
@@ -522,8 +522,8 @@ local function CreateCastBarOptions()
                         width = "full",
                         values = function()
                             local opts = {}
-                            if EzUI.db.profile.unitFrames and EzUI.db.profile.unitFrames.enabled then
-                                opts["EzUI_Target"] = "Target Frame (Custom)"
+                            if EzroUI.db.profile.unitFrames and EzroUI.db.profile.unitFrames.enabled then
+                                opts["EzroUI_Target"] = "Target Frame (Custom)"
                             end
                             local viewerOpts = GetViewerOptions()
                             for k, v in pairs(viewerOpts) do
@@ -533,10 +533,10 @@ local function CreateCastBarOptions()
                             opts["UIParent"] = "Screen Center"
                             return opts
                         end,
-                        get = function() return EzUI.db.profile.targetCastBar.attachTo end,
+                        get = function() return EzroUI.db.profile.targetCastBar.attachTo end,
                         set = function(_, val)
-                            EzUI.db.profile.targetCastBar.attachTo = val
-                            EzUI:UpdateTargetCastBarLayout()
+                            EzroUI.db.profile.targetCastBar.attachTo = val
+                            EzroUI:UpdateTargetCastBarLayout()
                         end,
                     },
                     anchorPoint = {
@@ -550,10 +550,10 @@ local function CreateCastBarOptions()
                             ["BOTTOM"] = "Bottom",
                             ["TOP"] = "Top",
                         },
-                        get = function() return EzUI.db.profile.targetCastBar.anchorPoint or "CENTER" end,
+                        get = function() return EzroUI.db.profile.targetCastBar.anchorPoint or "CENTER" end,
                         set = function(_, val)
-                            EzUI.db.profile.targetCastBar.anchorPoint = val
-                            EzUI:UpdateTargetCastBarLayout()
+                            EzroUI.db.profile.targetCastBar.anchorPoint = val
+                            EzroUI:UpdateTargetCastBarLayout()
                         end,
                     },
                     height = {
@@ -562,10 +562,10 @@ local function CreateCastBarOptions()
                         order = 12,
                         width = "normal",
                         min = 6, max = 40, step = 1,
-                        get = function() return EzUI.db.profile.targetCastBar.height end,
+                        get = function() return EzroUI.db.profile.targetCastBar.height end,
                         set = function(_, val)
-                            EzUI.db.profile.targetCastBar.height = val
-                            EzUI:UpdateTargetCastBarLayout()
+                            EzroUI.db.profile.targetCastBar.height = val
+                            EzroUI:UpdateTargetCastBarLayout()
                         end,
                     },
                     width = {
@@ -575,10 +575,10 @@ local function CreateCastBarOptions()
                         order = 13,
                         width = "normal",
                         min = 0, max = 1000, step = 1,
-                        get = function() return EzUI.db.profile.targetCastBar.width end,
+                        get = function() return EzroUI.db.profile.targetCastBar.width end,
                         set = function(_, val)
-                            EzUI.db.profile.targetCastBar.width = val
-                            EzUI:UpdateTargetCastBarLayout()
+                            EzroUI.db.profile.targetCastBar.width = val
+                            EzroUI:UpdateTargetCastBarLayout()
                         end,
                     },
                     offsetY = {
@@ -588,10 +588,10 @@ local function CreateCastBarOptions()
                         order = 14,
                         width = "full",
                         min = -500, max = 500, step = 1,
-                        get = function() return EzUI.db.profile.targetCastBar.offsetY end,
+                        get = function() return EzroUI.db.profile.targetCastBar.offsetY end,
                         set = function(_, val)
-                            EzUI.db.profile.targetCastBar.offsetY = val
-                            EzUI:UpdateTargetCastBarLayout()
+                            EzroUI.db.profile.targetCastBar.offsetY = val
+                            EzroUI:UpdateTargetCastBarLayout()
                         end,
                     },
                     offsetX = {
@@ -601,10 +601,10 @@ local function CreateCastBarOptions()
                         order = 15,
                         width = "full",
                         min = -500, max = 500, step = 1,
-                        get = function() return EzUI.db.profile.targetCastBar.offsetX or 0 end,
+                        get = function() return EzroUI.db.profile.targetCastBar.offsetX or 0 end,
                         set = function(_, val)
-                            EzUI.db.profile.targetCastBar.offsetX = val
-                            EzUI:UpdateTargetCastBarLayout()
+                            EzroUI.db.profile.targetCastBar.offsetX = val
+                            EzroUI:UpdateTargetCastBarLayout()
                         end,
                     },
                     
@@ -627,16 +627,16 @@ local function CreateCastBarOptions()
                             return names
                         end,
                         get = function() 
-                            local override = EzUI.db.profile.targetCastBar.texture
+                            local override = EzroUI.db.profile.targetCastBar.texture
                             if override and override ~= "" then
                                 return override
                             end
                             -- Return global texture name when override is nil
-                            return EzUI.db.profile.general.globalTexture or "Ez"
+                            return EzroUI.db.profile.general.globalTexture or "Ez"
                         end,
                         set = function(_, val)
-                            EzUI.db.profile.targetCastBar.texture = val
-                            EzUI:UpdateTargetCastBarLayout()
+                            EzroUI.db.profile.targetCastBar.texture = val
+                            EzroUI:UpdateTargetCastBarLayout()
                         end,
                     },
                     barColor = {
@@ -647,17 +647,17 @@ local function CreateCastBarOptions()
                         width = "normal",
                         hasAlpha = true,
                         get = function()
-                            local c = EzUI.db.profile.targetCastBar.interruptibleColor or EzUI.db.profile.targetCastBar.color
+                            local c = EzroUI.db.profile.targetCastBar.interruptibleColor or EzroUI.db.profile.targetCastBar.color
                             if c then
                                 return c[1], c[2], c[3], c[4] or 1
                             end
                             return 1, 0, 0, 1
                         end,
                         set = function(_, r, g, b, a)
-                            EzUI.db.profile.targetCastBar.interruptibleColor = { r, g, b, a }
+                            EzroUI.db.profile.targetCastBar.interruptibleColor = { r, g, b, a }
                             -- keep base color in sync for legacy fallback
-                            EzUI.db.profile.targetCastBar.color = { r, g, b, a }
-                            EzUI:UpdateTargetCastBarLayout()
+                            EzroUI.db.profile.targetCastBar.color = { r, g, b, a }
+                            EzroUI:UpdateTargetCastBarLayout()
                         end,
                     },
                     nonInterruptibleColor = {
@@ -668,15 +668,15 @@ local function CreateCastBarOptions()
                         width = "normal",
                         hasAlpha = true,
                         get = function()
-                            local c = EzUI.db.profile.targetCastBar.nonInterruptibleColor
+                            local c = EzroUI.db.profile.targetCastBar.nonInterruptibleColor
                             if c then
                                 return c[1], c[2], c[3], c[4] or 1
                             end
                             return 0.6, 0.6, 0.6, 1
                         end,
                         set = function(_, r, g, b, a)
-                            EzUI.db.profile.targetCastBar.nonInterruptibleColor = { r, g, b, a }
-                            EzUI:UpdateTargetCastBarLayout()
+                            EzroUI.db.profile.targetCastBar.nonInterruptibleColor = { r, g, b, a }
+                            EzroUI:UpdateTargetCastBarLayout()
                         end,
                     },
                     interruptedColor = {
@@ -687,15 +687,15 @@ local function CreateCastBarOptions()
                         width = "normal",
                         hasAlpha = true,
                         get = function()
-                            local c = EzUI.db.profile.targetCastBar.interruptedColor
+                            local c = EzroUI.db.profile.targetCastBar.interruptedColor
                             if c then
                                 return c[1], c[2], c[3], c[4] or 1
                             end
                             return 0.8, 0.2, 0.2, 1
                         end,
                         set = function(_, r, g, b, a)
-                            EzUI.db.profile.targetCastBar.interruptedColor = { r, g, b, a }
-                            EzUI:UpdateTargetCastBarLayout()
+                            EzroUI.db.profile.targetCastBar.interruptedColor = { r, g, b, a }
+                            EzroUI:UpdateTargetCastBarLayout()
                         end,
                     },
                     bgColor = {
@@ -706,15 +706,15 @@ local function CreateCastBarOptions()
                         width = "normal",
                         hasAlpha = true,
                         get = function()
-                            local c = EzUI.db.profile.targetCastBar.bgColor
+                            local c = EzroUI.db.profile.targetCastBar.bgColor
                             if c then
                                 return c[1], c[2], c[3], c[4] or 1
                             end
                             return 0.1, 0.1, 0.1, 1
                         end,
                         set = function(_, r, g, b, a)
-                            EzUI.db.profile.targetCastBar.bgColor = { r, g, b, a }
-                            EzUI:UpdateTargetCastBarLayout()
+                            EzroUI.db.profile.targetCastBar.bgColor = { r, g, b, a }
+                            EzroUI:UpdateTargetCastBarLayout()
                         end,
                     },
                     textSize = {
@@ -723,10 +723,10 @@ local function CreateCastBarOptions()
                         order = 26,
                         width = "normal",
                         min = 6, max = 40, step = 1,
-                        get = function() return EzUI.db.profile.targetCastBar.textSize end,
+                        get = function() return EzroUI.db.profile.targetCastBar.textSize end,
                         set = function(_, val)
-                            EzUI.db.profile.targetCastBar.textSize = val
-                            EzUI:UpdateTargetCastBarLayout()
+                            EzroUI.db.profile.targetCastBar.textSize = val
+                            EzroUI:UpdateTargetCastBarLayout()
                         end,
                     },
                     textPositionHeader = {
@@ -740,10 +740,10 @@ local function CreateCastBarOptions()
                         order = 26.2,
                         width = "normal",
                         min = -100, max = 100, step = 1,
-                        get = function() return EzUI.db.profile.targetCastBar.nameOffsetX or 0 end,
+                        get = function() return EzroUI.db.profile.targetCastBar.nameOffsetX or 0 end,
                         set = function(_, val)
-                            EzUI.db.profile.targetCastBar.nameOffsetX = val
-                            EzUI:UpdateTargetCastBarLayout()
+                            EzroUI.db.profile.targetCastBar.nameOffsetX = val
+                            EzroUI:UpdateTargetCastBarLayout()
                         end,
                     },
                     nameOffsetY = {
@@ -752,10 +752,10 @@ local function CreateCastBarOptions()
                         order = 26.3,
                         width = "normal",
                         min = -100, max = 100, step = 1,
-                        get = function() return EzUI.db.profile.targetCastBar.nameOffsetY or 0 end,
+                        get = function() return EzroUI.db.profile.targetCastBar.nameOffsetY or 0 end,
                         set = function(_, val)
-                            EzUI.db.profile.targetCastBar.nameOffsetY = val
-                            EzUI:UpdateTargetCastBarLayout()
+                            EzroUI.db.profile.targetCastBar.nameOffsetY = val
+                            EzroUI:UpdateTargetCastBarLayout()
                         end,
                     },
                     timeOffsetX = {
@@ -764,10 +764,10 @@ local function CreateCastBarOptions()
                         order = 26.4,
                         width = "normal",
                         min = -100, max = 100, step = 1,
-                        get = function() return EzUI.db.profile.targetCastBar.timeOffsetX or 0 end,
+                        get = function() return EzroUI.db.profile.targetCastBar.timeOffsetX or 0 end,
                         set = function(_, val)
-                            EzUI.db.profile.targetCastBar.timeOffsetX = val
-                            EzUI:UpdateTargetCastBarLayout()
+                            EzroUI.db.profile.targetCastBar.timeOffsetX = val
+                            EzroUI:UpdateTargetCastBarLayout()
                         end,
                     },
                     timeOffsetY = {
@@ -776,10 +776,10 @@ local function CreateCastBarOptions()
                         order = 26.5,
                         width = "normal",
                         min = -100, max = 100, step = 1,
-                        get = function() return EzUI.db.profile.targetCastBar.timeOffsetY or 0 end,
+                        get = function() return EzroUI.db.profile.targetCastBar.timeOffsetY or 0 end,
                         set = function(_, val)
-                            EzUI.db.profile.targetCastBar.timeOffsetY = val
-                            EzUI:UpdateTargetCastBarLayout()
+                            EzroUI.db.profile.targetCastBar.timeOffsetY = val
+                            EzroUI:UpdateTargetCastBarLayout()
                         end,
                     },
                     showTimeText = {
@@ -788,10 +788,10 @@ local function CreateCastBarOptions()
                         desc = "Show the remaining cast time on the cast bar",
                         order = 27,
                         width = "normal",
-                        get = function() return EzUI.db.profile.targetCastBar.showTimeText ~= false end,
+                        get = function() return EzroUI.db.profile.targetCastBar.showTimeText ~= false end,
                         set = function(_, val)
-                            EzUI.db.profile.targetCastBar.showTimeText = val
-                            EzUI:UpdateTargetCastBarLayout()
+                            EzroUI.db.profile.targetCastBar.showTimeText = val
+                            EzroUI:UpdateTargetCastBarLayout()
                         end,
                     },
                     showIcon = {
@@ -800,10 +800,10 @@ local function CreateCastBarOptions()
                         desc = "Hide the spell icon if you prefer a bar-only look",
                         order = 28,
                         width = "normal",
-                        get = function() return EzUI.db.profile.targetCastBar.showIcon ~= false end,
+                        get = function() return EzroUI.db.profile.targetCastBar.showIcon ~= false end,
                         set = function(_, val)
-                            EzUI.db.profile.targetCastBar.showIcon = val
-                            EzUI:UpdateTargetCastBarLayout()
+                            EzroUI.db.profile.targetCastBar.showIcon = val
+                            EzroUI:UpdateTargetCastBarLayout()
                         end,
                     },
                 },
@@ -824,10 +824,10 @@ local function CreateCastBarOptions()
                         desc = "Show a bar when your focus is casting or channeling spells",
                         width = "full",
                         order = 2,
-                        get = function() return EzUI.db.profile.focusCastBar.enabled end,
+                        get = function() return EzroUI.db.profile.focusCastBar.enabled end,
                         set = function(_, val)
-                            EzUI.db.profile.focusCastBar.enabled = val
-                            EzUI:UpdateFocusCastBarLayout()
+                            EzroUI.db.profile.focusCastBar.enabled = val
+                            EzroUI:UpdateFocusCastBarLayout()
                         end,
                     },
                     testCast = {
@@ -836,7 +836,7 @@ local function CreateCastBarOptions()
                         desc  = "Show a fake cast so you can preview and tweak the bar without a focus casting. Unit Must Be active to test.",
                         order = 3,
                         func  = function()
-                            EzUI:ShowTestFocusCastBar()
+                            EzroUI:ShowTestFocusCastBar()
                         end,
                     },
                     positionHeader = {
@@ -852,8 +852,8 @@ local function CreateCastBarOptions()
                         width = "full",
                         values = function()
                             local opts = {}
-                            if EzUI.db.profile.unitFrames and EzUI.db.profile.unitFrames.enabled then
-                                opts["EzUI_Focus"] = "Focus Frame (Custom)"
+                            if EzroUI.db.profile.unitFrames and EzroUI.db.profile.unitFrames.enabled then
+                                opts["EzroUI_Focus"] = "Focus Frame (Custom)"
                             end
                             local viewerOpts = GetViewerOptions()
                             for k, v in pairs(viewerOpts) do
@@ -863,10 +863,10 @@ local function CreateCastBarOptions()
                             opts["UIParent"] = "Screen Center"
                             return opts
                         end,
-                        get = function() return EzUI.db.profile.focusCastBar.attachTo end,
+                        get = function() return EzroUI.db.profile.focusCastBar.attachTo end,
                         set = function(_, val)
-                            EzUI.db.profile.focusCastBar.attachTo = val
-                            EzUI:UpdateFocusCastBarLayout()
+                            EzroUI.db.profile.focusCastBar.attachTo = val
+                            EzroUI:UpdateFocusCastBarLayout()
                         end,
                     },
                     anchorPoint = {
@@ -880,10 +880,10 @@ local function CreateCastBarOptions()
                             ["BOTTOM"] = "Bottom",
                             ["TOP"] = "Top",
                         },
-                        get = function() return EzUI.db.profile.focusCastBar.anchorPoint or "CENTER" end,
+                        get = function() return EzroUI.db.profile.focusCastBar.anchorPoint or "CENTER" end,
                         set = function(_, val)
-                            EzUI.db.profile.focusCastBar.anchorPoint = val
-                            EzUI:UpdateFocusCastBarLayout()
+                            EzroUI.db.profile.focusCastBar.anchorPoint = val
+                            EzroUI:UpdateFocusCastBarLayout()
                         end,
                     },
                     height = {
@@ -892,10 +892,10 @@ local function CreateCastBarOptions()
                         order = 12,
                         width = "normal",
                         min = 6, max = 40, step = 1,
-                        get = function() return EzUI.db.profile.focusCastBar.height end,
+                        get = function() return EzroUI.db.profile.focusCastBar.height end,
                         set = function(_, val)
-                            EzUI.db.profile.focusCastBar.height = val
-                            EzUI:UpdateFocusCastBarLayout()
+                            EzroUI.db.profile.focusCastBar.height = val
+                            EzroUI:UpdateFocusCastBarLayout()
                         end,
                     },
                     width = {
@@ -905,10 +905,10 @@ local function CreateCastBarOptions()
                         order = 13,
                         width = "normal",
                         min = 0, max = 1000, step = 1,
-                        get = function() return EzUI.db.profile.focusCastBar.width end,
+                        get = function() return EzroUI.db.profile.focusCastBar.width end,
                         set = function(_, val)
-                            EzUI.db.profile.focusCastBar.width = val
-                            EzUI:UpdateFocusCastBarLayout()
+                            EzroUI.db.profile.focusCastBar.width = val
+                            EzroUI:UpdateFocusCastBarLayout()
                         end,
                     },
                     offsetY = {
@@ -918,10 +918,10 @@ local function CreateCastBarOptions()
                         order = 14,
                         width = "full",
                         min = -500, max = 500, step = 1,
-                        get = function() return EzUI.db.profile.focusCastBar.offsetY end,
+                        get = function() return EzroUI.db.profile.focusCastBar.offsetY end,
                         set = function(_, val)
-                            EzUI.db.profile.focusCastBar.offsetY = val
-                            EzUI:UpdateFocusCastBarLayout()
+                            EzroUI.db.profile.focusCastBar.offsetY = val
+                            EzroUI:UpdateFocusCastBarLayout()
                         end,
                     },
                     offsetX = {
@@ -931,10 +931,10 @@ local function CreateCastBarOptions()
                         order = 15,
                         width = "full",
                         min = -500, max = 500, step = 1,
-                        get = function() return EzUI.db.profile.focusCastBar.offsetX or 0 end,
+                        get = function() return EzroUI.db.profile.focusCastBar.offsetX or 0 end,
                         set = function(_, val)
-                            EzUI.db.profile.focusCastBar.offsetX = val
-                            EzUI:UpdateFocusCastBarLayout()
+                            EzroUI.db.profile.focusCastBar.offsetX = val
+                            EzroUI:UpdateFocusCastBarLayout()
                         end,
                     },
                     
@@ -957,16 +957,16 @@ local function CreateCastBarOptions()
                             return names
                         end,
                         get = function() 
-                            local override = EzUI.db.profile.focusCastBar.texture
+                            local override = EzroUI.db.profile.focusCastBar.texture
                             if override and override ~= "" then
                                 return override
                             end
                             -- Return global texture name when override is nil
-                            return EzUI.db.profile.general.globalTexture or "Ez"
+                            return EzroUI.db.profile.general.globalTexture or "Ez"
                         end,
                         set = function(_, val)
-                            EzUI.db.profile.focusCastBar.texture = val
-                            EzUI:UpdateFocusCastBarLayout()
+                            EzroUI.db.profile.focusCastBar.texture = val
+                            EzroUI:UpdateFocusCastBarLayout()
                         end,
                     },
                     barColor = {
@@ -977,17 +977,17 @@ local function CreateCastBarOptions()
                         width = "normal",
                         hasAlpha = true,
                         get = function()
-                            local c = EzUI.db.profile.focusCastBar.interruptibleColor or EzUI.db.profile.focusCastBar.color
+                            local c = EzroUI.db.profile.focusCastBar.interruptibleColor or EzroUI.db.profile.focusCastBar.color
                             if c then
                                 return c[1], c[2], c[3], c[4] or 1
                             end
                             return 1, 0, 0, 1
                         end,
                         set = function(_, r, g, b, a)
-                            EzUI.db.profile.focusCastBar.interruptibleColor = { r, g, b, a }
+                            EzroUI.db.profile.focusCastBar.interruptibleColor = { r, g, b, a }
                             -- keep base color in sync for legacy fallback
-                            EzUI.db.profile.focusCastBar.color = { r, g, b, a }
-                            EzUI:UpdateFocusCastBarLayout()
+                            EzroUI.db.profile.focusCastBar.color = { r, g, b, a }
+                            EzroUI:UpdateFocusCastBarLayout()
                         end,
                     },
                     nonInterruptibleColor = {
@@ -998,15 +998,15 @@ local function CreateCastBarOptions()
                         width = "normal",
                         hasAlpha = true,
                         get = function()
-                            local c = EzUI.db.profile.focusCastBar.nonInterruptibleColor
+                            local c = EzroUI.db.profile.focusCastBar.nonInterruptibleColor
                             if c then
                                 return c[1], c[2], c[3], c[4] or 1
                             end
                             return 0.6, 0.6, 0.6, 1
                         end,
                         set = function(_, r, g, b, a)
-                            EzUI.db.profile.focusCastBar.nonInterruptibleColor = { r, g, b, a }
-                            EzUI:UpdateFocusCastBarLayout()
+                            EzroUI.db.profile.focusCastBar.nonInterruptibleColor = { r, g, b, a }
+                            EzroUI:UpdateFocusCastBarLayout()
                         end,
                     },
                     interruptedColor = {
@@ -1017,15 +1017,15 @@ local function CreateCastBarOptions()
                         width = "normal",
                         hasAlpha = true,
                         get = function()
-                            local c = EzUI.db.profile.focusCastBar.interruptedColor
+                            local c = EzroUI.db.profile.focusCastBar.interruptedColor
                             if c then
                                 return c[1], c[2], c[3], c[4] or 1
                             end
                             return 0.8, 0.2, 0.2, 1
                         end,
                         set = function(_, r, g, b, a)
-                            EzUI.db.profile.focusCastBar.interruptedColor = { r, g, b, a }
-                            EzUI:UpdateFocusCastBarLayout()
+                            EzroUI.db.profile.focusCastBar.interruptedColor = { r, g, b, a }
+                            EzroUI:UpdateFocusCastBarLayout()
                         end,
                     },
                     bgColor = {
@@ -1036,15 +1036,15 @@ local function CreateCastBarOptions()
                         width = "normal",
                         hasAlpha = true,
                         get = function()
-                            local c = EzUI.db.profile.focusCastBar.bgColor
+                            local c = EzroUI.db.profile.focusCastBar.bgColor
                             if c then
                                 return c[1], c[2], c[3], c[4] or 1
                             end
                             return 0.1, 0.1, 0.1, 1
                         end,
                         set = function(_, r, g, b, a)
-                            EzUI.db.profile.focusCastBar.bgColor = { r, g, b, a }
-                            EzUI:UpdateFocusCastBarLayout()
+                            EzroUI.db.profile.focusCastBar.bgColor = { r, g, b, a }
+                            EzroUI:UpdateFocusCastBarLayout()
                         end,
                     },
                     textSize = {
@@ -1053,10 +1053,10 @@ local function CreateCastBarOptions()
                         order = 26,
                         width = "normal",
                         min = 6, max = 40, step = 1,
-                        get = function() return EzUI.db.profile.focusCastBar.textSize end,
+                        get = function() return EzroUI.db.profile.focusCastBar.textSize end,
                         set = function(_, val)
-                            EzUI.db.profile.focusCastBar.textSize = val
-                            EzUI:UpdateFocusCastBarLayout()
+                            EzroUI.db.profile.focusCastBar.textSize = val
+                            EzroUI:UpdateFocusCastBarLayout()
                         end,
                     },
                     textPositionHeader = {
@@ -1070,10 +1070,10 @@ local function CreateCastBarOptions()
                         order = 26.2,
                         width = "normal",
                         min = -100, max = 100, step = 1,
-                        get = function() return EzUI.db.profile.focusCastBar.nameOffsetX or 0 end,
+                        get = function() return EzroUI.db.profile.focusCastBar.nameOffsetX or 0 end,
                         set = function(_, val)
-                            EzUI.db.profile.focusCastBar.nameOffsetX = val
-                            EzUI:UpdateFocusCastBarLayout()
+                            EzroUI.db.profile.focusCastBar.nameOffsetX = val
+                            EzroUI:UpdateFocusCastBarLayout()
                         end,
                     },
                     nameOffsetY = {
@@ -1082,10 +1082,10 @@ local function CreateCastBarOptions()
                         order = 26.3,
                         width = "normal",
                         min = -100, max = 100, step = 1,
-                        get = function() return EzUI.db.profile.focusCastBar.nameOffsetY or 0 end,
+                        get = function() return EzroUI.db.profile.focusCastBar.nameOffsetY or 0 end,
                         set = function(_, val)
-                            EzUI.db.profile.focusCastBar.nameOffsetY = val
-                            EzUI:UpdateFocusCastBarLayout()
+                            EzroUI.db.profile.focusCastBar.nameOffsetY = val
+                            EzroUI:UpdateFocusCastBarLayout()
                         end,
                     },
                     timeOffsetX = {
@@ -1094,10 +1094,10 @@ local function CreateCastBarOptions()
                         order = 26.4,
                         width = "normal",
                         min = -100, max = 100, step = 1,
-                        get = function() return EzUI.db.profile.focusCastBar.timeOffsetX or 0 end,
+                        get = function() return EzroUI.db.profile.focusCastBar.timeOffsetX or 0 end,
                         set = function(_, val)
-                            EzUI.db.profile.focusCastBar.timeOffsetX = val
-                            EzUI:UpdateFocusCastBarLayout()
+                            EzroUI.db.profile.focusCastBar.timeOffsetX = val
+                            EzroUI:UpdateFocusCastBarLayout()
                         end,
                     },
                     timeOffsetY = {
@@ -1106,10 +1106,10 @@ local function CreateCastBarOptions()
                         order = 26.5,
                         width = "normal",
                         min = -100, max = 100, step = 1,
-                        get = function() return EzUI.db.profile.focusCastBar.timeOffsetY or 0 end,
+                        get = function() return EzroUI.db.profile.focusCastBar.timeOffsetY or 0 end,
                         set = function(_, val)
-                            EzUI.db.profile.focusCastBar.timeOffsetY = val
-                            EzUI:UpdateFocusCastBarLayout()
+                            EzroUI.db.profile.focusCastBar.timeOffsetY = val
+                            EzroUI:UpdateFocusCastBarLayout()
                         end,
                     },
                     showTimeText = {
@@ -1118,10 +1118,10 @@ local function CreateCastBarOptions()
                         desc = "Show the remaining cast time on the cast bar",
                         order = 27,
                         width = "normal",
-                        get = function() return EzUI.db.profile.focusCastBar.showTimeText ~= false end,
+                        get = function() return EzroUI.db.profile.focusCastBar.showTimeText ~= false end,
                         set = function(_, val)
-                            EzUI.db.profile.focusCastBar.showTimeText = val
-                            EzUI:UpdateFocusCastBarLayout()
+                            EzroUI.db.profile.focusCastBar.showTimeText = val
+                            EzroUI:UpdateFocusCastBarLayout()
                         end,
                     },
                     showIcon = {
@@ -1130,10 +1130,10 @@ local function CreateCastBarOptions()
                         desc = "Hide the spell icon if you prefer a bar-only look",
                         order = 28,
                         width = "normal",
-                        get = function() return EzUI.db.profile.focusCastBar.showIcon ~= false end,
+                        get = function() return EzroUI.db.profile.focusCastBar.showIcon ~= false end,
                         set = function(_, val)
-                            EzUI.db.profile.focusCastBar.showIcon = val
-                            EzUI:UpdateFocusCastBarLayout()
+                            EzroUI.db.profile.focusCastBar.showIcon = val
+                            EzroUI:UpdateFocusCastBarLayout()
                         end,
                     },
                 },
@@ -1154,10 +1154,10 @@ local function CreateCastBarOptions()
                         desc = "Show cast bars when boss units are casting or channeling spells",
                         width = "full",
                         order = 2,
-                        get = function() return EzUI.db.profile.bossCastBar.enabled end,
+                        get = function() return EzroUI.db.profile.bossCastBar.enabled end,
                         set = function(_, val)
-                            EzUI.db.profile.bossCastBar.enabled = val
-                            EzUI:UpdateAllBossCastBarLayouts()
+                            EzroUI.db.profile.bossCastBar.enabled = val
+                            EzroUI:UpdateAllBossCastBarLayouts()
                         end,
                     },
                     testCast = {
@@ -1166,7 +1166,7 @@ local function CreateCastBarOptions()
                         desc  = "Show fake casts on boss frames so you can preview and tweak the bars. Boss frames must be in preview mode.",
                         order = 3,
                         func  = function()
-                            EzUI:ShowTestBossCastBars()
+                            EzroUI:ShowTestBossCastBars()
                         end,
                     },
                     positionHeader = {
@@ -1185,10 +1185,10 @@ local function CreateCastBarOptions()
                             ["BOTTOM"] = "Bottom",
                             ["TOP"] = "Top",
                         },
-                        get = function() return EzUI.db.profile.bossCastBar.anchorPoint or "BOTTOM" end,
+                        get = function() return EzroUI.db.profile.bossCastBar.anchorPoint or "BOTTOM" end,
                         set = function(_, val)
-                            EzUI.db.profile.bossCastBar.anchorPoint = val
-                            EzUI:UpdateAllBossCastBarLayouts()
+                            EzroUI.db.profile.bossCastBar.anchorPoint = val
+                            EzroUI:UpdateAllBossCastBarLayouts()
                         end,
                     },
                     height = {
@@ -1197,10 +1197,10 @@ local function CreateCastBarOptions()
                         order = 13,
                         width = "normal",
                         min = 6, max = 40, step = 1,
-                        get = function() return EzUI.db.profile.bossCastBar.height end,
+                        get = function() return EzroUI.db.profile.bossCastBar.height end,
                         set = function(_, val)
-                            EzUI.db.profile.bossCastBar.height = val
-                            EzUI:UpdateAllBossCastBarLayouts()
+                            EzroUI.db.profile.bossCastBar.height = val
+                            EzroUI:UpdateAllBossCastBarLayouts()
                         end,
                     },
                     width = {
@@ -1210,10 +1210,10 @@ local function CreateCastBarOptions()
                         order = 14,
                         width = "normal",
                         min = 0, max = 1000, step = 1,
-                        get = function() return EzUI.db.profile.bossCastBar.width end,
+                        get = function() return EzroUI.db.profile.bossCastBar.width end,
                         set = function(_, val)
-                            EzUI.db.profile.bossCastBar.width = val
-                            EzUI:UpdateAllBossCastBarLayouts()
+                            EzroUI.db.profile.bossCastBar.width = val
+                            EzroUI:UpdateAllBossCastBarLayouts()
                         end,
                     },
                     offsetX = {
@@ -1222,10 +1222,10 @@ local function CreateCastBarOptions()
                         order = 15,
                         width = "normal",
                         min = -200, max = 200, step = 1,
-                        get = function() return EzUI.db.profile.bossCastBar.offsetX or 0 end,
+                        get = function() return EzroUI.db.profile.bossCastBar.offsetX or 0 end,
                         set = function(_, val)
-                            EzUI.db.profile.bossCastBar.offsetX = val
-                            EzUI:UpdateAllBossCastBarLayouts()
+                            EzroUI.db.profile.bossCastBar.offsetX = val
+                            EzroUI:UpdateAllBossCastBarLayouts()
                         end,
                     },
                     offsetY = {
@@ -1234,10 +1234,10 @@ local function CreateCastBarOptions()
                         order = 16,
                         width = "normal",
                         min = -100, max = 100, step = 1,
-                        get = function() return EzUI.db.profile.bossCastBar.offsetY or -1 end,
+                        get = function() return EzroUI.db.profile.bossCastBar.offsetY or -1 end,
                         set = function(_, val)
-                            EzUI.db.profile.bossCastBar.offsetY = val
-                            EzUI:UpdateAllBossCastBarLayouts()
+                            EzroUI.db.profile.bossCastBar.offsetY = val
+                            EzroUI:UpdateAllBossCastBarLayouts()
                         end,
                     },
                     appearanceHeader = {
@@ -1253,10 +1253,10 @@ local function CreateCastBarOptions()
                         width = "full",
                         dialogControl = "LSM30_Statusbar",
                         values = LSM:HashTable("statusbar"),
-                        get = function() return EzUI.db.profile.bossCastBar.texture end,
+                        get = function() return EzroUI.db.profile.bossCastBar.texture end,
                         set = function(_, val)
-                            EzUI.db.profile.bossCastBar.texture = val
-                            EzUI:UpdateAllBossCastBarLayouts()
+                            EzroUI.db.profile.bossCastBar.texture = val
+                            EzroUI:UpdateAllBossCastBarLayouts()
                         end,
                     },
                     interruptibleColor = {
@@ -1267,15 +1267,15 @@ local function CreateCastBarOptions()
                         width = "normal",
                         hasAlpha = true,
                         get = function()
-                            local c = EzUI.db.profile.bossCastBar.interruptibleColor
+                            local c = EzroUI.db.profile.bossCastBar.interruptibleColor
                             if c then
                                 return c[1], c[2], c[3], c[4] or 1
                             end
                             return 0.5, 0.5, 1.0, 1.0
                         end,
                         set = function(_, r, g, b, a)
-                            EzUI.db.profile.bossCastBar.interruptibleColor = { r, g, b, a }
-                            EzUI:UpdateAllBossCastBarLayouts()
+                            EzroUI.db.profile.bossCastBar.interruptibleColor = { r, g, b, a }
+                            EzroUI:UpdateAllBossCastBarLayouts()
                         end,
                     },
                     nonInterruptibleColor = {
@@ -1286,15 +1286,15 @@ local function CreateCastBarOptions()
                         width = "normal",
                         hasAlpha = true,
                         get = function()
-                            local c = EzUI.db.profile.bossCastBar.nonInterruptibleColor
+                            local c = EzroUI.db.profile.bossCastBar.nonInterruptibleColor
                             if c then
                                 return c[1], c[2], c[3], c[4] or 1
                             end
                             return 0.6, 0.6, 0.6, 1.0
                         end,
                         set = function(_, r, g, b, a)
-                            EzUI.db.profile.bossCastBar.nonInterruptibleColor = { r, g, b, a }
-                            EzUI:UpdateAllBossCastBarLayouts()
+                            EzroUI.db.profile.bossCastBar.nonInterruptibleColor = { r, g, b, a }
+                            EzroUI:UpdateAllBossCastBarLayouts()
                         end,
                     },
                     interruptedColor = {
@@ -1305,15 +1305,15 @@ local function CreateCastBarOptions()
                         width = "normal",
                         hasAlpha = true,
                         get = function()
-                            local c = EzUI.db.profile.bossCastBar.interruptedColor
+                            local c = EzroUI.db.profile.bossCastBar.interruptedColor
                             if c then
                                 return c[1], c[2], c[3], c[4] or 1
                             end
                             return 0.8, 0.2, 0.2, 1.0
                         end,
                         set = function(_, r, g, b, a)
-                            EzUI.db.profile.bossCastBar.interruptedColor = { r, g, b, a }
-                            EzUI:UpdateAllBossCastBarLayouts()
+                            EzroUI.db.profile.bossCastBar.interruptedColor = { r, g, b, a }
+                            EzroUI:UpdateAllBossCastBarLayouts()
                         end,
                     },
                     bgColor = {
@@ -1324,15 +1324,15 @@ local function CreateCastBarOptions()
                         width = "normal",
                         hasAlpha = true,
                         get = function()
-                            local c = EzUI.db.profile.bossCastBar.bgColor
+                            local c = EzroUI.db.profile.bossCastBar.bgColor
                             if c then
                                 return c[1], c[2], c[3], c[4] or 1
                             end
                             return 0.1, 0.1, 0.1, 1
                         end,
                         set = function(_, r, g, b, a)
-                            EzUI.db.profile.bossCastBar.bgColor = { r, g, b, a }
-                            EzUI:UpdateAllBossCastBarLayouts()
+                            EzroUI.db.profile.bossCastBar.bgColor = { r, g, b, a }
+                            EzroUI:UpdateAllBossCastBarLayouts()
                         end,
                     },
                     textPositionHeader = {
@@ -1346,10 +1346,10 @@ local function CreateCastBarOptions()
                         order = 26.1,
                         width = "normal",
                         min = -100, max = 100, step = 1,
-                        get = function() return EzUI.db.profile.bossCastBar.nameOffsetX or 0 end,
+                        get = function() return EzroUI.db.profile.bossCastBar.nameOffsetX or 0 end,
                         set = function(_, val)
-                            EzUI.db.profile.bossCastBar.nameOffsetX = val
-                            EzUI:UpdateAllBossCastBarLayouts()
+                            EzroUI.db.profile.bossCastBar.nameOffsetX = val
+                            EzroUI:UpdateAllBossCastBarLayouts()
                         end,
                     },
                     nameOffsetY = {
@@ -1358,10 +1358,10 @@ local function CreateCastBarOptions()
                         order = 26.2,
                         width = "normal",
                         min = -100, max = 100, step = 1,
-                        get = function() return EzUI.db.profile.bossCastBar.nameOffsetY or 0 end,
+                        get = function() return EzroUI.db.profile.bossCastBar.nameOffsetY or 0 end,
                         set = function(_, val)
-                            EzUI.db.profile.bossCastBar.nameOffsetY = val
-                            EzUI:UpdateAllBossCastBarLayouts()
+                            EzroUI.db.profile.bossCastBar.nameOffsetY = val
+                            EzroUI:UpdateAllBossCastBarLayouts()
                         end,
                     },
                     timeOffsetX = {
@@ -1370,10 +1370,10 @@ local function CreateCastBarOptions()
                         order = 26.3,
                         width = "normal",
                         min = -100, max = 100, step = 1,
-                        get = function() return EzUI.db.profile.bossCastBar.timeOffsetX or 0 end,
+                        get = function() return EzroUI.db.profile.bossCastBar.timeOffsetX or 0 end,
                         set = function(_, val)
-                            EzUI.db.profile.bossCastBar.timeOffsetX = val
-                            EzUI:UpdateAllBossCastBarLayouts()
+                            EzroUI.db.profile.bossCastBar.timeOffsetX = val
+                            EzroUI:UpdateAllBossCastBarLayouts()
                         end,
                     },
                     timeOffsetY = {
@@ -1382,10 +1382,10 @@ local function CreateCastBarOptions()
                         order = 26.4,
                         width = "normal",
                         min = -100, max = 100, step = 1,
-                        get = function() return EzUI.db.profile.bossCastBar.timeOffsetY or 0 end,
+                        get = function() return EzroUI.db.profile.bossCastBar.timeOffsetY or 0 end,
                         set = function(_, val)
-                            EzUI.db.profile.bossCastBar.timeOffsetY = val
-                            EzUI:UpdateAllBossCastBarLayouts()
+                            EzroUI.db.profile.bossCastBar.timeOffsetY = val
+                            EzroUI:UpdateAllBossCastBarLayouts()
                         end,
                     },
                     showTimeText = {
@@ -1394,10 +1394,10 @@ local function CreateCastBarOptions()
                         desc = "Show the remaining cast time on the cast bar",
                         order = 27,
                         width = "normal",
-                        get = function() return EzUI.db.profile.bossCastBar.showTimeText ~= false end,
+                        get = function() return EzroUI.db.profile.bossCastBar.showTimeText ~= false end,
                         set = function(_, val)
-                            EzUI.db.profile.bossCastBar.showTimeText = val
-                            EzUI:UpdateAllBossCastBarLayouts()
+                            EzroUI.db.profile.bossCastBar.showTimeText = val
+                            EzroUI:UpdateAllBossCastBarLayouts()
                         end,
                     },
                     showIcon = {
@@ -1406,10 +1406,10 @@ local function CreateCastBarOptions()
                         desc = "Hide the spell icon if you prefer a bar-only look",
                         order = 28,
                         width = "normal",
-                        get = function() return EzUI.db.profile.bossCastBar.showIcon ~= false end,
+                        get = function() return EzroUI.db.profile.bossCastBar.showIcon ~= false end,
                         set = function(_, val)
-                            EzUI.db.profile.bossCastBar.showIcon = val
-                            EzUI:UpdateAllBossCastBarLayouts()
+                            EzroUI.db.profile.bossCastBar.showIcon = val
+                            EzroUI:UpdateAllBossCastBarLayouts()
                         end,
                     },
                 },

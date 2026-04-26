@@ -1,5 +1,5 @@
 ﻿local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
+local EzroUI = ns.Addon
 local LSM = LibStub("LibSharedMedia-3.0")
 
 local ViewerOptions = ns.CreateViewerOptions
@@ -95,13 +95,13 @@ local function CreateBuffBarViewerOptions(order)
                 width = "full",
                 order = 2,
                 get = function()
-                    local cfg = EzUI.db.profile.buffBarViewer or {}
+                    local cfg = EzroUI.db.profile.buffBarViewer or {}
                     return cfg.enabled ~= false
                 end,
                 set = function(_, val)
-                    EzUI.db.profile.buffBarViewer.enabled = val
-                    if EzUI.RefreshViewers then
-                        EzUI:RefreshViewers()
+                    EzroUI.db.profile.buffBarViewer.enabled = val
+                    if EzroUI.RefreshViewers then
+                        EzroUI:RefreshViewers()
                     end
                 end,
             },
@@ -113,13 +113,13 @@ local function CreateBuffBarViewerOptions(order)
                 width = "normal",
                 min = 0, max = 1000, step = 1,
                 get = function()
-                    local cfg = EzUI.db.profile.buffBarViewer or {}
+                    local cfg = EzroUI.db.profile.buffBarViewer or {}
                     return cfg.width or 0
                 end,
                 set = function(_, val)
-                    EzUI.db.profile.buffBarViewer.width = val
-                    if EzUI.RefreshViewers then
-                        EzUI:RefreshViewers()
+                    EzroUI.db.profile.buffBarViewer.width = val
+                    if EzroUI.RefreshViewers then
+                        EzroUI:RefreshViewers()
                     end
                 end,
             },
@@ -130,13 +130,13 @@ local function CreateBuffBarViewerOptions(order)
                 width = "normal",
                 min = 4, max = 100, step = 1,
                 get = function()
-                    local cfg = EzUI.db.profile.buffBarViewer or {}
+                    local cfg = EzroUI.db.profile.buffBarViewer or {}
                     return cfg.height or 16
                 end,
                 set = function(_, val)
-                    EzUI.db.profile.buffBarViewer.height = val
-                    if EzUI.RefreshViewers then
-                        EzUI:RefreshViewers()
+                    EzroUI.db.profile.buffBarViewer.height = val
+                    if EzroUI.RefreshViewers then
+                        EzroUI:RefreshViewers()
                     end
                 end,
             },
@@ -156,14 +156,14 @@ local function CreateBuffBarViewerOptions(order)
                     return names
                 end,
                 get = function()
-                    local cfg = EzUI.db.profile.buffBarViewer or {}
+                    local cfg = EzroUI.db.profile.buffBarViewer or {}
                     return cfg.texture or ""
                 end,
                 set = function(_, val)
                     if val == "" then val = nil end
-                    EzUI.db.profile.buffBarViewer.texture = val
-                    if EzUI.RefreshViewers then
-                        EzUI:RefreshViewers()
+                    EzroUI.db.profile.buffBarViewer.texture = val
+                    if EzroUI.RefreshViewers then
+                        EzroUI:RefreshViewers()
                     end
                 end,
             },
@@ -174,16 +174,16 @@ local function CreateBuffBarViewerOptions(order)
                 width = "full",
                 hasAlpha = true,
                 get = function()
-                    local cfg = EzUI.db.profile.buffBarViewer or {}
+                    local cfg = EzroUI.db.profile.buffBarViewer or {}
                     local c = cfg.bgColor or { 0.1, 0.1, 0.1, 0.7 }
                     return c[1], c[2], c[3], c[4] or 1
                 end,
                 set = function(_, r, g, b, a)
-                    local cfg = EzUI.db.profile.buffBarViewer or {}
+                    local cfg = EzroUI.db.profile.buffBarViewer or {}
                     cfg.bgColor = { r, g, b, a or 1 }
-                    EzUI.db.profile.buffBarViewer = cfg
-                    if EzUI.RefreshViewers then
-                        EzUI:RefreshViewers()
+                    EzroUI.db.profile.buffBarViewer = cfg
+                    if EzroUI.RefreshViewers then
+                        EzroUI:RefreshViewers()
                     end
                 end,
             },
@@ -194,13 +194,13 @@ local function CreateBuffBarViewerOptions(order)
                 order = 10,
                 width = "full",
                 get = function()
-                    local cfg = EzUI.db.profile.buffBarViewer or {}
+                    local cfg = EzroUI.db.profile.buffBarViewer or {}
                     return cfg.hideIconMask ~= false
                 end,
                 set = function(_, val)
-                    EzUI.db.profile.buffBarViewer.hideIconMask = val
-                    if EzUI.RefreshViewers then
-                        EzUI:RefreshViewers()
+                    EzroUI.db.profile.buffBarViewer.hideIconMask = val
+                    if EzroUI.RefreshViewers then
+                        EzroUI:RefreshViewers()
                     end
                 end,
             },
@@ -211,13 +211,13 @@ local function CreateBuffBarViewerOptions(order)
                 order = 10.5,
                 width = "full",
                 get = function()
-                    local cfg = EzUI.db.profile.buffBarViewer or {}
+                    local cfg = EzroUI.db.profile.buffBarViewer or {}
                     return cfg.hideIcon or false
                 end,
                 set = function(_, val)
-                    EzUI.db.profile.buffBarViewer.hideIcon = val
-                    if EzUI.RefreshViewers then
-                        EzUI:RefreshViewers()
+                    EzroUI.db.profile.buffBarViewer.hideIcon = val
+                    if EzroUI.RefreshViewers then
+                        EzroUI:RefreshViewers()
                     end
                 end,
             },
@@ -229,13 +229,13 @@ local function CreateBuffBarViewerOptions(order)
                 width = "normal",
                 min = 0, max = 0.2, step = 0.01,
                 get = function()
-                    local cfg = EzUI.db.profile.buffBarViewer or {}
+                    local cfg = EzroUI.db.profile.buffBarViewer or {}
                     return cfg.iconZoom or 0
                 end,
                 set = function(_, val)
-                    EzUI.db.profile.buffBarViewer.iconZoom = val
-                    if EzUI.RefreshViewers then
-                        EzUI:RefreshViewers()
+                    EzroUI.db.profile.buffBarViewer.iconZoom = val
+                    if EzroUI.RefreshViewers then
+                        EzroUI:RefreshViewers()
                     end
                 end,
             },
@@ -247,13 +247,13 @@ local function CreateBuffBarViewerOptions(order)
                 width = "normal",
                 min = 0, max = 5, step = 1,
                 get = function()
-                    local cfg = EzUI.db.profile.buffBarViewer or {}
+                    local cfg = EzroUI.db.profile.buffBarViewer or {}
                     return cfg.iconBorderSize or 1
                 end,
                 set = function(_, val)
-                    EzUI.db.profile.buffBarViewer.iconBorderSize = val
-                    if EzUI.RefreshViewers then
-                        EzUI:RefreshViewers()
+                    EzroUI.db.profile.buffBarViewer.iconBorderSize = val
+                    if EzroUI.RefreshViewers then
+                        EzroUI:RefreshViewers()
                     end
                 end,
             },
@@ -264,16 +264,16 @@ local function CreateBuffBarViewerOptions(order)
                 width = "normal",
                 hasAlpha = true,
                 get = function()
-                    local cfg = EzUI.db.profile.buffBarViewer or {}
+                    local cfg = EzroUI.db.profile.buffBarViewer or {}
                     local c = cfg.iconBorderColor or {0, 0, 0, 1}
                     return c[1], c[2], c[3], c[4] or 1
                 end,
                 set = function(_, r, g, b, a)
-                    local cfg = EzUI.db.profile.buffBarViewer or {}
+                    local cfg = EzroUI.db.profile.buffBarViewer or {}
                     cfg.iconBorderColor = { r, g, b, a or 1 }
-                    EzUI.db.profile.buffBarViewer = cfg
-                    if EzUI.RefreshViewers then
-                        EzUI:RefreshViewers()
+                    EzroUI.db.profile.buffBarViewer = cfg
+                    if EzroUI.RefreshViewers then
+                        EzroUI:RefreshViewers()
                     end
                 end,
             },
@@ -288,13 +288,13 @@ local function CreateBuffBarViewerOptions(order)
                 order = 21,
                 width = "normal",
                 get = function()
-                    local cfg = EzUI.db.profile.buffBarViewer or {}
+                    local cfg = EzroUI.db.profile.buffBarViewer or {}
                     return cfg.showName ~= false
                 end,
                 set = function(_, val)
-                    EzUI.db.profile.buffBarViewer.showName = val
-                    if EzUI.RefreshViewers then
-                        EzUI:RefreshViewers()
+                    EzroUI.db.profile.buffBarViewer.showName = val
+                    if EzroUI.RefreshViewers then
+                        EzroUI:RefreshViewers()
                     end
                 end,
             },
@@ -305,13 +305,13 @@ local function CreateBuffBarViewerOptions(order)
                 width = "normal",
                 min = 6, max = 32, step = 1,
                 get = function()
-                    local cfg = EzUI.db.profile.buffBarViewer or {}
+                    local cfg = EzroUI.db.profile.buffBarViewer or {}
                     return cfg.nameSize or 14
                 end,
                 set = function(_, val)
-                    EzUI.db.profile.buffBarViewer.nameSize = val
-                    if EzUI.RefreshViewers then
-                        EzUI:RefreshViewers()
+                    EzroUI.db.profile.buffBarViewer.nameSize = val
+                    if EzroUI.RefreshViewers then
+                        EzroUI:RefreshViewers()
                     end
                 end,
             },
@@ -322,16 +322,16 @@ local function CreateBuffBarViewerOptions(order)
                 width = "normal",
                 hasAlpha = true,
                 get = function()
-                    local cfg = EzUI.db.profile.buffBarViewer or {}
+                    local cfg = EzroUI.db.profile.buffBarViewer or {}
                     local c = cfg.nameColor or {1, 1, 1, 1}
                     return c[1], c[2], c[3], c[4] or 1
                 end,
                 set = function(_, r, g, b, a)
-                    local cfg = EzUI.db.profile.buffBarViewer or {}
+                    local cfg = EzroUI.db.profile.buffBarViewer or {}
                     cfg.nameColor = { r, g, b, a or 1 }
-                    EzUI.db.profile.buffBarViewer = cfg
-                    if EzUI.RefreshViewers then
-                        EzUI:RefreshViewers()
+                    EzroUI.db.profile.buffBarViewer = cfg
+                    if EzroUI.RefreshViewers then
+                        EzroUI:RefreshViewers()
                     end
                 end,
             },
@@ -342,15 +342,15 @@ local function CreateBuffBarViewerOptions(order)
                 width = "normal",
                 values = GetChargeAnchorOptions(),
                 get = function()
-                    local cfg = EzUI.db.profile.buffBarViewer or {}
+                    local cfg = EzroUI.db.profile.buffBarViewer or {}
                     local anchor = cfg.nameAnchor or "LEFT"
                     return anchor == "MIDDLE" and "CENTER" or anchor
                 end,
                 set = function(_, val)
                     if val == "MIDDLE" then val = "CENTER" end
-                    EzUI.db.profile.buffBarViewer.nameAnchor = val
-                    if EzUI.RefreshViewers then
-                        EzUI:RefreshViewers()
+                    EzroUI.db.profile.buffBarViewer.nameAnchor = val
+                    if EzroUI.RefreshViewers then
+                        EzroUI:RefreshViewers()
                     end
                 end,
             },
@@ -361,13 +361,13 @@ local function CreateBuffBarViewerOptions(order)
                 width = "normal",
                 min = -100, max = 100, step = 1,
                 get = function()
-                    local cfg = EzUI.db.profile.buffBarViewer or {}
+                    local cfg = EzroUI.db.profile.buffBarViewer or {}
                     return cfg.nameOffsetX or 0
                 end,
                 set = function(_, val)
-                    EzUI.db.profile.buffBarViewer.nameOffsetX = val
-                    if EzUI.RefreshViewers then
-                        EzUI:RefreshViewers()
+                    EzroUI.db.profile.buffBarViewer.nameOffsetX = val
+                    if EzroUI.RefreshViewers then
+                        EzroUI:RefreshViewers()
                     end
                 end,
             },
@@ -378,13 +378,13 @@ local function CreateBuffBarViewerOptions(order)
                 width = "normal",
                 min = -100, max = 100, step = 1,
                 get = function()
-                    local cfg = EzUI.db.profile.buffBarViewer or {}
+                    local cfg = EzroUI.db.profile.buffBarViewer or {}
                     return cfg.nameOffsetY or 0
                 end,
                 set = function(_, val)
-                    EzUI.db.profile.buffBarViewer.nameOffsetY = val
-                    if EzUI.RefreshViewers then
-                        EzUI:RefreshViewers()
+                    EzroUI.db.profile.buffBarViewer.nameOffsetY = val
+                    if EzroUI.RefreshViewers then
+                        EzroUI:RefreshViewers()
                     end
                 end,
             },
@@ -399,13 +399,13 @@ local function CreateBuffBarViewerOptions(order)
                 order = 31,
                 width = "normal",
                 get = function()
-                    local cfg = EzUI.db.profile.buffBarViewer or {}
+                    local cfg = EzroUI.db.profile.buffBarViewer or {}
                     return cfg.showDuration ~= false
                 end,
                 set = function(_, val)
-                    EzUI.db.profile.buffBarViewer.showDuration = val
-                    if EzUI.RefreshViewers then
-                        EzUI:RefreshViewers()
+                    EzroUI.db.profile.buffBarViewer.showDuration = val
+                    if EzroUI.RefreshViewers then
+                        EzroUI:RefreshViewers()
                     end
                 end,
             },
@@ -416,13 +416,13 @@ local function CreateBuffBarViewerOptions(order)
                 width = "normal",
                 min = 6, max = 32, step = 1,
                 get = function()
-                    local cfg = EzUI.db.profile.buffBarViewer or {}
+                    local cfg = EzroUI.db.profile.buffBarViewer or {}
                     return cfg.durationSize or 12
                 end,
                 set = function(_, val)
-                    EzUI.db.profile.buffBarViewer.durationSize = val
-                    if EzUI.RefreshViewers then
-                        EzUI:RefreshViewers()
+                    EzroUI.db.profile.buffBarViewer.durationSize = val
+                    if EzroUI.RefreshViewers then
+                        EzroUI:RefreshViewers()
                     end
                 end,
             },
@@ -433,16 +433,16 @@ local function CreateBuffBarViewerOptions(order)
                 width = "normal",
                 hasAlpha = true,
                 get = function()
-                    local cfg = EzUI.db.profile.buffBarViewer or {}
+                    local cfg = EzroUI.db.profile.buffBarViewer or {}
                     local c = cfg.durationColor or {1, 1, 1, 1}
                     return c[1], c[2], c[3], c[4] or 1
                 end,
                 set = function(_, r, g, b, a)
-                    local cfg = EzUI.db.profile.buffBarViewer or {}
+                    local cfg = EzroUI.db.profile.buffBarViewer or {}
                     cfg.durationColor = { r, g, b, a or 1 }
-                    EzUI.db.profile.buffBarViewer = cfg
-                    if EzUI.RefreshViewers then
-                        EzUI:RefreshViewers()
+                    EzroUI.db.profile.buffBarViewer = cfg
+                    if EzroUI.RefreshViewers then
+                        EzroUI:RefreshViewers()
                     end
                 end,
             },
@@ -453,15 +453,15 @@ local function CreateBuffBarViewerOptions(order)
                 width = "normal",
                 values = GetChargeAnchorOptions(),
                 get = function()
-                    local cfg = EzUI.db.profile.buffBarViewer or {}
+                    local cfg = EzroUI.db.profile.buffBarViewer or {}
                     local anchor = cfg.durationAnchor or "RIGHT"
                     return anchor == "MIDDLE" and "CENTER" or anchor
                 end,
                 set = function(_, val)
                     if val == "MIDDLE" then val = "CENTER" end
-                    EzUI.db.profile.buffBarViewer.durationAnchor = val
-                    if EzUI.RefreshViewers then
-                        EzUI:RefreshViewers()
+                    EzroUI.db.profile.buffBarViewer.durationAnchor = val
+                    if EzroUI.RefreshViewers then
+                        EzroUI:RefreshViewers()
                     end
                 end,
             },
@@ -472,13 +472,13 @@ local function CreateBuffBarViewerOptions(order)
                 width = "normal",
                 min = -100, max = 100, step = 1,
                 get = function()
-                    local cfg = EzUI.db.profile.buffBarViewer or {}
+                    local cfg = EzroUI.db.profile.buffBarViewer or {}
                     return cfg.durationOffsetX or 0
                 end,
                 set = function(_, val)
-                    EzUI.db.profile.buffBarViewer.durationOffsetX = val
-                    if EzUI.RefreshViewers then
-                        EzUI:RefreshViewers()
+                    EzroUI.db.profile.buffBarViewer.durationOffsetX = val
+                    if EzroUI.RefreshViewers then
+                        EzroUI:RefreshViewers()
                     end
                 end,
             },
@@ -489,13 +489,13 @@ local function CreateBuffBarViewerOptions(order)
                 width = "normal",
                 min = -100, max = 100, step = 1,
                 get = function()
-                    local cfg = EzUI.db.profile.buffBarViewer or {}
+                    local cfg = EzroUI.db.profile.buffBarViewer or {}
                     return cfg.durationOffsetY or 0
                 end,
                 set = function(_, val)
-                    EzUI.db.profile.buffBarViewer.durationOffsetY = val
-                    if EzUI.RefreshViewers then
-                        EzUI:RefreshViewers()
+                    EzroUI.db.profile.buffBarViewer.durationOffsetY = val
+                    if EzroUI.RefreshViewers then
+                        EzroUI:RefreshViewers()
                     end
                 end,
             },
@@ -510,13 +510,13 @@ local function CreateBuffBarViewerOptions(order)
                 order = 40.5,
                 width = "normal",
                 get = function()
-                    local cfg = EzUI.db.profile.buffBarViewer or {}
+                    local cfg = EzroUI.db.profile.buffBarViewer or {}
                     return cfg.showApplications ~= false
                 end,
                 set = function(_, val)
-                    EzUI.db.profile.buffBarViewer.showApplications = val
-                    if EzUI.RefreshViewers then
-                        EzUI:RefreshViewers()
+                    EzroUI.db.profile.buffBarViewer.showApplications = val
+                    if EzroUI.RefreshViewers then
+                        EzroUI:RefreshViewers()
                     end
                 end,
             },
@@ -527,13 +527,13 @@ local function CreateBuffBarViewerOptions(order)
                 width = "normal",
                 min = 6, max = 32, step = 1,
                 get = function()
-                    local cfg = EzUI.db.profile.buffBarViewer or {}
+                    local cfg = EzroUI.db.profile.buffBarViewer or {}
                     return cfg.applicationsSize or 12
                 end,
                 set = function(_, val)
-                    EzUI.db.profile.buffBarViewer.applicationsSize = val
-                    if EzUI.RefreshViewers then
-                        EzUI:RefreshViewers()
+                    EzroUI.db.profile.buffBarViewer.applicationsSize = val
+                    if EzroUI.RefreshViewers then
+                        EzroUI:RefreshViewers()
                     end
                 end,
             },
@@ -544,16 +544,16 @@ local function CreateBuffBarViewerOptions(order)
                 width = "normal",
                 hasAlpha = true,
                 get = function()
-                    local cfg = EzUI.db.profile.buffBarViewer or {}
+                    local cfg = EzroUI.db.profile.buffBarViewer or {}
                     local c = cfg.applicationsColor or {1, 1, 1, 1}
                     return c[1], c[2], c[3], c[4] or 1
                 end,
                 set = function(_, r, g, b, a)
-                    local cfg = EzUI.db.profile.buffBarViewer or {}
+                    local cfg = EzroUI.db.profile.buffBarViewer or {}
                     cfg.applicationsColor = { r, g, b, a or 1 }
-                    EzUI.db.profile.buffBarViewer = cfg
-                    if EzUI.RefreshViewers then
-                        EzUI:RefreshViewers()
+                    EzroUI.db.profile.buffBarViewer = cfg
+                    if EzroUI.RefreshViewers then
+                        EzroUI:RefreshViewers()
                     end
                 end,
             },
@@ -564,15 +564,15 @@ local function CreateBuffBarViewerOptions(order)
                 width = "normal",
                 values = GetChargeAnchorOptions(),
                 get = function()
-                    local cfg = EzUI.db.profile.buffBarViewer or {}
+                    local cfg = EzroUI.db.profile.buffBarViewer or {}
                     local anchor = cfg.applicationsAnchor or "BOTTOMRIGHT"
                     return anchor == "MIDDLE" and "CENTER" or anchor
                 end,
                 set = function(_, val)
                     if val == "MIDDLE" then val = "CENTER" end
-                    EzUI.db.profile.buffBarViewer.applicationsAnchor = val
-                    if EzUI.RefreshViewers then
-                        EzUI:RefreshViewers()
+                    EzroUI.db.profile.buffBarViewer.applicationsAnchor = val
+                    if EzroUI.RefreshViewers then
+                        EzroUI:RefreshViewers()
                     end
                 end,
             },
@@ -583,13 +583,13 @@ local function CreateBuffBarViewerOptions(order)
                 width = "normal",
                 min = -50, max = 50, step = 1,
                 get = function()
-                    local cfg = EzUI.db.profile.buffBarViewer or {}
+                    local cfg = EzroUI.db.profile.buffBarViewer or {}
                     return cfg.applicationsOffsetX or 0
                 end,
                 set = function(_, val)
-                    EzUI.db.profile.buffBarViewer.applicationsOffsetX = val
-                    if EzUI.RefreshViewers then
-                        EzUI:RefreshViewers()
+                    EzroUI.db.profile.buffBarViewer.applicationsOffsetX = val
+                    if EzroUI.RefreshViewers then
+                        EzroUI:RefreshViewers()
                     end
                 end,
             },
@@ -600,13 +600,13 @@ local function CreateBuffBarViewerOptions(order)
                 width = "normal",
                 min = -50, max = 50, step = 1,
                 get = function()
-                    local cfg = EzUI.db.profile.buffBarViewer or {}
+                    local cfg = EzroUI.db.profile.buffBarViewer or {}
                     return cfg.applicationsOffsetY or 0
                 end,
                 set = function(_, val)
-                    EzUI.db.profile.buffBarViewer.applicationsOffsetY = val
-                    if EzUI.RefreshViewers then
-                        EzUI:RefreshViewers()
+                    EzroUI.db.profile.buffBarViewer.applicationsOffsetY = val
+                    if EzroUI.RefreshViewers then
+                        EzroUI:RefreshViewers()
                     end
                 end,
             },
@@ -623,13 +623,13 @@ local function CreateBuffBarViewerOptions(order)
                 width = "normal",
                 min = 0, max = 20, step = 1,
                 get = function()
-                    local cfg = EzUI.db.profile.buffBarViewer or {}
+                    local cfg = EzroUI.db.profile.buffBarViewer or {}
                     return cfg.barSpacing or 2
                 end,
                 set = function(_, val)
-                    EzUI.db.profile.buffBarViewer.barSpacing = val
-                    if EzUI.RefreshViewers then
-                        EzUI:RefreshViewers()
+                    EzroUI.db.profile.buffBarViewer.barSpacing = val
+                    if EzroUI.RefreshViewers then
+                        EzroUI:RefreshViewers()
                     end
                 end,
             },
@@ -654,10 +654,10 @@ local function CreateViewerOptions(viewerKey, displayName, order)
                 desc = "Show/hide this Cooldown Manager",
                 width = "full",
                 order = 2,
-                get = function() return EzUI.db.profile.viewers[viewerKey].enabled end,
+                get = function() return EzroUI.db.profile.viewers[viewerKey].enabled end,
                 set = function(_, val)
-                    EzUI.db.profile.viewers[viewerKey].enabled = val
-                    EzUI:RefreshAll()
+                    EzroUI.db.profile.viewers[viewerKey].enabled = val
+                    EzroUI:RefreshAll()
                 end,
             },
             spacer1 = {
@@ -680,10 +680,10 @@ local function CreateViewerOptions(viewerKey, displayName, order)
                         order = 1,
                         width = "full",
                         min = 16, max = 96, step = 1,
-                        get = function() return EzUI.db.profile.viewers[viewerKey].iconSize end,
+                        get = function() return EzroUI.db.profile.viewers[viewerKey].iconSize end,
                         set = function(_, val)
-                            EzUI.db.profile.viewers[viewerKey].iconSize = val
-                            EzUI:RefreshAll()
+                            EzroUI.db.profile.viewers[viewerKey].iconSize = val
+                            EzroUI:RefreshAll()
                         end,
                     },
                     aspectRatio = {
@@ -694,7 +694,7 @@ local function CreateViewerOptions(viewerKey, displayName, order)
                         width = "full",
                         min = 0.5, max = 2.5, step = 0.01,
                         get = function() 
-                            local profile = EzUI.db.profile.viewers[viewerKey]
+                            local profile = EzroUI.db.profile.viewers[viewerKey]
                             -- Convert aspect ratio string to number, or use stored crop value
                             if profile.aspectRatioCrop then
                                 return profile.aspectRatioCrop
@@ -708,11 +708,11 @@ local function CreateViewerOptions(viewerKey, displayName, order)
                             return 1.0 -- Default to square
                         end,
                         set = function(_, val)
-                            local profile = EzUI.db.profile.viewers[viewerKey]
+                            local profile = EzroUI.db.profile.viewers[viewerKey]
                             profile.aspectRatioCrop = val
                             local rounded = math.floor(val * 100 + 0.5) / 100
                             profile.aspectRatio = string.format("%.2f:1", rounded)
-                            EzUI:RefreshAll()
+                            EzroUI:RefreshAll()
                         end,
                     },
                     spacing = {
@@ -722,10 +722,10 @@ local function CreateViewerOptions(viewerKey, displayName, order)
                         order = 4,
                         width = "full",
                         min = -20, max = 20, step = 1,
-                        get = function() return EzUI.db.profile.viewers[viewerKey].spacing end,
+                        get = function() return EzroUI.db.profile.viewers[viewerKey].spacing end,
                         set = function(_, val)
-                            EzUI.db.profile.viewers[viewerKey].spacing = val
-                            EzUI:RefreshAll()
+                            EzroUI.db.profile.viewers[viewerKey].spacing = val
+                            EzroUI:RefreshAll()
                         end,
                     },
                     zoom = {
@@ -735,10 +735,10 @@ local function CreateViewerOptions(viewerKey, displayName, order)
                         order = 5,
                         width = "full",
                         min = 0, max = 0.2, step = 0.01,
-                        get = function() return EzUI.db.profile.viewers[viewerKey].zoom end,
+                        get = function() return EzroUI.db.profile.viewers[viewerKey].zoom end,
                         set = function(_, val)
-                            EzUI.db.profile.viewers[viewerKey].zoom = val
-                            EzUI:RefreshAll()
+                            EzroUI.db.profile.viewers[viewerKey].zoom = val
+                            EzroUI:RefreshAll()
                         end,
                     },
                     rowLimit = {
@@ -748,10 +748,10 @@ local function CreateViewerOptions(viewerKey, displayName, order)
                         order = 6,
                         width = "full",
                         min = 0, max = 20, step = 1,
-                        get = function() return EzUI.db.profile.viewers[viewerKey].rowLimit or 0 end,
+                        get = function() return EzroUI.db.profile.viewers[viewerKey].rowLimit or 0 end,
                         set = function(_, val)
-                            EzUI.db.profile.viewers[viewerKey].rowLimit = val
-                            EzUI:RefreshAll()
+                            EzroUI.db.profile.viewers[viewerKey].rowLimit = val
+                            EzroUI:RefreshAll()
                         end,
                     },
                     rowGrowDirection = {
@@ -765,12 +765,12 @@ local function CreateViewerOptions(viewerKey, displayName, order)
                             ["down"] = "Down",
                         },
                         get = function()
-                            return EzUI.db.profile.viewers[viewerKey].rowGrowDirection or "down"
+                            return EzroUI.db.profile.viewers[viewerKey].rowGrowDirection or "down"
                         end,
                         set = function(_, val)
                             if viewerKey == "BuffIconCooldownViewer" then
-                                EzUI.db.profile.viewers[viewerKey].rowGrowDirection = val
-                                EzUI:RefreshAll()
+                                EzroUI.db.profile.viewers[viewerKey].rowGrowDirection = val
+                                EzroUI:RefreshAll()
                             end
                         end,
                     },
@@ -791,10 +791,10 @@ local function CreateViewerOptions(viewerKey, displayName, order)
                         order = 1,
                         width = "full",
                         min = 0, max = 5, step = 1,
-                        get = function() return EzUI.db.profile.viewers[viewerKey].borderSize end,
+                        get = function() return EzroUI.db.profile.viewers[viewerKey].borderSize end,
                         set = function(_, val)
-                            EzUI.db.profile.viewers[viewerKey].borderSize = val
-                            EzUI:RefreshAll()
+                            EzroUI.db.profile.viewers[viewerKey].borderSize = val
+                            EzroUI:RefreshAll()
                         end,
                     },
                 },
@@ -814,10 +814,10 @@ local function CreateViewerOptions(viewerKey, displayName, order)
                         order = 1,
                         width = "full",
                         min = 6, max = 32, step = 1,
-                        get = function() return EzUI.db.profile.viewers[viewerKey].countTextSize or 16 end,
+                        get = function() return EzroUI.db.profile.viewers[viewerKey].countTextSize or 16 end,
                         set = function(_, val)
-                            EzUI.db.profile.viewers[viewerKey].countTextSize = val
-                            EzUI:RefreshAll()
+                            EzroUI.db.profile.viewers[viewerKey].countTextSize = val
+                            EzroUI:RefreshAll()
                         end,
                     },
                     chargeTextAnchor = {
@@ -828,11 +828,11 @@ local function CreateViewerOptions(viewerKey, displayName, order)
                         width = "full",
                         values = GetChargeAnchorOptions(),
                         get = function()
-                            return EzUI.db.profile.viewers[viewerKey].chargeTextAnchor or "BOTTOMRIGHT"
+                            return EzroUI.db.profile.viewers[viewerKey].chargeTextAnchor or "BOTTOMRIGHT"
                         end,
                         set = function(_, val)
-                            EzUI.db.profile.viewers[viewerKey].chargeTextAnchor = val
-                            EzUI:RefreshAll()
+                            EzroUI.db.profile.viewers[viewerKey].chargeTextAnchor = val
+                            EzroUI:RefreshAll()
                         end,
                     },
                     countTextOffsetX = {
@@ -843,11 +843,11 @@ local function CreateViewerOptions(viewerKey, displayName, order)
                         width = "normal",
                         min = -50, max = 50, step = 1,
                         get = function()
-                            return EzUI.db.profile.viewers[viewerKey].countTextOffsetX or 0
+                            return EzroUI.db.profile.viewers[viewerKey].countTextOffsetX or 0
                         end,
                         set = function(_, val)
-                            EzUI.db.profile.viewers[viewerKey].countTextOffsetX = val
-                            EzUI:RefreshAll()
+                            EzroUI.db.profile.viewers[viewerKey].countTextOffsetX = val
+                            EzroUI:RefreshAll()
                         end,
                     },
                     countTextOffsetY = {
@@ -858,11 +858,11 @@ local function CreateViewerOptions(viewerKey, displayName, order)
                         width = "normal",
                         min = -50, max = 50, step = 1,
                         get = function()
-                            return EzUI.db.profile.viewers[viewerKey].countTextOffsetY or 0
+                            return EzroUI.db.profile.viewers[viewerKey].countTextOffsetY or 0
                         end,
                         set = function(_, val)
-                            EzUI.db.profile.viewers[viewerKey].countTextOffsetY = val
-                            EzUI:RefreshAll()
+                            EzroUI.db.profile.viewers[viewerKey].countTextOffsetY = val
+                            EzroUI:RefreshAll()
                         end,
                     },
                 },
@@ -876,13 +876,13 @@ local function CreateViewerOptions(viewerKey, displayName, order)
         ret.args.previewBuffIcons = {
             type = "execute",
             name = "Preview Buff Icons",
-            desc = "Open the full EzUI configuration panel",
+            desc = "Open the full EzroUI configuration panel",
             order = 1.5,
             width = "full",
             func = function()
                 -- Open the custom GUI instead
-                if EzUI and EzUI.OpenConfigGUI then
-                    EzUI:OpenConfigGUI()
+                if EzroUI and EzroUI.OpenConfigGUI then
+                    EzroUI:OpenConfigGUI()
                 end
             end,
         }
@@ -891,7 +891,7 @@ local function CreateViewerOptions(viewerKey, displayName, order)
     return ViewerOptions(viewerKey, displayName, order)
 end
 
-function EzUI:SetupOptions()
+function EzroUI:SetupOptions()
     local AceConfig = LibStub("AceConfig-3.0")
     local LibDualSpec = LibStub("LibDualSpec-1.0", true)
 
@@ -899,7 +899,7 @@ function EzUI:SetupOptions()
     if AceDBOptions and self.db then
         -- Verify the database is properly initialized and isolated
         if not self.db.sv or not self.db.keys then
-            error("EzUI: Database not properly initialized! Cannot create profile options.")
+            error("EzroUI: Database not properly initialized! Cannot create profile options.")
         end
         
         -- Get the profile options table for our specific database
@@ -910,7 +910,7 @@ function EzUI:SetupOptions()
         -- Verify the handler is bound to our database
         if profileOptions and profileOptions.handler then
             if profileOptions.handler.db ~= self.db then
-                error("EzUI: Profile options handler is not bound to the correct database!")
+                error("EzroUI: Profile options handler is not bound to the correct database!")
             end
         end
         
@@ -921,7 +921,7 @@ function EzUI:SetupOptions()
 
     local options = {
         type = "group",
-        name = "EzUI",
+        name = "EzroUI",
         args = {
             -- GENERAL TAB
             general = {
@@ -952,12 +952,12 @@ function EzUI:SetupOptions()
                             return names
                         end,
                         get = function()
-                            return EzUI.db.profile.general.globalTexture or "Ez"
+                            return EzroUI.db.profile.general.globalTexture or "Ez"
                         end,
                         set = function(_, val)
-                            EzUI.db.profile.general.globalTexture = val
-                            if EzUI.RefreshAll then
-                                EzUI:RefreshAll()
+                            EzroUI.db.profile.general.globalTexture = val
+                            if EzroUI.RefreshAll then
+                                EzroUI:RefreshAll()
                             end
                         end,
                     },
@@ -972,26 +972,26 @@ function EzUI:SetupOptions()
                     applyGlobalFontToBlizzard = {
                         type = "toggle",
                         name = "Apply Global Font to Blizzard UI",
-                        desc = "When enabled, the global font will also change Blizzard's default UI fonts (tooltips, quest tracker, chat, etc.). When disabled, only EzUI elements will use the global font.",
+                        desc = "When enabled, the global font will also change Blizzard's default UI fonts (tooltips, quest tracker, chat, etc.). When disabled, only EzroUI elements will use the global font.",
                         order = 19.5,
                         width = "full",
                         get = function()
-                            return EzUI.db.profile.general.applyGlobalFontToBlizzard or false
+                            return EzroUI.db.profile.general.applyGlobalFontToBlizzard or false
                         end,
                         set = function(_, val)
-                            EzUI.db.profile.general.applyGlobalFontToBlizzard = val
+                            EzroUI.db.profile.general.applyGlobalFontToBlizzard = val
                             -- Reset hook flags so hooks can be recreated if needed
-                            if EzUI._questFontHooked then
-                                EzUI._questFontHooked = nil
+                            if EzroUI._questFontHooked then
+                                EzroUI._questFontHooked = nil
                             end
-                            if EzUI._tooltipFontHooked then
-                                EzUI._tooltipFontHooked = nil
+                            if EzroUI._tooltipFontHooked then
+                                EzroUI._tooltipFontHooked = nil
                             end
-                            if EzUI._chatFontHooked then
-                                EzUI._chatFontHooked = nil
+                            if EzroUI._chatFontHooked then
+                                EzroUI._chatFontHooked = nil
                             end
-                            if EzUI.ApplyGlobalFont then
-                                EzUI:ApplyGlobalFont()
+                            if EzroUI.ApplyGlobalFont then
+                                EzroUI:ApplyGlobalFont()
                             end
                         end,
                     },
@@ -1000,7 +1000,7 @@ function EzUI:SetupOptions()
                     globalFont = {
                         type = "select",
                         name = "Global Font",
-                        desc = "Font used globally across all EzUI elements (viewers, auras, cast bars, etc.). Use the toggle above to also apply to Blizzard's UI.",
+                        desc = "Font used globally across all EzroUI elements (viewers, auras, cast bars, etc.). Use the toggle above to also apply to Blizzard's UI.",
                         order = 20,
                         width = "full",
                         values = function()
@@ -1012,15 +1012,15 @@ function EzUI:SetupOptions()
                             return names
                         end,
                         get = function()
-                            return EzUI.db.profile.general.globalFont or "Expressway"
+                            return EzroUI.db.profile.general.globalFont or "Expressway"
                         end,
                         set = function(_, val)
-                            EzUI.db.profile.general.globalFont = val
-                            if EzUI.ApplyGlobalFont then
-                                EzUI:ApplyGlobalFont()
+                            EzroUI.db.profile.general.globalFont = val
+                            if EzroUI.ApplyGlobalFont then
+                                EzroUI:ApplyGlobalFont()
                             end
-                            if EzUI.RefreshAll then
-                                EzUI:RefreshAll()
+                            if EzroUI.RefreshAll then
+                                EzroUI:RefreshAll()
                             end
                         end,
                     },
@@ -1053,7 +1053,7 @@ function EzUI:SetupOptions()
                         width = "full",
                         get = function()
                             -- If we have a saved value, show that (user has manually set it)
-                            local savedScale = EzUI.db.profile.general.uiScale
+                            local savedScale = EzroUI.db.profile.general.uiScale
                             if savedScale and type(savedScale) == "number" then
                                 return string.format("%.8f", savedScale)
                             end
@@ -1083,7 +1083,7 @@ function EzUI:SetupOptions()
                             if numValue then
                                 -- Clamp to valid range (0.33 to 1.0)
                                 numValue = math.max(0.33, math.min(1.0, numValue))
-                                EzUI.db.profile.general.uiScale = numValue
+                                EzroUI.db.profile.general.uiScale = numValue
                                 -- Note: We don't apply it here - only when Confirm is clicked
                             end
                         end,
@@ -1098,7 +1098,7 @@ function EzUI:SetupOptions()
                         width = "full",
                         func = function()
                             -- Get the value from the database (which is updated as user types)
-                            local savedScale = EzUI.db.profile.general.uiScale
+                            local savedScale = EzroUI.db.profile.general.uiScale
                             
                             -- If no saved value, read current CVar value
                             if not savedScale or type(savedScale) ~= "number" then
@@ -1112,11 +1112,11 @@ function EzUI:SetupOptions()
                                 -- Clamp to valid range
                                 savedScale = math.max(0.33, math.min(1.0, savedScale))
                                 -- Save the value (this is the user's choice, so we save it)
-                                EzUI.db.profile.general.uiScale = savedScale
+                                EzroUI.db.profile.general.uiScale = savedScale
                                 -- Apply the scale
-                                if EzUI.AutoUIScale and EzUI.AutoUIScale.SetUIScale then
-                                    EzUI.AutoUIScale:SetUIScale(savedScale)
-                                    print("|cff00ff00[EzUI] UI Scale set to " .. string.format("%.8f", savedScale) .. "|r")
+                                if EzroUI.AutoUIScale and EzroUI.AutoUIScale.SetUIScale then
+                                    EzroUI.AutoUIScale:SetUIScale(savedScale)
+                                    print("|cff00ff00[EzroUI] UI Scale set to " .. string.format("%.8f", savedScale) .. "|r")
                                 end
                                 -- Refresh config to update the input field
                                 local AceConfigRegistry = LibStub("AceConfigRegistry-3.0", true)
@@ -1124,12 +1124,12 @@ function EzUI:SetupOptions()
                                     AceConfigRegistry:NotifyChange(ADDON_NAME)
                                 end
                                 -- Refresh custom GUI if open
-                                local configFrame = _G["EzUI_ConfigFrame"]
+                                local configFrame = _G["EzroUI_ConfigFrame"]
                                 if configFrame and configFrame:IsShown() and configFrame.FullRefresh then
                                     configFrame:FullRefresh()
                                 end
                             else
-                                print("|cffff0000[EzUI] Invalid UI scale value. Please enter a number between 0.33 and 1.0|r")
+                                print("|cffff0000[EzroUI] Invalid UI scale value. Please enter a number between 0.33 and 1.0|r")
                             end
                         end,
                     },
@@ -1149,11 +1149,11 @@ function EzUI:SetupOptions()
                         width = "full",
                         func = function()
                             local scale1080p = 0.711111
-                            EzUI.db.profile.general.uiScale = scale1080p
+                            EzroUI.db.profile.general.uiScale = scale1080p
                             -- Apply the scale
-                            if EzUI.AutoUIScale and EzUI.AutoUIScale.SetUIScale then
-                                EzUI.AutoUIScale:SetUIScale(scale1080p)
-                                print("|cff00ff00[EzUI] UI Scale set to 0.711111 for 1080p|r")
+                            if EzroUI.AutoUIScale and EzroUI.AutoUIScale.SetUIScale then
+                                EzroUI.AutoUIScale:SetUIScale(scale1080p)
+                                print("|cff00ff00[EzroUI] UI Scale set to 0.711111 for 1080p|r")
                             end
                             -- Refresh config to update the input field
                             local AceConfigRegistry = LibStub("AceConfigRegistry-3.0", true)
@@ -1161,7 +1161,7 @@ function EzUI:SetupOptions()
                                 AceConfigRegistry:NotifyChange(ADDON_NAME)
                             end
                             -- Refresh custom GUI if open
-                            local configFrame = _G["EzUI_ConfigFrame"]
+                            local configFrame = _G["EzroUI_ConfigFrame"]
                             if configFrame and configFrame:IsShown() and configFrame.FullRefresh then
                                 configFrame:FullRefresh()
                             end
@@ -1176,11 +1176,11 @@ function EzUI:SetupOptions()
                         width = "full",
                         func = function()
                             local scale1440p = 0.53333333
-                            EzUI.db.profile.general.uiScale = scale1440p
+                            EzroUI.db.profile.general.uiScale = scale1440p
                             -- Apply the scale
-                            if EzUI.AutoUIScale and EzUI.AutoUIScale.SetUIScale then
-                                EzUI.AutoUIScale:SetUIScale(scale1440p)
-                                print("|cff00ff00[EzUI] UI Scale set to 0.53333333 for 1440p|r")
+                            if EzroUI.AutoUIScale and EzroUI.AutoUIScale.SetUIScale then
+                                EzroUI.AutoUIScale:SetUIScale(scale1440p)
+                                print("|cff00ff00[EzroUI] UI Scale set to 0.53333333 for 1440p|r")
                             end
                             -- Refresh config to update the input field
                             local AceConfigRegistry = LibStub("AceConfigRegistry-3.0", true)
@@ -1188,7 +1188,7 @@ function EzUI:SetupOptions()
                                 AceConfigRegistry:NotifyChange(ADDON_NAME)
                             end
                             -- Refresh custom GUI if open
-                            local configFrame = _G["EzUI_ConfigFrame"]
+                            local configFrame = _G["EzroUI_ConfigFrame"]
                             if configFrame and configFrame:IsShown() and configFrame.FullRefresh then
                                 configFrame:FullRefresh()
                             end
@@ -1222,23 +1222,23 @@ function EzUI:SetupOptions()
                             },
                             anchorToUnitFrame = {
                                 type = "toggle",
-                                name = "Anchor Unit Frames to Viewer (Used for non EzUI Unit Frames)",
+                                name = "Anchor Unit Frames to Viewer (Used for non EzroUI Unit Frames)",
                                 desc = "Automatically anchor Player/Target/Focus/Pet frames to Essential Cooldown Viewer. Supports default frames, Unhalted Unit Frames (UUF), and ElvUI frames.",
                                 width = "full",
                                 order = 6,
                                 get = function()
-                                    return EzUI.db.profile.viewers.general.anchorToUnitFrame or false
+                                    return EzroUI.db.profile.viewers.general.anchorToUnitFrame or false
                                 end,
                                 set = function(_, val)
-                                    EzUI.db.profile.viewers.general.anchorToUnitFrame = val
+                                    EzroUI.db.profile.viewers.general.anchorToUnitFrame = val
                                     -- Clear watcher flag so it can be set up again if needed
-                                    if EzUI.__EzUIViewerWatcher then
-                                        EzUI.__EzUIViewerWatcher = nil
+                                    if EzroUI.__EzroUIViewerWatcher then
+                                        EzroUI.__EzroUIViewerWatcher = nil
                                     end
-                                    if EzUI.UpdateViewerUnitFrameAnchor then
+                                    if EzroUI.UpdateViewerUnitFrameAnchor then
                                         -- Delay to allow frames to spawn
                                         C_Timer.After(0.5, function()
-                                            EzUI:UpdateViewerUnitFrameAnchor()
+                                            EzroUI:UpdateViewerUnitFrameAnchor()
                                         end)
                                     end
                                     -- Refresh GUI to show/hide anchor position options
@@ -1247,7 +1247,7 @@ function EzUI:SetupOptions()
                                         AceConfigRegistry:NotifyChange(ADDON_NAME)
                                     end
                                     -- Refresh custom GUI if open
-                                    local configFrame = _G["EzUI_ConfigFrame"]
+                                    local configFrame = _G["EzroUI_ConfigFrame"]
                                     if configFrame and configFrame:IsShown() and configFrame.FullRefresh then
                                         configFrame:FullRefresh()
                                     end
@@ -1266,14 +1266,14 @@ function EzUI:SetupOptions()
                                 order = 8,
                                 width = "full",
                                 disabled = function()
-                                    return not (EzUI.db.profile.viewers.general.anchorToUnitFrame or false)
+                                    return not (EzroUI.db.profile.viewers.general.anchorToUnitFrame or false)
                                 end,
                                 values = function()
                                     -- Scan for available unit frames that are currently loaded
                                     return GetAvailableAnchorFrames()
                                 end,
                                 get = function()
-                                    local cfg = EzUI.db.profile.viewers.general
+                                    local cfg = EzroUI.db.profile.viewers.general
                                     if not cfg.anchorPositions then
                                         cfg.anchorPositions = {}
                                     end
@@ -1296,7 +1296,7 @@ function EzUI:SetupOptions()
                                     return selectedFrame
                                 end,
                                 set = function(_, val)
-                                    local cfg = EzUI.db.profile.viewers.general
+                                    local cfg = EzroUI.db.profile.viewers.general
                                     if not cfg.anchorPositions then
                                         cfg.anchorPositions = {}
                                     end
@@ -1313,10 +1313,10 @@ function EzUI:SetupOptions()
                                 max = 1000,
                                 step = 1,
                                 disabled = function()
-                                    return not (EzUI.db.profile.viewers.general.anchorToUnitFrame or false)
+                                    return not (EzroUI.db.profile.viewers.general.anchorToUnitFrame or false)
                                 end,
                                 get = function()
-                                    local cfg = EzUI.db.profile.viewers.general
+                                    local cfg = EzroUI.db.profile.viewers.general
                                     if not cfg.anchorPositions then
                                         cfg.anchorPositions = {}
                                     end
@@ -1344,7 +1344,7 @@ function EzUI:SetupOptions()
                                     return cfg.anchorPositions[selectedFrame].offsetX or defaultOffsets[selectedFrame] or 0
                                 end,
                                 set = function(_, val)
-                                    local cfg = EzUI.db.profile.viewers.general
+                                    local cfg = EzroUI.db.profile.viewers.general
                                     if not cfg.anchorPositions then
                                         cfg.anchorPositions = {}
                                     end
@@ -1354,9 +1354,9 @@ function EzUI:SetupOptions()
                                     end
                                     cfg.anchorPositions[selectedFrame].offsetX = val
                                     -- Apply the change immediately
-                                    if EzUI.UpdateViewerUnitFrameAnchor then
+                                    if EzroUI.UpdateViewerUnitFrameAnchor then
                                         C_Timer.After(0.1, function()
-                                            EzUI:UpdateViewerUnitFrameAnchor()
+                                            EzroUI:UpdateViewerUnitFrameAnchor()
                                         end)
                                     end
                                 end,
@@ -1371,10 +1371,10 @@ function EzUI:SetupOptions()
                                 max = 1000,
                                 step = 1,
                                 disabled = function()
-                                    return not (EzUI.db.profile.viewers.general.anchorToUnitFrame or false)
+                                    return not (EzroUI.db.profile.viewers.general.anchorToUnitFrame or false)
                                 end,
                                 get = function()
-                                    local cfg = EzUI.db.profile.viewers.general
+                                    local cfg = EzroUI.db.profile.viewers.general
                                     if not cfg.anchorPositions then
                                         cfg.anchorPositions = {}
                                     end
@@ -1386,7 +1386,7 @@ function EzUI:SetupOptions()
                                     return cfg.anchorPositions[selectedFrame].offsetY or 0
                                 end,
                                 set = function(_, val)
-                                    local cfg = EzUI.db.profile.viewers.general
+                                    local cfg = EzroUI.db.profile.viewers.general
                                     if not cfg.anchorPositions then
                                         cfg.anchorPositions = {}
                                     end
@@ -1396,9 +1396,9 @@ function EzUI:SetupOptions()
                                     end
                                     cfg.anchorPositions[selectedFrame].offsetY = val
                                     -- Apply the change immediately
-                                    if EzUI.UpdateViewerUnitFrameAnchor then
+                                    if EzroUI.UpdateViewerUnitFrameAnchor then
                                         C_Timer.After(0.1, function()
-                                            EzUI:UpdateViewerUnitFrameAnchor()
+                                            EzroUI:UpdateViewerUnitFrameAnchor()
                                         end)
                                     end
                                 end,
@@ -1421,16 +1421,16 @@ function EzUI:SetupOptions()
                                 width = "full",
                                 order = 11,
                                 get = function()
-                                    local procGlow = EzUI.db.profile.viewers.general.procGlow
+                                    local procGlow = EzroUI.db.profile.viewers.general.procGlow
                                     return procGlow and procGlow.enabled or false
                                 end,
                                 set = function(_, val)
-                                    if not EzUI.db.profile.viewers.general.procGlow then
-                                        EzUI.db.profile.viewers.general.procGlow = {}
+                                    if not EzroUI.db.profile.viewers.general.procGlow then
+                                        EzroUI.db.profile.viewers.general.procGlow = {}
                                     end
-                                    EzUI.db.profile.viewers.general.procGlow.enabled = val
-                                    if EzUI.ProcGlow and EzUI.ProcGlow.RefreshAll then
-                                        EzUI.ProcGlow:RefreshAll()
+                                    EzroUI.db.profile.viewers.general.procGlow.enabled = val
+                                    if EzroUI.ProcGlow and EzroUI.ProcGlow.RefreshAll then
+                                        EzroUI.ProcGlow:RefreshAll()
                                     end
                                 end,
                             },
@@ -1448,24 +1448,24 @@ function EzUI:SetupOptions()
                                 width = "full",
                                 values = function()
                                     local result = {}
-                                    if EzUI.ProcGlow and EzUI.ProcGlow.LibCustomGlowTypes then
-                                        for _, glowType in ipairs(EzUI.ProcGlow.LibCustomGlowTypes) do
+                                    if EzroUI.ProcGlow and EzroUI.ProcGlow.LibCustomGlowTypes then
+                                        for _, glowType in ipairs(EzroUI.ProcGlow.LibCustomGlowTypes) do
                                             result[glowType] = glowType
                                         end
                                     end
                                     return result
                                 end,
                                 get = function()
-                                    local procGlow = EzUI.db.profile.viewers.general.procGlow
+                                    local procGlow = EzroUI.db.profile.viewers.general.procGlow
                                     return (procGlow and procGlow.glowType) or "Pixel Glow"
                                 end,
                                 set = function(_, val)
-                                    if not EzUI.db.profile.viewers.general.procGlow then
-                                        EzUI.db.profile.viewers.general.procGlow = {}
+                                    if not EzroUI.db.profile.viewers.general.procGlow then
+                                        EzroUI.db.profile.viewers.general.procGlow = {}
                                     end
-                                    EzUI.db.profile.viewers.general.procGlow.glowType = val
-                                    if EzUI.ProcGlow and EzUI.ProcGlow.RefreshAll then
-                                        EzUI.ProcGlow:RefreshAll()
+                                    EzroUI.db.profile.viewers.general.procGlow.glowType = val
+                                    if EzroUI.ProcGlow and EzroUI.ProcGlow.RefreshAll then
+                                        EzroUI.ProcGlow:RefreshAll()
                                     end
                                 end,
                             },
@@ -1477,17 +1477,17 @@ function EzUI:SetupOptions()
                                 width = "normal",
                                 hasAlpha = true,
                                 get = function()
-                                    local procGlow = EzUI.db.profile.viewers.general.procGlow
+                                    local procGlow = EzroUI.db.profile.viewers.general.procGlow
                                     local color = (procGlow and procGlow.loopColor) or {0.95, 0.95, 0.32, 1}
                                     return color[1], color[2], color[3], color[4] or 1
                                 end,
                                 set = function(_, r, g, b, a)
-                                    if not EzUI.db.profile.viewers.general.procGlow then
-                                        EzUI.db.profile.viewers.general.procGlow = {}
+                                    if not EzroUI.db.profile.viewers.general.procGlow then
+                                        EzroUI.db.profile.viewers.general.procGlow = {}
                                     end
-                                    EzUI.db.profile.viewers.general.procGlow.loopColor = {r, g, b, a or 1}
-                                    if EzUI.ProcGlow and EzUI.ProcGlow.RefreshAll then
-                                        EzUI.ProcGlow:RefreshAll()
+                                    EzroUI.db.profile.viewers.general.procGlow.loopColor = {r, g, b, a or 1}
+                                    if EzroUI.ProcGlow and EzroUI.ProcGlow.RefreshAll then
+                                        EzroUI.ProcGlow:RefreshAll()
                                     end
                                 end,
                             },
@@ -1512,20 +1512,20 @@ function EzUI:SetupOptions()
                                 max = 30,
                                 step = 1,
                                 disabled = function()
-                                    local procGlow = EzUI.db.profile.viewers.general.procGlow
+                                    local procGlow = EzroUI.db.profile.viewers.general.procGlow
                                     return not (procGlow and procGlow.glowType and procGlow.glowType ~= "Action Button Glow" and procGlow.glowType ~= "Proc Glow")
                                 end,
                                 get = function()
-                                    local procGlow = EzUI.db.profile.viewers.general.procGlow
+                                    local procGlow = EzroUI.db.profile.viewers.general.procGlow
                                     return procGlow and procGlow.lcgLines or 14
                                 end,
                                 set = function(_, val)
-                                    if not EzUI.db.profile.viewers.general.procGlow then
-                                        EzUI.db.profile.viewers.general.procGlow = {}
+                                    if not EzroUI.db.profile.viewers.general.procGlow then
+                                        EzroUI.db.profile.viewers.general.procGlow = {}
                                     end
-                                    EzUI.db.profile.viewers.general.procGlow.lcgLines = val
-                                    if EzUI.ProcGlow and EzUI.ProcGlow.RefreshAll then
-                                        EzUI.ProcGlow:RefreshAll()
+                                    EzroUI.db.profile.viewers.general.procGlow.lcgLines = val
+                                    if EzroUI.ProcGlow and EzroUI.ProcGlow.RefreshAll then
+                                        EzroUI.ProcGlow:RefreshAll()
                                     end
                                 end,
                             },
@@ -1539,16 +1539,16 @@ function EzUI:SetupOptions()
                                 max = 2.0,
                                 step = 0.05,
                                 get = function()
-                                    local procGlow = EzUI.db.profile.viewers.general.procGlow
+                                    local procGlow = EzroUI.db.profile.viewers.general.procGlow
                                     return procGlow and procGlow.lcgFrequency or 0.25
                                 end,
                                 set = function(_, val)
-                                    if not EzUI.db.profile.viewers.general.procGlow then
-                                        EzUI.db.profile.viewers.general.procGlow = {}
+                                    if not EzroUI.db.profile.viewers.general.procGlow then
+                                        EzroUI.db.profile.viewers.general.procGlow = {}
                                     end
-                                    EzUI.db.profile.viewers.general.procGlow.lcgFrequency = val
-                                    if EzUI.ProcGlow and EzUI.ProcGlow.RefreshAll then
-                                        EzUI.ProcGlow:RefreshAll()
+                                    EzroUI.db.profile.viewers.general.procGlow.lcgFrequency = val
+                                    if EzroUI.ProcGlow and EzroUI.ProcGlow.RefreshAll then
+                                        EzroUI.ProcGlow:RefreshAll()
                                     end
                                 end,
                             },
@@ -1562,20 +1562,20 @@ function EzUI:SetupOptions()
                                 max = 10,
                                 step = 1,
                                 disabled = function()
-                                    local procGlow = EzUI.db.profile.viewers.general.procGlow
+                                    local procGlow = EzroUI.db.profile.viewers.general.procGlow
                                     return not (procGlow and procGlow.glowType == "Pixel Glow")
                                 end,
                                 get = function()
-                                    local procGlow = EzUI.db.profile.viewers.general.procGlow
+                                    local procGlow = EzroUI.db.profile.viewers.general.procGlow
                                     return procGlow and procGlow.lcgThickness or 2
                                 end,
                                 set = function(_, val)
-                                    if not EzUI.db.profile.viewers.general.procGlow then
-                                        EzUI.db.profile.viewers.general.procGlow = {}
+                                    if not EzroUI.db.profile.viewers.general.procGlow then
+                                        EzroUI.db.profile.viewers.general.procGlow = {}
                                     end
-                                    EzUI.db.profile.viewers.general.procGlow.lcgThickness = val
-                                    if EzUI.ProcGlow and EzUI.ProcGlow.RefreshAll then
-                                        EzUI.ProcGlow:RefreshAll()
+                                    EzroUI.db.profile.viewers.general.procGlow.lcgThickness = val
+                                    if EzroUI.ProcGlow and EzroUI.ProcGlow.RefreshAll then
+                                        EzroUI.ProcGlow:RefreshAll()
                                     end
                                 end,
                             },
@@ -1672,11 +1672,11 @@ function EzUI:SetupOptions()
         
         -- Verify the handler is bound to our database
         if options.args.profiles.handler and options.args.profiles.handler.db ~= self.db then
-            error("EzUI: Profile options handler is not bound to the correct database! This will cause profile conflicts with other addons.")
+            error("EzroUI: Profile options handler is not bound to the correct database! This will cause profile conflicts with other addons.")
         end
         
         -- Store a reference to our database for use in closures
-        -- This ensures all profile operations use EzUI's database and never affect other addons
+        -- This ensures all profile operations use EzroUI's database and never affect other addons
         local ezDB = self.db
         
         -- Override name and order
@@ -1709,7 +1709,7 @@ function EzUI:SetupOptions()
                         originalEnabledSet(info, value)
                     end
                     -- Refresh custom GUI if open
-                    local configFrame = _G["EzUI_ConfigFrame"]
+                    local configFrame = _G["EzroUI_ConfigFrame"]
                     if configFrame and configFrame:IsShown() and configFrame.FullRefresh then
                         configFrame:FullRefresh()
                     end
@@ -1746,18 +1746,18 @@ function EzUI:SetupOptions()
                 order = 31,
                 func = function(info)
                     if not profileBuffers.new or profileBuffers.new == "" then
-                        print("|cffff0000EzUI: Please enter a profile name.|r")
+                        print("|cffff0000EzroUI: Please enter a profile name.|r")
                         return
                     end
                     -- Trim whitespace
                     profileBuffers.new = profileBuffers.new:gsub("^%s+", ""):gsub("%s+$", "")
                     if profileBuffers.new == "" then
-                        print("|cffff0000EzUI: Please enter a valid profile name.|r")
+                        print("|cffff0000EzroUI: Please enter a valid profile name.|r")
                         return
                     end
                     
                     -- Directly call SetProfile on OUR database - this will create the profile if it doesn't exist
-                    -- Use the stored reference to ensure we're always using EzUI's database
+                    -- Use the stored reference to ensure we're always using EzroUI's database
                     if ezDB then
                         local profileName = profileBuffers.new
                         local success, err = pcall(function()
@@ -1777,12 +1777,12 @@ function EzUI:SetupOptions()
                                 end
                             end
                             if profileExists then
-                                print("|cff00ff00EzUI: Profile '" .. profileName .. "' created successfully. Please reload your UI.|r")
+                                print("|cff00ff00EzroUI: Profile '" .. profileName .. "' created successfully. Please reload your UI.|r")
                             else
-                                print("|cffff0000EzUI: Profile creation may have failed. Please reload your UI and check if the profile exists.|r")
+                                print("|cffff0000EzroUI: Profile creation may have failed. Please reload your UI and check if the profile exists.|r")
                             end
                         else
-                            print("|cffff0000EzUI: Failed to create profile: " .. (err or "Unknown error") .. "|r")
+                            print("|cffff0000EzroUI: Failed to create profile: " .. (err or "Unknown error") .. "|r")
                         end
                     else
                         -- Fallback to handler method if database not directly available
@@ -1793,9 +1793,9 @@ function EzUI:SetupOptions()
                                 local handlerToUse = options.args.profiles.handler
                                 if handlerToUse and handlerToUse.db == ezDB and handlerToUse[originalSet] then
                                     handlerToUse[originalSet](handlerToUse, info, profileBuffers.new)
-                                    print("|cff00ff00EzUI: Profile '" .. profileBuffers.new .. "' created successfully. Please reload your UI.|r")
+                                    print("|cff00ff00EzroUI: Profile '" .. profileBuffers.new .. "' created successfully. Please reload your UI.|r")
                                 else
-                                    print("|cffff0000EzUI: Failed to create profile: Handler not available or wrong database.|r")
+                                    print("|cffff0000EzroUI: Failed to create profile: Handler not available or wrong database.|r")
                                 end
                             elseif type(originalSet) == "function" then
                                 -- Create a wrapper that ensures we use our handler
@@ -1810,10 +1810,10 @@ function EzUI:SetupOptions()
                                     originalSet(info, value)
                                 end
                                 wrappedSet(info, profileBuffers.new)
-                                print("|cff00ff00EzUI: Profile '" .. profileBuffers.new .. "' created successfully. Please reload your UI.|r")
+                                print("|cff00ff00EzroUI: Profile '" .. profileBuffers.new .. "' created successfully. Please reload your UI.|r")
                             end
                         else
-                            print("|cffff0000EzUI: Failed to create profile: No profile creation method available.|r")
+                            print("|cffff0000EzroUI: Failed to create profile: No profile creation method available.|r")
                         end
                     end
                     
@@ -1869,7 +1869,7 @@ function EzUI:SetupOptions()
                 order = 61,
                 func = function(info)
                     if not profileBuffers.copyFrom or profileBuffers.copyFrom == "" then
-                        print("|cffff0000EzUI: Please select a profile to copy from.|r")
+                        print("|cffff0000EzroUI: Please select a profile to copy from.|r")
                         return
                     end
                     -- Call the original CopyProfile function
@@ -1901,7 +1901,7 @@ function EzUI:SetupOptions()
                     if AceConfigRegistry then
                         AceConfigRegistry:NotifyChange(ADDON_NAME)
                     end
-                    print("|cff00ff00EzUI: Profile copied successfully.|r")
+                    print("|cff00ff00EzroUI: Profile copied successfully.|r")
                 end,
             }
         end
@@ -1950,7 +1950,7 @@ function EzUI:SetupOptions()
                 order = 81,
                 func = function(info)
                     if not profileBuffers.delete or profileBuffers.delete == "" then
-                        print("|cffff0000EzUI: Please select a profile to delete.|r")
+                        print("|cffff0000EzroUI: Please select a profile to delete.|r")
                         return
                     end
                     -- Show confirmation dialog
@@ -1963,14 +1963,14 @@ function EzUI:SetupOptions()
                         profileBuffers = profileBuffers,
                         ezDB = ezDB, -- Store reference to our database
                     }
-                    StaticPopup_Show("EzUI_DELETE_PROFILE", profileBuffers.delete, nil, dialogData)
+                    StaticPopup_Show("EzroUI_DELETE_PROFILE", profileBuffers.delete, nil, dialogData)
                 end,
             }
         end
         
         -- Register the delete confirmation popup
-        if not StaticPopupDialogs["EzUI_DELETE_PROFILE"] then
-            StaticPopupDialogs["EzUI_DELETE_PROFILE"] = {
+        if not StaticPopupDialogs["EzroUI_DELETE_PROFILE"] then
+            StaticPopupDialogs["EzroUI_DELETE_PROFILE"] = {
                 text = "Are you sure you want to delete the profile '%s'? This cannot be undone!",
                 button1 = "Delete",
                 button2 = "Cancel",
@@ -2005,7 +2005,7 @@ function EzUI:SetupOptions()
                     if AceConfigRegistry then
                         AceConfigRegistry:NotifyChange(ADDON_NAME)
                     end
-                    print("|cff00ff00EzUI: Profile deleted successfully.|r")
+                    print("|cff00ff00EzroUI: Profile deleted successfully.|r")
                 end,
                 timeout = 0,
                 whileDead = true,
@@ -2021,13 +2021,13 @@ function EzUI:SetupOptions()
                 local handlerToUse = options.args.profiles.handler
                 if handlerToUse and handlerToUse.db == ezDB and handlerToUse.Reset then
                     handlerToUse:Reset()
-                    print("|cff00ff00EzUI: Profile reset to defaults. Please reload your UI.|r")
+                    print("|cff00ff00EzroUI: Profile reset to defaults. Please reload your UI.|r")
                 elseif originalResetFunc then
                     -- Fallback to original func if handler method doesn't exist
                     if type(originalResetFunc) == "string" then
                         if handlerToUse and handlerToUse.db == ezDB and handlerToUse[originalResetFunc] then
                             handlerToUse[originalResetFunc](handlerToUse)
-                            print("|cff00ff00EzUI: Profile reset to defaults. Please reload your UI.|r")
+                            print("|cff00ff00EzroUI: Profile reset to defaults. Please reload your UI.|r")
                         end
                     elseif type(originalResetFunc) == "function" then
                         -- Create a wrapper that ensures we use our handler
@@ -2041,13 +2041,13 @@ function EzUI:SetupOptions()
                             originalResetFunc(info)
                         end
                         wrappedFunc(info)
-                        print("|cff00ff00EzUI: Profile reset to defaults. Please reload your UI.|r")
+                        print("|cff00ff00EzroUI: Profile reset to defaults. Please reload your UI.|r")
                     end
                 else
                     -- Last resort: call ResetProfile directly on our database
                     if ezDB then
                         ezDB:ResetProfile()
-                        print("|cff00ff00EzUI: Profile reset to defaults. Please reload your UI.|r")
+                        print("|cff00ff00EzroUI: Profile reset to defaults. Please reload your UI.|r")
                     end
                 end
             end
@@ -2079,8 +2079,8 @@ function EzUI:SetupOptions()
                 frame:Raise()
             else
                 -- Fallback: Open the custom GUI and navigate to the Cooldown Manager tab
-                if EzUI and EzUI.OpenConfigGUI then
-                    EzUI:OpenConfigGUI(nil, "viewers")
+                if EzroUI and EzroUI.OpenConfigGUI then
+                    EzroUI:OpenConfigGUI(nil, "viewers")
                 end
             end
         end,
@@ -2096,7 +2096,7 @@ function EzUI:SetupOptions()
     options.args.version = {
         type = "description",
         name = function()
-            return "|cff00ff00EzUI v" .. (C_AddOns.GetAddOnMetadata(ADDON_NAME, "Version") or "Unknown") .. "|r"
+            return "|cff00ff00EzroUI v" .. (C_AddOns.GetAddOnMetadata(ADDON_NAME, "Version") or "Unknown") .. "|r"
         end,
         order = 201,
     }

@@ -1,8 +1,8 @@
 ﻿local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
+local EzroUI = ns.Addon
 
-EzUI.AuraOverride = EzUI.AuraOverride or {}
-local AuraOverride = EzUI.AuraOverride
+EzroUI.AuraOverride = EzroUI.AuraOverride or {}
+local AuraOverride = EzroUI.AuraOverride
 
 -- Track which viewers have ignoreAuraOverride enabled
 local viewerSettings = {}
@@ -10,7 +10,7 @@ local viewerSettings = {}
 -- Get settings for a viewer
 local function GetViewerSettings(viewerName)
     if not viewerName then return nil end
-    local settings = EzUI.db.profile.viewers[viewerName]
+    local settings = EzroUI.db.profile.viewers[viewerName]
     if not settings then return nil end
     return settings.ignoreAuraOverride or false
 end
@@ -41,9 +41,9 @@ local function ApplyDesaturationForAuraActive(iconFrame, desaturate)
     
     -- Set the force value flag - hooks will enforce this
     if desaturate then
-        iconFrame.__EzUIForceDesatValue = 1
+        iconFrame.__EzroUIForceDesatValue = 1
     else
-        iconFrame.__EzUIForceDesatValue = nil
+        iconFrame.__EzroUIForceDesatValue = nil
     end
     
     -- Apply immediately
@@ -65,33 +65,33 @@ end
 -- Hook SetCooldown to enforce spell cooldown when ignoreAuraOverride is enabled
 local function HookCooldownFrame(iconFrame, viewerName)
     if not iconFrame or not iconFrame.Cooldown then return end
-    if iconFrame.__EzUIAuraOverrideHooked then return end
+    if iconFrame.__EzroUIAuraOverrideHooked then return end
     
-    iconFrame.__EzUIAuraOverrideHooked = true
-    iconFrame.__EzUIViewerName = viewerName
+    iconFrame.__EzroUIAuraOverrideHooked = true
+    iconFrame.__EzroUIViewerName = viewerName
     
     local cooldown = iconFrame.Cooldown
     local iconTexture = iconFrame.icon or iconFrame.Icon
     
     -- Hook SetDesaturated and SetDesaturation to enforce our force value
     -- This prevents CDM from constantly changing desaturation and causing flashing
-    if iconTexture and not iconTexture.__EzUIDesatHooked then
-        iconTexture.__EzUIDesatHooked = true
-        iconTexture.__EzUIParentFrame = iconFrame
+    if iconTexture and not iconTexture.__EzroUIDesatHooked then
+        iconTexture.__EzroUIDesatHooked = true
+        iconTexture.__EzroUIParentFrame = iconFrame
         
         -- Hook SetDesaturated (boolean version)
         if iconTexture.SetDesaturated then
             hooksecurefunc(iconTexture, "SetDesaturated", function(self, desaturated)
-                local pf = self.__EzUIParentFrame
+                local pf = self.__EzroUIParentFrame
                 if not pf then return end
-                if pf.__EzUIBypassDesatHook then return end
+                if pf.__EzroUIBypassDesatHook then return end
                 
                 -- If we have a forced desaturation value (for ignoreAuraOverride), enforce it
-                local forceValue = pf.__EzUIForceDesatValue
+                local forceValue = pf.__EzroUIForceDesatValue
                 if forceValue ~= nil and self.SetDesaturation then
-                    pf.__EzUIBypassDesatHook = true
+                    pf.__EzroUIBypassDesatHook = true
                     self:SetDesaturation(forceValue)
-                    pf.__EzUIBypassDesatHook = false
+                    pf.__EzroUIBypassDesatHook = false
                 end
             end)
         end
@@ -99,16 +99,16 @@ local function HookCooldownFrame(iconFrame, viewerName)
         -- Hook SetDesaturation (numeric version)
         if iconTexture.SetDesaturation then
             hooksecurefunc(iconTexture, "SetDesaturation", function(self, value)
-                local pf = self.__EzUIParentFrame
+                local pf = self.__EzroUIParentFrame
                 if not pf then return end
-                if pf.__EzUIBypassDesatHook then return end
+                if pf.__EzroUIBypassDesatHook then return end
                 
                 -- If we have a forced desaturation value (for ignoreAuraOverride), enforce it
-                local forceValue = pf.__EzUIForceDesatValue
+                local forceValue = pf.__EzroUIForceDesatValue
                 if forceValue ~= nil then
-                    pf.__EzUIBypassDesatHook = true
+                    pf.__EzroUIBypassDesatHook = true
                     self:SetDesaturation(forceValue)
-                    pf.__EzUIBypassDesatHook = false
+                    pf.__EzroUIBypassDesatHook = false
                 end
             end)
         end
@@ -117,10 +117,10 @@ local function HookCooldownFrame(iconFrame, viewerName)
     -- Hook SetCooldown using hooksecurefunc
     hooksecurefunc(cooldown, "SetCooldown", function(self, startTime, duration)
         local parentFrame = self:GetParent()
-        if not parentFrame or not parentFrame.__EzUIViewerName then return end
-        if parentFrame.__EzUIBypassCooldownHook then return end
+        if not parentFrame or not parentFrame.__EzroUIViewerName then return end
+        if parentFrame.__EzroUIBypassCooldownHook then return end
         
-        local viewerName = parentFrame.__EzUIViewerName
+        local viewerName = parentFrame.__EzroUIViewerName
         local ignoreAuraOverride = GetViewerSettings(viewerName)
         
         if ignoreAuraOverride and HasActiveAura(parentFrame) then
@@ -140,13 +140,13 @@ local function HookCooldownFrame(iconFrame, viewerName)
                     -- For charge spells, don't force desaturation - let CDM handle it based on charge availability
                     local ok, chargeDurObj = pcall(C_Spell.GetSpellChargeDuration, spellID)
                     if ok and chargeDurObj then
-                        parentFrame.__EzUIBypassCooldownHook = true
+                        parentFrame.__EzroUIBypassCooldownHook = true
                         pcall(function()
                             if self.SetCooldownFromDurationObject then
                                 self:SetCooldownFromDurationObject(chargeDurObj)
                             end
                         end)
-                        parentFrame.__EzUIBypassCooldownHook = false
+                        parentFrame.__EzroUIBypassCooldownHook = false
                         -- Set swipe color to black (like regular cooldown) instead of yellow (aura swipe)
                         if self.SetSwipeColor then
                             self:SetSwipeColor(0, 0, 0, 0.8)
@@ -159,15 +159,15 @@ local function HookCooldownFrame(iconFrame, viewerName)
                     if ok and cooldownInfo and cooldownInfo.duration and cooldownInfo.startTime 
                        and type(cooldownInfo.duration) == "number" and type(cooldownInfo.startTime) == "number" then
                         -- Use spell cooldown instead of aura duration
-                        parentFrame.__EzUIBypassCooldownHook = true
+                        parentFrame.__EzroUIBypassCooldownHook = true
                         self:SetCooldown(cooldownInfo.startTime, cooldownInfo.duration)
                         -- Set swipe color to black (like regular cooldown) instead of yellow (aura swipe)
                         if self.SetSwipeColor then
                             self:SetSwipeColor(0, 0, 0, 0.8)
                         end
-                        parentFrame.__EzUIBypassCooldownHook = false
+                        parentFrame.__EzroUIBypassCooldownHook = false
                         -- Set force desaturation value - hooks will enforce it
-                        parentFrame.__EzUIForceDesatValue = 1
+                        parentFrame.__EzroUIForceDesatValue = 1
                         -- Apply desaturation since aura is active
                         ApplyDesaturationForAuraActive(parentFrame, true)
                     end
@@ -175,7 +175,7 @@ local function HookCooldownFrame(iconFrame, viewerName)
             end
         elseif ignoreAuraOverride then
             -- Clear force desaturation when aura is not active
-            parentFrame.__EzUIForceDesatValue = nil
+            parentFrame.__EzroUIForceDesatValue = nil
             -- Update desaturation when aura is not active
             ApplyDesaturationForAuraActive(parentFrame, false)
         end
@@ -185,10 +185,10 @@ local function HookCooldownFrame(iconFrame, viewerName)
     if cooldown.SetCooldownFromDurationObject then
         hooksecurefunc(cooldown, "SetCooldownFromDurationObject", function(self, durationObj, clearIfZero)
             local parentFrame = self:GetParent()
-            if not parentFrame or not parentFrame.__EzUIViewerName then return end
-            if parentFrame.__EzUIBypassCooldownHook then return end
+            if not parentFrame or not parentFrame.__EzroUIViewerName then return end
+            if parentFrame.__EzroUIBypassCooldownHook then return end
             
-            local viewerName = parentFrame.__EzUIViewerName
+            local viewerName = parentFrame.__EzroUIViewerName
             local ignoreAuraOverride = GetViewerSettings(viewerName)
             
             if ignoreAuraOverride and HasActiveAura(parentFrame) then
@@ -208,11 +208,11 @@ local function HookCooldownFrame(iconFrame, viewerName)
                         -- For charge spells, don't force desaturation - let CDM handle it based on charge availability
                         local ok, chargeDurObj = pcall(C_Spell.GetSpellChargeDuration, spellID)
                         if ok and chargeDurObj then
-                            parentFrame.__EzUIBypassCooldownHook = true
+                            parentFrame.__EzroUIBypassCooldownHook = true
                             pcall(function()
                                 self:SetCooldownFromDurationObject(chargeDurObj)
                             end)
-                            parentFrame.__EzUIBypassCooldownHook = false
+                            parentFrame.__EzroUIBypassCooldownHook = false
                             -- Set swipe color to black (like regular cooldown) instead of yellow (aura swipe)
                             if self.SetSwipeColor then
                                 self:SetSwipeColor(0, 0, 0, 0.8)
@@ -225,15 +225,15 @@ local function HookCooldownFrame(iconFrame, viewerName)
                         if ok and cooldownInfo and cooldownInfo.duration and cooldownInfo.startTime 
                            and type(cooldownInfo.duration) == "number" and type(cooldownInfo.startTime) == "number" then
                             -- Use spell cooldown instead of aura duration
-                            parentFrame.__EzUIBypassCooldownHook = true
+                            parentFrame.__EzroUIBypassCooldownHook = true
                             self:SetCooldown(cooldownInfo.startTime, cooldownInfo.duration)
                             -- Set swipe color to black (like regular cooldown) instead of yellow (aura swipe)
                             if self.SetSwipeColor then
                                 self:SetSwipeColor(0, 0, 0, 0.8)
                             end
-                            parentFrame.__EzUIBypassCooldownHook = false
+                            parentFrame.__EzroUIBypassCooldownHook = false
                             -- Set force desaturation value - hooks will enforce it
-                            parentFrame.__EzUIForceDesatValue = 1
+                            parentFrame.__EzroUIForceDesatValue = 1
                             -- Apply desaturation since aura is active
                             ApplyDesaturationForAuraActive(parentFrame, true)
                         end
@@ -241,7 +241,7 @@ local function HookCooldownFrame(iconFrame, viewerName)
                 end
             elseif ignoreAuraOverride then
                 -- Clear force desaturation when aura is not active
-                parentFrame.__EzUIForceDesatValue = nil
+                parentFrame.__EzroUIForceDesatValue = nil
                 -- Update desaturation when aura is not active
                 ApplyDesaturationForAuraActive(parentFrame, false)
             end
@@ -310,7 +310,7 @@ function AuraOverride:RefreshViewer(viewer)
                                 icon.Cooldown:SetSwipeColor(0, 0, 0, 0.8)
                             end
                             -- Set force desaturation value - hooks will enforce it
-                            icon.__EzUIForceDesatValue = 1
+                            icon.__EzroUIForceDesatValue = 1
                             ApplyDesaturationForAuraActive(icon, true)
                         end
                     end
@@ -359,8 +359,8 @@ function AuraOverride:Initialize()
         local viewer = _G[viewerName]
         if viewer then
             -- Hook the viewer's OnShow to refresh icons
-            if not viewer.__EzUIAuraOverrideHooked then
-                viewer.__EzUIAuraOverrideHooked = true
+            if not viewer.__EzroUIAuraOverrideHooked then
+                viewer.__EzroUIAuraOverrideHooked = true
                 viewer:HookScript("OnShow", function()
                     C_Timer.After(0.1, function()
                         AuraOverride:RefreshViewer(viewer)
@@ -376,14 +376,14 @@ function AuraOverride:Initialize()
     end
     
     -- Hook into IconViewers to hook new icons as they're skinned
-    if EzUI.IconViewers and EzUI.IconViewers.SkinIcon then
-        local originalSkinIcon = EzUI.IconViewers.SkinIcon
-        function EzUI.IconViewers:SkinIcon(icon, settings)
+    if EzroUI.IconViewers and EzroUI.IconViewers.SkinIcon then
+        local originalSkinIcon = EzroUI.IconViewers.SkinIcon
+        function EzroUI.IconViewers:SkinIcon(icon, settings)
             local result = originalSkinIcon(self, icon, settings)
             
             -- Determine viewer name from settings
             local viewerName = nil
-            for name, viewerSettings in pairs(EzUI.db.profile.viewers) do
+            for name, viewerSettings in pairs(EzroUI.db.profile.viewers) do
                 if viewerSettings == settings then
                     viewerName = name
                     break

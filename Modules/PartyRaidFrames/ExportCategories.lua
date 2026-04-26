@@ -1,14 +1,14 @@
 ﻿--[[
-    EzUI Unit Frames - Export Categories
+    EzroUI Unit Frames - Export Categories
     Defines setting categories for selective import/export functionality
 ]]
 
 local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
+local EzroUI = ns.Addon
 
 -- Ensure PartyFrames module exists
-EzUI.PartyFrames = EzUI.PartyFrames or {}
-local UnitFrames = EzUI.PartyFrames
+EzroUI.PartyFrames = EzroUI.PartyFrames or {}
+local UnitFrames = EzroUI.PartyFrames
 
 -- ============================================================================
 -- CATEGORY DEFINITIONS

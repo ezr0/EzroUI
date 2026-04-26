@@ -1,8 +1,8 @@
 ﻿local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
+local EzroUI = ns.Addon
 
-if not EzUI or not EzUI.Scale then
-	error("EzUI and EzUI:Scale must be available. Load Toolkit after PixelPerfect.")
+if not EzroUI or not EzroUI.Scale then
+	error("EzroUI and EzroUI:Scale must be available. Load Toolkit after PixelPerfect.")
 end
 
 local _G = _G
@@ -29,14 +29,14 @@ end
 -- When Blizzard re-enables pixel snap, clear our marker so we can disable again if needed.
 local function on_pixel_snap_enabled(f, snap)
 	if not frame_ok(f) then return end
-	if f._EzUI_no_pixel_snap and snap then
-		f._EzUI_no_pixel_snap = nil
+	if f._EzroUI_no_pixel_snap and snap then
+		f._EzroUI_no_pixel_snap = nil
 	end
 end
 
 -- Turn off Blizzard's pixel grid on this frame/texture so our global scale controls sharpness.
 local function turn_off_pixel_snap(f)
-	if not frame_ok(f) or f._EzUI_no_pixel_snap then return end
+	if not frame_ok(f) or f._EzroUI_no_pixel_snap then return end
 	if f.SetSnapToPixelGrid then
 		f:SetSnapToPixelGrid(false)
 		if f.SetTexelSnappingBias then f:SetTexelSnappingBias(0) end
@@ -47,13 +47,13 @@ local function turn_off_pixel_snap(f)
 			if tex.SetTexelSnappingBias then tex:SetTexelSnappingBias(0) end
 		end
 	end
-	f._EzUI_no_pixel_snap = true
+	f._EzroUI_no_pixel_snap = true
 end
 
--- Scale a numeric value via EzUI (pixel rounding).
+-- Scale a numeric value via EzroUI (pixel rounding).
 local function scale(x, no_scale)
 	if no_scale or x == nil then return x end
-	return EzUI:Scale(x)
+	return EzroUI:Scale(x)
 end
 
 -- Some frames (e.g. restricted) don't allow GetPoint; detect that.
@@ -65,25 +65,25 @@ end
 
 -- Apply scaled size: (w) or (w, h). If h omitted, square.
 local function api_size(f, w, h, ...)
-	local sw = EzUI:Scale(w)
-	f:SetSize(sw, (h ~= nil and EzUI:Scale(h)) or sw, ...)
+	local sw = EzroUI:Scale(w)
+	f:SetSize(sw, (h ~= nil and EzroUI:Scale(h)) or sw, ...)
 end
 
 local function api_width(f, w, ...)
-	f:SetWidth(EzUI:Scale(w), ...)
+	f:SetWidth(EzroUI:Scale(w), ...)
 end
 
 local function api_height(f, h, ...)
-	f:SetHeight(EzUI:Scale(h), ...)
+	f:SetHeight(EzroUI:Scale(h), ...)
 end
 
 -- SetPoint with numeric args scaled (anchor, relativeTo, relativePoint, x, y).
 local function api_point(obj, arg1, arg2, arg3, arg4, arg5, ...)
 	if not arg2 then arg2 = obj:GetParent() end
-	if type(arg2) == "number" then arg2 = EzUI:Scale(arg2) end
-	if type(arg3) == "number" then arg3 = EzUI:Scale(arg3) end
-	if type(arg4) == "number" then arg4 = EzUI:Scale(arg4) end
-	if type(arg5) == "number" then arg5 = EzUI:Scale(arg5) end
+	if type(arg2) == "number" then arg2 = EzroUI:Scale(arg2) end
+	if type(arg3) == "number" then arg3 = EzroUI:Scale(arg3) end
+	if type(arg4) == "number" then arg4 = EzroUI:Scale(arg4) end
+	if type(arg5) == "number" then arg5 = EzroUI:Scale(arg5) end
 	obj:SetPoint(arg1, arg2, arg3, arg4, arg5, ...)
 end
 
@@ -184,7 +184,7 @@ local function mixin_api(widget)
 	-- Disable Blizzard pixel snap on Frame/Texture/StatusBar so our scale wins.
 	local needs_snap_hooks = idx.SetSnapToPixelGrid or idx.SetStatusBarTexture or idx.SetColorTexture
 		or idx.SetVertexColor or idx.CreateTexture or idx.SetTexCoord or idx.SetTexture
-	if needs_snap_hooks and not idx._EzUI_pixel_snap_done then
+	if needs_snap_hooks and not idx._EzroUI_pixel_snap_done then
 		if idx.SetSnapToPixelGrid then hooksecurefunc(idx, "SetSnapToPixelGrid", on_pixel_snap_enabled) end
 		if idx.SetStatusBarTexture then hooksecurefunc(idx, "SetStatusBarTexture", turn_off_pixel_snap) end
 		if idx.SetColorTexture then hooksecurefunc(idx, "SetColorTexture", turn_off_pixel_snap) end
@@ -192,7 +192,7 @@ local function mixin_api(widget)
 		if idx.CreateTexture then hooksecurefunc(idx, "CreateTexture", turn_off_pixel_snap) end
 		if idx.SetTexCoord then hooksecurefunc(idx, "SetTexCoord", turn_off_pixel_snap) end
 		if idx.SetTexture then hooksecurefunc(idx, "SetTexture", turn_off_pixel_snap) end
-		idx._EzUI_pixel_snap_done = true
+		idx._EzroUI_pixel_snap_done = true
 	end
 end
 

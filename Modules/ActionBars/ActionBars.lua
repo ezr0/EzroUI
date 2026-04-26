@@ -1,14 +1,14 @@
 ﻿local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
+local EzroUI = ns.Addon
 
-EzUI.ActionBars = EzUI.ActionBars or {}
-local ActionBars = EzUI.ActionBars
+EzroUI.ActionBars = EzroUI.ActionBars or {}
+local ActionBars = EzroUI.ActionBars
 
 local LSM = LibStub("LibSharedMedia-3.0")
 
 -- Texture paths
 local BACKDROP_TEXTURE = "Interface\\Buttons\\WHITE8x8"
-local HIGHLIGHT_TEXTURE = [[Interface\AddOns\EzUI\Media\white_border.tga]]
+local HIGHLIGHT_TEXTURE = [[Interface\AddOns\EzroUI\Media\white_border.tga]]
 
 -- Track processed buttons to avoid double-processing
 local processedButtons = {}
@@ -87,15 +87,15 @@ local function GetActionBarFont(cfg)
         end
     end
     -- Fallback to global font
-    return EzUI:GetGlobalFont()
+    return EzroUI:GetGlobalFont()
 end
 
--- Scale helper that respects EzUI's pixel perfect multiplier
+-- Scale helper that respects EzroUI's pixel perfect multiplier
 local function ScaleOffset(value)
     if not value or value == 0 then
         return 0
     end
-    return EzUI:Scale(value)
+    return EzroUI:Scale(value)
 end
 
 -- Function to validate if keybind text contains meaningful content
@@ -194,7 +194,7 @@ local function StyleActionButton(button)
         return
     end
     
-    local cfg = EzUI.db.profile.actionBars
+    local cfg = EzroUI.db.profile.actionBars
     if not cfg or not cfg.enabled then
         return
     end
@@ -234,15 +234,15 @@ local function StyleActionButton(button)
     end
     
     -- Create or update backdrop texture
-    if not button.__EzUIBackdrop then
-        button.__EzUIBackdrop = button:CreateTexture(nil, "BACKGROUND", nil, -1)
+    if not button.__EzroUIBackdrop then
+        button.__EzroUIBackdrop = button:CreateTexture(nil, "BACKGROUND", nil, -1)
     end
     
-    local backdrop = button.__EzUIBackdrop
+    local backdrop = button.__EzroUIBackdrop
     local backdropColor = cfg.backdropColor or {0.1, 0.1, 0.1, 1}
     backdrop:SetTexture(BACKDROP_TEXTURE)
     -- Round to nearest integer for pixel perfect rendering
-    local backdropOffset = (EzUI.ScaleBorder and EzUI:ScaleBorder(1)) or math.floor(EzUI:Scale(1) + 0.5)
+    local backdropOffset = (EzroUI.ScaleBorder and EzroUI:ScaleBorder(1)) or math.floor(EzroUI:Scale(1) + 0.5)
     backdrop:SetPoint("TOPLEFT", button, "TOPLEFT", -backdropOffset, backdropOffset)
     backdrop:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", backdropOffset, -backdropOffset)
     backdrop:SetVertexColor(unpack(backdropColor))
@@ -250,12 +250,12 @@ local function StyleActionButton(button)
     
     -- Optional border that grows outward from the backdrop using Blizzard's WHITE8x8 texture
     local configuredBorderSize = math.max(0, cfg.borderSize or 0)
-    local scaledBorderSize = (EzUI.ScaleBorder and EzUI:ScaleBorder(configuredBorderSize)) or math.floor(EzUI:Scale(configuredBorderSize) + 0.5)
+    local scaledBorderSize = (EzroUI.ScaleBorder and EzroUI:ScaleBorder(configuredBorderSize)) or math.floor(EzroUI:Scale(configuredBorderSize) + 0.5)
     if scaledBorderSize > 0 then
-        if not button.__EzUIBorder then
-            button.__EzUIBorder = button:CreateTexture(nil, "BACKGROUND", nil, -2)
+        if not button.__EzroUIBorder then
+            button.__EzroUIBorder = button:CreateTexture(nil, "BACKGROUND", nil, -2)
         end
-        local border = button.__EzUIBorder
+        local border = button.__EzroUIBorder
         border:SetTexture(BACKDROP_TEXTURE)
         local totalOffset = backdropOffset + scaledBorderSize
         border:SetPoint("TOPLEFT", button, "TOPLEFT", -totalOffset, totalOffset)
@@ -263,8 +263,8 @@ local function StyleActionButton(button)
         local borderColor = cfg.borderColor or {0, 0, 0, 1}
         border:SetVertexColor(unpack(borderColor))
         border:Show()
-    elseif button.__EzUIBorder then
-        button.__EzUIBorder:Hide()
+    elseif button.__EzroUIBorder then
+        button.__EzroUIBorder:Hide()
     end
     
     -- Style the icon
@@ -273,7 +273,7 @@ local function StyleActionButton(button)
     icon:SetPoint("TOPLEFT", button, "TOPLEFT", 0, 0)
     icon:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", 0, 0)
 
-    -- Update highlight texture to EzUI custom border
+    -- Update highlight texture to EzroUI custom border
     local highlight = button:GetHighlightTexture()
     if highlight then
         highlight:SetTexture(HIGHLIGHT_TEXTURE)
@@ -335,11 +335,11 @@ local function StyleActionButton(button)
         C_Timer.After(0.1, UpdateKeybindVisibility)
         
         -- Hook SetText to validate whenever keybind text is updated
-        if not button.HotKey.__EzUIKeybindValidator then
+        if not button.HotKey.__EzroUIKeybindValidator then
             hooksecurefunc(button.HotKey, "SetText", function()
                 C_Timer.After(0.05, UpdateKeybindVisibility)
             end)
-            button.HotKey.__EzUIKeybindValidator = true
+            button.HotKey.__EzroUIKeybindValidator = true
         end
     end
     
@@ -400,7 +400,7 @@ local function ApplyBarAlphaTransition(barFrame, shouldShow)
         return
     end
     
-    local actionBarConfig = EzUI.db.profile.actionBars
+    local actionBarConfig = EzroUI.db.profile.actionBars
     local mouseoverSettings = actionBarConfig and actionBarConfig.mouseover
     
     -- If mouseover is disabled, ensure full visibility
@@ -522,7 +522,7 @@ local function AttachMouseoverToBar(barFrame, buttonPrefix, buttonProvider)
     end
     
     -- Store barButtons on the frame for later access
-    barFrame.__EzUIBarButtons = barButtons
+    barFrame.__EzroUIBarButtons = barButtons
     
     -- Configure frame for mouse interaction
     barFrame:EnableMouse(true)
@@ -596,7 +596,7 @@ local function AttachMouseoverToBar(barFrame, buttonPrefix, buttonProvider)
     
     -- Initialize as faded - set alpha directly without fade on initial load
     -- But if in edit mode, keep at 1.0
-    local actionBarConfig = EzUI.db.profile.actionBars
+    local actionBarConfig = EzroUI.db.profile.actionBars
     local mouseoverSettings = actionBarConfig and actionBarConfig.mouseover
     local inEditMode = EditModeManagerFrame and EditModeManagerFrame.editModeActive
     
@@ -632,7 +632,7 @@ end
 
 -- Configure mouseover behavior for all action bars
 local function ConfigureMouseoverBars()
-    local actionBarConfig = EzUI.db.profile.actionBars
+    local actionBarConfig = EzroUI.db.profile.actionBars
     if not actionBarConfig or not actionBarConfig.enabled then
         return
     end
@@ -688,7 +688,7 @@ local function ConfigureMouseoverBars()
     -- Initialize all active mouseover bars as faded (set alpha directly without fade)
     -- But only if not in edit mode - in edit mode, keep them at 1.0
     if not (EditModeManagerFrame and EditModeManagerFrame.editModeActive) then
-        local actionBarConfig = EzUI.db.profile.actionBars
+        local actionBarConfig = EzroUI.db.profile.actionBars
         local mouseoverSettings = actionBarConfig and actionBarConfig.mouseover
         if mouseoverSettings and mouseoverSettings.enabled then
             local inactiveAlpha = mouseoverSettings.alpha or 0.3
@@ -709,7 +709,7 @@ end
 
 -- Function to style all action bars
 function ActionBars:StyleAllBars()
-    local cfg = EzUI.db.profile.actionBars
+    local cfg = EzroUI.db.profile.actionBars
     if not cfg or not cfg.enabled then
         return
     end
@@ -761,7 +761,7 @@ end
 
 -- Restore all active mouseover bars to configured alpha (for exiting edit mode)
 local function RestoreMouseoverBarsAlpha()
-    local actionBarConfig = EzUI.db.profile.actionBars
+    local actionBarConfig = EzroUI.db.profile.actionBars
     local mouseoverSettings = actionBarConfig and actionBarConfig.mouseover
     if mouseoverSettings and mouseoverSettings.enabled then
         local inactiveAlpha = mouseoverSettings.alpha or 0.3
@@ -830,7 +830,7 @@ end
 
 -- Initialize function
 function ActionBars:Initialize()
-    local cfg = EzUI.db.profile.actionBars
+    local cfg = EzroUI.db.profile.actionBars
     if not cfg or not cfg.enabled then
         return
     end
@@ -843,7 +843,7 @@ function ActionBars:Initialize()
     end)
     
     -- Also style after PLAYER_LOGIN
-    EzUI:RegisterEvent("PLAYER_LOGIN", function()
+    EzroUI:RegisterEvent("PLAYER_LOGIN", function()
         C_Timer.After(0.5, function()
             self:StyleAllBars()
         end)

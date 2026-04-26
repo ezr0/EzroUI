@@ -1,8 +1,8 @@
 ﻿local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
+local EzroUI = ns.Addon
 
-EzUI.Minimap = EzUI.Minimap or {}
-local MinimapModule = EzUI.Minimap
+EzroUI.Minimap = EzroUI.Minimap or {}
+local MinimapModule = EzroUI.Minimap
 
 local Minimap = _G.Minimap
 local backdropFrame
@@ -58,7 +58,7 @@ end
 local function UpdateBackdrop()
     if not backdropFrame or not Minimap then return end
     
-    local db = EzUI.db.profile.minimap
+    local db = EzroUI.db.profile.minimap
     if not db or not db.enabled then return end
     
     local fullSize = db.size + db.borderSize
@@ -172,7 +172,7 @@ end
 
 -- Setup minimap shape
 local function ApplyMinimapShape()
-    local db = EzUI.db.profile.minimap
+    local db = EzroUI.db.profile.minimap
     if not db or not db.enabled then return end
     
     local maskTexture = "Interface\\BUTTONS\\WHITE8X8"
@@ -198,7 +198,7 @@ end
 
 -- Create clock display
 local function CreateClock()
-    local db = EzUI.db.profile.minimap
+    local db = EzroUI.db.profile.minimap
     if not db or not db.enabled or not db.clock or not db.clock.enabled then
         if clockDisplay then
             clockDisplay:SetParent(UIParent)
@@ -213,7 +213,7 @@ local function CreateClock()
     end
     
     -- Update font size
-    clockDisplay:SetFont(EzUI:GetGlobalFont(), db.clock.fontSize or 12, "OUTLINE")
+    clockDisplay:SetFont(EzroUI:GetGlobalFont(), db.clock.fontSize or 12, "OUTLINE")
     
     -- Set color
     if db.clock.useClassColor then
@@ -278,7 +278,7 @@ end
 
 -- Create FPS display
 local function CreateFPS()
-    local db = EzUI.db.profile.minimap
+    local db = EzroUI.db.profile.minimap
     if not db or not db.enabled or not db.fps or not db.fps.enabled then
         if fpsDisplay then
             fpsDisplay:SetParent(UIParent)
@@ -293,7 +293,7 @@ local function CreateFPS()
     end
     
     -- Update font size
-    fpsDisplay:SetFont(EzUI:GetGlobalFont(), db.fps.fontSize or 12, "OUTLINE")
+    fpsDisplay:SetFont(EzroUI:GetGlobalFont(), db.fps.fontSize or 12, "OUTLINE")
     
     -- Set color
     if db.fps.useClassColor then
@@ -321,7 +321,7 @@ local function CreateFPS()
         if not fpsDisplay or not fpsDisplay:IsShown() then return end
         
         -- Get current profile's database to avoid stale closure references
-        local currentDb = EzUI.db.profile.minimap
+        local currentDb = EzroUI.db.profile.minimap
         if not currentDb or not currentDb.fps or not currentDb.fps.enabled then
             if fpsDisplay then
                 fpsDisplay:SetParent(UIParent)
@@ -353,7 +353,7 @@ end
 
 -- Create custom zone text with PVP colors
 local function CreateZoneText()
-    local db = EzUI.db.profile.minimap
+    local db = EzroUI.db.profile.minimap
     if not db or not db.enabled or not db.zoneText or not db.zoneText.enabled then
         if MinimapZoneTextButton then
             MinimapZoneTextButton:Hide()
@@ -471,7 +471,7 @@ local function CreateZoneText()
     local fontSize = db.zoneText.fontSize or 14
     zoneTextFrame:SetHeight(fontSize + 1)
     if zoneTextFrame.font then
-        zoneTextFrame.font:SetFont(EzUI:GetGlobalFont(), fontSize, "OUTLINE")
+        zoneTextFrame.font:SetFont(EzroUI:GetGlobalFont(), fontSize, "OUTLINE")
     end
     
     zoneTextFrame:Show()
@@ -489,7 +489,7 @@ end
 
 -- Manage Blizzard buttons
 local function ManageBlizzardButtons()
-    local db = EzUI.db.profile.minimap
+    local db = EzroUI.db.profile.minimap
     if not db or not db.enabled then return end
     
     -- Zoom buttons
@@ -515,7 +515,7 @@ local function ManageBlizzardButtons()
         -- Hook Show only once to maintain alpha control
         if not trackingFrameHooked then
             hooksecurefunc(trackingFrame, "Show", function(self)
-                local db = EzUI.db.profile.minimap
+                local db = EzroUI.db.profile.minimap
                 if db and db.hideTrackingButton then
                     self:SetAlpha(0)
                 else
@@ -661,7 +661,7 @@ end
 
 -- Setup minimap dragging
 local function SetupDragging()
-    local db = EzUI.db.profile.minimap
+    local db = EzroUI.db.profile.minimap
     if not db or not db.enabled then return end
     
     Minimap:ClearAllPoints()
@@ -694,7 +694,7 @@ end
 
 -- Setup mouse wheel zoom
 local function SetupMouseWheelZoom()
-    local db = EzUI.db.profile.minimap
+    local db = EzroUI.db.profile.minimap
     if not db or not db.enabled or not db.mouseWheelZoom then return end
     
     Minimap:EnableMouseWheel(true)
@@ -713,7 +713,7 @@ end
 
 -- Setup minimap click handlers for tracker and calendar
 local function SetupMinimapClicks()
-    local db = EzUI.db.profile.minimap
+    local db = EzroUI.db.profile.minimap
     if not db or not db.enabled then return end
     
     -- Get the original OnMouseUp script if it exists
@@ -746,7 +746,7 @@ end
 
 -- Setup auto zoom
 local function SetupAutoZoom()
-    local db = EzUI.db.profile.minimap
+    local db = EzroUI.db.profile.minimap
     if not db or not db.enabled or not db.autoZoom then return end
     
     local zoomTimer
@@ -772,7 +772,7 @@ end
 
 -- Set minimap shape function for other addons
 local function SetMinimapShapeFunction()
-    local db = EzUI.db.profile.minimap
+    local db = EzroUI.db.profile.minimap
     if not db or not db.enabled then return end
     
     if GetMinimapShape then
@@ -788,7 +788,7 @@ function MinimapModule:Initialize()
     -- Preserve Layout methods early to prevent errors
     PreserveLayoutMethods()
     
-    local db = EzUI.db.profile.minimap
+    local db = EzroUI.db.profile.minimap
     if not db or not db.enabled then return end
     
     -- Setup minimap frame
@@ -856,7 +856,7 @@ function MinimapModule:Initialize()
 end
 
 function MinimapModule:Refresh()
-    local db = EzUI.db.profile.minimap
+    local db = EzroUI.db.profile.minimap
     if not db or not db.enabled then
         if Minimap then
             Minimap:SetSize(140, 140)

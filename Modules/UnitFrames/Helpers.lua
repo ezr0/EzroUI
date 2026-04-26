@@ -1,10 +1,10 @@
 ﻿local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
+local EzroUI = ns.Addon
 
 -- Get UnitFrames module
-local UF = EzUI.UnitFrames
+local UF = EzroUI.UnitFrames
 if not UF then
-    error("EzUI: UnitFrames module not initialized! Load UnitFrames.lua first.")
+    error("EzroUI: UnitFrames module not initialized! Load UnitFrames.lua first.")
 end
 
 -- Helper to get PowerBar DB (handles both PowerBar and powerBar)
@@ -98,7 +98,7 @@ end
 
 -- Fetch power bar color
 local function FetchPowerBarColor(unit)
-    local db = EzUI.db.profile.unitFrames
+    local db = EzroUI.db.profile.unitFrames
     if not db then return 1, 1, 1, 1 end
     
     local dbUnit = unit
@@ -203,7 +203,7 @@ end
 local function MakePlayerFrameClickthrough()
     if not PlayerFrame then return end
     
-    local db = EzUI.db.profile.unitFrames
+    local db = EzroUI.db.profile.unitFrames
     if not db or not db.enabled then return end
     
     -- Make PlayerFrame clickthrough and invisible
@@ -211,10 +211,10 @@ local function MakePlayerFrameClickthrough()
     SafeDisableMouse(PlayerFrame)
     
     -- Hook OnShow to keep it clickthrough and invisible
-    if not PlayerFrame.__EzUIClickthroughHooked then
-        PlayerFrame.__EzUIClickthroughHooked = true
+    if not PlayerFrame.__EzroUIClickthroughHooked then
+        PlayerFrame.__EzroUIClickthroughHooked = true
         PlayerFrame:HookScript("OnShow", function(self)
-            local db = EzUI.db.profile.unitFrames
+            local db = EzroUI.db.profile.unitFrames
             if db and db.enabled then
                 self:SetAlpha(0)
                 SafeDisableMouse(self)
@@ -225,10 +225,10 @@ local function MakePlayerFrameClickthrough()
     local runeFrame = _G["RuneFrame"]
     if runeFrame then
         SafeDisableMouse(runeFrame)
-        if not runeFrame.__EzUIClickthroughHooked then
-            runeFrame.__EzUIClickthroughHooked = true
+        if not runeFrame.__EzroUIClickthroughHooked then
+            runeFrame.__EzroUIClickthroughHooked = true
             runeFrame:HookScript("OnShow", function(self)
-                local db = EzUI.db.profile.unitFrames
+                local db = EzroUI.db.profile.unitFrames
                 if db and db.enabled then
                     SafeDisableMouse(self)
                 end
@@ -237,10 +237,10 @@ local function MakePlayerFrameClickthrough()
     end
 end
 
-local MOUSEOVER_HIGHLIGHT_TEXTURE = "Interface\\AddOns\\EzUI\\Media\\uf_mouseover.tga"
+local MOUSEOVER_HIGHLIGHT_TEXTURE = "Interface\\AddOns\\EzroUI\\Media\\uf_mouseover.tga"
 
 local function GetMouseoverHighlightSettings()
-    local profile = EzUI.db and EzUI.db.profile and EzUI.db.profile.unitFrames
+    local profile = EzroUI.db and EzroUI.db.profile and EzroUI.db.profile.unitFrames
     if not profile or profile.enabled == false then
         return nil
     end

@@ -1,11 +1,11 @@
 ﻿local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
+local EzroUI = ns.Addon
 local C_Timer = _G.C_Timer
 local GetTime = _G.GetTime
 
 -- Create namespace
-EzUI.ResourceBars = EzUI.ResourceBars or {}
-local ResourceBars = EzUI.ResourceBars
+EzroUI.ResourceBars = EzroUI.ResourceBars or {}
+local ResourceBars = EzroUI.ResourceBars
 
 -- Update throttling to prevent flashing and improve performance
 local lastPrimaryUpdate = 0
@@ -50,7 +50,7 @@ local function StartRuneUpdateTicker()
     if runeUpdateTicker then return end
 
     runeUpdateTicker = C_Timer.NewTicker(0.1, function()
-        local cfg = EzUI.db and EzUI.db.profile and EzUI.db.profile.secondaryPowerBar
+        local cfg = EzroUI.db and EzroUI.db.profile and EzroUI.db.profile.secondaryPowerBar
         if cfg and cfg.enabled == false then
             StopRuneUpdateTicker()
             return
@@ -87,7 +87,7 @@ function ResourceBars:OnUnitPower(_, unit)
 end
 
 function ResourceBars:OnRuneEvent()
-    local cfg = EzUI.db and EzUI.db.profile and EzUI.db.profile.secondaryPowerBar
+    local cfg = EzroUI.db and EzroUI.db.profile and EzroUI.db.profile.secondaryPowerBar
     if cfg and cfg.enabled == false then
         StopRuneUpdateTicker()
         return
@@ -149,33 +149,33 @@ end
 
 function ResourceBars:Initialize()
     -- Register additional events
-    EzUI:RegisterEvent("PLAYER_SPECIALIZATION_CHANGED", function()
+    EzroUI:RegisterEvent("PLAYER_SPECIALIZATION_CHANGED", function()
         ResourceBars:OnSpecChanged()
     end)
-    EzUI:RegisterEvent("UPDATE_SHAPESHIFT_FORM", function()
+    EzroUI:RegisterEvent("UPDATE_SHAPESHIFT_FORM", function()
         ResourceBars:OnShapeshiftChanged()
     end)
-    EzUI:RegisterEvent("PLAYER_ENTERING_WORLD", function()
+    EzroUI:RegisterEvent("PLAYER_ENTERING_WORLD", function()
         ResourceBars:OnUnitPower()
     end)
 
     -- POWER UPDATES
-    EzUI:RegisterEvent("UNIT_POWER_FREQUENT", function(_, unit)
+    EzroUI:RegisterEvent("UNIT_POWER_FREQUENT", function(_, unit)
         ResourceBars:OnUnitPower(_, unit)
     end)
-    EzUI:RegisterEvent("UNIT_POWER_UPDATE", function(_, unit)
+    EzroUI:RegisterEvent("UNIT_POWER_UPDATE", function(_, unit)
         ResourceBars:OnUnitPower(_, unit)
     end)
-    EzUI:RegisterEvent("UNIT_MAXPOWER", function(_, unit)
+    EzroUI:RegisterEvent("UNIT_MAXPOWER", function(_, unit)
         ResourceBars:OnUnitPower(_, unit)
     end)
 
     -- RUNES: rune cooldown progression does not reliably trigger UNIT_POWER_* updates,
     -- so we listen to rune-specific events and optionally poll while runes are recharging.
-    EzUI:RegisterEvent("RUNE_POWER_UPDATE", function()
+    EzroUI:RegisterEvent("RUNE_POWER_UPDATE", function()
         ResourceBars:OnRuneEvent()
     end)
-    EzUI:RegisterEvent("RUNE_TYPE_UPDATE", function()
+    EzroUI:RegisterEvent("RUNE_TYPE_UPDATE", function()
         ResourceBars:OnRuneEvent()
     end)
 
@@ -201,7 +201,7 @@ function ResourceBars:Initialize()
 end
 
 -- Expose event handlers to main addon for backwards compatibility
-EzUI.OnUnitPower = function(self, _, unit) return ResourceBars:OnUnitPower(_, unit) end
-EzUI.OnSpecChanged = function(self) return ResourceBars:OnSpecChanged() end
-EzUI.OnShapeshiftChanged = function(self) return ResourceBars:OnShapeshiftChanged() end
+EzroUI.OnUnitPower = function(self, _, unit) return ResourceBars:OnUnitPower(_, unit) end
+EzroUI.OnSpecChanged = function(self) return ResourceBars:OnSpecChanged() end
+EzroUI.OnShapeshiftChanged = function(self) return ResourceBars:OnShapeshiftChanged() end
 

@@ -1,12 +1,12 @@
 ﻿--[[
-    EzUI Unit Frames - Color System
+    EzroUI Unit Frames - Color System
     Handles health bar colors, gradients, and color modes
 ]]
 
 local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
-EzUI.PartyFrames = EzUI.PartyFrames or {}
-local UnitFrames = EzUI.PartyFrames
+local EzroUI = ns.Addon
+EzroUI.PartyFrames = EzroUI.PartyFrames or {}
+local UnitFrames = EzroUI.PartyFrames
 
 -- Cache commonly used API
 local UnitHealth = UnitHealth

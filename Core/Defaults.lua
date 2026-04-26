@@ -1,7 +1,7 @@
 ﻿local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
+local EzroUI = ns.Addon
 
-EzUI.viewers = {
+EzroUI.viewers = {
     "EssentialCooldownViewer",
     "UtilityCooldownViewer",
     "BuffIconCooldownViewer",
@@ -292,7 +292,7 @@ local defaults = {
         },
         targetCastBar = {
             enabled       = true,
-            attachTo      = "EzUI_Target",
+            attachTo      = "EzroUI_Target",
             height        = 24,
             offsetY       = -38,
             showIcon      = true,
@@ -312,7 +312,7 @@ local defaults = {
         },
         focusCastBar = {
             enabled       = true,
-            attachTo      = "EzUI_Focus",
+            attachTo      = "EzroUI_Focus",
             height        = 24,
             offsetY       = 30,
             showIcon      = true,
@@ -367,7 +367,7 @@ local defaults = {
                 anchorPoint = "BOTTOMLEFT",
                 borderSize = 1,
                 borderColor = { 0, 0, 0, 1 },
-                anchorFrame = "EzUI_Player",
+                anchorFrame = "EzroUI_Player",
                 offsetX = 1,
                 offsetY = -2,
                 hideUnusableItems = false,
@@ -395,7 +395,7 @@ local defaults = {
                 anchorPoint = "BOTTOMLEFT",
                 borderSize = 1,
                 borderColor = { 0, 0, 0, 1 },
-                anchorFrame = "EzUI_Player",
+                anchorFrame = "EzroUI_Player",
                 offsetX = 1,
                 offsetY = -2,
                 hideUnusableItems = false,
@@ -413,7 +413,7 @@ local defaults = {
                 anchorPoint = "TOPRIGHT",
                 borderSize = 1,
                 borderColor = { 0, 0, 0, 1 },
-                anchorFrame = "EzUI_Player",
+                anchorFrame = "EzroUI_Player",
                 offsetX = -1,
                 offsetY = 49,
                 hideUnusableItems = true,
@@ -433,7 +433,7 @@ local defaults = {
                 anchorPoint = "TOPRIGHT",
                 borderSize = 1,
                 borderColor = { 0, 0, 0, 1 },
-                anchorFrame = "EzUI_Player",
+                anchorFrame = "EzroUI_Player",
                 offsetX = -1,
                 offsetY = 2,
                 hideUnusableSpells = true,
@@ -451,7 +451,7 @@ local defaults = {
                 anchorPoint = "TOPRIGHT",
                 borderSize = 1,
                 borderColor = { 0, 0, 0, 1 },
-                anchorFrame = "EzUI_Player",
+                anchorFrame = "EzroUI_Player",
                 offsetX = 0,
                 offsetY = -45,
                 hideUnusableSpells = true,
@@ -770,7 +770,7 @@ local defaults = {
                     Height = 21,
                     AnchorFrom = "CENTER",
                     AnchorTo = "CENTER",
-                    AnchorFrame = "EzUI_Target",
+                    AnchorFrame = "EzroUI_Target",
                     OffsetX = 196,
                     OffsetY = -14,
                     ClassColor = true,
@@ -837,7 +837,7 @@ local defaults = {
                     Height = 21,
                     AnchorFrom = "CENTER",
                     AnchorTo = "CENTER",
-                    AnchorFrame = "EzUI_Player",
+                    AnchorFrame = "EzroUI_Player",
                     OffsetX = 0,
                     OffsetY = -36,
                     ClassColor = true,
@@ -886,7 +886,7 @@ local defaults = {
                     Height = 32,
                     AnchorFrom = "CENTER",
                     AnchorTo = "CENTER",
-                    AnchorFrame = "EzUI_Player",
+                    AnchorFrame = "EzroUI_Player",
                     OffsetX = 0,
                     OffsetY = 135,
                     ClassColor = true,
@@ -1364,5 +1364,5 @@ local defaults = {
     },
 }
 
-EzUI.defaults = defaults
+EzroUI.defaults = defaults
 

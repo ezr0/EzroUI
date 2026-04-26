@@ -1,19 +1,19 @@
 ﻿local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
+local EzroUI = ns.Addon
 local LSM = LibStub("LibSharedMedia-3.0")
 
 -- Unit Frame System
-EzUI.UnitFrames = EzUI.UnitFrames or {}
-local UF = EzUI.UnitFrames
+EzroUI.UnitFrames = EzroUI.UnitFrames or {}
+local UF = EzroUI.UnitFrames
 
 -- Unit to frame name mapping
 local UnitToFrameName = {
-    player = "EzUI_Player",
-    target = "EzUI_Target",
-    targettarget = "EzUI_TargetTarget",
-    pet = "EzUI_Pet",
-    focus = "EzUI_Focus",
-    boss = "EzUI_Boss",
+    player = "EzroUI_Player",
+    target = "EzroUI_Target",
+    targettarget = "EzroUI_TargetTarget",
+    pet = "EzroUI_Pet",
+    focus = "EzroUI_Focus",
+    boss = "EzroUI_Boss",
 }
 
 -- Track delayed initialization when called during combat lockdown
@@ -30,8 +30,8 @@ local function EnsureDelayedInitListener()
             pendingInitAfterCombat = false
 
             -- Retry initialization now that combat lockdown is lifted
-            if EzUI.UnitFrames and EzUI.UnitFrames.Initialize then
-                EzUI.UnitFrames:Initialize()
+            if EzroUI.UnitFrames and EzroUI.UnitFrames.Initialize then
+                EzroUI.UnitFrames:Initialize()
             end
         end
     end)
@@ -77,26 +77,26 @@ local PreviewPortraits = {
 -- Resolve frame name from unit
 function UF.ResolveFrameName(unit)
     if unit == "player" then
-        return "EzUI_Player"
+        return "EzroUI_Player"
     elseif unit == "target" then
-        return "EzUI_Target"
+        return "EzroUI_Target"
     elseif unit == "focus" then
-        return "EzUI_Focus"
+        return "EzroUI_Focus"
     elseif unit:match("^boss%d+$") then
-        return "EzUI_" .. unit:gsub("^b", "B")
+        return "EzroUI_" .. unit:gsub("^b", "B")
     elseif unit == "targettarget" then
-        return "EzUI_TargetTarget"
+        return "EzroUI_TargetTarget"
     elseif unit == "focustarget" then
-        return "EzUI_FocusTarget"
+        return "EzroUI_FocusTarget"
     elseif unit == "pet" then
-        return "EzUI_Pet"
+        return "EzroUI_Pet"
     end
-    return "EzUI_" .. unit
+    return "EzroUI_" .. unit
 end
 
 -- Get power bar database
 function UF.GetPowerBarDB(unit)
-    local db = EzUI.db.profile.unitFrames
+    local db = EzroUI.db.profile.unitFrames
     if not db then return nil end
 
     local dbUnit = unit
@@ -212,16 +212,16 @@ function UF:ResolveMedia()
     self.Media = self.Media or {}
 
     -- Always use global font
-    self.Media.Font = EzUI:GetGlobalFont()
+    self.Media.Font = EzroUI:GetGlobalFont()
 
     -- Check for texture overrides in General settings, otherwise use global texture
-    local db = EzUI.db and EzUI.db.profile and EzUI.db.profile.unitFrames
+    local db = EzroUI.db and EzroUI.db.profile and EzroUI.db.profile.unitFrames
     local GeneralDB = db and db.General
     local foregroundOverride = GeneralDB and GeneralDB.ForegroundTexture
     local backgroundOverride = GeneralDB and GeneralDB.BackgroundTexture
 
-    self.Media.ForegroundTexture = EzUI:GetTexture(foregroundOverride)
-    self.Media.BackgroundTexture = EzUI:GetTexture(backgroundOverride)
+    self.Media.ForegroundTexture = EzroUI:GetTexture(foregroundOverride)
+    self.Media.BackgroundTexture = EzroUI:GetTexture(backgroundOverride)
 end
 
 -- Helper function for text justification
@@ -278,11 +278,11 @@ end
 function UF:ApplyBossPreviewData(unitFrame, bossIndex)
     if not unitFrame or not self.BossPreviewMode then return end
 
-    local bossDB = EzUI.db.profile.unitFrames.boss
+    local bossDB = EzroUI.db.profile.unitFrames.boss
     if not bossDB then return end
     local frameDB = bossDB.Frame or {}
     local powerBarDB = bossDB.PowerBar or {}
-    local generalDB = (EzUI.db.profile.unitFrames and EzUI.db.profile.unitFrames.General) or {}
+    local generalDB = (EzroUI.db.profile.unitFrames and EzroUI.db.profile.unitFrames.General) or {}
 
     -- Get fake data for this boss
     local fakeData = self:GetFakeBossData(bossIndex)
@@ -385,7 +385,7 @@ function UF:ApplyBossPreviewData(unitFrame, bossIndex)
     end
 
     -- Apply fake absorb data (hide during preview so health texture is visible)
-    local absorbBar = unitFrame.__EzUIAbsorbBar
+    local absorbBar = unitFrame.__EzroUIAbsorbBar
     if absorbBar then
         absorbBar:SetMinMaxValues(0, fakeData.maxHealth)
         absorbBar:SetValue(0)
@@ -507,16 +507,16 @@ function UF:ApplyBossPreviewData(unitFrame, bossIndex)
 end
 
 function UF:ShowBossFramesPreview()
-    if not EzUI.db.profile.unitFrames or not EzUI.db.profile.unitFrames.enabled then return end
+    if not EzroUI.db.profile.unitFrames or not EzroUI.db.profile.unitFrames.enabled then return end
 
-    local bossDB = EzUI.db.profile.unitFrames.boss
+    local bossDB = EzroUI.db.profile.unitFrames.boss
     if not bossDB or not bossDB.Enabled then return end
 
     -- Mark as in preview mode
     self.BossPreviewMode = true
 
     for i = 1, 8 do
-        local unitFrame = _G["EzUI_Boss" .. i]
+        local unitFrame = _G["EzroUI_Boss" .. i]
         if unitFrame then
             -- Unregister unit events to prevent real unit data from overriding
             if not InCombatLockdown() then
@@ -555,13 +555,13 @@ function UF:CreateBossAnchor()
     -- Don't create if already exists
     if self.bossAnchor then return self.bossAnchor end
 
-    local anchor = CreateFrame("Frame", "EzUI_BossAnchor", UIParent)
+    local anchor = CreateFrame("Frame", "EzroUI_BossAnchor", UIParent)
     anchor:SetFrameStrata("TOOLTIP")
     anchor:SetSize(200, 40) -- Default size, will be updated when shown
 
     -- Create text label
     local label = anchor:CreateFontString(nil, "OVERLAY")
-    local fontPath = EzUI:GetGlobalFont()
+    local fontPath = EzroUI:GetGlobalFont()
     if fontPath then
         label:SetFont(fontPath, 12, "OUTLINE")
     else
@@ -583,7 +583,7 @@ function UF:CreateBossAnchor()
     local function UpdateBossFramesFromAnchor(anchor)
         if InCombatLockdown() then return end
 
-        local db = EzUI.db.profile.unitFrames
+        local db = EzroUI.db.profile.unitFrames
         if not db or not db.boss or not db.boss.Frame then return end
 
         local bossDB = db.boss
@@ -645,7 +645,7 @@ end
 function UF:UpdateBossAnchor()
     if not self.bossAnchor then return end
 
-    local db = EzUI.db.profile.unitFrames
+    local db = EzroUI.db.profile.unitFrames
     if not db or not db.General then return end
 
     local bossDB = db.boss
@@ -662,7 +662,7 @@ function UF:UpdateBossAnchor()
 
     if showAnchor then
         -- Position anchor on boss1 frame (the anchor point of the boss group)
-        local boss1Frame = _G["EzUI_Boss1"]
+        local boss1Frame = _G["EzroUI_Boss1"]
         if boss1Frame and boss1Frame:IsShown() then
             -- Update anchor size to match boss1 frame plus padding
             local frameWidth = boss1Frame:GetWidth() or 200
@@ -694,30 +694,30 @@ function UF:HideBossFramesPreview()
     self.BossPreviewMode = false
 
     for i = 1, 8 do
-        local unitFrame = _G["EzUI_Boss" .. i]
+        local unitFrame = _G["EzroUI_Boss" .. i]
         if unitFrame then
             -- Re-register unit watch so frames hide when no real bosses
             if not InCombatLockdown() then
                 RegisterUnitWatch(unitFrame, false)
-                unitFrame.__EzUIUnitWatchActive = true
+                unitFrame.__EzroUIUnitWatchActive = true
             end
             unitFrame:Hide()
         end
 
         -- Hide boss cast bar previews
-        if EzUI.bossCastBars and EzUI.bossCastBars[i] then
-            EzUI.bossCastBars[i]:Hide()
+        if EzroUI.bossCastBars and EzroUI.bossCastBars[i] then
+            EzroUI.bossCastBars[i]:Hide()
         end
     end
 
     -- Hide associated boss cast bars
-    if EzUI.CastBars and EzUI.CastBars.HideTestBossCastBars then
-        EzUI.CastBars:HideTestBossCastBars()
+    if EzroUI.CastBars and EzroUI.CastBars.HideTestBossCastBars then
+        EzroUI.CastBars:HideTestBossCastBars()
     end
 end
 
 function UF:LayoutBossFrames()
-    local db = EzUI.db.profile.unitFrames
+    local db = EzroUI.db.profile.unitFrames
     if not db or not db.boss or not db.boss.Enabled then return end
     if InCombatLockdown() then return end
 
@@ -726,7 +726,7 @@ function UF:LayoutBossFrames()
 
     -- Collect available boss frames (even if hidden) so we can position them before combat
     for i = 1, 8 do
-        local unitFrame = _G["EzUI_Boss" .. i]
+        local unitFrame = _G["EzroUI_Boss" .. i]
         if unitFrame then
             bossFrames[#bossFrames + 1] = unitFrame
         end
@@ -762,7 +762,7 @@ function UF:LayoutBossFrames()
 end
 
 function UF:Initialize()
-    local db = EzUI.db.profile.unitFrames
+    local db = EzroUI.db.profile.unitFrames
     if not db or not db.enabled then return end
 
     -- Creating secure unit frames or registering state drivers is blocked in combat.
@@ -831,13 +831,13 @@ end
 function UF:RefreshFrames()
     -- Refresh all unit frames
     for _, unit in ipairs({"player", "target", "focus"}) do
-        if EzUI.db.profile.unitFrames[unit] and EzUI.db.profile.unitFrames[unit].Enabled then
+        if EzroUI.db.profile.unitFrames[unit] and EzroUI.db.profile.unitFrames[unit].Enabled then
             self:UpdateUnitFrame(unit)
         end
     end
 
     -- Refresh boss frames
-    if EzUI.db.profile.unitFrames.boss and EzUI.db.profile.unitFrames.boss.Enabled then
+    if EzroUI.db.profile.unitFrames.boss and EzroUI.db.profile.unitFrames.boss.Enabled then
         for i = 1, 8 do
             self:UpdateUnitFrame("boss" .. i)
         end

@@ -1,12 +1,12 @@
 ﻿local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
+local EzroUI = ns.Addon
 
 ---------------------------------------------------------------------------
 -- Missing Raid Buffs Panel
 ---------------------------------------------------------------------------
 
 local RaidBuffs = {}
-EzUI.RaidBuffs = RaidBuffs
+EzroUI.RaidBuffs = RaidBuffs
 
 local ICON_SIZE = 32
 local ICON_SPACING = 1
@@ -77,8 +77,8 @@ local anchorActive = false
 local anchorPreviousPreview = nil
 
 local function GetSettings()
-    if EzUI and EzUI.db and EzUI.db.profile and EzUI.db.profile.qol and EzUI.db.profile.qol.raidBuffs then
-        return EzUI.db.profile.qol.raidBuffs
+    if EzroUI and EzroUI.db and EzroUI.db.profile and EzroUI.db.profile.qol and EzroUI.db.profile.qol.raidBuffs then
+        return EzroUI.db.profile.qol.raidBuffs
     end
     return {
         enabled = true,
@@ -348,7 +348,7 @@ end
 local function CreateMainFrame()
     if mainFrame then return mainFrame end
 
-    mainFrame = CreateFrame("Frame", "EzUI_MissingRaidBuffs", UIParent)
+    mainFrame = CreateFrame("Frame", "EzroUI_MissingRaidBuffs", UIParent)
     mainFrame:SetSize(200, 70)
     mainFrame:SetPoint("TOP", UIParent, "TOP", 0, -200)
     mainFrame:SetFrameStrata("MEDIUM")

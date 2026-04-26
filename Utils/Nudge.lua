@@ -1,5 +1,5 @@
 ﻿local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
+local EzroUI = ns.Addon
 local LibEditModeOverride = LibStub("LibEditModeOverride-1.0", true)
 local strtrim = strtrim
 
@@ -153,7 +153,7 @@ local function EnableClickDetection()
     clickDetector:SetScript("OnUpdate", function(self, elapsed)
         -- First, check for Edit Mode's isSelected frames (priority)
         local editModeSelected = ScanForSelectedFrame()
-        local nudgeFrame = _G[ADDON_NAME .. "NudgeFrame"] or EzUI.nudgeFrame
+        local nudgeFrame = _G[ADDON_NAME .. "NudgeFrame"] or EzroUI.nudgeFrame
         
         if editModeSelected then
             -- Only update when selection changes
@@ -294,7 +294,7 @@ local function setupPointDropdown(dropdown)
             advanced.point = "BOTTOMRIGHT"
         end
 
-        EzUI:ApplyAdvancedNudgeSettings()
+        EzroUI:ApplyAdvancedNudgeSettings()
     end
 
     dropdown:SetupMenu(function(_, rootDescription)
@@ -354,7 +354,7 @@ local function setupRelativePointDropdown(dropdown)
             advanced.attachPoint = "BOTTOMRIGHT"
         end
 
-        EzUI:ApplyAdvancedNudgeSettings()
+        EzroUI:ApplyAdvancedNudgeSettings()
     end
 
     dropdown:SetupMenu(function(_, rootDescription)
@@ -386,7 +386,7 @@ local function resolveFrame(frameOrName)
     return frameOrName
 end
 
-function EzUI:ApplyAdvancedNudgeSettings()
+function EzroUI:ApplyAdvancedNudgeSettings()
     local selectedFrame = currentSelectedFrame
     if not selectedFrame or not selectedFrame.systemInfo then return end
 
@@ -522,7 +522,7 @@ local function createAdvancedControls(parent)
 
         if isFrame then
             advanced.attachFrame = target
-            EzUI:ApplyAdvancedNudgeSettings()
+            EzroUI:ApplyAdvancedNudgeSettings()
         else
             self:SetText(advanced.oldText)
         end
@@ -617,7 +617,7 @@ end
 
 local nudgeParent = EditModeSystemSettingsDialog or UIParent
 NudgeFrame = CreateFrame("Frame", ADDON_NAME .. "NudgeFrame", nudgeParent, "BackdropTemplate")
-EzUI.nudgeFrame = NudgeFrame
+EzroUI.nudgeFrame = NudgeFrame
 
 -- Slightly roomier footprint for clarity
 NudgeFrame:SetHeight(300)
@@ -664,7 +664,7 @@ xEditBox:SetScript("OnEnterPressed", function(self)
         self:SetText(advanced.oldText or "")
     else
         advanced.xOffset = val
-        EzUI:ApplyAdvancedNudgeSettings()
+        EzroUI:ApplyAdvancedNudgeSettings()
     end
     self:ClearFocus()
 end)
@@ -686,7 +686,7 @@ yEditBox:SetScript("OnEnterPressed", function(self)
         self:SetText(advanced.oldText or "")
     else
         advanced.yOffset = val
-        EzUI:ApplyAdvancedNudgeSettings()
+        EzroUI:ApplyAdvancedNudgeSettings()
     end
     self:ClearFocus()
 end)
@@ -721,7 +721,7 @@ local function CreateArrowButton(parent, direction, anchorFrame, x, yOffset)
     end
     
     button:SetScript("OnClick", function()
-        EzUI:NudgeSelectedFrame(direction)
+        EzroUI:NudgeSelectedFrame(direction)
         PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON)
     end)
     
@@ -847,7 +847,7 @@ local function EnsureEditModeReady()
     return LibEditModeOverride:CanEditActiveLayout()
 end
 
-function EzUI:NudgeSelectedFrame(direction)
+function EzroUI:NudgeSelectedFrame(direction)
     local selectedFrame, frameName = GetSelectedEditModeFrame()
     if not selectedFrame then return false end
 

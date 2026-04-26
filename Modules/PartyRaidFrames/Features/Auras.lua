@@ -1,12 +1,12 @@
 ﻿--[[
-    EzUI Unit Frames - Aura Display System
+    EzroUI Unit Frames - Aura Display System
     Handles buff/debuff display with enhanced filtering
 ]]
 
 local ADDON_NAME, ns = ...
-local EzUI = ns.Addon
-EzUI.PartyFrames = EzUI.PartyFrames or {}
-local UnitFrames = EzUI.PartyFrames
+local EzroUI = ns.Addon
+EzroUI.PartyFrames = EzroUI.PartyFrames or {}
+local UnitFrames = EzroUI.PartyFrames
 
 -- Cache commonly used API
 local UnitAura = C_UnitAuras and C_UnitAuras.GetAuraDataByIndex or UnitAura
