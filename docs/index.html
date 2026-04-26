@@ -41,6 +41,8 @@
       /* semantic */
       --green: #34d399;
       --red:   #f87171;
+
+      --shadow-dark: rgba(0,0,0,0.65);
     }
 
     html { scroll-behavior: smooth; }
@@ -305,7 +307,7 @@
       margin: 0 auto;
       border-radius: 10px;
       overflow: hidden;
-      box-shadow: 0 4px 60px rgba(0,0,0,0.7);
+      box-shadow: 0 4px 60px var(--shadow-dark);
       cursor: ew-resize;
       user-select: none;
       -webkit-user-select: none;
@@ -317,16 +319,16 @@
       height: auto;
     }
 
-    /* "before" sits on top, clipped */
+    /* "before" sits on top, clipped via clip-path */
     .compare-before {
       position: absolute;
       inset: 0;
-      overflow: hidden;
-      width: 50%; /* JS will update this */
+      clip-path: inset(0 50% 0 0); /* JS will update the right value */
     }
     .compare-before img {
-      width: 100vw;          /* full natural width */
-      max-width: 900px;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
       position: absolute;
       top: 0; left: 0;
     }
@@ -710,8 +712,8 @@
         <div class="compare-line" id="compareLine"></div>
         <div class="compare-handle" id="compareHandle">
           <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M7 4L3 10L7 16" stroke="#333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M13 4L17 10L13 16" stroke="#333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M7 4L3 10L7 16" stroke="#111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M13 4L17 10L13 16" stroke="#111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </div>
 
@@ -1026,9 +1028,9 @@
 
       function setPos(pct) {
         pct = Math.max(2, Math.min(98, pct));
-        before.style.width   = pct + '%';
-        line.style.left      = pct + '%';
-        handle.style.left    = pct + '%';
+        before.style.clipPath = 'inset(0 ' + (100 - pct) + '% 0 0)';
+        line.style.left       = pct + '%';
+        handle.style.left     = pct + '%';
       }
 
       function getPercent(clientX) {
@@ -1052,12 +1054,12 @@
       wrap.addEventListener('touchstart', function (e) {
         dragging = true;
         setPos(getPercent(e.touches[0].clientX));
-        e.preventDefault();
-      }, { passive: false });
+      }, { passive: true });
       document.addEventListener('touchmove', function (e) {
         if (!dragging) return;
+        e.preventDefault();
         setPos(getPercent(e.touches[0].clientX));
-      }, { passive: true });
+      }, { passive: false });
       document.addEventListener('touchend', function () { dragging = false; });
     })();
   </script>
