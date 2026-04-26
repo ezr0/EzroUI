@@ -1293,6 +1293,21 @@ local defaults = {
                 position = nil,
             },
         },
+        tooltips = {
+            enabled             = true,
+            classColoredBorder  = true,
+            hideBlizzardBorder  = true,
+            classColorName      = true,
+            showLevel           = true,
+            showGuild           = true,
+            showRealm           = true,
+            showFaction         = true,
+            showHealth          = true,
+            showPower           = true,
+            showMythicPlus      = true,
+            showPvP             = true,
+            enhanceNPCs         = true,
+        },
         iconCustomization = {
             spells = {}, -- [spellID] = { readyGlow = bool, glowType = string, glowColor = {r,g,b}, glowSpeed = number, glowLines = number, glowThickness = number }
         },

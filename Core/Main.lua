@@ -963,6 +963,10 @@ function EzroUI:OnEnable()
         end
     end
 
+    if self.Tooltips and self.Tooltips.Initialize then
+        self.Tooltips:Initialize()
+    end
+
     if self.QOL and self.QOL.Initialize then
         self.QOL:Initialize()
     end
@@ -1559,6 +1563,10 @@ function EzroUI:RefreshAll()
     
     if self.CastBars and self.CastBars.RefreshAll then
         self.CastBars:RefreshAll()
+    end
+
+    if self.Tooltips and self.Tooltips.Refresh then
+        self.Tooltips:Refresh()
     end
 
     if self.QOL and self.QOL.Refresh then

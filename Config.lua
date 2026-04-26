@@ -14,7 +14,8 @@ local CustomBuffOptions = ns.CreateCustomBuffOptions
 local IconCustomizationOptions = ns.CreateIconCustomizationOptions
 local UnitFrameOptionsGroup = ns.CreateUnitFrameOptionsGroup
 local ProfileOptions = ns.CreateProfileOptions
-local QOLOptions = ns.CreateQOLOptions
+local QOLOptions     = ns.CreateQOLOptions
+local TooltipOptions = ns.CreateTooltipOptions
 
 local function GetViewerOptions()
     return {
@@ -1616,6 +1617,9 @@ function EzroUI:SetupOptions()
             -- CUSTOM BUFFS TAB
             customBuffs = CustomBuffOptions(),
             
+            -- TOOLTIPS TAB
+            tooltips = TooltipOptions(),
+
             -- QOL TAB
             qol = QOLOptions(),
 
