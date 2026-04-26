@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -6,40 +6,61 @@
   <title>EzroUI — Lightweight WoW UI Overhaul</title>
   <meta name="description" content="EzroUI is a lightweight, all-in-one World of Warcraft UI overhaul addon by Ezr0. Clean unit frames, cooldown viewers, cast bars, action bars, and dozens of quality-of-life improvements." />
   <style>
-    /* ── Reset & base ─────────────────────────────────────── */
+    /* ── Reset & tokens ───────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --gold:      #a882e0;
-      --gold-lt:   #d0b4ff;
-      --gold-dk:   #5a30a0;
-      --bg:        #07050e;
-      --bg2:       #0e0a1c;
-      --bg3:       #161030;
-      --border:    #2e2050;
-      --text:      #ccc8e0;
-      --text-dim:  #7870a0;
-      --accent:    #60a0e0;
-      --red:       #c0392b;
-      --green:     #27ae60;
+      /* backgrounds */
+      --bg:      #0b0b10;
+      --bg2:     #0f0f16;
+      --bg3:     #14141e;
+      --bg4:     #1a1a26;
+      --border:  #1e1e2e;
+      --border2: #2a2a3e;
+
+      /* text */
+      --text:     #dddae8;
+      --text-dim: #6b6880;
+      --text-faint: #3e3c50;
+
+      /* accent 1 — violet */
+      --v:    #9d7fe3;
+      --v-lt: #c8b0ff;
+      --v-dk: #4d2fa0;
+
+      /* accent 2 — teal */
+      --t:    #22d3c8;
+      --t-lt: #6ef5ed;
+      --t-dk: #0a8a82;
+
+      /* accent 3 — amber */
+      --a:    #f59b42;
+      --a-lt: #ffc97a;
+      --a-dk: #a05a10;
+
+      /* semantic */
+      --green: #34d399;
+      --red:   #f87171;
+
+      --shadow-dark: rgba(0,0,0,0.65);
     }
 
     html { scroll-behavior: smooth; }
 
     body {
-      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
       background: var(--bg);
       color: var(--text);
-      line-height: 1.6;
+      line-height: 1.65;
       font-size: 16px;
     }
 
-    a { color: var(--gold); text-decoration: none; }
-    a:hover { color: var(--gold-lt); text-decoration: underline; }
+    a { color: var(--v); text-decoration: none; }
+    a:hover { color: var(--v-lt); text-decoration: underline; }
 
     /* ── Utility ──────────────────────────────────────────── */
     .container {
-      max-width: 1100px;
+      max-width: 1120px;
       margin: 0 auto;
       padding: 0 1.5rem;
     }
@@ -50,10 +71,10 @@
     .section-title {
       font-size: 2rem;
       font-weight: 700;
-      color: var(--gold);
+      color: var(--text);
       text-align: center;
       margin-bottom: 0.5rem;
-      letter-spacing: 0.02em;
+      letter-spacing: -0.01em;
     }
 
     .section-sub {
@@ -64,20 +85,37 @@
     }
 
     .divider {
-      width: 60px;
+      width: 48px;
       height: 3px;
-      background: linear-gradient(90deg, var(--gold-dk), var(--gold), var(--gold-dk));
-      margin: 0.75rem auto 2.5rem;
       border-radius: 2px;
+      margin: 0.6rem auto 2.5rem;
     }
+    .divider-v  { background: var(--v); }
+    .divider-t  { background: var(--t); }
+    .divider-a  { background: var(--a); }
+
+    /* ── Pill label ───────────────────────────────────────── */
+    .pill {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.2em 0.8em;
+      border-radius: 999px;
+    }
+    .pill-v { background: rgba(157,127,227,0.12); color: var(--v); border: 1px solid rgba(157,127,227,0.25); }
+    .pill-t { background: rgba(34,211,200,0.10);  color: var(--t); border: 1px solid rgba(34,211,200,0.22); }
+    .pill-a { background: rgba(245,155,66,0.10);  color: var(--a); border: 1px solid rgba(245,155,66,0.22); }
 
     /* ── Nav ──────────────────────────────────────────────── */
     nav {
       position: sticky;
       top: 0;
-      z-index: 100;
-      background: rgba(7, 5, 14, 0.95);
-      backdrop-filter: blur(8px);
+      z-index: 200;
+      background: rgba(11,11,16,0.9);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
     }
 
@@ -85,84 +123,96 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      height: 60px;
+      height: 58px;
     }
 
     .nav-brand {
-      font-size: 1.35rem;
+      font-size: 1.25rem;
       font-weight: 800;
-      letter-spacing: 0.04em;
-      color: var(--gold);
+      letter-spacing: 0.06em;
       text-transform: uppercase;
+      background: linear-gradient(90deg, var(--v-lt), var(--t));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     .nav-links {
       display: flex;
-      gap: 2rem;
+      gap: 1.75rem;
       list-style: none;
     }
 
     .nav-links a {
       color: var(--text-dim);
-      font-size: 0.9rem;
+      font-size: 0.82rem;
       font-weight: 600;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.06em;
       text-transform: uppercase;
       transition: color 0.2s;
     }
-
-    .nav-links a:hover { color: var(--gold); text-decoration: none; }
+    .nav-links a:hover { color: var(--text); text-decoration: none; }
 
     /* ── Hero ─────────────────────────────────────────────── */
     .hero {
       position: relative;
       text-align: center;
-      padding: 7rem 1.5rem 6rem;
+      padding: 8rem 1.5rem 7rem;
       overflow: hidden;
     }
 
+    /* dot-grid background */
     .hero::before {
       content: '';
       position: absolute;
       inset: 0;
-      background:
-        radial-gradient(ellipse 80% 60% at 50% 0%, rgba(168, 130, 224, 0.22) 0%, transparent 70%),
-        radial-gradient(ellipse 60% 40% at 50% 100%, rgba(90, 48, 160, 0.12) 0%, transparent 70%);
+      background-image: radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px);
+      background-size: 28px 28px;
       pointer-events: none;
     }
 
-    .hero-badge {
-      display: inline-block;
-      background: rgba(168, 130, 224, 0.15);
-      border: 1px solid var(--gold-dk);
-      color: var(--gold);
-      font-size: 0.78rem;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      padding: 0.3em 1em;
-      border-radius: 2em;
-      margin-bottom: 1.5rem;
+    /* colour glows */
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 70% 50% at 30% 20%, rgba(157,127,227,0.16) 0%, transparent 65%),
+        radial-gradient(ellipse 50% 40% at 75% 70%, rgba(34,211,200,0.10) 0%, transparent 65%),
+        radial-gradient(ellipse 40% 30% at 80% 10%, rgba(245,155,66,0.07) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .hero > .container { position: relative; z-index: 1; }
+
+    .hero-eyebrow {
+      margin-bottom: 1.4rem;
     }
 
     .hero h1 {
-      font-size: clamp(3rem, 8vw, 5.5rem);
+      font-size: clamp(3.2rem, 9vw, 6rem);
       font-weight: 900;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
+      letter-spacing: -0.02em;
       line-height: 1;
-      background: linear-gradient(135deg, var(--gold-lt) 0%, var(--gold) 50%, var(--gold-dk) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-bottom: 1rem;
+      color: var(--text);
+      margin-bottom: 0.25rem;
+    }
+
+    .hero-sub {
+      font-size: clamp(1rem, 2.5vw, 1.3rem);
+      color: var(--t);
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
     }
 
     .hero-tagline {
-      font-size: 1.25rem;
+      font-size: 1.15rem;
       color: var(--text-dim);
-      max-width: 520px;
+      max-width: 480px;
       margin: 0 auto 2.5rem;
+      line-height: 1.7;
     }
 
     .hero-cta {
@@ -172,117 +222,225 @@
       flex-wrap: wrap;
     }
 
+    /* ── Buttons ──────────────────────────────────────────── */
     .btn {
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
-      padding: 0.75em 2em;
-      border-radius: 4px;
+      padding: 0.72em 1.8em;
+      border-radius: 6px;
       font-weight: 700;
-      font-size: 0.95rem;
-      letter-spacing: 0.04em;
+      font-size: 0.88rem;
+      letter-spacing: 0.05em;
       text-transform: uppercase;
-      transition: filter 0.2s, transform 0.15s;
+      transition: transform 0.15s, box-shadow 0.2s, filter 0.2s;
       cursor: pointer;
       text-decoration: none;
+      border: none;
     }
-
-    .btn:hover { transform: translateY(-2px); text-decoration: none; filter: brightness(1.15); }
+    .btn:hover { transform: translateY(-2px); text-decoration: none; filter: brightness(1.12); }
 
     .btn-primary {
-      background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dk) 100%);
+      background: var(--v);
       color: #07050e;
+      box-shadow: 0 0 24px rgba(157,127,227,0.35);
+    }
+    .btn-primary:hover { box-shadow: 0 0 36px rgba(157,127,227,0.5); }
+
+    .btn-teal {
+      background: var(--t);
+      color: #05161a;
+      box-shadow: 0 0 20px rgba(34,211,200,0.28);
     }
 
-    .btn-secondary {
+    .btn-outline {
       background: transparent;
-      border: 2px solid var(--border);
+      border: 1px solid var(--border2);
       color: var(--text);
     }
-
-    .btn-secondary:hover { border-color: var(--gold); color: var(--gold); }
+    .btn-outline:hover { border-color: var(--v); color: var(--v); }
 
     /* ── Stats bar ────────────────────────────────────────── */
     .stats-bar {
-      background: var(--bg2);
       border-top: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
+      background: var(--bg2);
     }
 
     .stats-inner {
       display: flex;
       justify-content: center;
       flex-wrap: wrap;
-      gap: 0;
     }
 
     .stat-item {
-      padding: 1.5rem 2.5rem;
+      padding: 1.6rem 2.5rem;
       text-align: center;
       border-right: 1px solid var(--border);
       flex: 1;
-      min-width: 140px;
+      min-width: 130px;
     }
-
     .stat-item:last-child { border-right: none; }
 
     .stat-number {
-      font-size: 2rem;
+      font-size: 2.1rem;
       font-weight: 800;
-      color: var(--gold);
       display: block;
       line-height: 1;
     }
+    .stat-number.v { color: var(--v); }
+    .stat-number.t { color: var(--t); }
+    .stat-number.a { color: var(--a); }
 
     .stat-label {
-      font-size: 0.78rem;
+      font-size: 0.72rem;
       text-transform: uppercase;
       letter-spacing: 0.1em;
       color: var(--text-dim);
-      margin-top: 0.3rem;
+      margin-top: 0.35rem;
+    }
+
+    /* ── Before / After slider ────────────────────────────── */
+    .compare-wrap {
+      position: relative;
+      max-width: 900px;
+      margin: 0 auto;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 60px var(--shadow-dark);
+      cursor: ew-resize;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .compare-wrap img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    /* "before" sits on top, clipped via clip-path */
+    .compare-before {
+      position: absolute;
+      inset: 0;
+      clip-path: inset(0 50% 0 0); /* JS will update the right value */
+    }
+    .compare-before img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      top: 0; left: 0;
+    }
+
+    /* divider line */
+    .compare-line {
+      position: absolute;
+      top: 0; bottom: 0;
+      left: 50%;
+      width: 2px;
+      background: #fff;
+      transform: translateX(-50%);
+      pointer-events: none;
+    }
+
+    /* handle circle */
+    .compare-handle {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.5);
+    }
+
+    .compare-handle svg { width: 20px; height: 20px; }
+
+    /* labels */
+    .compare-label {
+      position: absolute;
+      top: 14px;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.25em 0.8em;
+      border-radius: 999px;
+      pointer-events: none;
+    }
+    .compare-label-before {
+      left: 14px;
+      background: rgba(0,0,0,0.55);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .compare-label-after {
+      right: 14px;
+      background: rgba(34,211,200,0.18);
+      color: var(--t);
+      border: 1px solid rgba(34,211,200,0.35);
     }
 
     /* ── Feature Grid ─────────────────────────────────────── */
     .feature-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 1.25rem;
+      gap: 1px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
     }
 
     .feature-card {
       background: var(--bg3);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 1.5rem;
-      transition: border-color 0.2s, transform 0.2s;
+      padding: 1.6rem;
+      transition: background 0.2s;
+      position: relative;
     }
-
-    .feature-card:hover {
-      border-color: var(--gold-dk);
-      transform: translateY(-3px);
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 0.2s;
     }
+    .feature-card:hover { background: var(--bg4); }
 
     .feature-icon {
-      font-size: 1.6rem;
-      margin-bottom: 0.75rem;
+      font-size: 1.5rem;
+      margin-bottom: 0.8rem;
       display: block;
     }
 
     .feature-card h3 {
-      font-size: 1.05rem;
+      font-size: 0.98rem;
       font-weight: 700;
-      color: var(--gold);
-      margin-bottom: 0.5rem;
-      letter-spacing: 0.02em;
+      color: var(--text);
+      margin-bottom: 0.45rem;
     }
 
     .feature-card p {
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       color: var(--text-dim);
-      line-height: 1.6;
+      line-height: 1.65;
     }
 
-    /* ── QoL List ─────────────────────────────────────────── */
+    .feature-card a { color: var(--t); }
+    .feature-card a:hover { color: var(--t-lt); }
+
+    /* accent top border per card colour cycling */
+    .fc-v { border-top: 2px solid var(--v); }
+    .fc-t { border-top: 2px solid var(--t); }
+    .fc-a { border-top: 2px solid var(--a); }
+
+    /* ── QoL grid ─────────────────────────────────────────── */
     .qol-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -292,106 +450,129 @@
     .qol-item {
       background: var(--bg3);
       border: 1px solid var(--border);
-      border-radius: 6px;
+      border-radius: 8px;
       padding: 0.9rem 1.1rem;
       display: flex;
       align-items: flex-start;
       gap: 0.75rem;
+      transition: border-color 0.2s;
     }
+    .qol-item:hover { border-color: var(--border2); }
 
     .qol-check {
       color: var(--green);
-      font-size: 1rem;
+      font-size: 0.95rem;
       flex-shrink: 0;
-      margin-top: 0.1rem;
+      margin-top: 0.15rem;
     }
 
     .qol-item strong {
       color: var(--text);
-      font-size: 0.92rem;
+      font-size: 0.9rem;
       display: block;
+      margin-bottom: 0.2rem;
     }
 
     .qol-item span {
       font-size: 0.82rem;
       color: var(--text-dim);
+      line-height: 1.55;
     }
 
-    /* ── Install ──────────────────────────────────────────── */
+    /* ── Install steps ────────────────────────────────────── */
     .steps {
       display: flex;
       flex-direction: column;
-      gap: 1.25rem;
-      max-width: 720px;
+      gap: 0;
+      max-width: 680px;
       margin: 0 auto;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
     }
 
     .step {
       display: flex;
       gap: 1.25rem;
       align-items: flex-start;
+      padding: 1.35rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg3);
+      transition: background 0.18s;
     }
+    .step:last-child { border-bottom: none; }
+    .step:hover { background: var(--bg4); }
 
     .step-num {
       flex-shrink: 0;
-      width: 2.2rem;
-      height: 2.2rem;
-      background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dk) 100%);
-      color: #07050e;
-      font-weight: 900;
-      font-size: 0.95rem;
+      width: 2rem;
+      height: 2rem;
+      border-radius: 50%;
+      font-weight: 800;
+      font-size: 0.85rem;
       display: flex;
       align-items: center;
       justify-content: center;
+      margin-top: 0.1rem;
     }
+    .sn-v { background: rgba(157,127,227,0.18); color: var(--v); border: 1px solid rgba(157,127,227,0.3); }
+    .sn-t { background: rgba(34,211,200,0.12);  color: var(--t); border: 1px solid rgba(34,211,200,0.25); }
+    .sn-a { background: rgba(245,155,66,0.12);  color: var(--a); border: 1px solid rgba(245,155,66,0.25); }
 
     .step-body strong {
       display: block;
       color: var(--text);
-      font-size: 1rem;
-      margin-bottom: 0.25rem;
+      font-size: 0.95rem;
+      margin-bottom: 0.2rem;
     }
 
     .step-body span {
       color: var(--text-dim);
-      font-size: 0.9rem;
+      font-size: 0.88rem;
+      line-height: 1.6;
     }
 
     code {
-      background: var(--bg3);
-      border: 1px solid var(--border);
+      background: var(--bg4);
+      border: 1px solid var(--border2);
       padding: 0.15em 0.45em;
       border-radius: 4px;
-      font-size: 0.88em;
-      color: var(--gold-lt);
+      font-size: 0.85em;
+      color: var(--v-lt);
       font-family: 'Consolas', 'Fira Code', monospace;
     }
 
-    /* ── Commands ─────────────────────────────────────────── */
+    /* ── Commands table ───────────────────────────────────── */
     .commands-table {
       width: 100%;
       border-collapse: collapse;
-      max-width: 620px;
+      max-width: 600px;
       margin: 0 auto;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
     }
 
     .commands-table th,
     .commands-table td {
-      padding: 0.75rem 1rem;
+      padding: 0.8rem 1.1rem;
       text-align: left;
       border-bottom: 1px solid var(--border);
       font-size: 0.9rem;
     }
 
+    .commands-table thead { background: var(--bg3); }
+
     .commands-table th {
-      color: var(--gold);
-      font-size: 0.78rem;
-      letter-spacing: 0.08em;
+      color: var(--text-dim);
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
     }
 
+    .commands-table tbody tr { background: var(--bg4); }
+    .commands-table tbody tr:nth-child(even) { background: var(--bg3); }
     .commands-table td:first-child { width: 40%; }
-
     .commands-table tr:last-child td { border-bottom: none; }
 
     /* ── Footer ───────────────────────────────────────────── */
@@ -401,33 +582,55 @@
       padding: 2.5rem 1.5rem;
       text-align: center;
       color: var(--text-dim);
-      font-size: 0.88rem;
+      font-size: 0.87rem;
     }
 
-    footer .footer-brand {
+    .footer-brand {
       font-size: 1.1rem;
       font-weight: 800;
-      color: var(--gold);
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      margin-bottom: 0.4rem;
+      background: linear-gradient(90deg, var(--v-lt), var(--t));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.5rem;
+    }
+
+    footer a { color: var(--t); }
+    footer a:hover { color: var(--t-lt); }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 0.75rem;
+    }
+
+    .footer-disclaimer {
+      margin-top: 0.75rem;
+      font-size: 0.75rem;
+      opacity: 0.45;
     }
 
     /* ── Responsive ───────────────────────────────────────── */
     @media (max-width: 640px) {
       .nav-links { display: none; }
-      .stat-item { min-width: 120px; padding: 1.25rem 1.5rem; }
-      .step { flex-direction: column; gap: 0.5rem; }
+      .stat-item  { min-width: 110px; padding: 1.25rem 1rem; }
+      .step       { padding: 1rem 1rem; }
+      .feature-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
 
-  <!-- ── Navigation ────────────────────────────────────────── -->
+  <!-- ── Navigation ─────────────────────────────────────────── -->
   <nav>
     <div class="container nav-inner">
       <span class="nav-brand">EzroUI</span>
       <ul class="nav-links">
+        <li><a href="#preview">Preview</a></li>
         <li><a href="#features">Features</a></li>
         <li><a href="#qol">QoL</a></li>
         <li><a href="#install">Install</a></li>
@@ -437,142 +640,183 @@
     </div>
   </nav>
 
-  <!-- ── Hero ──────────────────────────────────────────────── -->
+  <!-- ── Hero ───────────────────────────────────────────────── -->
   <header class="hero">
     <div class="container">
-      <div class="hero-badge">World of Warcraft Addon &bull; Midnight</div>
+      <div class="hero-eyebrow">
+        <span class="pill pill-v">World of Warcraft Addon</span>
+        &nbsp;
+        <span class="pill pill-t">Midnight</span>
+        &nbsp;
+        <span class="pill pill-a">v1.00</span>
+      </div>
       <h1>EzroUI</h1>
+      <p class="hero-sub">Clean · Configurable · Performance-first</p>
       <p class="hero-tagline">
         A lightweight, all-in-one UI overhaul for World of Warcraft.
-        Clean. Configurable. Performance-focused.
+        Every module redesigned, every setting configurable.
       </p>
       <div class="hero-cta">
         <a class="btn btn-primary" href="https://github.com/ezr0/EzroUI/releases" target="_blank" rel="noopener">
-          ⬇ Download Latest
+          ⬇&nbsp; Download Latest
         </a>
-        <a class="btn btn-secondary" href="https://github.com/ezr0/EzroUI" target="_blank" rel="noopener">
-          View on GitHub
+        <a class="btn btn-teal" href="#preview">
+          See the Difference
+        </a>
+        <a class="btn btn-outline" href="https://github.com/ezr0/EzroUI" target="_blank" rel="noopener">
+          GitHub ↗
         </a>
       </div>
     </div>
   </header>
 
-  <!-- ── Stats bar ─────────────────────────────────────────── -->
+  <!-- ── Stats bar ──────────────────────────────────────────── -->
   <div class="stats-bar">
     <div class="container stats-inner">
       <div class="stat-item">
-        <span class="stat-number">15+</span>
+        <span class="stat-number v">15+</span>
         <span class="stat-label">Modules</span>
       </div>
       <div class="stat-item">
-        <span class="stat-number">1.00</span>
+        <span class="stat-number t">1.00</span>
         <span class="stat-label">Version</span>
       </div>
       <div class="stat-item">
-        <span class="stat-number">MN</span>
+        <span class="stat-number a">MN</span>
         <span class="stat-label">Midnight</span>
       </div>
       <div class="stat-item">
-        <span class="stat-number">0</span>
+        <span class="stat-number v">0</span>
         <span class="stat-label">Required deps</span>
       </div>
     </div>
   </div>
 
-  <!-- ── Features ──────────────────────────────────────────── -->
-  <section class="section" id="features">
+  <!-- ── Before / After ─────────────────────────────────────── -->
+  <section class="section" id="preview">
+    <div class="container">
+      <h2 class="section-title">See the Difference</h2>
+      <div class="divider divider-t"></div>
+      <p class="section-sub">Drag the handle left or right to compare the default WoW interface with EzroUI.</p>
+
+      <div class="compare-wrap" id="compareWrap">
+        <!-- "after" is the base image (full width) -->
+        <img src="after.png" alt="EzroUI active" draggable="false" />
+
+        <!-- "before" is clipped on top -->
+        <div class="compare-before" id="compareBefore">
+          <img src="before.png" alt="Default WoW UI" draggable="false" />
+        </div>
+
+        <!-- divider + handle -->
+        <div class="compare-line" id="compareLine"></div>
+        <div class="compare-handle" id="compareHandle">
+          <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M7 4L3 10L7 16" stroke="#111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M13 4L17 10L13 16" stroke="#111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+
+        <span class="compare-label compare-label-before">Before</span>
+        <span class="compare-label compare-label-after">After</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Features ───────────────────────────────────────────── -->
+  <section class="section section-alt" id="features">
     <div class="container">
       <h2 class="section-title">Modules</h2>
-      <div class="divider"></div>
+      <div class="divider divider-v"></div>
       <p class="section-sub">Every piece of your UI — redesigned, consolidated, and configurable from a single settings panel.</p>
 
       <div class="feature-grid">
 
-        <div class="feature-card">
+        <div class="feature-card fc-v">
           <span class="feature-icon">🎯</span>
           <h3>Unit Frames</h3>
           <p>Custom frames for Player, Target, Focus, Party, Raid, and Boss units. Includes power bars, auras, absorb indicators, and <a href="https://www.curseforge.com/wow/addons/clique" target="_blank" rel="noopener">Clique</a> click-cast integration.</p>
         </div>
 
-        <div class="feature-card">
+        <div class="feature-card fc-t">
           <span class="feature-icon">⏱️</span>
           <h3>Cast Bars</h3>
           <p>Individually styled cast bars for Player, Target, Focus, and Boss frames. Full support for Empowered casts and custom positioning.</p>
         </div>
 
-        <div class="feature-card">
+        <div class="feature-card fc-a">
           <span class="feature-icon">🔷</span>
           <h3>Resource Bars</h3>
           <p>Automatic detection and styling of Primary and Secondary power resources — mana, energy, rage, runes, and more — for every spec.</p>
         </div>
 
-        <div class="feature-card">
+        <div class="feature-card fc-t">
           <span class="feature-icon">👁️</span>
           <h3>Icon Viewers</h3>
           <p>Dedicated icon rows for <strong>Essential Cooldowns</strong>, <strong>Utility Cooldowns</strong>, and <strong>Buff Icons</strong> with full layout, sizing, and glow control.</p>
         </div>
 
-        <div class="feature-card">
+        <div class="feature-card fc-v">
           <span class="feature-icon">⚡</span>
           <h3>Action Bars</h3>
           <p>Custom styling for all action bars: configurable border thickness, border color, backdrop color, and pixel-perfect button skinning.</p>
         </div>
 
-        <div class="feature-card">
+        <div class="feature-card fc-a">
           <span class="feature-icon">🛡️</span>
           <h3>Absorb Bars</h3>
           <p>Visual tracking of shield and absorb effects directly on unit frames, keeping you aware of incoming mitigation at a glance.</p>
         </div>
 
-        <div class="feature-card">
+        <div class="feature-card fc-a">
           <span class="feature-icon">✨</span>
           <h3>Custom Icons &amp; Buffs</h3>
           <p>Pin any spell or item icon to a movable frame for personal tracking. Custom Buff tracking lets you monitor specific auras your way.</p>
         </div>
 
-        <div class="feature-card">
+        <div class="feature-card fc-v">
           <span class="feature-icon">🎨</span>
           <h3>Icon Customization</h3>
           <p>Fine-grained icon appearance tweaks — border, glow style, proc highlighting, keybind text, and charge display — applied globally or per-icon.</p>
         </div>
 
-        <div class="feature-card">
+        <div class="feature-card fc-t">
           <span class="feature-icon">🔔</span>
           <h3>Buff &amp; Debuff Frames</h3>
           <p>Restyled consolidated buff and debuff frames. Filter, reorder, and resize aura icons to fit your layout preferences.</p>
         </div>
 
-        <div class="feature-card">
+        <div class="feature-card fc-v">
           <span class="feature-icon">🗺️</span>
           <h3>Minimap</h3>
           <p>Clean minimap restyling with square or round shape options, hidden default buttons, and a data-broker icon panel via LibDBIcon.</p>
         </div>
 
-        <div class="feature-card">
+        <div class="feature-card fc-t">
           <span class="feature-icon">💬</span>
           <h3>Chat</h3>
           <p>Custom chat frame skinning — transparent backgrounds, styled edit box, hidden scrollbar — for a minimal, immersive chat experience.</p>
         </div>
 
-        <div class="feature-card">
+        <div class="feature-card fc-a">
           <span class="feature-icon">📋</span>
           <h3>Character Panel</h3>
           <p>Enhanced character and inspect frames showing per-slot <strong>item level</strong>, missing <strong>enchants</strong>, <strong>gems/sockets</strong>, and <strong>durability</strong> — all at a glance.</p>
         </div>
 
-        <div class="feature-card">
+        <div class="feature-card fc-t">
           <span class="feature-icon">🔧</span>
           <h3>Auto UI Scale</h3>
           <p>Automatically sets the optimal UI scale for your screen resolution on first load, or whenever you change display settings.</p>
         </div>
 
-        <div class="feature-card">
+        <div class="feature-card fc-v">
           <span class="feature-icon">📊</span>
           <h3>Profile System</h3>
           <p>Full AceDB profile management with import/export (LibDeflate + LibSerialize), dual-spec support, and per-character or shared profiles.</p>
         </div>
 
-        <div class="feature-card">
+        <div class="feature-card fc-a">
           <span class="feature-icon">🌐</span>
           <h3>Localization</h3>
           <p>Built-in locale framework. Currently ships with full enUS strings and a ready-to-expand template for additional languages.</p>
@@ -582,11 +826,11 @@
     </div>
   </section>
 
-  <!-- ── QoL ───────────────────────────────────────────────── -->
-  <section class="section section-alt" id="qol">
+  <!-- ── QoL ────────────────────────────────────────────────── -->
+  <section class="section" id="qol">
     <div class="container">
       <h2 class="section-title">Quality of Life</h2>
-      <div class="divider"></div>
+      <div class="divider divider-a"></div>
       <p class="section-sub">Small things that add up. Toggle each improvement individually in the settings panel.</p>
 
       <div class="qol-grid">
@@ -676,29 +920,29 @@
   </section>
 
   <!-- ── Install ────────────────────────────────────────────── -->
-  <section class="section" id="install">
+  <section class="section section-alt" id="install">
     <div class="container">
       <h2 class="section-title">Installation</h2>
-      <div class="divider"></div>
+      <div class="divider divider-v"></div>
       <p class="section-sub">EzroUI has no required dependencies — all libraries are bundled.</p>
 
       <div class="steps">
         <div class="step">
-          <div class="step-num">1</div>
+          <div class="step-num sn-v">1</div>
           <div class="step-body">
             <strong>Download the latest release</strong>
             <span>Head to the <a href="https://github.com/ezr0/EzroUI/releases" target="_blank" rel="noopener">GitHub Releases page</a> and download the latest <code>.zip</code> archive.</span>
           </div>
         </div>
         <div class="step">
-          <div class="step-num">2</div>
+          <div class="step-num sn-t">2</div>
           <div class="step-body">
             <strong>Extract the archive</strong>
             <span>Unzip the downloaded file. You should see a single <code>EzroUI</code> folder.</span>
           </div>
         </div>
         <div class="step">
-          <div class="step-num">3</div>
+          <div class="step-num sn-a">3</div>
           <div class="step-body">
             <strong>Copy to your AddOns directory</strong>
             <span>Move the <code>EzroUI</code> folder into your WoW AddOns directory:
@@ -707,14 +951,14 @@
           </div>
         </div>
         <div class="step">
-          <div class="step-num">4</div>
+          <div class="step-num sn-v">4</div>
           <div class="step-body">
             <strong>Enable the addon in-game</strong>
             <span>Launch WoW, click <strong>AddOns</strong> on the character selection screen, and make sure <em>EzroUI</em> is checked.</span>
           </div>
         </div>
         <div class="step">
-          <div class="step-num">5</div>
+          <div class="step-num sn-t">5</div>
           <div class="step-body">
             <strong>Open the settings panel</strong>
             <span>In-game, type <code>/ezroui</code> to open the configuration panel and customise every module to your liking.</span>
@@ -725,10 +969,10 @@
   </section>
 
   <!-- ── Commands ───────────────────────────────────────────── -->
-  <section class="section section-alt" id="commands">
+  <section class="section" id="commands">
     <div class="container">
       <h2 class="section-title">Slash Commands</h2>
-      <div class="divider"></div>
+      <div class="divider divider-a"></div>
       <p class="section-sub">All commands are typed into the in-game chat box.</p>
 
       <table class="commands-table">
@@ -760,16 +1004,65 @@
   <footer>
     <div class="container">
       <div class="footer-brand">EzroUI</div>
-      <p>
-        Crafted by <a href="https://github.com/ezr0" target="_blank" rel="noopener">Ezr0</a> &bull;
-        <a href="https://github.com/ezr0/EzroUI" target="_blank" rel="noopener">GitHub Repository</a> &bull;
+      <div class="footer-links">
+        <a href="https://github.com/ezr0" target="_blank" rel="noopener">@Ezr0</a>
+        <a href="https://github.com/ezr0/EzroUI" target="_blank" rel="noopener">GitHub Repository</a>
+        <a href="https://github.com/ezr0/EzroUI/releases" target="_blank" rel="noopener">Releases</a>
         <a href="https://github.com/ezr0/EzroUI/issues" target="_blank" rel="noopener">Report a Bug</a>
-      </p>
-      <p style="margin-top: 0.5rem; font-size: 0.78rem; opacity: 0.55;">
-        World of Warcraft and related trademarks are property of Blizzard Entertainment. EzroUI is an independent project and is not affiliated with Blizzard.
+      </div>
+      <p class="footer-disclaimer">
+        World of Warcraft and related trademarks are property of Blizzard Entertainment.
+        EzroUI is an independent project and is not affiliated with Blizzard.
       </p>
     </div>
   </footer>
+
+  <!-- ── Before / After slider JS ───────────────────────────── -->
+  <script>
+    (function () {
+      var wrap    = document.getElementById('compareWrap');
+      var before  = document.getElementById('compareBefore');
+      var line    = document.getElementById('compareLine');
+      var handle  = document.getElementById('compareHandle');
+      var dragging = false;
+
+      function setPos(pct) {
+        pct = Math.max(2, Math.min(98, pct));
+        before.style.clipPath = 'inset(0 ' + (100 - pct) + '% 0 0)';
+        line.style.left       = pct + '%';
+        handle.style.left     = pct + '%';
+      }
+
+      function getPercent(clientX) {
+        var rect = wrap.getBoundingClientRect();
+        return ((clientX - rect.left) / rect.width) * 100;
+      }
+
+      /* mouse */
+      wrap.addEventListener('mousedown', function (e) {
+        dragging = true;
+        setPos(getPercent(e.clientX));
+        e.preventDefault();
+      });
+      document.addEventListener('mousemove', function (e) {
+        if (!dragging) return;
+        setPos(getPercent(e.clientX));
+      });
+      document.addEventListener('mouseup', function () { dragging = false; });
+
+      /* touch */
+      wrap.addEventListener('touchstart', function (e) {
+        dragging = true;
+        setPos(getPercent(e.touches[0].clientX));
+      }, { passive: true });
+      document.addEventListener('touchmove', function (e) {
+        if (!dragging) return;
+        e.preventDefault();
+        setPos(getPercent(e.touches[0].clientX));
+      }, { passive: false });
+      document.addEventListener('touchend', function () { dragging = false; });
+    })();
+  </script>
 
 </body>
 </html>
