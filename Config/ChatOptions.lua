@@ -9,7 +9,7 @@ local function refresh()
     end
 end
 
--- Channel colour sub-table builder
+-- Channel color sub-table builder
 local CHANNEL_NAMES = {
     SAY            = "Say",
     YELL           = "Yell",

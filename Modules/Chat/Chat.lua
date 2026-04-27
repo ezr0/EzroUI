@@ -48,6 +48,11 @@ local TIMESTAMP_FORMATS = {
 -- Spam filter history: eventType+sender → {lastMsg, count, lastTime}
 local spamHistory = {}
 
+-- Escape magic characters in a Lua pattern
+local function EscapePattern(s)
+    return (s:gsub("([%(%)%.%%%+%-%*%?%[%^%$])", "%%%1"))
+end
+
 -- URL pattern
 local URL_PATTERN = "https?://[%w%.%-_~:/?#%[%]@!$&'%(%)%*%+,;=%%]+"
 
@@ -118,7 +123,7 @@ local function BuildTimestamp()
     local c = cfg()
     if not c or not c.timestamps then return "" end
     local fmt = TIMESTAMP_FORMATS[c.timestampFormat] or "%H:%M"
-    local t   = date(fmt)
+    local t   = os.date(fmt)
     local r, g, b = c.timestampColor[1], c.timestampColor[2], c.timestampColor[3]
     return string.format("|cff%02x%02x%02x[%s]|r ", r*255, g*255, b*255, t)
 end
@@ -847,7 +852,7 @@ function Chat:HookMessageFilters()
                 local coloredSender = ColorName(sender, nil)
                 if coloredSender ~= sender then
                     newMessage = newMessage:gsub(
-                        "|H(.-)|h%[" .. sender:gsub("([%(%)%.%%%+%-%*%?%[%^%$])", "%%%1") .. "%]|h",
+                        "|H(.-)|h%[" .. EscapePattern(sender) .. "%]|h",
                         function(link)
                             return "|H"..link.."|h["..coloredSender.."]|h"
                         end
@@ -866,7 +871,7 @@ function Chat:HookMessageFilters()
             return false, newMessage, sender, language, channelString, playerName2,
                    specialFlags, zoneChannelID, channelIndex, channelName, unknown,
                    lineID, guid, bnSenderID, isMobile, isSubtitle, hideSenderInLetterbox,
-                   supressRaidIcons
+                   suppressRaidIcons
         end
         return false
     end
