@@ -1143,9 +1143,44 @@ local defaults = {
             },
         },
         chat = {
-            enabled = true,
-            backgroundColor = { 0.1, 0.1, 0.1, 1 },
-            hideQuickJoinToastButton = false,
+            -- General
+            enabled             = true,
+            backgroundColor     = { 0.1, 0.1, 0.1, 1 },
+            -- Font
+            fontSize            = 12,
+            fontOutline         = true,
+            -- Timestamps
+            timestamps          = false,
+            timestampFormat     = "HH:MM",
+            timestampColor      = { 0.6, 0.6, 0.6 },
+            -- Class-colored names
+            classColoredNames   = true,
+            -- Short channel names
+            shortChannelNames   = true,
+            -- URL highlighting
+            highlightURLs       = true,
+            -- Chat fade
+            fadingChat          = false,
+            fadeAlpha           = 0.3,
+            -- Tab skinning
+            skinTabs            = true,
+            -- Channel coloring
+            channelColoring     = true,
+            channelColors       = {},
+            -- Chat bubbles
+            skinBubbles         = false,
+            -- Spam filter
+            spamFilter          = false,
+            spamMaxRepeat       = 3,
+            spamWindow          = 10,
+            -- Scrollbar auto-hide
+            autoHideScrollbar   = false,
+            -- Sticky channels
+            stickyChannels      = false,
+            -- Copy button
+            copyButton          = true,
+            -- Quick Join
+            hideQuickJoinToastButton    = false,
             quickJoinToastButtonOffsetX = 31,
             quickJoinToastButtonOffsetY = -23,
         },

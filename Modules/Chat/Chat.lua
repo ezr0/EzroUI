@@ -4,978 +4,1116 @@ local EzroUI = ns.Addon
 EzroUI.Chat = EzroUI.Chat or {}
 local Chat = EzroUI.Chat
 
-local function StyleFontString(fontString)
-    if not fontString then return end
-    
-    local cfg = EzroUI.db.profile.chat
-    if not cfg or not cfg.enabled then return end
-    
-    local font, size, flags = fontString:GetFont()
-    if font then
-        if not flags or (flags ~= "OUTLINE" and flags ~= "THICKOUTLINE" and not flags:find("OUTLINE")) then
-            fontString:SetFont(font, size, "OUTLINE")
-        end
-    end
-    
-    fontString:SetShadowOffset(0, 0)
-    fontString:SetShadowColor(0, 0, 0, 1)
-end
+-- ============================================================
+--  CONSTANTS
+-- ============================================================
+local SHORT_CHANNEL_NAMES = {
+    ["General"]         = "G",
+    ["Trade"]           = "T",
+    ["LocalDefense"]    = "LD",
+    ["LookingForGroup"] = "LFG",
+    ["WorldDefense"]    = "WD",
+    ["GuildRecruitment"]= "GR",
+    ["Realm"]           = "R",
+}
 
-local function StyleEditBox(editBox)
-    if not editBox then return end
-    
-    local cfg = EzroUI.db.profile.chat
-    if not cfg or not cfg.enabled then return end
-    
-    local font, size, flags = editBox:GetFont()
-    if font then
-        if not flags or (flags ~= "OUTLINE" and flags ~= "THICKOUTLINE" and not flags:find("OUTLINE")) then
-            editBox:SetFont(font, size, "OUTLINE")
-        end
-    end
-    
-    editBox:SetShadowOffset(0, 0)
-    editBox:SetShadowColor(0, 0, 0, 1)
+local CHANNEL_EVENT_ABBREV = {
+    CHAT_MSG_SAY            = "S",
+    CHAT_MSG_YELL           = "Y",
+    CHAT_MSG_WHISPER        = "W",
+    CHAT_MSG_WHISPER_INFORM = "W",
+    CHAT_MSG_PARTY          = "P",
+    CHAT_MSG_PARTY_LEADER   = "P",
+    CHAT_MSG_RAID           = "R",
+    CHAT_MSG_RAID_LEADER    = "RL",
+    CHAT_MSG_RAID_WARNING   = "RW",
+    CHAT_MSG_GUILD          = "G",
+    CHAT_MSG_OFFICER        = "O",
+    CHAT_MSG_BATTLEGROUND   = "BG",
+    CHAT_MSG_BATTLEGROUND_LEADER = "BGL",
+    CHAT_MSG_INSTANCE_CHAT  = "I",
+    CHAT_MSG_INSTANCE_CHAT_LEADER = "IL",
+    CHAT_MSG_EMOTE          = "E",
+    CHAT_MSG_TEXT_EMOTE     = "E",
+    CHAT_MSG_SYSTEM         = "Sys",
+    CHAT_MSG_CHANNEL        = "Chan",
+}
+
+local TIMESTAMP_FORMATS = {
+    ["HH:MM"]      = "%H:%M",
+    ["HH:MM:SS"]   = "%H:%M:%S",
+    ["hh:MM am/pm"]= "%I:%M %p",
+}
+
+-- Spam filter history: eventType+sender → {lastMsg, count, lastTime}
+local spamHistory = {}
+
+-- URL pattern
+local URL_PATTERN = "https?://[%w%.%-_~:/?#%[%]@!$&'%(%)%*%+,;=%%]+"
+
+-- ============================================================
+--  UTILITY HELPERS
+-- ============================================================
+local function cfg()
+    return EzroUI.db.profile.chat
 end
 
 local function CreateBorder(frame)
     if frame.__EzroUIBorder then return frame.__EzroUIBorder end
-    
     local border = CreateFrame("Frame", nil, frame, "BackdropTemplate")
-    local borderOffset = EzroUI:Scale(1)
-    border:SetPoint("TOPLEFT", frame, -borderOffset, borderOffset)
-    border:SetPoint("BOTTOMRIGHT", frame, borderOffset, -borderOffset)
-    border:SetBackdrop({
-        edgeFile = "Interface\\Buttons\\WHITE8x8",
-        edgeSize = 1,
-    })
+    local offset = EzroUI:Scale(1)
+    border:SetPoint("TOPLEFT",     frame, -offset,  offset)
+    border:SetPoint("BOTTOMRIGHT", frame,  offset, -offset)
+    border:SetBackdrop({ edgeFile = "Interface\\Buttons\\WHITE8x8", edgeSize = 1 })
     border:SetBackdropBorderColor(0, 0, 0, 1)
     border:SetFrameLevel(frame:GetFrameLevel() + 1)
-    
     frame.__EzroUIBorder = border
     return border
 end
 
-local function SetBackgroundColor(frame)
+local function ApplyBackground(frame, r, g, b, a)
     if not frame then return end
-    
-    local cfg = EzroUI.db.profile.chat
-    if not cfg or not cfg.enabled then return end
-    
-    local bgColor = cfg.backgroundColor or {0, 0, 0, 1}
-    
-    if frame.GetObjectType and frame:GetObjectType() == "Texture" then
-        if frame.SetColorTexture then
-            frame:SetColorTexture(bgColor[1], bgColor[2], bgColor[3], bgColor[4] or 1)
-        end
-        return
-    end
-    
     if frame.SetBackdrop then
         if not frame.__EzroUIBackdropSet then
             frame:SetBackdrop({
-                bgFile = "Interface\\Buttons\\WHITE8x8",
-                edgeFile = nil,
-                tile = false,
+                bgFile  = "Interface\\Buttons\\WHITE8x8",
+                tile    = false,
                 tileSize = 0,
-                insets = { left = 0, right = 0, top = 0, bottom = 0 }
+                insets  = { left=0, right=0, top=0, bottom=0 },
             })
             frame.__EzroUIBackdropSet = true
         end
-        frame:SetBackdropColor(bgColor[1], bgColor[2], bgColor[3], bgColor[4] or 1)
+        frame:SetBackdropColor(r, g, b, a)
     elseif frame.CreateTexture then
-        if not frame.__EzroUIBackground then
+        if not frame.__EzroUIBg then
             local bg = frame:CreateTexture(nil, "BACKGROUND")
-            if bg then
-                bg:SetAllPoints()
-                bg:SetColorTexture(bgColor[1], bgColor[2], bgColor[3], bgColor[4] or 1)
-                frame.__EzroUIBackground = bg
-            end
-        else
-            frame.__EzroUIBackground:SetColorTexture(bgColor[1], bgColor[2], bgColor[3], bgColor[4] or 1)
+            bg:SetAllPoints()
+            frame.__EzroUIBg = bg
         end
+        frame.__EzroUIBg:SetColorTexture(r, g, b, a)
     end
 end
 
-local function StyleAllFontStrings(frame)
+local function GetClassColor(className)
+    if className and RAID_CLASS_COLORS and RAID_CLASS_COLORS[className] then
+        local c = RAID_CLASS_COLORS[className]
+        return c.r, c.g, c.b
+    end
+    return 1, 1, 1
+end
+
+-- Simple name→class cache populated by CHAT_MSG events
+local nameClassCache = {}
+
+local function CacheNameClass(name, className)
+    if name and className and className ~= "" then
+        nameClassCache[name] = className:upper()
+    end
+end
+
+-- ============================================================
+--  TIMESTAMPS
+-- ============================================================
+local function BuildTimestamp()
+    local c = cfg()
+    if not c or not c.timestamps then return "" end
+    local fmt = TIMESTAMP_FORMATS[c.timestampFormat] or "%H:%M"
+    local t   = date(fmt)
+    local r, g, b = c.timestampColor[1], c.timestampColor[2], c.timestampColor[3]
+    return string.format("|cff%02x%02x%02x[%s]|r ", r*255, g*255, b*255, t)
+end
+
+-- ============================================================
+--  SHORT CHANNEL NAMES
+-- ============================================================
+local function ShortenChannel(text)
+    local c = cfg()
+    if not c or not c.shortChannelNames then return text end
+
+    -- Replace numbered channel prefixes like [1. General] → [G]
+    text = text:gsub("%[(%d+)%. ([^%]]+)%]", function(num, name)
+        local short = SHORT_CHANNEL_NAMES[name] or name:sub(1,1)
+        return "["..short.."]"
+    end)
+
+    -- Replace bare channel tags like |Hchannel:...|h[...]|h
+    text = text:gsub("|Hchannel:([^|]*)|h%[([^%]]*)%]|h", function(id, name)
+        local short = SHORT_CHANNEL_NAMES[name] or name:sub(1,1)
+        return "|Hchannel:"..id.."|h["..short.."]|h"
+    end)
+
+    return text
+end
+
+-- ============================================================
+--  CLASS-COLORED NAMES
+-- ============================================================
+local function ColorName(name, className)
+    if not name or name == "" then return name end
+    local c = cfg()
+    if not c or not c.classColoredNames then return name end
+
+    local cls = className and className:upper() or nameClassCache[name]
+    if cls then
+        local r, g, b = GetClassColor(cls)
+        return string.format("|cff%02x%02x%02x%s|r", r*255, g*255, b*255, name)
+    end
+    return name
+end
+
+-- ============================================================
+--  URL HIGHLIGHTING
+-- ============================================================
+local function HighlightURLs(text)
+    local c = cfg()
+    if not c or not c.highlightURLs then return text end
+    return (text:gsub(URL_PATTERN, function(url)
+        -- Wrap URL in a yellow hyperlink-style color
+        return "|cff00aaff"..url.."|r"
+    end))
+end
+
+-- ============================================================
+--  SPAM FILTER
+-- ============================================================
+local function IsSpam(event, sender, message)
+    local c = cfg()
+    if not c or not c.spamFilter then return false end
+
+    local key     = (event or "").."_"..(sender or "")
+    local now     = GetTime()
+    local window  = c.spamWindow or 10
+    local maxRep  = c.spamMaxRepeat or 3
+
+    local entry = spamHistory[key]
+    if not entry then
+        spamHistory[key] = { msg = message, count = 1, time = now }
+        return false
+    end
+
+    if entry.msg == message and (now - entry.time) < window then
+        entry.count = entry.count + 1
+        if entry.count > maxRep then
+            return true
+        end
+    else
+        entry.msg   = message
+        entry.count = 1
+        entry.time  = now
+    end
+    return false
+end
+
+-- ============================================================
+--  CHAT FONT HELPERS
+-- ============================================================
+local function ApplyFontToString(fs)
+    if not fs then return end
+    local c = cfg()
+    if not c then return end
+    local font, size, flags = fs:GetFont()
+    if not font then return end
+    local newSize  = c.fontSize or size or 12
+    local newFlags = c.fontOutline and "OUTLINE" or (flags or "")
+    fs:SetFont(font, newSize, newFlags)
+    fs:SetShadowOffset(0, 0)
+end
+
+local function ApplyFontToAllStrings(frame)
     if not frame or frame:IsForbidden() then return end
-    
     if frame.GetFontString then
-        local fs = frame:GetFontString()
-        if fs and not fs.__EzroUIStyled then
-            StyleFontString(fs)
-            fs.__EzroUIStyled = true
+        ApplyFontToString(frame:GetFontString())
+    end
+    if frame.GetRegions then
+        for _, r in ipairs({ frame:GetRegions() }) do
+            if r and r.GetObjectType and r:GetObjectType() == "FontString" then
+                ApplyFontToString(r)
+            end
         end
     end
-    
-    if frame.GetRegions then
-        local regions = { frame:GetRegions() }
-        for _, region in ipairs(regions) do
-            if region and region.GetObjectType and region:GetObjectType() == "FontString" then
-                if not region.__EzroUIStyled then
-                    StyleFontString(region)
-                    region.__EzroUIStyled = true
+    for _, child in ipairs({ frame:GetChildren() }) do
+        ApplyFontToAllStrings(child)
+    end
+end
+
+-- ============================================================
+--  COPY CHAT BUTTON
+-- ============================================================
+local copyFrame
+
+local function BuildCopyFrame()
+    if copyFrame then return end
+
+    copyFrame = CreateFrame("Frame", "EzroUIChatCopy", UIParent, "BasicFrameTemplateWithInset")
+    copyFrame:SetSize(600, 400)
+    copyFrame:SetPoint("CENTER")
+    copyFrame:SetMovable(true)
+    copyFrame:EnableMouse(true)
+    copyFrame:RegisterForDrag("LeftButton")
+    copyFrame:SetScript("OnDragStart", copyFrame.StartMoving)
+    copyFrame:SetScript("OnDragStop",  copyFrame.StopMovingOrSizing)
+    copyFrame:Hide()
+
+    copyFrame.title = copyFrame:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
+    copyFrame.title:SetPoint("TOP", copyFrame, "TOP", 0, -5)
+    copyFrame.title:SetText("Copy Chat")
+
+    local scroll = CreateFrame("ScrollFrame", nil, copyFrame, "UIPanelScrollFrameTemplate")
+    scroll:SetPoint("TOPLEFT",     copyFrame, "TOPLEFT",  10, -30)
+    scroll:SetPoint("BOTTOMRIGHT", copyFrame, "BOTTOMRIGHT", -28, 10)
+    copyFrame.scroll = scroll
+
+    local editBox = CreateFrame("EditBox", nil, scroll)
+    editBox:SetMultiLine(true)
+    editBox:SetFontObject(ChatFontNormal)
+    editBox:SetWidth(560)
+    editBox:SetAutoFocus(false)
+    editBox:SetScript("OnEscapePressed", function() copyFrame:Hide() end)
+    scroll:SetScrollChild(editBox)
+    copyFrame.editBox = editBox
+
+    -- Close with Escape
+    tinsert(UISpecialFrames, "EzroUIChatCopy")
+end
+
+local function ShowCopyFrame(chatFrame)
+    BuildCopyFrame()
+    local lines = {}
+    -- ScrollingMessageFrame: GetNumMessages / GetMessageInfo
+    if chatFrame.GetNumMessages then
+        for i = 1, chatFrame:GetNumMessages() do
+            local text = chatFrame:GetMessageInfo(i)
+            if text then lines[#lines+1] = text end
+        end
+    end
+    local content = table.concat(lines, "\n")
+    copyFrame.editBox:SetText(content)
+    copyFrame.editBox:HighlightText()
+    copyFrame:Show()
+end
+
+-- ============================================================
+--  TAB SKINNING
+-- ============================================================
+local function SkinChatTab(tab)
+    if not tab or tab.__EzroUITabSkinned then return end
+    tab.__EzroUITabSkinned = true
+
+    -- Hide all existing tab textures
+    local texturesToHide = {
+        "Left", "Middle", "Right",
+        "LeftActive", "MiddleActive", "RightActive",
+        "LeftHighlight", "MiddleHighlight", "RightHighlight",
+        "ActiveLeft", "ActiveMiddle", "ActiveRight",
+        "HighlightLeft", "HighlightMiddle", "HighlightRight",
+    }
+    for _, name in ipairs(texturesToHide) do
+        local t = tab[name]
+        if t then t:SetAlpha(0) end
+        local g = _G[tab:GetName() and (tab:GetName() .. name) or ""]
+        if g then g:SetAlpha(0) end
+    end
+
+    -- Apply black background
+    if not tab.__EzroUITabBg then
+        local bg = tab:CreateTexture(nil, "BACKGROUND")
+        bg:SetAllPoints()
+        bg:SetColorTexture(0, 0, 0, 0.6)
+        tab.__EzroUITabBg = bg
+    end
+
+    -- Highlight on hover
+    if not tab.__EzroUITabHooked then
+        tab.__EzroUITabHooked = true
+        tab:HookScript("OnEnter", function(self)
+            self.__EzroUITabBg:SetColorTexture(0.2, 0.2, 0.2, 0.8)
+        end)
+        tab:HookScript("OnLeave", function(self)
+            self.__EzroUITabBg:SetColorTexture(0, 0, 0, 0.6)
+        end)
+    end
+
+    CreateBorder(tab)
+end
+
+local function SkinAllTabs()
+    local c = cfg()
+    if not c or not c.skinTabs then return end
+    for i = 1, NUM_CHAT_WINDOWS or 10 do
+        local tab = _G["ChatFrame"..i.."Tab"]
+        if tab then SkinChatTab(tab) end
+    end
+end
+
+-- ============================================================
+--  CHAT BUBBLE SKINNING
+-- ============================================================
+local chatBubbleHooked = false
+
+local function SkinChatBubbles()
+    local c = cfg()
+    if not c or not c.skinBubbles then return end
+    if chatBubbleHooked then return end
+    chatBubbleHooked = true
+
+    hooksecurefunc("ChatFrame_AddMessageEventFilter", function() end)   -- keep as no-op
+
+    -- Hook the bubble frame template via UIParent OnUpdate trick
+    local scanner = CreateFrame("Frame")
+    scanner:SetScript("OnUpdate", function()
+        for _, frame in pairs({ WorldFrame:GetChildren() }) do
+            if frame:IsVisible() and frame.GetChildren then
+                for _, child in pairs({ frame:GetChildren() }) do
+                    if child and child.String and not child.__EzroUIBubbleSkinned then
+                        child.__EzroUIBubbleSkinned = true
+                        -- Hide default artwork
+                        for _, r in pairs({ child:GetRegions() }) do
+                            if r and r.GetObjectType then
+                                local t = r:GetObjectType()
+                                if t == "Texture" then r:SetAlpha(0) end
+                            end
+                        end
+                        -- Apply dark backdrop
+                        ApplyBackground(child, 0, 0, 0, 0.7)
+                        CreateBorder(child)
+                        -- Style text
+                        if child.String then
+                            local fs = child.String
+                            local font, size = fs:GetFont()
+                            if font then fs:SetFont(font, size or 12, "OUTLINE") end
+                            fs:SetShadowOffset(0, 0)
+                        end
+                    end
                 end
             end
         end
-    end
-    
-    local children = { frame:GetChildren() }
-    for _, child in ipairs(children) do
-        StyleAllFontStrings(child)
+    end)
+end
+
+-- ============================================================
+--  CHAT FADE (mouse-over fade)
+-- ============================================================
+local fadedFrames = {}
+
+local function SetupChatFade(chatFrame)
+    local c = cfg()
+    if not c or not c.fadingChat then return end
+    if chatFrame.__EzroUIFadeSetup then return end
+    chatFrame.__EzroUIFadeSetup = true
+
+    local idleAlpha   = c.fadeAlpha   or 0.3
+    local activeAlpha = 1.0
+
+    -- Set initial state
+    chatFrame:SetAlpha(idleAlpha)
+    fadedFrames[chatFrame] = idleAlpha
+
+    if not chatFrame.__EzroUIFadeHooked then
+        chatFrame.__EzroUIFadeHooked = true
+        chatFrame:HookScript("OnEnter", function(self)
+            UIFrameFadeIn(self, 0.3, self:GetAlpha(), activeAlpha)
+        end)
+        chatFrame:HookScript("OnLeave", function(self)
+            local cfg2 = EzroUI.db.profile.chat
+            if cfg2 and cfg2.fadingChat then
+                UIFrameFadeOut(self, 1.0, self:GetAlpha(), cfg2.fadeAlpha or 0.3)
+            end
+        end)
     end
 end
 
+local function TeardownChatFade(chatFrame)
+    if not chatFrame then return end
+    chatFrame.__EzroUIFadeSetup = nil
+    chatFrame:SetAlpha(1.0)
+    fadedFrames[chatFrame] = nil
+end
+
+-- ============================================================
+--  SCROLLBAR AUTO-HIDE
+-- ============================================================
+local function SetupScrollbarAutoHide(chatFrame)
+    local c = cfg()
+    if not c then return end
+    if chatFrame.__EzroUIScrollbarSetup then return end
+    chatFrame.__EzroUIScrollbarSetup = true
+
+    local scrollBar
+    if chatFrame.ScrollBar then
+        scrollBar = chatFrame.ScrollBar
+    else
+        local name = chatFrame:GetName()
+        if name then scrollBar = _G[name.."ScrollBar"] end
+    end
+    if not scrollBar then return end
+
+    local function UpdateVisibility()
+        local c2 = EzroUI.db.profile.chat
+        if c2 and c2.autoHideScrollbar then
+            scrollBar:SetAlpha(0)
+        else
+            scrollBar:SetAlpha(1)
+        end
+    end
+
+    UpdateVisibility()
+
+    if not scrollBar.__EzroUIScrollHooked then
+        scrollBar.__EzroUIScrollHooked = true
+        chatFrame:HookScript("OnEnter", function()
+            local c2 = EzroUI.db.profile.chat
+            if c2 and c2.autoHideScrollbar then
+                scrollBar:SetAlpha(1)
+            end
+        end)
+        chatFrame:HookScript("OnLeave", function()
+            local c2 = EzroUI.db.profile.chat
+            if c2 and c2.autoHideScrollbar then
+                scrollBar:SetAlpha(0)
+            end
+        end)
+    end
+end
+
+-- ============================================================
+--  STICKY CHANNELS
+-- ============================================================
+local stickyChannels = {}  -- frameIndex → channelType string
+
+local function SetupStickyChannels(chatFrame)
+    local c = cfg()
+    if not c or not c.stickyChannels then return end
+    if chatFrame.__EzroUIStickyHooked then return end
+    chatFrame.__EzroUIStickyHooked = true
+
+    -- Remember channel when user sends a message
+    if chatFrame.editBox then
+        chatFrame.editBox:HookScript("OnEnterPressed", function(self)
+            local c2 = EzroUI.db.profile.chat
+            if not c2 or not c2.stickyChannels then return end
+            local chanType = self:GetAttribute("chatType")
+            if chanType then
+                local idx = chatFrame.__EzroUIIndex or 1
+                stickyChannels[idx] = chanType
+            end
+        end)
+
+        -- Restore sticky channel when edit box opens
+        chatFrame.editBox:HookScript("OnShow", function(self)
+            local c2 = EzroUI.db.profile.chat
+            if not c2 or not c2.stickyChannels then return end
+            local idx = chatFrame.__EzroUIIndex or 1
+            local saved = stickyChannels[idx]
+            if saved and self.SetAttribute then
+                self:SetAttribute("chatType", saved)
+            end
+        end)
+    end
+end
+
+-- ============================================================
+--  CHANNEL COLORING  (post-message hook via AddMessage)
+-- ============================================================
+-- These override the channel-header color of incoming messages when enabled
+local DEFAULT_CHANNEL_COLORS = {
+    SAY            = { 1.00, 1.00, 1.00 },
+    YELL           = { 1.00, 0.25, 0.25 },
+    WHISPER        = { 1.00, 0.50, 1.00 },
+    WHISPER_INFORM = { 1.00, 0.50, 1.00 },
+    PARTY          = { 0.67, 0.67, 1.00 },
+    PARTY_LEADER   = { 0.40, 0.80, 1.00 },
+    RAID           = { 1.00, 0.73, 0.00 },
+    RAID_LEADER    = { 1.00, 0.60, 0.00 },
+    RAID_WARNING   = { 1.00, 0.30, 0.30 },
+    GUILD          = { 0.25, 1.00, 0.25 },
+    OFFICER        = { 0.25, 0.75, 0.25 },
+    BATTLEGROUND   = { 1.00, 0.73, 0.25 },
+    EMOTE          = { 1.00, 0.50, 0.25 },
+    SYSTEM         = { 1.00, 1.00, 0.00 },
+    CHANNEL        = { 0.80, 0.80, 0.80 },
+    INSTANCE_CHAT  = { 0.80, 1.00, 1.00 },
+}
+
+local function GetChannelColor(channelType)
+    local c = cfg()
+    if not c or not c.channelColoring then return nil end
+
+    -- User-overridden colors take precedence
+    local custom = c.channelColors and c.channelColors[channelType]
+    if custom then return custom[1], custom[2], custom[3] end
+
+    -- Fall back to defaults
+    local def = DEFAULT_CHANNEL_COLORS[channelType]
+    if def then return def[1], def[2], def[3] end
+    return nil
+end
+
+-- ============================================================
+--  EDIT BOX HELPERS  (unchanged from original, cleaned up)
+-- ============================================================
 local function CleanEditBoxTextures(editBox)
     if not editBox then return end
-    
-    local regions = { editBox:GetRegions() }
-    for _, region in ipairs(regions) do
+    for _, region in ipairs({ editBox:GetRegions() }) do
         if region and region.GetObjectType then
-            local objType = region:GetObjectType()
-            if objType == "Texture" then
-                if region ~= editBox.__EzroUIBackground and region ~= editBox.__EzroUIBorder then
+            if region:GetObjectType() == "Texture" then
+                if region ~= editBox.__EzroUIBg and region ~= editBox.__EzroUIBorder then
                     region:Hide()
                 end
             end
         end
     end
-    
-    local textureFrames = {
-        "FocusLeft",
-        "FocusMid", 
-        "FocusRight",
-        "Header",
-        "HeaderSuffix",
-        "LanguageHeader",
-        "Prompt",
-        "NewcomerHint"
-    }
-    
-    for _, frameName in ipairs(textureFrames) do
-        local frame = editBox[frameName]
-        if frame then
-            if frame.GetObjectType and frame:GetObjectType() == "Texture" then
-                frame:Hide()
-            elseif frame.Hide then
-                frame:Hide()
-            end
-        end
+    for _, name in ipairs({ "FocusLeft","FocusMid","FocusRight","Header","HeaderSuffix",
+                              "LanguageHeader","Prompt","NewcomerHint" }) do
+        local f = editBox[name]
+        if f and f.Hide then f:Hide() end
     end
 end
 
--- Function to skin a single chat frame
+local function StyleEditBox(editBox)
+    if not editBox then return end
+    local c = cfg()
+    if not c or not c.enabled then return end
+    local font, size, flags = editBox:GetFont()
+    if font then
+        local newFlags = (flags and flags:find("OUTLINE")) and flags or "OUTLINE"
+        editBox:SetFont(font, c.fontSize or size or 12, newFlags)
+    end
+    editBox:SetShadowOffset(0, 0)
+end
+
+-- ============================================================
+--  FRAME SKINNING  (refactored)
+-- ============================================================
 function Chat:SkinChatFrame(chatFrame)
-    if not chatFrame or chatFrame:IsForbidden() or chatFrame.__EzroUISkinned then
-        return
-    end
-    
-    local cfg = EzroUI.db.profile.chat
-    if not cfg or not cfg.enabled then
-        return
-    end
-    
-    -- Mark as skinned
+    if not chatFrame or chatFrame:IsForbidden() then return end
+    if chatFrame.__EzroUISkinned then return end
+
+    local c = cfg()
+    if not c or not c.enabled then return end
+
     chatFrame.__EzroUISkinned = true
-    
-    -- Disable clamping to allow movement to screen edges in edit mode
+
+    -- Un-clamp
     if chatFrame.SetClampedToScreen then
         chatFrame:SetClampedToScreen(false)
     end
-    
-    -- Skin main frame: background and border
-    SetBackgroundColor(chatFrame)
+
+    -- Background & border
+    local bg = c.backgroundColor or { 0.1, 0.1, 0.1, 1 }
+    ApplyBackground(chatFrame, bg[1], bg[2], bg[3], bg[4] or 1)
     CreateBorder(chatFrame)
-    
-    -- Skin Background child frame
-    local background = chatFrame.Background
-    if background then
-        SetBackgroundColor(background)
-        -- Set default background alpha to 0 (transparent)
-        background:SetAlpha(0)
-        -- Hook OnShow to maintain alpha at 0
-        if not background.__EzroUIAlphaHooked then
-            background.__EzroUIAlphaHooked = true
-            if background.HookScript then
-                background:HookScript("OnShow", function(self)
-                    self:SetAlpha(0)
-                end)
-            end
-            -- Override SetAlpha to always be 0
-            local originalSetAlpha = background.SetAlpha
-            background.SetAlpha = function(self, alpha)
-                -- Always set to 0 regardless of what's requested
-                originalSetAlpha(self, 0)
-            end
-        end
-        -- Disable clamping on background frame too (it may be what's moved in edit mode)
-        if background.SetClampedToScreen then
-            background:SetClampedToScreen(false)
+
+    -- Neutralise the Blizzard Background child
+    if chatFrame.Background then
+        local b = chatFrame.Background
+        b:SetAlpha(0)
+        if b.SetClampedToScreen then b:SetClampedToScreen(false) end
+        if not b.__EzroUIAlphaHooked then
+            b.__EzroUIAlphaHooked = true
+            local orig = b.SetAlpha
+            b.SetAlpha = function(self, _) orig(self, 0) end
         end
     end
-    
-    -- Hide RightTexture (and other default textures if they exist)
-    if chatFrame.GetName then
-        local frameName = chatFrame:GetName()
-        if frameName then
-            local rightTexture = _G[frameName .. "RightTexture"]
-            if rightTexture then
-                rightTexture:Hide()
-            end
-            local leftTexture = _G[frameName .. "LeftTexture"]
-            if leftTexture then
-                leftTexture:Hide()
-            end
-            local midTexture = _G[frameName .. "MidTexture"]
-            if midTexture then
-                midTexture:Hide()
-            end
-            local topTexture = _G[frameName .. "TopTexture"]
-            if topTexture then
-                topTexture:Hide()
-            end
-            local bottomTexture = _G[frameName .. "BottomTexture"]
-            if bottomTexture then
-                bottomTexture:Hide()
-            end
-            local topRightTexture = _G[frameName .. "TopRightTexture"]
-            if topRightTexture then
-                topRightTexture:Hide()
-            end
-            local topLeftTexture = _G[frameName .. "TopLeftTexture"]
-            if topLeftTexture then
-                topLeftTexture:Hide()
-            end
-            local bottomRightTexture = _G[frameName .. "BottomRightTexture"]
-            if bottomRightTexture then
-                bottomRightTexture:Hide()
-            end
-            local bottomLeftTexture = _G[frameName .. "BottomLeftTexture"]
-            if bottomLeftTexture then
-                bottomLeftTexture:Hide()
-            end
+
+    -- Hide default blizzard textures
+    local fname = chatFrame:GetName()
+    if fname then
+        for _, suffix in ipairs({ "RightTexture","LeftTexture","MidTexture","TopTexture",
+                                   "BottomTexture","TopRightTexture","TopLeftTexture",
+                                   "BottomRightTexture","BottomLeftTexture" }) do
+            local t = _G[fname..suffix]
+            if t then t:Hide() end
         end
     end
-    
-    -- Skin EditBox - try multiple ways to access it
+
+    -- ---- Edit Box -------------------------------------------
     local editBox = chatFrame.editBox
-    if not editBox and chatFrame.GetName then
-        local frameName = chatFrame:GetName()
-        if frameName then
-            editBox = _G[frameName .. "EditBox"]
-        end
+    if not editBox and fname then
+        editBox = _G[fname.."EditBox"]
     end
-    
     if editBox then
-        -- Remove default textures first
         CleanEditBoxTextures(editBox)
-        
-        -- Apply our styling (black background and border)
-        SetBackgroundColor(editBox)
+        local ebg = c.backgroundColor or { 0.1, 0.1, 0.1, 1 }
+        ApplyBackground(editBox, ebg[1], ebg[2], ebg[3], ebg[4] or 1)
         CreateBorder(editBox)
         StyleEditBox(editBox)
-        
-        -- Set edit box alpha to 1.0 always
         editBox:SetAlpha(1.0)
-        
-        -- Function to match edit box width to chat frame (which has our custom background)
-        local function MatchEditBoxWidthToChatFrame()
-            if not chatFrame or not editBox then return end
-            if InCombatLockdown() then return end
-            
-            local chatWidth = chatFrame:GetWidth()
-            
-            if chatWidth then
-                -- Clear any anchors that might be controlling width
-                -- Check for left/right anchors that would override SetWidth
-                local numPoints = editBox:GetNumPoints()
-                local hasLeftRightAnchors = false
-                for i = 1, numPoints do
-                    local point = editBox:GetPoint(i)
-                    if point and (point:find("LEFT") or point:find("RIGHT")) then
-                        hasLeftRightAnchors = true
-                        break
-                    end
-                end
-                
-                -- If there are left/right anchors, we need to use anchors to control width
-                -- Otherwise, SetWidth should work
-                local targetWidth = chatWidth - 0
-                local currentHeight = editBox:GetHeight()
-                
-                if hasLeftRightAnchors then
-                    -- Use anchors to control width instead of SetWidth
-                    -- Get current position
-                    local point, relativeTo, relativePoint, xOfs, yOfs = editBox:GetPoint(1)
-                    if point and relativeTo then
-                        -- Clear and re-anchor with our width
-                        editBox:ClearAllPoints()
-                        -- Anchor left side (no padding)
-                        editBox:SetPoint("LEFT", relativeTo, "LEFT", 0, 0)
-                        -- Anchor right side (no padding)
-                        editBox:SetPoint("RIGHT", relativeTo, "RIGHT", 0, 0)
-                        -- Anchor bottom to bottom of chat frame
-                        editBox:SetPoint("BOTTOM", chatFrame, "BOTTOM", 0, -33)
-                    else
-                        -- Fallback: anchor to chat frame
-                        editBox:ClearAllPoints()
-                        editBox:SetPoint("BOTTOMLEFT", chatFrame, "BOTTOMLEFT", 0, 0)
-                        editBox:SetPoint("BOTTOMRIGHT", chatFrame, "BOTTOMRIGHT", 0, 0)
-                    end
-                else
-                    -- No width-controlling anchors, SetWidth should work
-                    if currentHeight then
-                        editBox:SetWidth(targetWidth)
-                        -- Also anchor to bottom
-                        editBox:ClearAllPoints()
-                        editBox:SetPoint("BOTTOMLEFT", chatFrame, "BOTTOMLEFT", 0, 0)
-                        editBox:SetPoint("BOTTOMRIGHT", chatFrame, "BOTTOMRIGHT", 0, 0)
-                    end
-                end
-            end
-        end
-        
-        -- Override SetWidth to prevent Blizzard from changing it
-        if not editBox.__EzroUISetWidthHooked then
-            editBox.__EzroUISetWidthHooked = true
-            local originalSetWidth = editBox.SetWidth
-            editBox.SetWidth = function(self, width)
-                -- Allow our function to set width, but prevent Blizzard from overriding
-                if not self.__EzroUISettingWidth then
-                    self.__EzroUISettingWidth = true
-                    originalSetWidth(self, width)
-                    self.__EzroUISettingWidth = nil
-                end
-            end
-        end
-        
-        -- Initial width matching
-        MatchEditBoxWidthToChatFrame()
-        
-        -- Hook size changes to maintain width matching
-        if not chatFrame.__EzroUIEditBoxWidthHooked then
-            chatFrame.__EzroUIEditBoxWidthHooked = true
-            
-            -- Hook chat frame size changes (our custom background matches this frame)
-            if chatFrame.HookScript then
-                chatFrame:HookScript("OnSizeChanged", function()
-                    MatchEditBoxWidthToChatFrame()
-                end)
-            end
-            
-            -- Hook edit box show to re-match width
-            if editBox.HookScript then
-                editBox:HookScript("OnShow", function()
-                    MatchEditBoxWidthToChatFrame()
-                end)
-            end
-            
-            -- Hook edit box size changes to re-apply our width
-            if editBox.HookScript then
-                editBox:HookScript("OnSizeChanged", function()
-                    MatchEditBoxWidthToChatFrame()
-                end)
-            end
-            
-            -- Periodic check to ensure width stays matched (reduced frequency for performance)
-            C_Timer.NewTicker(0.5, function()
-                MatchEditBoxWidthToChatFrame()
-            end)
-        end
-        
-        -- Hook alpha changes to keep it at 1.0
+
+        -- Lock alpha at 1
         if not editBox.__EzroUIAlphaHooked then
             editBox.__EzroUIAlphaHooked = true
-            
-            -- Override SetAlpha to always be 1.0
-            local originalSetAlpha = editBox.SetAlpha
-            editBox.SetAlpha = function(self, alpha)
-                -- Always set to 1.0 regardless of what's requested
-                originalSetAlpha(self, 1.0)
-            end
+            local orig = editBox.SetAlpha
+            editBox.SetAlpha = function(self, _) orig(self, 1.0) end
         end
 
-        -- Keep only the primary chat edit box visible to avoid duplicates
+        -- Width matching
+        local function MatchWidth()
+            if InCombatLockdown() then return end
+            local w = chatFrame:GetWidth()
+            if not w then return end
+            editBox:ClearAllPoints()
+            editBox:SetPoint("BOTTOMLEFT",  chatFrame, "BOTTOMLEFT",  0, 0)
+            editBox:SetPoint("BOTTOMRIGHT", chatFrame, "BOTTOMRIGHT", 0, 0)
+        end
+        MatchWidth()
+        if not chatFrame.__EzroUIEditBoxHooked then
+            chatFrame.__EzroUIEditBoxHooked = true
+            chatFrame:HookScript("OnSizeChanged", MatchWidth)
+            editBox:HookScript("OnShow",  MatchWidth)
+            C_Timer.NewTicker(0.5, MatchWidth)
+        end
+
+        -- Keep primary edit box always visible
         local primaryEditBox = _G.ChatFrameEditBox or _G.ChatFrame1EditBox
         if editBox == primaryEditBox and not editBox.__EzroUIShowHooked then
             editBox.__EzroUIShowHooked = true
             editBox:Show()
-
-            if editBox.HookScript then
-                editBox:HookScript("OnHide", function(self)
-                    self:Show()
-                end)
-            end
-
-            local originalHide = editBox.Hide
-            editBox.Hide = function(self)
-                originalHide(self)
-                self:Show()
-            end
+            editBox:HookScript("OnHide", function(self) self:Show() end)
+            local origHide = editBox.Hide
+            editBox.Hide = function(self) origHide(self); self:Show() end
         end
 
+        -- Hide content when focus lost
         if editBox == primaryEditBox and not editBox.__EzroUIContentHooked then
             editBox.__EzroUIContentHooked = true
-
-            local function SetEditBoxContentVisible(self, visible)
+            local function SetContentVisible(self, vis)
                 if not self.__EzroUITextColor then
                     local r, g, b, a = self:GetTextColor()
                     self.__EzroUITextColor = { r or 1, g or 1, b or 1, a or 1 }
                 end
-
-                local r, g, b, a = unpack(self.__EzroUITextColor)
-                self:SetTextColor(r, g, b, visible and a or 0)
-
-                local promptFrames = {
-                    "Prompt", "Header", "HeaderSuffix", "LanguageHeader", "NewcomerHint",
-                    "prompt", "header", "headerSuffix", "languageHeader", "newcomerHint",
-                }
-                for _, frameName in ipairs(promptFrames) do
-                    local frame = self[frameName]
-                    if frame and frame.SetAlpha then
-                        frame:SetAlpha(visible and 1 or 0)
-                    end
-                end
-
-                local focusFrames = {
-                    "FocusLeft", "FocusMid", "FocusRight",
-                    "focusLeft", "focusMid", "focusRight",
-                }
-                for _, frameName in ipairs(focusFrames) do
-                    local frame = self[frameName]
-                    if frame and frame.SetAlpha then
-                        frame:SetAlpha(visible and 1 or 0)
-                    end
+                local tc = self.__EzroUITextColor
+                self:SetTextColor(tc[1], tc[2], tc[3], vis and tc[4] or 0)
+                for _, n in ipairs({ "Prompt","Header","HeaderSuffix","LanguageHeader","NewcomerHint",
+                                     "FocusLeft","FocusMid","FocusRight" }) do
+                    local f = self[n] or self[n:lower()]
+                    if f and f.SetAlpha then f:SetAlpha(vis and 1 or 0) end
                 end
             end
-
-            SetEditBoxContentVisible(editBox, editBox:HasFocus())
-
-            if editBox.HookScript then
-                editBox:HookScript("OnEditFocusGained", function(self)
-                    SetEditBoxContentVisible(self, true)
-                end)
-
-                editBox:HookScript("OnEditFocusLost", function(self)
-                    SetEditBoxContentVisible(self, false)
-                end)
-
-                editBox:HookScript("OnShow", function(self)
-                    SetEditBoxContentVisible(self, self:HasFocus())
-                end)
-            end
-
+            SetContentVisible(editBox, editBox:HasFocus())
+            editBox:HookScript("OnEditFocusGained", function(self) SetContentVisible(self, true) end)
+            editBox:HookScript("OnEditFocusLost",   function(self) SetContentVisible(self, false) end)
+            editBox:HookScript("OnShow", function(self) SetContentVisible(self, self:HasFocus()) end)
         end
     end
-    
-    -- Style all font strings in the chat frame
-    StyleAllFontStrings(chatFrame)
-    
-    -- Hook AddMessage to style new messages
+
+    -- ---- Font strings ---------------------------------------
+    ApplyFontToAllStrings(chatFrame)
     if chatFrame.AddMessage then
-        hooksecurefunc(chatFrame, "AddMessage", function(self, text, ...)
-            C_Timer.After(0, function()
-                StyleAllFontStrings(self)
-            end)
+        hooksecurefunc(chatFrame, "AddMessage", function(self, ...)
+            C_Timer.After(0, function() ApplyFontToAllStrings(self) end)
         end)
     end
-    
-    -- Note: We don't hook SetFont to avoid recursion issues
-    -- Font styling is applied during skinning and refresh
-    
-    -- Skin FontStringContainer if it exists
-    local fontStringContainer = chatFrame.FontStringContainer
-    if fontStringContainer then
-        StyleAllFontStrings(fontStringContainer)
+
+    -- ---- Button / scroll frame ------------------------------
+    if chatFrame.buttonFrame then chatFrame.buttonFrame:Hide() end
+    if chatFrame.ScrollBar   and chatFrame.ScrollBar.SetBackdrop then
+        chatFrame.ScrollBar:SetBackdrop(nil)
     end
-    
-    -- Skin other child frames
-    local childFrames = {
-        "EditModeResizeButton",
-        "ResizeButton",
-        "ScrollBar",
-        "ScrollToBottomButton",
-        "Selection",
-        "buttonFrame",
-        "ClickAnywhereButton",
-    }
-    
-    for _, frameName in ipairs(childFrames) do
-        local child = chatFrame[frameName]
-        if child then
-            -- Hide buttonframe
-            if frameName == "buttonFrame" then
-                child:Hide()
-            else
-                -- Remove default borders/textures
-                if child.SetBackdrop then
-                    child:SetBackdrop(nil)
-                end
-                -- Style any font strings in child frames
-                StyleAllFontStrings(child)
-            end
-        end
+
+    -- ---- Selection highlight alpha --------------------------
+    local sel = chatFrame.Selection
+    if sel then
+        if sel.Center          then sel.Center:SetAlpha(0.3) end
+        if sel.MouseOverHighlight then sel.MouseOverHighlight:SetAlpha(0.3) end
     end
-    
-    -- Set Selection.Center and Selection.MouseOverHighlight alpha to 0.3
-    -- This function will be called during skinning and when edit mode activates
-    local function SetSelectionAlpha(selection)
-        if not selection then return end
-        
-        -- Set Center alpha
-        if selection.Center then
-            selection.Center:SetAlpha(0.3)
-            -- Hook OnShow to maintain alpha
-            if not selection.Center.__EzroUIAlphaHooked then
-                selection.Center.__EzroUIAlphaHooked = true
-                if selection.Center.HookScript then
-                    selection.Center:HookScript("OnShow", function(self)
-                        self:SetAlpha(0.3)
-                    end)
-                end
-            end
-        end
-        
-        -- Set MouseOverHighlight alpha
-        if selection.MouseOverHighlight then
-            selection.MouseOverHighlight:SetAlpha(0.3)
-            -- Hook OnShow to maintain alpha
-            if not selection.MouseOverHighlight.__EzroUIAlphaHooked then
-                selection.MouseOverHighlight.__EzroUIAlphaHooked = true
-                if selection.MouseOverHighlight.HookScript then
-                    selection.MouseOverHighlight:HookScript("OnShow", function(self)
-                        self:SetAlpha(0.3)
-                    end)
-                end
-            end
-        end
+
+    -- ---- Copy button ----------------------------------------
+    if c.copyButton then
+        Chat:AddCopyButton(chatFrame)
     end
-    
-    -- Try to set alpha immediately if Selection exists
-    SetSelectionAlpha(chatFrame.Selection)
+
+    -- ---- Tab skinning ---------------------------------------
+    SkinAllTabs()
+
+    -- ---- Chat fade ------------------------------------------
+    SetupChatFade(chatFrame)
+
+    -- ---- Scrollbar auto-hide --------------------------------
+    SetupScrollbarAutoHide(chatFrame)
+
+    -- ---- Sticky channels ------------------------------------
+    SetupStickyChannels(chatFrame)
 end
 
--- Function to skin all existing chat frames
+-- ============================================================
+--  COPY BUTTON (per frame)
+-- ============================================================
+function Chat:AddCopyButton(chatFrame)
+    if not chatFrame or chatFrame.__EzroUICopyBtn then return end
+    chatFrame.__EzroUICopyBtn = true
+
+    local btn = CreateFrame("Button", nil, chatFrame)
+    btn:SetSize(14, 14)
+    btn:SetPoint("TOPRIGHT", chatFrame, "TOPRIGHT", -2, -2)
+    btn:SetAlpha(0)
+
+    local tex = btn:CreateTexture(nil, "ARTWORK")
+    tex:SetAllPoints()
+    tex:SetTexture("Interface\\Buttons\\UI-GuildButton-PublicNote-Up")
+    btn.tex = tex
+
+    btn:SetScript("OnClick", function() ShowCopyFrame(chatFrame) end)
+    btn:SetScript("OnEnter", function(self) self:SetAlpha(1) end)
+    btn:SetScript("OnLeave", function(self) self:SetAlpha(0) end)
+
+    -- show faintly on chatFrame hover
+    chatFrame:HookScript("OnEnter", function() btn:SetAlpha(0.6) end)
+    chatFrame:HookScript("OnLeave", function() btn:SetAlpha(0) end)
+end
+
+-- ============================================================
+--  SKIN ALL / HOOKS / REFRESH
+-- ============================================================
 function Chat:SkinAllChatFrames()
-    local numChatWindows = NUM_CHAT_WINDOWS or 10
-    
-    for i = 1, numChatWindows do
-        local chatFrame = _G["ChatFrame" .. i]
-        if chatFrame then
-            self:SkinChatFrame(chatFrame)
+    for i = 1, NUM_CHAT_WINDOWS or 10 do
+        local cf = _G["ChatFrame"..i]
+        if cf then
+            cf.__EzroUIIndex = i
+            self:SkinChatFrame(cf)
         end
     end
-    
-    -- Also skin DEFAULT_CHAT_FRAME if it exists
     if DEFAULT_CHAT_FRAME then
         self:SkinChatFrame(DEFAULT_CHAT_FRAME)
     end
+    SkinAllTabs()
 end
 
--- Hook chat frame creation and updates
 function Chat:HookChatFrameCreation()
-    -- Hook FCF_OpenNewWindow to skin new frames
-    if FCF_OpenNewWindow then
-        hooksecurefunc("FCF_OpenNewWindow", function(name)
+    local function ReSkinAll()
+        C_Timer.After(0.1, function() Chat:SkinAllChatFrames() end)
+    end
+    if FCF_OpenNewWindow    then hooksecurefunc("FCF_OpenNewWindow",    ReSkinAll) end
+    if FCF_OpenTemporaryWindow then hooksecurefunc("FCF_OpenTemporaryWindow", ReSkinAll) end
+    if FCF_SelectDockFrame  then
+        hooksecurefunc("FCF_SelectDockFrame", function(cf)
             C_Timer.After(0.1, function()
+                if cf then Chat:SkinChatFrame(cf) end
                 Chat:SkinAllChatFrames()
             end)
         end)
     end
-    
-    -- Hook FCF_OpenTemporaryWindow for temporary chat windows
-    if FCF_OpenTemporaryWindow then
-        hooksecurefunc("FCF_OpenTemporaryWindow", function(messageType, ...)
-            C_Timer.After(0.1, function()
-                Chat:SkinAllChatFrames()
-            end)
-        end)
-    end
-    
-    -- Hook FCF_SelectDockFrame to skin when switching tabs
-    if FCF_SelectDockFrame then
-        hooksecurefunc("FCF_SelectDockFrame", function(chatFrame)
-            C_Timer.After(0.1, function()
-                if chatFrame then
-                    Chat:SkinChatFrame(chatFrame)
-                end
-                Chat:SkinAllChatFrames()
-            end)
-        end)
-    end
-    
-    -- Hook FCF_DockFrame to skin when docking frames
     if FCF_DockFrame then
-        hooksecurefunc("FCF_DockFrame", function(chatFrame, ...)
-            C_Timer.After(0.1, function()
-                if chatFrame then
-                    Chat:SkinChatFrame(chatFrame)
-                end
-            end)
+        hooksecurefunc("FCF_DockFrame", function(cf)
+            C_Timer.After(0.1, function() if cf then Chat:SkinChatFrame(cf) end end)
         end)
     end
-    
-    -- Periodic check to catch any frames we might have missed
-    C_Timer.NewTicker(2.0, function()
-        Chat:SkinAllChatFrames()
-    end)
+    C_Timer.NewTicker(2.0, function() Chat:SkinAllChatFrames() end)
 end
 
--- Initialize function
-function Chat:Initialize()
-    if self.initialized then
-        return
+-- ============================================================
+--  MESSAGE FILTER HOOKS  (timestamps, class colors, URLs, spam)
+-- ============================================================
+function Chat:HookMessageFilters()
+    -- We hook AddMessage on every chat frame to transform text before display
+    local function TransformMessage(self, text, r, g, b, id, ...)
+        -- text transformations are done via ChatFrame_AddMessageEventFilter
+        -- which is the proper API for this
     end
+
+    -- Use the official Blizzard filter API
+    -- Filters receive (self, event, message, sender, ...) and return (shouldBlock, newMessage, ...)
+    local function EzroFilter(self, event, message, sender, language, channelString,
+                               playerName2, specialFlags, zoneChannelID, channelIndex,
+                               channelName, unknown, lineID, guid, bnSenderID, isMobile,
+                               isSubtitle, hideSenderInLetterbox, supressRaidIcons)
+
+        local c = cfg()
+        if not c or not c.enabled then return false end
+
+        -- Cache class for sender
+        if sender and guid then
+            local _, _, classFileName = GetPlayerInfoByGUID(guid)
+            if classFileName then CacheNameClass(sender, classFileName) end
+        end
+
+        -- Spam filter
+        if IsSpam(event, sender, message) then
+            return true  -- block
+        end
+
+        local newMessage = message
+
+        -- Short channel names
+        newMessage = ShortenChannel(newMessage)
+
+        -- URL highlighting
+        newMessage = HighlightURLs(newMessage)
+
+        -- Class-color sender name in the message body
+        -- (sender replacement in the message text)
+        if sender and sender ~= "" then
+            local c2 = cfg()
+            if c2 and c2.classColoredNames then
+                local coloredSender = ColorName(sender, nil)
+                if coloredSender ~= sender then
+                    newMessage = newMessage:gsub(
+                        "|H(.-)|h%[" .. sender:gsub("([%(%)%.%%%+%-%*%?%[%^%$])", "%%%1") .. "%]|h",
+                        function(link)
+                            return "|H"..link.."|h["..coloredSender.."]|h"
+                        end
+                    )
+                end
+            end
+        end
+
+        -- Timestamp prepend
+        if c.timestamps then
+            local ts = BuildTimestamp()
+            newMessage = ts .. newMessage
+        end
+
+        if newMessage ~= message then
+            return false, newMessage, sender, language, channelString, playerName2,
+                   specialFlags, zoneChannelID, channelIndex, channelName, unknown,
+                   lineID, guid, bnSenderID, isMobile, isSubtitle, hideSenderInLetterbox,
+                   supressRaidIcons
+        end
+        return false
+    end
+
+    -- Register filter for common chat event types
+    local events = {
+        "CHAT_MSG_SAY", "CHAT_MSG_YELL", "CHAT_MSG_WHISPER", "CHAT_MSG_WHISPER_INFORM",
+        "CHAT_MSG_PARTY", "CHAT_MSG_PARTY_LEADER", "CHAT_MSG_RAID", "CHAT_MSG_RAID_LEADER",
+        "CHAT_MSG_RAID_WARNING", "CHAT_MSG_GUILD", "CHAT_MSG_OFFICER",
+        "CHAT_MSG_BATTLEGROUND", "CHAT_MSG_BATTLEGROUND_LEADER",
+        "CHAT_MSG_INSTANCE_CHAT", "CHAT_MSG_INSTANCE_CHAT_LEADER",
+        "CHAT_MSG_CHANNEL", "CHAT_MSG_EMOTE", "CHAT_MSG_TEXT_EMOTE", "CHAT_MSG_SYSTEM",
+    }
+    for _, ev in ipairs(events) do
+        ChatFrame_AddMessageEventFilter(ev, EzroFilter)
+    end
+
+    -- Cache classes from GUID-bearing events
+    local classEvents = { "CHAT_MSG_SAY","CHAT_MSG_YELL","CHAT_MSG_PARTY",
+                          "CHAT_MSG_PARTY_LEADER","CHAT_MSG_RAID","CHAT_MSG_RAID_LEADER",
+                          "CHAT_MSG_GUILD","CHAT_MSG_WHISPER" }
+    for _, ev in ipairs(classEvents) do
+        EzroUI:RegisterEvent(ev, function(_, event, msg, sender, _, _, _, _, _, _, _, _, _, guid)
+            if guid and sender then
+                local _, _, classFileName = GetPlayerInfoByGUID(guid)
+                if classFileName then CacheNameClass(sender, classFileName) end
+            end
+        end)
+    end
+end
+
+-- ============================================================
+--  QUICK JOIN TOAST BUTTON
+-- ============================================================
+local function ApplyQuickJoinOffset(button, offsetX, offsetY)
+    if not button then return end
+    local point, relativeTo, relativePoint, xOfs, yOfs = button:GetPoint(1)
+    if not point or not relativeTo then return end
+
+    if not button.__EzroUIBaseAnchor or button.__EzroUIBaseAnchor.relativeTo ~= relativeTo then
+        local curX = button.__EzroUILastOffsetX or 0
+        local curY = button.__EzroUILastOffsetY or 0
+        button.__EzroUIBaseAnchor = {
+            point = point, relativeTo = relativeTo,
+            relativePoint = relativePoint or point,
+            xOfs = (xOfs or 0) - curX, yOfs = (yOfs or 0) - curY,
+        }
+    end
+    local base = button.__EzroUIBaseAnchor
+    local lastX = button.__EzroUILastOffsetX or 0
+    local lastY = button.__EzroUILastOffsetY or 0
+    button.__EzroUILastOffsetX = offsetX
+    button.__EzroUILastOffsetY = offsetY
+    if offsetX ~= lastX or offsetY ~= lastY
+       or math.abs((xOfs or 0) - (base.xOfs + offsetX)) > 0.1
+       or math.abs((yOfs or 0) - (base.yOfs + offsetY)) > 0.1 then
+        button:ClearAllPoints()
+        button:SetPoint(base.point, base.relativeTo, base.relativePoint,
+                        base.xOfs + offsetX, base.yOfs + offsetY)
+    end
+end
+
+function Chat:UpdateQuickJoinToastButton()
+    local c = cfg()
+    if not c then return end
+    local qb = _G.QuickJoinToastButton
+    if not qb then return end
+
+    if c.hideQuickJoinToastButton then
+        qb:Hide()
+        if not qb.__EzroUIHideHooked then
+            qb.__EzroUIHideHooked = true
+            qb:HookScript("OnShow", function(self)
+                if (EzroUI.db.profile.chat or {}).hideQuickJoinToastButton then
+                    self:Hide()
+                end
+            end)
+        end
+    end
+
+    local ox = c.quickJoinToastButtonOffsetX or 31
+    local oy = c.quickJoinToastButtonOffsetY or -23
+    if not qb.__EzroUISetPointHooked then
+        qb.__EzroUISetPointHooked = true
+        hooksecurefunc(qb, "SetPoint", function(self)
+            self.__EzroUIBaseAnchor = nil
+            C_Timer.After(0, function()
+                local c2 = EzroUI.db.profile.chat
+                if c2 and not c2.hideQuickJoinToastButton then
+                    ApplyQuickJoinOffset(self, c2.quickJoinToastButtonOffsetX or 31,
+                                               c2.quickJoinToastButtonOffsetY or -23)
+                end
+            end)
+        end)
+        if not qb.__EzroUIShowHooked then
+            qb.__EzroUIShowHooked = true
+            qb:HookScript("OnShow", function(self)
+                C_Timer.After(0.1, function()
+                    local c2 = EzroUI.db.profile.chat
+                    if c2 and not c2.hideQuickJoinToastButton then
+                        ApplyQuickJoinOffset(self, c2.quickJoinToastButtonOffsetX or 31,
+                                                   c2.quickJoinToastButtonOffsetY or -23)
+                    end
+                end)
+            end)
+        end
+    end
+    if not c.hideQuickJoinToastButton and qb:GetPoint(1) then
+        ApplyQuickJoinOffset(qb, ox, oy)
+    end
+end
+
+-- ============================================================
+--  EDIT MODE / CLAMP DISABLE
+-- ============================================================
+function Chat:DisableChatFrameClamping()
+    local function Disable(frame)
+        if not frame then return end
+        if frame.SetClampedToScreen and not frame.__EzroUIClampDisabled then
+            frame.__EzroUIClampDisabled = true
+            frame:SetClampedToScreen(false)
+            frame:HookScript("OnShow", function(self)
+                if self.SetClampedToScreen then self:SetClampedToScreen(false) end
+            end)
+        end
+    end
+    for i = 1, NUM_CHAT_WINDOWS or 10 do
+        local cf = _G["ChatFrame"..i]
+        Disable(cf)
+        if cf and cf.Background then Disable(cf.Background) end
+    end
+    Disable(DEFAULT_CHAT_FRAME)
+    if DEFAULT_CHAT_FRAME and DEFAULT_CHAT_FRAME.Background then
+        Disable(DEFAULT_CHAT_FRAME.Background)
+    end
+end
+
+function Chat:SetChatSelectionAlpha()
+    local function SetAlpha(sel)
+        if not sel then return end
+        local items = { sel.Center, sel.MouseOverHighlight }
+        for _, item in ipairs(items) do
+            if item then
+                item:SetAlpha(0.3)
+                if not item.__EzroUIAlphaHooked then
+                    item.__EzroUIAlphaHooked = true
+                    item:HookScript("OnShow", function(self) self:SetAlpha(0.3) end)
+                end
+            end
+        end
+    end
+    for i = 1, NUM_CHAT_WINDOWS or 10 do
+        local cf = _G["ChatFrame"..i]
+        if cf then SetAlpha(cf.Selection) end
+    end
+    if DEFAULT_CHAT_FRAME then SetAlpha(DEFAULT_CHAT_FRAME.Selection) end
+end
+
+-- ============================================================
+--  REFRESH ALL
+-- ============================================================
+function Chat:RefreshAll()
+    -- Clear skinned flags so everything re-skins with new settings
+    local function ClearFlags(frame)
+        if not frame then return end
+        frame.__EzroUISkinned         = nil
+        frame.__EzroUIClampDisabled   = nil
+        frame.__EzroUIFadeSetup       = nil
+        frame.__EzroUIScrollbarSetup  = nil
+        frame.__EzroUICopyBtn         = nil
+        frame.__EzroUITabSkinned      = nil
+        if frame.Background then
+            frame.Background.__EzroUIClampDisabled = nil
+        end
+    end
+    for i = 1, NUM_CHAT_WINDOWS or 10 do
+        ClearFlags(_G["ChatFrame"..i])
+        local tab = _G["ChatFrame"..i.."Tab"]
+        if tab then tab.__EzroUITabSkinned = nil end
+    end
+    ClearFlags(DEFAULT_CHAT_FRAME)
+
+    -- Restore fade for disabled state
+    if not (cfg() or {}).fadingChat then
+        for i = 1, NUM_CHAT_WINDOWS or 10 do
+            local cf = _G["ChatFrame"..i]
+            if cf then TeardownChatFade(cf) end
+        end
+        if DEFAULT_CHAT_FRAME then TeardownChatFade(DEFAULT_CHAT_FRAME) end
+    end
+
+    self:SkinAllChatFrames()
+    self:UpdateQuickJoinToastButton()
+    self:DisableChatFrameClamping()
+    SkinChatBubbles()
+end
+
+-- ============================================================
+--  INITIALIZE
+-- ============================================================
+function Chat:Initialize()
+    if self.initialized then return end
     self.initialized = true
-    
-    -- Wait a bit for chat frames to be fully loaded
+
     C_Timer.After(0.5, function()
         self:SkinAllChatFrames()
         self:HookChatFrameCreation()
         self:UpdateQuickJoinToastButton()
         self:DisableChatFrameClamping()
+        self:HookMessageFilters()
+        SkinChatBubbles()
     end)
-    
-    -- Also skin after PLAYER_LOGIN
+
     EzroUI:RegisterEvent("PLAYER_LOGIN", function()
         C_Timer.After(0.5, function()
             self:SkinAllChatFrames()
             self:UpdateQuickJoinToastButton()
             self:DisableChatFrameClamping()
+            SkinChatBubbles()
         end)
     end)
-    
-    -- Periodic check for QuickJoinToastButton (it may be created later)
-    C_Timer.NewTicker(1.0, function()
-        self:UpdateQuickJoinToastButton()
-    end)
-    
-    -- Hook edit mode to disable clamping when frames are selected and set Selection alpha
+
+    C_Timer.NewTicker(1.0, function() self:UpdateQuickJoinToastButton() end)
+
+    -- Edit mode hooks
     if EditModeManagerFrame then
+        local function OnEditModeEnter()
+            C_Timer.After(0.1, function()
+                self:DisableChatFrameClamping()
+                self:SetChatSelectionAlpha()
+            end)
+        end
         if EditModeManagerFrame.RegisterCallback then
-            EditModeManagerFrame:RegisterCallback("EditModeEnter", function()
-                C_Timer.After(0.1, function()
-                    self:DisableChatFrameClamping()
-                    -- Set Selection alpha for all chat frames when edit mode enters
-                    self:SetChatSelectionAlpha()
-                end)
-            end)
+            EditModeManagerFrame:RegisterCallback("EditModeEnter", OnEditModeEnter)
         end
-        
-        -- Also hook when edit mode is shown
         if EditModeManagerFrame.HookScript then
-            EditModeManagerFrame:HookScript("OnShow", function()
-                C_Timer.After(0.1, function()
-                    self:DisableChatFrameClamping()
-                    -- Set Selection alpha for all chat frames when edit mode is shown
-                    self:SetChatSelectionAlpha()
-                end)
-            end)
+            EditModeManagerFrame:HookScript("OnShow", OnEditModeEnter)
         end
-        
-        -- Hook EnterEditMode function if it exists
         if EditModeManagerFrame.EnterEditMode then
             hooksecurefunc(EditModeManagerFrame, "EnterEditMode", function()
-                C_Timer.After(0.1, function()
-                    Chat:SetChatSelectionAlpha()
-                end)
+                C_Timer.After(0.1, function() Chat:SetChatSelectionAlpha() end)
             end)
         end
     end
-    
-    -- Periodic check to ensure clamping stays disabled and Selection alpha is set
+
     C_Timer.NewTicker(2.0, function()
         self:DisableChatFrameClamping()
         self:SetChatSelectionAlpha()
     end)
 end
-
--- Function to set Selection alpha for all chat frames
-function Chat:SetChatSelectionAlpha()
-    local numChatWindows = NUM_CHAT_WINDOWS or 10
-    
-    for i = 1, numChatWindows do
-        local chatFrame = _G["ChatFrame" .. i]
-        if chatFrame and chatFrame.Selection then
-            local selection = chatFrame.Selection
-            if selection then
-                if selection.Center then
-                    selection.Center:SetAlpha(0.3)
-                    if not selection.Center.__EzroUIAlphaHooked then
-                        selection.Center.__EzroUIAlphaHooked = true
-                        if selection.Center.HookScript then
-                            selection.Center:HookScript("OnShow", function(self)
-                                self:SetAlpha(0.3)
-                            end)
-                        end
-                    end
-                end
-                if selection.MouseOverHighlight then
-                    selection.MouseOverHighlight:SetAlpha(0.3)
-                    if not selection.MouseOverHighlight.__EzroUIAlphaHooked then
-                        selection.MouseOverHighlight.__EzroUIAlphaHooked = true
-                        if selection.MouseOverHighlight.HookScript then
-                            selection.MouseOverHighlight:HookScript("OnShow", function(self)
-                                self:SetAlpha(0.3)
-                            end)
-                        end
-                    end
-                end
-            end
-        end
-    end
-    
-    -- Also handle DEFAULT_CHAT_FRAME
-    if DEFAULT_CHAT_FRAME and DEFAULT_CHAT_FRAME.Selection then
-        local selection = DEFAULT_CHAT_FRAME.Selection
-        if selection then
-            if selection.Center then
-                selection.Center:SetAlpha(0.3)
-                if not selection.Center.__EzroUIAlphaHooked then
-                    selection.Center.__EzroUIAlphaHooked = true
-                    if selection.Center.HookScript then
-                        selection.Center:HookScript("OnShow", function(self)
-                            self:SetAlpha(0.3)
-                        end)
-                    end
-                end
-            end
-            if selection.MouseOverHighlight then
-                selection.MouseOverHighlight:SetAlpha(0.3)
-                if not selection.MouseOverHighlight.__EzroUIAlphaHooked then
-                    selection.MouseOverHighlight.__EzroUIAlphaHooked = true
-                    if selection.MouseOverHighlight.HookScript then
-                        selection.MouseOverHighlight:HookScript("OnShow", function(self)
-                            self:SetAlpha(0.3)
-                        end)
-                    end
-                end
-            end
-        end
-    end
-end
-
--- Function to disable clamping for chat frames in edit mode
-function Chat:DisableChatFrameClamping()
-    local numChatWindows = NUM_CHAT_WINDOWS or 10
-    
-    for i = 1, numChatWindows do
-        local chatFrame = _G["ChatFrame" .. i]
-        if chatFrame then
-            -- Disable clamping on main chat frame
-            if chatFrame.SetClampedToScreen and not chatFrame.__EzroUIClampingDisabled then
-                chatFrame.__EzroUIClampingDisabled = true
-                chatFrame:SetClampedToScreen(false)
-                
-                -- Hook OnShow to maintain unclamped state
-                if chatFrame.HookScript then
-                    chatFrame:HookScript("OnShow", function(self)
-                        if self.SetClampedToScreen then
-                            self:SetClampedToScreen(false)
-                        end
-                    end)
-                end
-            end
-            
-            -- Also disable clamping on Background frame (often what's moved in edit mode)
-            local background = chatFrame.Background
-            if background and background.SetClampedToScreen and not background.__EzroUIClampingDisabled then
-                background.__EzroUIClampingDisabled = true
-                background:SetClampedToScreen(false)
-                
-                if background.HookScript then
-                    background:HookScript("OnShow", function(self)
-                        if self.SetClampedToScreen then
-                            self:SetClampedToScreen(false)
-                        end
-                    end)
-                end
-            end
-        end
-    end
-    
-    -- Also handle DEFAULT_CHAT_FRAME
-    if DEFAULT_CHAT_FRAME then
-        if DEFAULT_CHAT_FRAME.SetClampedToScreen and not DEFAULT_CHAT_FRAME.__EzroUIClampingDisabled then
-            DEFAULT_CHAT_FRAME.__EzroUIClampingDisabled = true
-            DEFAULT_CHAT_FRAME:SetClampedToScreen(false)
-            if DEFAULT_CHAT_FRAME.HookScript then
-                DEFAULT_CHAT_FRAME:HookScript("OnShow", function(self)
-                    if self.SetClampedToScreen then
-                        self:SetClampedToScreen(false)
-                    end
-                end)
-            end
-        end
-        
-        local defaultBackground = DEFAULT_CHAT_FRAME.Background
-        if defaultBackground and defaultBackground.SetClampedToScreen and not defaultBackground.__EzroUIClampingDisabled then
-            defaultBackground.__EzroUIClampingDisabled = true
-            defaultBackground:SetClampedToScreen(false)
-            if defaultBackground.HookScript then
-                defaultBackground:HookScript("OnShow", function(self)
-                    if self.SetClampedToScreen then
-                        self:SetClampedToScreen(false)
-                    end
-                end)
-            end
-        end
-    end
-end
-
--- Function to apply position offset to QuickJoinToastButton
-local function ApplyQuickJoinToastButtonOffset(button, offsetX, offsetY)
-    if not button then return end
-    
-    -- Get current position
-    local point, relativeTo, relativePoint, xOfs, yOfs = button:GetPoint(1)
-    if not point or not relativeTo then return end
-    
-    -- Store base position if not already stored or if anchor changed
-    if not button.__EzroUIBaseAnchor or 
-       button.__EzroUIBaseAnchor.relativeTo ~= relativeTo or
-       button.__EzroUIBaseAnchor.point ~= point then
-        
-        -- Calculate base position by subtracting previously applied offset
-        local currentOffsetX = button.__EzroUILastOffsetX or 0
-        local currentOffsetY = button.__EzroUILastOffsetY or 0
-        local baseX = (xOfs or 0) - currentOffsetX
-        local baseY = (yOfs or 0) - currentOffsetY
-        
-        button.__EzroUIBaseAnchor = {
-            point = point,
-            relativeTo = relativeTo,
-            relativePoint = relativePoint or point,
-            xOfs = baseX,
-            yOfs = baseY,
-        }
-    end
-    
-    local baseAnchor = button.__EzroUIBaseAnchor
-    
-    -- Update stored offset values
-    local lastOffsetX = button.__EzroUILastOffsetX or 0
-    local lastOffsetY = button.__EzroUILastOffsetY or 0
-    button.__EzroUILastOffsetX = offsetX
-    button.__EzroUILastOffsetY = offsetY
-    
-    -- Calculate final position
-    local finalX = baseAnchor.xOfs + offsetX
-    local finalY = baseAnchor.yOfs + offsetY
-    
-    -- Only reposition if offset changed or position doesn't match expected
-    if offsetX ~= lastOffsetX or offsetY ~= lastOffsetY or 
-       math.abs((xOfs or 0) - finalX) > 0.1 or math.abs((yOfs or 0) - finalY) > 0.1 then
-        -- Clear and reapply with offset
-        button:ClearAllPoints()
-        button:SetPoint(
-            baseAnchor.point,
-            baseAnchor.relativeTo,
-            baseAnchor.relativePoint,
-            finalX,
-            finalY
-        )
-    end
-end
-
--- Function to update QuickJoinToastButton visibility and position
-function Chat:UpdateQuickJoinToastButton()
-    local cfg = EzroUI.db.profile.chat
-    if not cfg then return end
-    
-    local quickJoinButton = _G.QuickJoinToastButton
-    if not quickJoinButton then return end
-    
-    -- Handle visibility
-    if cfg.hideQuickJoinToastButton then
-        quickJoinButton:Hide()
-        -- Hook OnShow to keep it hidden
-        if not quickJoinButton.__EzroUIHideHooked then
-            quickJoinButton.__EzroUIHideHooked = true
-            quickJoinButton:HookScript("OnShow", function(self)
-                local cfg2 = EzroUI.db.profile.chat
-                if cfg2 and cfg2.hideQuickJoinToastButton then
-                    self:Hide()
-                end
-            end)
-        end
-    else
-        -- Unhook and show if setting is disabled
-        if quickJoinButton.__EzroUIHideHooked then
-            quickJoinButton:SetScript("OnShow", nil)
-            quickJoinButton.__EzroUIHideHooked = nil
-        end
-        -- Don't force show, let it show naturally if it wants to
-    end
-    
-    -- Handle position offsets
-    local offsetX = cfg.quickJoinToastButtonOffsetX or 31
-    local offsetY = cfg.quickJoinToastButtonOffsetY or -23
-    
-    -- Hook SetPoint to intercept positioning and apply our offset
-    if not quickJoinButton.__EzroUISetPointHooked then
-        quickJoinButton.__EzroUISetPointHooked = true
-        hooksecurefunc(quickJoinButton, "SetPoint", function(self, ...)
-            -- Clear base anchor so it gets recalculated from new position
-            self.__EzroUIBaseAnchor = nil
-            -- Apply offset after Blizzard sets the position
-            C_Timer.After(0, function()
-                local cfg3 = EzroUI.db.profile.chat
-                if cfg3 and not cfg3.hideQuickJoinToastButton then
-                    ApplyQuickJoinToastButtonOffset(self, cfg3.quickJoinToastButtonOffsetX or 31, cfg3.quickJoinToastButtonOffsetY or -23)
-                end
-            end)
-        end)
-        
-        -- Also hook OnShow to apply offset when button appears
-        if not quickJoinButton.__EzroUIShowHooked then
-            quickJoinButton.__EzroUIShowHooked = true
-            quickJoinButton:HookScript("OnShow", function(self)
-                C_Timer.After(0.1, function()
-                    local cfg4 = EzroUI.db.profile.chat
-                    if cfg4 and not cfg4.hideQuickJoinToastButton then
-                        ApplyQuickJoinToastButtonOffset(self, cfg4.quickJoinToastButtonOffsetX or 31, cfg4.quickJoinToastButtonOffsetY or -23)
-                    end
-                end)
-            end)
-        end
-    end
-    
-    -- Apply offsets immediately if button is already visible and positioned
-    if not cfg.hideQuickJoinToastButton then
-        local point = quickJoinButton:GetPoint(1)
-        if point then
-            ApplyQuickJoinToastButtonOffset(quickJoinButton, offsetX, offsetY)
-        end
-    end
-end
-
--- Refresh function
-function Chat:RefreshAll()
-    -- Clear skinned flags and re-skin
-    local numChatWindows = NUM_CHAT_WINDOWS or 10
-    for i = 1, numChatWindows do
-        local chatFrame = _G["ChatFrame" .. i]
-        if chatFrame then
-            chatFrame.__EzroUISkinned = nil
-            -- Also clear clamping disabled flag so it gets reapplied
-            chatFrame.__EzroUIClampingDisabled = nil
-            if chatFrame.Background then
-                chatFrame.Background.__EzroUIClampingDisabled = nil
-            end
-        end
-    end
-    
-    if DEFAULT_CHAT_FRAME then
-        DEFAULT_CHAT_FRAME.__EzroUISkinned = nil
-        DEFAULT_CHAT_FRAME.__EzroUIClampingDisabled = nil
-        if DEFAULT_CHAT_FRAME.Background then
-            DEFAULT_CHAT_FRAME.Background.__EzroUIClampingDisabled = nil
-        end
-    end
-    
-    self:SkinAllChatFrames()
-    self:UpdateQuickJoinToastButton()
-    self:DisableChatFrameClamping()
-end
-
