@@ -305,7 +305,7 @@ local function CreateResourceBarOptions()
     return {
         type = "group",
         name = L["Resource Bars"] or "Resource Bars",
-        order = 6,
+        order = 12,
         childGroups = "tab",
         args = {
             primary = {

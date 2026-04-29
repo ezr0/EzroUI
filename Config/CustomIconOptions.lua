@@ -5,7 +5,7 @@ local function CreateCustomIconOptions()
     return {
         type = "group",
         name = "Custom Spells",
-        order = 8,
+        order = 9,
         args = {
             header = {
                 type = "header",

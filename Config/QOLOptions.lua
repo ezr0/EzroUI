@@ -5,39 +5,12 @@ local function CreateQOLOptions()
     return {
         type = "group",
         name = "QoL",
-        order = 4,
+        order = 11,
         args = {
             header = {
                 type = "header",
                 name = "Quality of Life",
                 order = 1,
-            },
-            characterPanel = {
-                type = "toggle",
-                name = "Character Panel Enhancements",
-                desc = "Show item level, enchants, missing enchants, sockets, and durability on character and inspect frames.",
-                width = "full",
-                order = 1.5,
-                get = function()
-                    local db = EzroUI.db and EzroUI.db.profile and EzroUI.db.profile.qol
-                    if not db then
-                        return true
-                    end
-                    if db.characterPanel == nil then
-                        return true
-                    end
-                    return db.characterPanel
-                end,
-                set = function(_, val)
-                    if not EzroUI.db or not EzroUI.db.profile then
-                        return
-                    end
-                    EzroUI.db.profile.qol = EzroUI.db.profile.qol or {}
-                    EzroUI.db.profile.qol.characterPanel = val
-                    if EzroUI.CharacterPanel and EzroUI.CharacterPanel.Refresh then
-                        EzroUI.CharacterPanel:Refresh()
-                    end
-                end,
             },
             hideBagsBar = {
                 type = "toggle",

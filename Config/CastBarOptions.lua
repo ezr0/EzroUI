@@ -14,7 +14,7 @@ local function CreateCastBarOptions()
     return {
         type = "group",
         name = "Cast Bars",
-        order = 7,
+        order = 4,
         childGroups = "tab",
         args = {
             player = {

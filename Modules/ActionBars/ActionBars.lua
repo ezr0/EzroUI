@@ -6,6 +6,27 @@ local ActionBars = EzroUI.ActionBars
 
 local LSM = LibStub("LibSharedMedia-3.0")
 
+-- Masque integration (optional)
+local MSQ = LibStub("Masque", true)
+local masqueGroup = nil
+local masqueButtons = {}
+
+local function GetMasqueGroup()
+    if not MSQ then return nil end
+    if not masqueGroup then
+        masqueGroup = MSQ:Group("EzroUI", "Action Bars")
+    end
+    return masqueGroup
+end
+
+local function DisableMasqueGroup()
+    if masqueGroup then
+        masqueGroup:Delete()
+        masqueGroup = nil
+        masqueButtons = {}
+    end
+end
+
 -- Texture paths
 local BACKDROP_TEXTURE = "Interface\\Buttons\\WHITE8x8"
 local HIGHLIGHT_TEXTURE = [[Interface\AddOns\EzroUI\Media\white_border.tga]]
@@ -201,91 +222,107 @@ local function StyleActionButton(button)
     
     -- Mark as processed
     processedButtons[button] = true
-    
-    -- Get the icon texture
-    local icon = button.icon
-    if not icon then
-        return
-    end
-    
-    -- Hide default Blizzard textures
-    if button.NormalTexture then
-        button.NormalTexture:SetAlpha(0)
-    end
-    
-    if button.IconMask then
-        button.IconMask:Hide()
-    end
-    
-    if button.InterruptDisplay then
-        button.InterruptDisplay:SetAlpha(0)
-    end
-    
-    if button.SpellCastAnimFrame then
-        button.SpellCastAnimFrame:SetAlpha(0)
-    end
-    
-    if button.SlotBackground then
-        button.SlotBackground:Hide()
-    end
-    
-    if button.SlotArt then
-        button.SlotArt:Hide()
-    end
-    
-    -- Create or update backdrop texture
-    if not button.__EzroUIBackdrop then
-        button.__EzroUIBackdrop = button:CreateTexture(nil, "BACKGROUND", nil, -1)
-    end
-    
-    local backdrop = button.__EzroUIBackdrop
-    local backdropColor = cfg.backdropColor or {0.1, 0.1, 0.1, 1}
-    backdrop:SetTexture(BACKDROP_TEXTURE)
-    -- Round to nearest integer for pixel perfect rendering
-    local backdropOffset = (EzroUI.ScaleBorder and EzroUI:ScaleBorder(1)) or math.floor(EzroUI:Scale(1) + 0.5)
-    backdrop:SetPoint("TOPLEFT", button, "TOPLEFT", -backdropOffset, backdropOffset)
-    backdrop:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", backdropOffset, -backdropOffset)
-    backdrop:SetVertexColor(unpack(backdropColor))
-    backdrop:Show()
-    
-    -- Optional border that grows outward from the backdrop using Blizzard's WHITE8x8 texture
-    local configuredBorderSize = math.max(0, cfg.borderSize or 0)
-    local scaledBorderSize = (EzroUI.ScaleBorder and EzroUI:ScaleBorder(configuredBorderSize)) or math.floor(EzroUI:Scale(configuredBorderSize) + 0.5)
-    if scaledBorderSize > 0 then
-        if not button.__EzroUIBorder then
-            button.__EzroUIBorder = button:CreateTexture(nil, "BACKGROUND", nil, -2)
-        end
-        local border = button.__EzroUIBorder
-        border:SetTexture(BACKDROP_TEXTURE)
-        local totalOffset = backdropOffset + scaledBorderSize
-        border:SetPoint("TOPLEFT", button, "TOPLEFT", -totalOffset, totalOffset)
-        border:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", totalOffset, -totalOffset)
-        local borderColor = cfg.borderColor or {0, 0, 0, 1}
-        border:SetVertexColor(unpack(borderColor))
-        border:Show()
-    elseif button.__EzroUIBorder then
-        button.__EzroUIBorder:Hide()
-    end
-    
-    -- Style the icon
-    icon:SetTexCoord(unpack(ICON_ZOOM))
-    icon:SetDrawLayer("BACKGROUND", 0)
-    icon:SetPoint("TOPLEFT", button, "TOPLEFT", 0, 0)
-    icon:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", 0, 0)
 
-    -- Update highlight texture to EzroUI custom border
-    local highlight = button:GetHighlightTexture()
-    if highlight then
-        highlight:SetTexture(HIGHLIGHT_TEXTURE)
-        highlight:SetTexCoord(0, 1, 0, 1)
-        highlight:ClearAllPoints()
-        highlight:SetPoint("TOPLEFT", button, "TOPLEFT", -backdropOffset, backdropOffset)
-        highlight:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", backdropOffset, -backdropOffset)
-        highlight:SetBlendMode("ADD")
+    -- Determine whether to use Masque or EzroUI's own skinning
+    local useMasque = MSQ ~= nil and cfg.masque and cfg.masque.enabled
+
+    if useMasque then
+        -- Hide any leftover EzroUI backdrop/border textures
+        if button.__EzroUIBackdrop then button.__EzroUIBackdrop:Hide() end
+        if button.__EzroUIBorder then button.__EzroUIBorder:Hide() end
+
+        -- Register with the Masque group; Masque handles all visual button skinning
+        local group = GetMasqueGroup()
+        if group and not masqueButtons[button] then
+            group:AddButton(button)
+            masqueButtons[button] = true
+        end
+    else
+        -- Get the icon texture
+        local icon = button.icon
+        if not icon then
+            return
+        end
+
+        -- Hide default Blizzard textures
+        if button.NormalTexture then
+            button.NormalTexture:SetAlpha(0)
+        end
+
+        if button.IconMask then
+            button.IconMask:Hide()
+        end
+
+        if button.InterruptDisplay then
+            button.InterruptDisplay:SetAlpha(0)
+        end
+
+        if button.SpellCastAnimFrame then
+            button.SpellCastAnimFrame:SetAlpha(0)
+        end
+
+        if button.SlotBackground then
+            button.SlotBackground:Hide()
+        end
+
+        if button.SlotArt then
+            button.SlotArt:Hide()
+        end
+
+        -- Create or update backdrop texture
+        if not button.__EzroUIBackdrop then
+            button.__EzroUIBackdrop = button:CreateTexture(nil, "BACKGROUND", nil, -1)
+        end
+
+        local backdrop = button.__EzroUIBackdrop
+        local backdropColor = cfg.backdropColor or {0.1, 0.1, 0.1, 1}
+        backdrop:SetTexture(BACKDROP_TEXTURE)
+        -- Round to nearest integer for pixel perfect rendering
+        local backdropOffset = (EzroUI.ScaleBorder and EzroUI:ScaleBorder(1)) or math.floor(EzroUI:Scale(1) + 0.5)
+        backdrop:SetPoint("TOPLEFT", button, "TOPLEFT", -backdropOffset, backdropOffset)
+        backdrop:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", backdropOffset, -backdropOffset)
+        backdrop:SetVertexColor(unpack(backdropColor))
+        backdrop:Show()
+
+        -- Optional border that grows outward from the backdrop using Blizzard's WHITE8x8 texture
+        local configuredBorderSize = math.max(0, cfg.borderSize or 0)
+        local scaledBorderSize = (EzroUI.ScaleBorder and EzroUI:ScaleBorder(configuredBorderSize)) or math.floor(EzroUI:Scale(configuredBorderSize) + 0.5)
+        if scaledBorderSize > 0 then
+            if not button.__EzroUIBorder then
+                button.__EzroUIBorder = button:CreateTexture(nil, "BACKGROUND", nil, -2)
+            end
+            local border = button.__EzroUIBorder
+            border:SetTexture(BACKDROP_TEXTURE)
+            local totalOffset = backdropOffset + scaledBorderSize
+            border:SetPoint("TOPLEFT", button, "TOPLEFT", -totalOffset, totalOffset)
+            border:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", totalOffset, -totalOffset)
+            local borderColor = cfg.borderColor or {0, 0, 0, 1}
+            border:SetVertexColor(unpack(borderColor))
+            border:Show()
+        elseif button.__EzroUIBorder then
+            button.__EzroUIBorder:Hide()
+        end
+
+        -- Style the icon
+        icon:SetTexCoord(unpack(ICON_ZOOM))
+        icon:SetDrawLayer("BACKGROUND", 0)
+        icon:SetPoint("TOPLEFT", button, "TOPLEFT", 0, 0)
+        icon:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", 0, 0)
+
+        -- Update highlight texture to EzroUI custom border
+        local highlight = button:GetHighlightTexture()
+        if highlight then
+            highlight:SetTexture(HIGHLIGHT_TEXTURE)
+            highlight:SetTexCoord(0, 1, 0, 1)
+            highlight:ClearAllPoints()
+            highlight:SetPoint("TOPLEFT", button, "TOPLEFT", -backdropOffset, backdropOffset)
+            highlight:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", backdropOffset, -backdropOffset)
+            highlight:SetBlendMode("ADD")
+        end
     end
 
     -- Use Blizzard's default textures (no replacement needed)
-    
+
     -- Style cooldown frame
     if button.cooldown then
         button.cooldown:ClearAllPoints()
@@ -721,7 +758,14 @@ function ActionBars:StyleAllBars()
     
     -- Clear processed buttons cache
     processedButtons = {}
-    
+
+    -- If Masque integration is disabled, clean up the Masque group so buttons revert to default
+    if not (MSQ ~= nil and cfg.masque and cfg.masque.enabled) then
+        DisableMasqueGroup()
+    end
+    -- Reset Masque button registry so buttons are re-registered on the next pass
+    masqueButtons = {}
+
     -- Iterate through all bar prefixes
     for _, prefix in ipairs(BAR_PREFIXES) do
         for i = 1, 12 do
@@ -862,8 +906,14 @@ function ActionBars:RefreshAll()
     
     -- Re-style all bars
     self:StyleAllBars()
-    
+
     -- Reconfigure mouseover behavior
     ConfigureMouseoverBars()
+
+    -- Trigger Masque ReSkin if the group is active
+    local group = GetMasqueGroup()
+    if group then
+        group:ReSkin()
+    end
 end
 

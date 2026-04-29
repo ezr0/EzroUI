@@ -9,7 +9,7 @@ local function CreateProfileOptions()
     return {
         type = "group",
         name = L["Import / Export"] or "Import / Export",
-        order = 13,
+        order = 98,
         args = {
             desc = {
                 type  = "description",

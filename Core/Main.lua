@@ -970,7 +970,11 @@ function EzroUI:OnEnable()
     if self.QOL and self.QOL.Initialize then
         self.QOL:Initialize()
     end
-    
+
+    if self.CharacterPanel and self.CharacterPanel.Refresh then
+        self.CharacterPanel:Refresh()
+    end
+
     if self.Chat and self.Chat.Initialize then
         self.Chat:Initialize()
     end

@@ -421,7 +421,7 @@ local function CreateBuffDebuffFramesOptions()
     return {
         type = "group",
         name = "Buff/Debuffs",
-        order = 11,
+        order = 3,
         childGroups = "tab",
         args = {
             buffs = CreateTypeOptions("buffs", "Buffs", 1),

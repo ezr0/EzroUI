@@ -5,7 +5,7 @@ local function CreateMinimapOptions()
     return {
         type = "group",
         name = "Minimap",
-        order = 2,
+        order = 10,
         args = {
             header = {
                 type = "header",

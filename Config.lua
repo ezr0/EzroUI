@@ -13,9 +13,10 @@ local CustomIconOptions = ns.CreateCustomIconOptions
 local CustomBuffOptions = ns.CreateCustomBuffOptions
 local IconCustomizationOptions = ns.CreateIconCustomizationOptions
 local UnitFrameOptionsGroup = ns.CreateUnitFrameOptionsGroup
-local ProfileOptions = ns.CreateProfileOptions
-local QOLOptions     = ns.CreateQOLOptions
-local TooltipOptions = ns.CreateTooltipOptions
+local ProfileOptions          = ns.CreateProfileOptions
+local QOLOptions              = ns.CreateQOLOptions
+local TooltipOptions          = ns.CreateTooltipOptions
+local CharacterPanelOptions   = ns.CreateCharacterPanelOptions
 
 local function GetViewerOptions()
     return {
@@ -1202,7 +1203,7 @@ function EzroUI:SetupOptions()
             viewers = {
                 type = "group",
                 name = "Cooldown Manager",
-                order = 5,
+                order = 7,
                 childGroups = "tab",
                 args = {
                     general = {
@@ -1589,6 +1590,9 @@ function EzroUI:SetupOptions()
                     iconCustomization = IconCustomizationOptions(),
                 },
             },
+
+            -- CHARACTER PANEL TAB
+            characterPanel = CharacterPanelOptions(),
 
             -- CHAT TAB
             chat = ChatOptions(),

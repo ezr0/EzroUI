@@ -6,7 +6,7 @@ local function CreateActionBarOptions()
     return {
         type = "group",
         name = "Action Bars",
-        order = 10,
+        order = 2,
         childGroups = "tab",
         args = {
             general = {
@@ -811,6 +811,40 @@ local function CreateActionBarOptions()
                         EzroUI.db.profile.actionBars.countText = {}
                     end
                     EzroUI.db.profile.actionBars.countText.offsetY = val
+                    if EzroUI.ActionBars and EzroUI.ActionBars.RefreshAll then
+                        EzroUI.ActionBars:RefreshAll()
+                    end
+                end,
+            },
+
+            -- Masque Section
+            masqueHeader = {
+                type = "header",
+                name = "Masque Integration",
+                order = 90,
+            },
+            masqueDesc = {
+                type = "description",
+                name = "Masque is an optional addon that skins action button borders and backgrounds. When enabled, EzroUI's border and backdrop styling are replaced by your active Masque skin. Text, mouseover, and glow settings remain active.\n\nMasque must be installed and loaded for this option to have any effect.",
+                order = 91,
+                width = "full",
+            },
+            masqueEnabled = {
+                type = "toggle",
+                name = "Enable Masque Skinning",
+                desc = "Let Masque handle action button appearance instead of EzroUI's built-in border and backdrop styling. Requires Masque to be installed.",
+                width = "full",
+                order = 92,
+                disabled = function() return LibStub("Masque", true) == nil end,
+                get = function()
+                    local cfg = EzroUI.db.profile.actionBars.masque
+                    return cfg and cfg.enabled or false
+                end,
+                set = function(_, val)
+                    if not EzroUI.db.profile.actionBars.masque then
+                        EzroUI.db.profile.actionBars.masque = {}
+                    end
+                    EzroUI.db.profile.actionBars.masque.enabled = val
                     if EzroUI.ActionBars and EzroUI.ActionBars.RefreshAll then
                         EzroUI.ActionBars:RefreshAll()
                     end

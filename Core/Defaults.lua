@@ -1217,6 +1217,9 @@ local defaults = {
         },
         actionBars = {
             enabled = true,
+            masque = {
+                enabled = false,
+            },
             backdropColor = {0.1, 0.1, 0.1, 1},
             borderColor = {0, 0, 0, 1},
             borderSize = 1,
@@ -1270,6 +1273,7 @@ local defaults = {
         },
         qol = {
             characterPanel = true,
+            characterPanelPos = nil,   -- { point, rp, x, y } saved when user moves the frame
             hideBagsBar = true,
             tooltipIDs = true,
             microMenuSkinning = true,

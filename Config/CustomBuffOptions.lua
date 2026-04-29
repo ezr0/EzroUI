@@ -5,7 +5,7 @@ local function CreateCustomBuffOptions()
     return {
         type = "group",
         name = "Custom Buffs",
-        order = 9,
+        order = 8,
         args = {
             header = {
                 type = "header",

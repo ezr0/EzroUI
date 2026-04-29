@@ -4,7 +4,7 @@
 ## Author: Ezr0
 ## Version: 1.0.0
 ## SavedVariables: EzroUIDB
-## OptionalDeps: Ace3, LibSharedMedia-3.0
+## OptionalDeps: Ace3, LibSharedMedia-3.0, Masque
 ## X-TaintLess-DisableMitigations: CUF_PROFILE_ACTIVATE_PATCH_VERSION=1
 
 # Core library bootstrap
@@ -62,6 +62,7 @@ Config\MinimapOptions.lua
 Config\ActionBarOptions.lua
 Config\BuffDebuffFramesOptions.lua
 Config\QOLOptions.lua
+Config\CharacterPanelOptions.lua
 Config\TooltipOptions.lua
 Config.lua
 
@@ -124,6 +125,7 @@ Modules\Minimap\Minimap.lua
 
 # CharacterPanel
 Modules\CharacterPanel\CharacterPanel.lua
+Modules\CharacterPanel\CharacterPanelSkin.lua
 
 # Chat
 Modules\Chat\Chat.lua

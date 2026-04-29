@@ -17,7 +17,7 @@ local function CreateTooltipOptions()
     return {
         type  = "group",
         name  = "Tooltips",
-        order = 5,
+        order = 13,
         args  = {
             header = {
                 type  = "header",
