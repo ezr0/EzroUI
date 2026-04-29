@@ -3,7 +3,7 @@
 A lightweight World of Warcraft UI overhaul AddOn built on the Ace3 framework.
 
 **Author:** Ezr0  
-**Version:** 1.0.0  
+**Version:** 1.0.1  
 **Supported Clients:** The War Within (TWW) · Midnight (11.2+)
 
 ---
