@@ -135,19 +135,19 @@ local function CreateTooltipOptions()
                     if db then db.showRealm = val end
                 end,
             },
-            showFaction = {
+            showLocation = {
                 type  = "toggle",
-                name  = "Faction",
-                desc  = "Show whether the player is Horde or Alliance.",
+                name  = "Location",
+                desc  = "Show the zone the player is currently in.",
                 width = "full",
                 order = 12.5,
                 get = function()
                     local db = GetDB()
-                    return db and db.showFaction ~= false
+                    return db and db.showLocation ~= false
                 end,
                 set = function(_, val)
                     local db = GetDB()
-                    if db then db.showFaction = val end
+                    if db then db.showLocation = val end
                 end,
             },
             showHealth = {
